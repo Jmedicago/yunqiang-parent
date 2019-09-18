@@ -40,9 +40,7 @@ public class MendianServiceImpl extends BaseServiceImpl<Mendian> implements Mend
                 model.setChildren(this.treegrid(mendian.getId()));
                 models.add(model);
             }
-        } else {
-            models = null;
-        }
+        } 
         return models;
     }
 }
