@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vgit.yunqiang.mapper.SysUserMapper">
+
+    <sql id="Base_Column_List">
+        id, username, email, phone, password, salt, roleIds, status, createTime, updateTime
+    </sql>
+
+    <select id="get" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.SysUser">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_user
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from t_sys_user
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.SysUser">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_sys_user (
+        username, email, phone, password, salt, roleIds, status, createTime, updateTime
+        )
+        values (
+        #{username, jdbcType=VARCHAR}, #{email, jdbcType=VARCHAR}, #{phone, jdbcType=VARCHAR},
+        #{password, jdbcType=VARCHAR}, #{salt, jdbcType=VARCHAR}, #{roleIds, jdbcType=VARCHAR},
+        #{status, jdbcType=TINYINT}, #{createTime, jdbcType=BIGINT}, #{updateTime, jdbcType=BIGINT}
+        )
+    </insert>
+
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.SysUser">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_sys_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="username != null">
+                username,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="salt != null">
+                salt,
+            </if>
+            <if test="roleIds != null">
+                roleIds,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+            <if test="updateTime != null">
+                updateTime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="username != null">
+                #{username, jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email, jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone, jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password, jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null">
+                #{salt, jdbcType=VARCHAR},
+            </if>
+            <if test="roleIds != null">
+                #{roleIds, jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status, jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime, jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime, jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.SysUser">
+        update t_sys_user
+        set username = #{username, jdbcType=VARCHAR}, email = #{email, jdbcType=VARCHAR}, phone = #{phone, jdbcType=VARCHAR},
+        password = #{password, jdbcType=VARCHAR}, salt = #{salt, jdbcType=VARCHAR}, roleIds = #{roleIds, jdbcType=VARCHAR},
+        status = #{status, jdbcType=TINYINT}, createTime = #{createTime, jdbcType=BIGINT}, updateTime = #{updateTime, jdbcType=BIGINT},
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.SysUser">
+        update t_sys_user
+        <set>
+            <if test="username != null">
+                username = #{username, jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email, jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone, jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password, jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null">
+                salt = #{salt, jdbcType=VARCHAR},
+            </if>
+            <if test="roleIds != null">
+                roleIds = #{roleIds, jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status, jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime, jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                updateTime = #{updateTime, jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <sql id="whereSql">
+        <where>
+            <if test="username!=null and username!=''">and u.username like CONCAT('%',#{username},'%')</if>
+            <if test="userId!=null and userId!=''">and u.id = #{userId}</if>
+        </where>
+    </sql>
+
+    <select id="queryTotal" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery" resultType="int">
+        select count(0) from t_sys_user u
+        <include refid="whereSql"/>
+    </select>
+
+    <select id="query" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery"
+            resultType="com.vgit.yunqiang.pojo.SysUser">
+        select u.id, u.username, u.email, u.phone, u.roleIds, u.status, u.createTime, u.updateTime from t_sys_user u
+        <include refid="whereSql"/>
+        limit #{start},#{rows}
+    </select>
+
+    <insert id="correlationRoles" parameterType="java.lang.Long">
+        INSERT INTO t_sys_user_role(userId, roleId) VALUES(#{userId}, #{roleId})
+    </insert>
+
+    <delete id="unCorrelationRoles" parameterType="java.lang.Long">
+        DELETE FROM t_sys_user_role WHERE userId = #{userId} AND roleId = #{roleId}
+    </delete>
+
+    <select id="findRoles" parameterType="java.lang.String" resultType="com.vgit.yunqiang.pojo.SysRole">
+        SELECT r.* FROM
+        t_sys_user u, t_sys_role r, t_sys_user_role ur
+        WHERE
+        u.username = #{username}
+        AND
+        u.id = ur.userId
+        AND
+        r.id = ur.roleId
+    </select>
+
+    <select id="findPermissions" parameterType="java.lang.String" resultType="com.vgit.yunqiang.pojo.SysPermission">
+        SELECT p.* FROM
+        t_sys_user u, t_sys_role r, t_sys_permission p, t_sys_user_role ur, t_sys_role_permission rp
+        WHERE
+        u.username = #{username}
+        AND
+        u.id = ur.userId
+        AND
+        r.id = ur.roleId
+        AND
+        r.id = rp.roleId
+        AND
+        p.id = rp.permissionId
+    </select>
+
+    <select id="exists" parameterType="java.lang.Long" resultType="java.lang.Boolean">
+        SELECT COUNT(1) FROM t_sys_user_role WHERE userId = #{userId} AND roleId = #{roleId}
+    </select>
+
+    <select id="findByUsername" resultType="com.vgit.yunqiang.pojo.SysUser">
+        select * from t_sys_user tsu where username = #{username}
+    </select>
+
+    <delete id="deleteAllUserRoles" parameterType="java.lang.Long">
+        DELETE FROM t_sys_user_role WHERE userId = #{userId}
+    </delete>
+
+</mapper>

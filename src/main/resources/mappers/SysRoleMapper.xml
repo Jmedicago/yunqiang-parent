@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vgit.yunqiang.mapper.SysRoleMapper">
+
+    <sql id="Base_Column_List">
+        id, name, role, description, available
+    </sql>
+
+    <select id="get" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.SysRole">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_role
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from t_sys_role
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.SysRole">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_sys_role (
+        name, role, description, available
+        )
+        values (
+        #{name, jdbcType=VARCHAR}, #{role, jdbcType=VARCHAR}, #{description, jdbcType=VARCHAR},
+        #{available, jdbcType=TINYINT}
+        )
+    </insert>
+
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.SysRole">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_sys_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                name,
+            </if>
+            <if test="role != null">
+                role,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="available != null">
+                available,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name, jdbcType=VARCHAR},
+            </if>
+            <if test="role != null">
+                #{role, jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description, jdbcType=VARCHAR},
+            </if>
+            <if test="available != null">
+                #{available, jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.SysRole">
+        update t_sys_role
+        set name = #{name, jdbcType=VARCHAR}, role = #{role, jdbcType=VARCHAR}, description = #{description, jdbcType=VARCHAR},
+        available = #{available, jdbcType=TINYINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.SysRole">
+        update t_sys_role
+        <set>
+            <if test="name != null">
+                name = #{name, jdbcType=VARCHAR},
+            </if>
+            <if test="role != null">
+                role = #{role, jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description, jdbcType=VARCHAR},
+            </if>
+            <if test="available != null">
+                available = #{available, jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <sql id="whereSql">
+        <where>
+            <if test="name!=null and name!=''">and tsr.name like CONCAT('%',#{name},'%')</if>
+            <if test="role!=null and role!=''">and tsr.role = #{role}</if>
+        </where>
+    </sql>
+
+    <select id="queryTotal" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery" resultType="int">
+        select count(0) from t_sys_role tsr
+        <include refid="whereSql"/>
+    </select>
+
+    <select id="query" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery"
+            resultType="com.vgit.yunqiang.pojo.SysRole">
+        select * from t_sys_role tsr
+        <include refid="whereSql"/>
+        limit #{start},#{rows}
+    </select>
+
+    <insert id="correlationPermissions" parameterType="Long">
+        INSERT INTO
+        t_sys_role_permission(permissionId, roleId)
+        VALUES(#{permissionId}, #{roleId})
+    </insert>
+
+    <delete id="unCorrelationPermissions" parameterType="Long">
+        DELETE FROM
+        t_sys_role_permission
+        WHERE
+        roleId = #{roleId}
+        AND
+        permissionId = #{permissionId}
+    </delete>
+
+    <select id="exists" parameterType="Long" resultType="java.lang.Boolean">
+        SELECT COUNT(1) FROM t_sys_role_permission WHERE roleId = #{roleId} AND permissionId = #{permissionId}
+    </select>
+
+    <select id="findRolePermissionByRoleId" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.SysPermission">
+        SELECT p.*
+        FROM t_sys_permission p,
+             t_sys_role r,
+             t_sys_role_permission rp
+        WHERE r.id = #{roleId}
+        AND rp.roleId = r.id
+        AND rp.permissionId = p.id;
+    </select>
+
+    <select id="findPermissionByRoleId" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.SysPermission">
+        SELECT p.* FROM t_sys_role_permission rp LEFT JOIN t_sys_permission p ON p.id = rp.permissionId WHERE rp.roleId = #{roleId}
+    </select>
+
+    <delete id="deleteAllRolePermissions" parameterType="java.lang.Long">
+        DELETE FROM t_sys_role_permission WHERE roleId = #{roleId}
+    </delete>
+
+    <update id="updateUserRoleId" parameterType="com.vgit.yunqiang.pojo.SysRole">
+        UPDATE t_sys_user u, t_sys_user_role ur
+        SET u.roleId = #{role}
+        WHERE ur.roleId = #{id}
+          AND u.id = ur.userId;
+    </update>
+
+    <select id="getAll" resultType="com.vgit.yunqiang.pojo.SysRole">
+        select * from t_sys_role
+    </select>
+
+</mapper>

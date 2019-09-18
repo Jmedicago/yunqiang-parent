@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vgit.yunqiang.mapper.SysPermissionMapper">
+
+    <sql id="Base_Column_List">
+        id, name, icon, description, type, url, permission, parentId, path, sort, available
+    </sql>
+
+    <select id="get" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.SysPermission">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_permission
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from t_sys_permission
+        where id = #{id, jdbcType=BIGINT}
+    </delete>
+
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.SysPermission">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_sys_permission (
+        name, icon, description, type, url, permission, parentId, path, sort, available
+        )
+        values (
+        #{name, jdbcType=VARCHAR}, #{icon, jdbcType=VARCHAR}, #{description, jdbcType=VARCHAR},
+        #{type, jdbcType=TINYINT}, #{url, jdbcType=VARCHAR}, #{permission, jdbcType=VARCHAR},
+        #{parentId, jdbcType=BIGINT}, #{path, jdbcType=VARCHAR}, #{sort, jdbcType=INTEGER},
+        #{available, jdbcType=TINYINT}
+        )
+    </insert>
+
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.SysPermission">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_sys_permission
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                name,
+            </if>
+            <if test="icon != null">
+                icon,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="permission != null">
+                permission,
+            </if>
+            <if test="parentId != null">
+                parentId,
+            </if>
+            <if test="path != null">
+                path,
+            </if>
+            <if test="sort != null">
+                sort,
+            </if>
+            <if test="available != null">
+                available,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name, jdbcType=VARCHAR},
+            </if>
+            <if test="icon != null">
+                #{icon, jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description, jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type, jdbcType=TINYINT},
+            </if>
+            <if test="url != null">
+                #{url, jdbcType=VARCHAR},
+            </if>
+            <if test="permission != null">
+                #{permission, jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                #{parentId, jdbcType=BIGINT},
+            </if>
+            <if test="path != null">
+                #{path, jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null">
+                #{sort, jdbcType=INTEGER},
+            </if>
+            <if test="available != null">
+                #{available, jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.SysPermission">
+        update t_sys_permission
+        set name = #{name, jdbcType=VARCHAR}, icon = #{icon, jdbcType=VARCHAR}, description = #{description, jdbcType=VARCHAR},
+        type = #{type, jdbcType=TINYINT}, url = #{url, jdbcType=VARCHAR}, permission = #{permission, jdbcType=VARCHAR},
+        parentId = #{parentId, jdbcType=BIGINT}, path= #{path, jdbcType=VARCHAR}, sort = #{sort, jdbcType=INTEGER},
+        available = #{available, jdbcType=TINYINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.SysPermission">
+        update t_sys_permission
+        <set>
+            <if test="name != null">
+                name = #{name, jdbcType=VARCHAR},
+            </if>
+            <if test="icon != null">
+                icon = #{icon, jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description, jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type, jdbcType=TINYINT},
+            </if>
+            <if test="url != null">
+                url = #{url, jdbcType=VARCHAR},
+            </if>
+            <if test="permission != null">
+                permission = #{permission, jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                parentId = #{parentId, jdbcType=BIGINT},
+            </if>
+            <if test="path != null">
+                path= #{path, jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null">
+                sort = #{sort, jdbcType=INTEGER},
+            </if>
+            <if test="available != null">
+                available = #{available, jdbcType=TINYINT}
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <sql id="whereSql">
+        <where>
+            <if test="name!=null and name!=''">and tsp.name like CONCAT('%',#{name},'%')</if>
+            <if test="permission!=null and permission!=''">and tsp.permission = #{permission}</if>
+        </where>
+    </sql>
+
+    <select id="queryTotal" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery" resultType="int">
+        select count(0) from t_sys_permission tsp
+        <include refid="whereSql"/>
+    </select>
+
+    <select id="query" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery"
+            resultType="com.vgit.yunqiang.pojo.SysPermission">
+        select * from t_sys_permission tsp
+        <include refid="whereSql"/>
+        limit #{start},#{rows}
+    </select>
+
+    <select id="findRoleByPermissionId" parameterType="Long" resultType="com.vgit.yunqiang.pojo.SysRole">
+        SELECT r.name, r.role, r.description, r.available
+        FROM t_sys_permission p,
+             t_sys_role r,
+             t_sys_role_permission rp
+        WHERE p.id = #{id}
+        AND p.id = rp.permissionId
+        AND r.id = rp.roleId
+    </select>
+
+    <delete id="deleteAllPermissionsRoles" parameterType="Long">
+        DELETE FROM t_sys_role_permission WHERE permissionId = #{id}
+    </delete>
+
+    <insert id="correlationRoles" parameterType="Long">
+        INSERT INTO
+        t_sys_role_permission(permissionId, roleId)
+        VALUES(
+        #{permissionId}, #{roleId}
+        )
+    </insert>
+
+    <select id="findByParentId" resultType="com.vgit.yunqiang.pojo.SysPermission">
+        select * from t_sys_permission where parentId = #{parentId}
+    </select>
+
+    <select id="findByRoleIdAndParentId" resultType="com.vgit.yunqiang.pojo.SysPermission">
+        SELECT DISTINCT p.* FROM t_sys_role_permission rp
+        LEFT JOIN t_sys_permission p ON rp.permissionId = p.id
+        LEFT JOIN t_sys_role r ON rp.roleId = r.id
+        WHERE r.id IN
+        <foreach collection="roleIds" item="roleId" index="index" open="(" close=")" separator=",">
+            #{roleId}
+        </foreach>
+        AND p.parentId = #{parentId, jdbcType=BIGINT} AND p.type = 0
+    </select>
+
+</mapper>

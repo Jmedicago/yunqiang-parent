@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vgit.yunqiang.mapper.SysRolePermissionMapper">
+
+    <sql id="Base_Column_List">
+        id, roleId, permissionId
+    </sql>
+
+    <select id="get" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.SysRolePermission">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_role_permission
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from t_sys_role_permission
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.SysRolePermission">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_sys_role_permission (
+        roleId, permissionId
+        )
+        values (
+        #{roleId, jdbcType=BIGINT}, #{permissionId, jdbcType=BIGINT}
+        )
+    </insert>
+
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.SysRolePermission">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_sys_role_permission
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">
+                roleId,
+            </if>
+            <if test="permissionId != null">
+                permissionId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">
+                #{roleId, jdbcType=BIGINT},
+            </if>
+            <if test="permissionId != null">
+                #{permissionId, jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.SysRolePermission">
+        update t_sys_role_permission
+        set roleId = #{roleId, jdbcType=BIGINT}, permissionId = #{permissionId, jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.SysRolePermission">
+        update t_sys_role_permission
+        <set>
+            <if test="roleId != null">
+                roleId = #{roleId, jdbcType=BIGINT},
+            </if>
+            <if test="permissionId != null">
+                permissionId = #{permissionId, jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+</mapper>
