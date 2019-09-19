@@ -19,7 +19,7 @@ public class BisStock extends BasePojo implements Serializable {
 	
 	private Long parentId;
 	
-	private List<BisStock> childern;
+	private List<BisStock> children;
 
 	public Long getId() {
 		return id;
@@ -45,12 +45,12 @@ public class BisStock extends BasePojo implements Serializable {
 		this.parentId = parentId;
 	}
 
-	public List<BisStock> getChildern() {
-		return childern;
+	public List<BisStock> getChildren() {
+		return children;
 	}
 
-	public void setChildern(List<BisStock> childern) {
-		this.childern = childern;
+	public void setChildren(List<BisStock> children) {
+		this.children = children;
 	}
 
 }
