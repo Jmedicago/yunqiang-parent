@@ -206,4 +206,12 @@
         AND p.parentId = #{parentId, jdbcType=BIGINT} AND p.type = 0
     </select>
 
+    <select id="isParent" parameterType="java.lang.Long" resultType="java.lang.Boolean">
+        select count(1) from t_sys_permission where parentId = #{id}
+    </select>
+
+    <delete id="deleteByParentId" parameterType="java.lang.Long">
+        delete from t_sys_permission where parentId = #{id}
+    </delete>
+
 </mapper>

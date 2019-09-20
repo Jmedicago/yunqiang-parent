@@ -144,7 +144,8 @@ i, cite, em, var, address, dfn { /*斜体*/
 #theme-login-layout .layout-panel-north .layout-body,
 .theme-header-layout {
     height: 46px !important;
-    background: #1d1d1d url(images/logo.png?v=201612011609) left center no-repeat;
+    /*background: #1d1d1d url(images/logo.png?v=201612011609) left center no-repeat;*/
+    background: #1d1d1d;
 }
 
 /*左侧菜单样式*/

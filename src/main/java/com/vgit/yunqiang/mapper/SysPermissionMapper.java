@@ -49,4 +49,18 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
      */
     List<SysPermission> findByRoleIdAndParentId(@Param("parentId") Long parentId, @Param("roleIds") List<Long> roleIds);
 
+    /**
+     * 是否是叶子节点
+     *
+     * @param id
+     * @return
+     */
+    boolean isParent(Long id);
+
+    /**
+     * 根据父节点删除
+     *
+     * @param id
+     */
+    void deleteByParentId(Long id);
 }

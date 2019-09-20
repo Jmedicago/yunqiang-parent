@@ -3,7 +3,7 @@
 <mapper namespace="com.vgit.yunqiang.mapper.BisStockMapper">
 
     <sql id="Base_Column_List">
-        id, name, parentId, createTime, updateTime, remark
+        id, name, parentId, description, status, createTime, updateTime, remark
     </sql>
 
     <select id="get" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisStock">
@@ -23,7 +23,7 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
         insert into t_bis_stock (
-        name, parentId, createTime, updateTime, remark
+        name, parentId, description, status, createTime, updateTime, remark
         )
         values (
         #{name, jdbcType=VARCHAR}, #{createTime, jdbcType=BIGINT}, #{updateTime, jdbcType=BIGINT}, 
@@ -43,6 +43,12 @@
             <if test="parentId != null">
                 parentId,
             </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
             <if test="createTime != null">
                 createTime,
             </if>
@@ -57,8 +63,14 @@
             <if test="name != null">
                 #{name, jdbcType=VARCHAR},
             </if>
-            <if test="parnetId != null">
-                #{parnetId, jdbcType=BIGINT},
+            <if test="parentId != null">
+                #{parentId, jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description, jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status, jdbcType=TINYINT},
             </if>
             <if test="createTime != null">
                 #{createTime, jdbcType=BIGINT},
@@ -74,8 +86,9 @@
 
     <update id="update" parameterType="com.vgit.yunqiang.pojo.BisStock">
         update t_bis_stock
-        set name = #{name, jdbcType=VARCHAR}, parentId = #{parentId, jdbcType=BIGINT}, createTime = #{createTime, jdbcType=BIGINT},
-        updateTime = #{updateTime, jdbcType=BIGINT}, remark = #{remark, jdbcType=VARCHAR}
+        set name = #{name, jdbcType=VARCHAR}, parentId = #{parentId, jdbcType=BIGINT}, parentId = #{parentId, jdbcType=BIGINT},
+        status = #{status, jdbcType=TINYINT}, createTime = #{createTime, jdbcType=BIGINT}, updateTime = #{updateTime, jdbcType=BIGINT},
+        remark = #{remark, jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
@@ -87,6 +100,12 @@
             </if>
             <if test="parentId != null">
                 parentId = #{parentId, jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description, jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status, jdbcType=TINYINT},
             </if>
             <if test="createTime != null">
                 createTime = #{createTime, jdbcType=BIGINT},
@@ -119,6 +138,14 @@
         <include refid="whereSql"/>
         limit #{start},#{rows}
     </select>
+
+    <select id="isParent" parameterType="java.lang.Long" resultType="java.lang.Boolean">
+        select count(1) from t_bis_stock where parentId = #{id}
+    </select>
+
+    <delete id="deleteByParentId" parameterType="java.lang.Long">
+        delete from t_bis_stock where parentId = #{id}
+    </delete>
     
     <select id="queryTree" resultType="com.vgit.yunqiang.pojo.BisStock">
         select * from t_bis_stock where parentId = #{parentId}

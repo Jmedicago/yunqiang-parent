@@ -1,5 +1,6 @@
 package com.vgit.yunqiang.controller;
 
+import com.vgit.yunqiang.common.consts.ICodes;
 import com.vgit.yunqiang.common.query.PermissionQuery;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.controller.consts.ControllerConsts;
@@ -77,5 +78,14 @@ public class SysPermissionController {
         this.sysPermissionService.saveOrUpdatePermission(permission);
         return Ret.me();
     }
+
+    @RequiresRoles(value = {"admin", "system"}, logical = Logical.OR)
+    @RequestMapping(ControllerConsts.URL_DELETE)
+    @ResponseBody
+    public Ret delete(Long id) {
+        this.sysPermissionService.delete(id);
+        return Ret.me().setCode(ICodes.SUCCESS);
+    }
+
 
 }

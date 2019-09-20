@@ -59,7 +59,7 @@ public interface SysPermissionService extends BaseService<SysPermission> {
      *
      * @param permission
      */
-    void saveOrUpdatePermission(SysPermission permission);
+    SysPermission saveOrUpdatePermission(SysPermission permission);
 
     /**
      * 根据权限获取菜单

@@ -15,9 +15,13 @@
     </table>
     <div id="roleTB">
         <div>
-            <a href="#" data-cmd="add" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>
+            <a href="#" data-cmd="add" class="easyui-linkbutton" iconCls="icon-add" plain="true">
+                <span i18n="table.add">添加</span>
+            </a>
             <a href="#" data-cmd="edit" mustsel remote="true" data-options="disabled:true" class="easyui-linkbutton"
-               iconCls="icon-edit" plain="true">编辑</a>
+               iconCls="icon-edit" plain="true">
+                <span i18n="table.edit">编辑</span>
+            </a>
         </div>
         <div class="searchForm">
             <form>

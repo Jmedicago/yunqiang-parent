@@ -1,7 +1,10 @@
 package com.vgit.yunqiang.service.impl;
 
+import com.vgit.yunqiang.common.consts.bis.SysRoleConsts;
+import com.vgit.yunqiang.common.consts.bis.SysUserStateConsts;
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
+import com.vgit.yunqiang.common.utils.PassUtils;
 import com.vgit.yunqiang.mapper.SysRoleMapper;
 import com.vgit.yunqiang.pojo.SysPermission;
 import com.vgit.yunqiang.pojo.SysRole;
@@ -72,8 +75,14 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
     }
 
     @Override
-    public void saveOrUpdateRole(SysRole role) {
-
+    public SysRole saveOrUpdateRole(SysRole role) {
+        if (role.getId() == null) {
+            role.setAvailable(true);
+            this.mapper.savePart(role);
+        } else {
+            this.mapper.updatePart(role);
+        }
+        return role;
     }
 
     /**

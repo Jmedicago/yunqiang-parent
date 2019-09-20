@@ -2,7 +2,48 @@ $(function () {
     initATarget();
     commonCmdBind();
     commonGridClickBind();
+    internationalize();
 });
+
+function internationalize() {
+    var defaultLang = "cn";
+    /*默认语言*/
+    $("[i18n]").i18n({
+        defaultLang: defaultLang,
+        filePath: "/easyui/my/i18n/",
+        filePrefix: "i18n_",
+        fileSuffix: "",
+        forever: true,
+        callback: function () {
+            console.log("i18n is ready.");
+        }
+    });
+    /*切换为中文 - 按钮*/
+    $(".chinese").click(function () {
+        $("[i18n]").i18n({
+            defaultLang: "cn",
+            filePath: "/easyui/my/i18n/"
+        });
+        window.sessionStorage.setItem("lang", "cn");
+    });
+    /*切换为英文 - 按钮*/
+    $(".english").click(function () {
+        $("[i18n]").i18n({
+            defaultLang: "en",
+            filePath: "/easyui/my/i18n/"
+        });
+        window.sessionStorage.setItem("lang", "en");
+    });
+    /*切换为葡萄牙文 - 按钮*/
+    $(".portugal").click(function () {
+        console.log('[lang]葡萄牙语');
+        $("[i18n]").i18n({
+            defaultLang: "prt",
+            filePath: "/easyui/my/i18n/"
+        });
+        window.sessionStorage.setItem("lang", "prt");
+    });
+}
 
 //主菜单AJAX加载到主区域
 function initATarget() {
@@ -15,10 +56,6 @@ function initATarget() {
             return true;
         });
     });
-}
-
-function toPage(path) {
-    $.insdep.control(path);
 }
 
 //延迟2秒展示后台主页
@@ -282,6 +319,7 @@ MXF.ajaxForm = function (obj, callbackFn, beforeSubmit) {
             MXF.ajaxing(false);
             MXF.ajaxFormDone(data);
             if (data.success) {
+                console.log($form);
                 var formWindow = $form.data('window');
                 if (formWindow) {//关闭窗口
                     var formGrid = $form.data('grid');
@@ -296,7 +334,6 @@ MXF.ajaxForm = function (obj, callbackFn, beforeSubmit) {
             } else {
                 MXF.error(data.message + data.info);
             }
-
         }
     });
 }
@@ -499,3 +536,24 @@ MXF.dateTimeFormatter = function (val, row) {
     var now = new Date(val);
     return now.format("yyyy-MM-dd hh:mm:ss");
 };
+
+MXF.openDialog = function (el , title, url, callback, width, height) {
+    var editWindow = $('<div id="' + el + '"></div>');
+    editWindow.appendTo('body');
+    var _width = width || 600;
+    var _height = height || 450;
+    editWindow.window({
+        title: title,
+        width: _width,
+        height: _height,
+        modal: true,
+        closed: false,
+        border: false,
+        href: url,
+        onLoad: callback,
+        onClose: function () {
+            editWindow.window('destroy');
+        }
+    });
+}
+

@@ -1,0 +1,9 @@
+{
+  "global.loading": "Loading...",
+  "header.logo": "YUNQIANG ERP",
+  "user.roles": "Have a role",
+  "user.loginOut": "Login out",
+  "table.add": "add",
+  "table.edit": "edit",
+  "table.delete": "delete"
+}

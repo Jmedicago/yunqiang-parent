@@ -32,6 +32,7 @@
 <body>
 <div id="loading" style="position:absolute;z-index:1000;height:100%;text-align:center; background:#fff;width:100%;">
     <img style="margin-top:270px;" src="/easyui/themes/insdep/images/ring.svg"/>
+    <h5 style="margin-top: 20px" i18n="global.loading">加载中...</h5>
 </div>
 
 <div id="master-layout">
@@ -41,18 +42,19 @@
         <div class="theme-navigate">
             <div class="left">
                 <div class="logo">
-                    <span>云强系统</span>
+                    <span i18n="header.logo">云强ERP</span>
                 </div>
             </div>
             <div class="right">
                 <a href="#" class="easyui-menubutton theme-navigate-user-button"
                    data-options="menu:'.theme-navigate-user-panel'">${userInfo.username}</a>
+                <a href="#" class="easyui-menubutton" data-options="menu:'#lang',hasDownArrow:false">语言</a>
                 <div class="theme-navigate-user-panel">
                     <dl>
                         <dd>
                             <b class="badge-prompt">${userInfo.username}</b>
                             <span>${userInfo.phone}</span>
-                            <p>拥有角色：
+                            <p><i i18n="user.roles">拥有角色</i>：
                                 <c:forEach var="role" items="${roleInfo}">
                                     <i class="text-success">${role.name}</i>
                                 </c:forEach>
@@ -60,9 +62,21 @@
                         </dd>
                         <dt>
                             <%--<a class="theme-navigate-user-modify">修改资料</a>--%>
-                            <a class="theme-navigate-user-logout" href="/login">注销</a>
+                            <a class="theme-navigate-user-logout" href="/login" i18n="user.loginOut">注销</a>
                         </dt>
                     </dl>
+                </div>
+
+                <div id="lang" class="theme-navigate-menu-panel">
+                    <div>
+                        <a href="javascript:" class="chinese">切换为中文</a>
+                    </div>
+                    <div>
+                        <a href="javascript:" class="english">switch to english</a>
+                    </div>
+                    <div>
+                        <a href="javascript:" class="portugal">Mude para português</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -117,6 +131,8 @@
 <script type="text/javascript" src="/easyui/plugin/ueditor/ueditor.all.min.js"></script>
 <link href="/easyui/plugin/cropper-2.3.4/dist/cropper.min.css" rel="stylesheet" type="text/css">
 <script src="/easyui/plugin/cropper-2.3.4/dist/cropper.min.js"></script>
+<!-- i18n-->
+<script type="text/javascript" src="/easyui/plugin/jquery.i18n-master/jquery.i18n.min.js"></script>
 <!-- 七牛云上传 -->
 <script type="text/javascript" src="http://cdn.staticfile.org/plupload/2.1.1/plupload.full.min.js"></script>
 <script type="text/javascript" src="http://cdn.staticfile.org/plupload/2.1.1/i18n/zh_CN.js"></script>

@@ -87,8 +87,18 @@ public class SysPermissionServiceImpl extends BaseServiceImpl<SysPermission> imp
     }
 
     @Override
-    public void saveOrUpdatePermission(SysPermission permission) {
-
+    public SysPermission saveOrUpdatePermission(SysPermission permission) {
+        if (permission.getId() == null) {
+            permission.setSort(100);
+            permission.setAvailable(true);
+            this.mapper.savePart(permission);
+            this.handleSave(permission);
+            this.mapper.updatePart(permission);
+        } else {
+            this.handleSave(permission);
+            this.mapper.updatePart(permission);
+        }
+        return permission;
     }
 
     @Override
@@ -116,4 +126,31 @@ public class SysPermissionServiceImpl extends BaseServiceImpl<SysPermission> imp
         return menus;
     }
 
+    /**
+     * 存储修改分类前进行预处理数据
+     *
+     * @param o
+     */
+    private void handleSave(SysPermission o) {
+        Long id = o.getId();
+        Long pid = o.getParentId();
+        String path = "";
+        if (pid == null || 0 == pid) { // 一级分类
+            path = "." + id + ".";
+        } else {// 子类
+            SysPermission permission = this.mapper.get(pid);
+            path = permission.getPath() + id + ".";
+        }
+        o.setPath(path);
+    }
+
+    @Override
+    public void delete(Long id) {
+        if (!this.mapper.isParent(id)) {
+            this.mapper.delete(id);
+        } else {
+            this.mapper.deleteByParentId(id);
+            this.mapper.delete(id);
+        }
+    }
 }

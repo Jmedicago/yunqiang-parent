@@ -23,4 +23,19 @@ public interface BisStockMapper extends BaseMapper<BisStock> {
 	 */
 	List<BisStock> queryTree(@Param("parentId") Long parentId);
 
+	/**
+	 * 是否是根节点
+	 *
+	 * @param id
+	 * @return
+	 */
+	boolean isParent(Long id);
+
+	/**
+	 * 删除所有子节点
+	 *
+	 * @param id
+	 */
+	void deleteByParentId(Long id);
+
 }

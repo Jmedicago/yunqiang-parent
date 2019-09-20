@@ -1,0 +1,9 @@
+{
+  "global.loading": "Carregamento em curso...",
+  "header.logo": "YUNQIANG ERP",
+  "user.roles": "Tem um papel",
+  "user.loginOut": "cancelamento",
+  "table.add": "adicionar",
+  "table.edit": "editor",
+  "table.delete": "apagar"
+}

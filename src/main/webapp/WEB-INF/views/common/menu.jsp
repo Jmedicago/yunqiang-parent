@@ -7,7 +7,8 @@
         <div title="${item.text}">
             <ul class="easyui-datalist" data-options="border:false,fit:true">
                 <c:forEach var="child" items="${item.children}">
-                    <li><a href="javascript:toPage('${child.url}')">${child.text}</a></li>
+                    <%--<li><a href="javascript:toPage('${child.url}')">${child.text}</a></li>--%>
+                    <li><a href="javascript:" uri="${child.url}">${child.text}</a></li>
                 </c:forEach>
             </ul>
         </div>

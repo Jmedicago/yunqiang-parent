@@ -1,0 +1,9 @@
+{
+  "global.loading": "加载中...",
+  "header.logo": "云强ERP",
+  "user.roles": "拥有角色",
+  "user.loginOut": "注销",
+  "table.add": "添加",
+  "table.edit": "编辑",
+  "table.delete": "删除"
+}
