@@ -18,6 +18,11 @@ public class SysPermission {
     private String icon;
 
     /*
+    唯一标识
+     */
+    private String identity;
+
+    /*
     描述
      */
     private String description;
@@ -79,6 +84,14 @@ public class SysPermission {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public String getIdentity() {
+        return identity;
+    }
+
+    public void setIdentity(String identity) {
+        this.identity = identity;
     }
 
     public String getDescription() {

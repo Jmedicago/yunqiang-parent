@@ -1,41 +1,42 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <form id="permissionForm" method="post" action="/permission/store">
     <input type="hidden" name="id" value="${sysPermission.id}"/>
     <input type="hidden" name="parentId" value="${sysPermission.parentId}"/>
     <div class="input-div">
-        <label class="label-top">权限名称</label>
-        <input class="easyui-textbox theme-textbox-radius" name="name" value="${sysPermission.name}"
+        <label class="label-top"><spring:message code="permission.name"/></label>
+        <input class="easyui-textbox theme-textbox-radius" name="name" value="${sysPermission.name}" placeholder="<spring:message code="message.input"/>"
                data-options="required:true">
     </div>
     <div class="input-div">
-        <label class="label-top">资源图标</label>
+        <label class="label-top"><spring:message code="permission.icon"/></label>
         <input class="easyui-textbox theme-textbox-radius" name="icon" value="${sysPermission.icon}">
     </div>
     <div class="input-div">
-        <label class="label-top">资源类型</label>
+        <label class="label-top"><spring:message code="permission.type"/></label>
         <select class="easyui-combobox" style="width:420px;" name="type">
-            <option value="0">菜单</option>
-            <option value="1">按钮</option>
+            <option value="0"><spring:message code="common.menu"/></option>
+            <option value="1"><spring:message code="common.button"/></option>
         </select>
     </div>
     <div class="input-div">
-        <label class="label-top">资源地址</label>
+        <label class="label-top"><spring:message code="permission.resource"/></label>
         <input class="easyui-textbox theme-textbox-radius" name="url" value="${sysPermission.url}">
     </div>
     <div class="input-div">
-        <label class="label-top">权限字符串</label>
+        <label class="label-top"><spring:message code="permission.string"/></label>
         <input class="easyui-textbox theme-textbox-radius" name="permission" value="${sysPermission.permission}">
     </div>
     <div class="input-div">
-        <label class="label-top">权限描述</label>
+        <label class="label-top"><spring:message code="permission.desc"></spring:message></label>
         <input class="easyui-textbox theme-textbox-radius" data-options="multiline:true" style="height:60px;"
                name="description" value="${sysPermission.description}">
     </div>
-    <div class="input-div">
-        <label class="label-top"></label>
-        <a class="easyui-linkbutton button-lg button-default" onclick="storePermission(this)">提交</a>
-        <a class="easyui-linkbutton button-lg" onclick="MXF.clearForm(this)">清空</a>
+    <div class="input-div" style="margin-top: 35px;text-align: center">
+        <a class="easyui-linkbutton button-lg button-default" onclick="storePermission(this)"><spring:message
+                code="common.submit"/></a>
+        <a class="easyui-linkbutton button-lg" onclick="MXF.clearForm(this)"><spring:message code="common.reset"/></a>
     </div>
     <hr style="border:0;margin-bottom:20px;"/>
 </form>

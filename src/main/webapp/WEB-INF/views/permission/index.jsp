@@ -1,24 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-<div class="tableGroup">
-    <table id="permissionGrid" class="easyui-treegrid" title="权限信息"
-           data-options="rownumbers:true,fit:true,method:'get',striped:true,url:'/permission/json',idField:'id',treeField:'name'">
-        <thead>
-        <tr>
-            <th data-options="field:'id',checkbox:true"></th>
-            <th data-options="field:'name',width:180">权限名称</th>
-            <th data-options="field:'icon',width:100,formatter:permissionIconFormatter">图标</th>
-            <th data-options="field:'url',width:100">资源地址</th>
-            <th data-options="field:'type',width:100,formatter:permissionTypeFormatter">资源类型</th>
-            <th data-options="field:'option',width:180,formatter:formatterOptions,align:'center'">操作</th>
-        </tr>
-        </thead>
-    </table>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<div class="tab-wrap">
+    <div class="tableGroup">
+        <table id="permissionGrid" class="easyui-treegrid" title="<spring:message code="menu.permission"/>"
+               data-options="rownumbers:true,fit:true,method:'get',striped:true,url:'/permission/json',idField:'id',treeField:'name'">
+            <thead>
+            <tr>
+                <th data-options="field:'id',checkbox:true"></th>
+                <th data-options="field:'name',width:180" i18n="permission.title"><spring:message
+                        code="permission.name"/></th>
+                <th data-options="field:'icon',width:100,formatter:permissionIconFormatter"><spring:message
+                        code="permission.icon"/></th>
+                <th data-options="field:'url',width:100"><spring:message code="permission.resource"/></th>
+                <th data-options="field:'type',width:100,formatter:permissionTypeFormatter"><spring:message
+                        code="permission.type"/></th>
+                <th data-options="field:'option',width:180,formatter:formatterOptions,align:'center'"><spring:message
+                        code="permission.option"/></th>
+            </tr>
+            </thead>
+        </table>
+    </div>
 </div>
 <script>
+    $(function () {
+        MXF.getTabContentHeight();
+    });
+
     function permissionTypeFormatter(v) {
-        if (v == 0) return '<blue>菜单</blue>';
-        if (v == 1) return '<blue>按钮</blue>';
+        if (v == 0) return '<blue><spring:message code="common.menu"/></blue>';
+        if (v == 1) return '<blue><spring:message code="common.button"/></blue>';
     }
 
     function permissionIconFormatter(v) {
@@ -30,32 +41,32 @@
     }
 
     function formatterOptions(value, row, index) {
-        var a = '<a href="#" data-cmd="addPermission"><span class="btn btn-add green">添加</span></a> ';
-        var e = '<a href="#" data-cmd="editPermission"><span class="btn btn-edit default">编辑</span></a> ';
-        var d = '<a href="#" data-cmd="deletePermission"><span class="btn btn-delete red">删除</span></a> ';
+        var a = '<a href="#" data-cmd="addPermission"><span class="btn btn-add green"><spring:message code="common.add"/></span></a> ';
+        var e = '<a href="#" data-cmd="editPermission"><span class="btn btn-edit default"><spring:message code="common.edit"/></span></a> ';
+        var d = '<a href="#" data-cmd="deletePermission"><span class="btn btn-delete red"><spring:message code="common.delete"/></span></a> ';
         return a + e + d;
     }
 
     function addPermission() {
-        MXF.openDialog('addPermissionWin', '新增', '/permission/edit', function (data) {
+        MXF.openDialog('addPermissionWin', '<spring:message code="common.add"/>', '/permission/edit', function (data) {
             var node = $('#permissionGrid').treegrid('getSelected');
             $('#permissionForm').form('load', {
                 'parentId': node.id
             });
-        });
+        }, 600, 550);
     }
 
     function editPermission() {
         var node = $('#permissionGrid').treegrid('getSelected');
         if (node) {
-            MXF.openDialog('editPermissionWin', '编辑', '/permission/edit?id=' + node.id);
+            MXF.openDialog('editPermissionWin', '<spring:message code="common.edit"/>', '/permission/edit?id=' + node.id, null, 600, 550);
         }
     }
 
     function deletePermission() {
         var node = $('#permissionGrid').treegrid('getSelected');
         if (node.id) {
-            MXF.confirm('确认删除?', function () {
+            MXF.confirm('<spring:message code="message.delete"/>?', function () {
                 MXF.ajaxing(true);
                 $.post('/permission/delete', {id: node.id}, function (data) {
                     MXF.ajaxing(false);
@@ -66,7 +77,7 @@
                 });
             });
         } else {
-            MXF.error('请至少选中一条数据');
+            MXF.error('<spring:message code="message.select"/>');
         }
     }
 

@@ -5,5 +5,6 @@
   "user.loginOut": "Login out",
   "table.add": "add",
   "table.edit": "edit",
-  "table.delete": "delete"
+  "table.delete": "delete",
+  "permission.title": "permission manager"
 }

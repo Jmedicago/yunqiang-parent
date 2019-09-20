@@ -67,4 +67,19 @@
         </property>
     </bean>
 
+    <!-- 国际化资源配置，资源文件绑定器 -->
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <!-- 指定properties文件存放位置 -->
+        <property name="basename" value="classpath:messages/message"></property>
+        <!-- 如果国际化资源文件找不到对应代码的信息，就用这个代码作为名称 -->
+        <property name="useCodeAsDefaultMessage" value="true"></property>
+    </bean>
+    <!-- 动态切换国际化，国际化放在session中 -->
+    <mvc:interceptors>
+        <!-- 国际化操作拦截器 如果采用基于（请求/Session/Cookie）则必须配置 -->
+        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"></bean>
+    </mvc:interceptors>
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+    </bean>
+
 </beans>

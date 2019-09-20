@@ -2,58 +2,27 @@ $(function () {
     initATarget();
     commonCmdBind();
     commonGridClickBind();
-    internationalize();
 });
-
-function internationalize() {
-    var defaultLang = "cn";
-    /*默认语言*/
-    $("[i18n]").i18n({
-        defaultLang: defaultLang,
-        filePath: "/easyui/my/i18n/",
-        filePrefix: "i18n_",
-        fileSuffix: "",
-        forever: true,
-        callback: function () {
-            console.log("i18n is ready.");
-        }
-    });
-    /*切换为中文 - 按钮*/
-    $(".chinese").click(function () {
-        $("[i18n]").i18n({
-            defaultLang: "cn",
-            filePath: "/easyui/my/i18n/"
-        });
-        window.sessionStorage.setItem("lang", "cn");
-    });
-    /*切换为英文 - 按钮*/
-    $(".english").click(function () {
-        $("[i18n]").i18n({
-            defaultLang: "en",
-            filePath: "/easyui/my/i18n/"
-        });
-        window.sessionStorage.setItem("lang", "en");
-    });
-    /*切换为葡萄牙文 - 按钮*/
-    $(".portugal").click(function () {
-        console.log('[lang]葡萄牙语');
-        $("[i18n]").i18n({
-            defaultLang: "prt",
-            filePath: "/easyui/my/i18n/"
-        });
-        window.sessionStorage.setItem("lang", "prt");
-    });
-}
 
 //主菜单AJAX加载到主区域
 function initATarget() {
     $('#mainMenu').find("a[uri]").each(function () {
         $(this).unbind('click').click(function (event) {
+            var tabs = $("#tabs");
             var $this = $(this);
             var uri = $this.attr('uri');
-            $.insdep.control(uri);
-            event.preventDefault();
-            return true;
+            var title = $this.context.innerText;
+            var tab = tabs.tabs("getTab", title);
+            if (tab) {
+                tabs.tabs("select", title);
+            } else {
+                tabs.tabs('add', {
+                    title: title,
+                    href: uri,
+                    closable: true,
+                    bodyCls: "content"
+                });
+            }
         });
     });
 }
@@ -357,6 +326,12 @@ MXF.centerPosition = function (w, h) {
     return {X: (MXF.window().W - w) / 2, Y: (MXF.window().H - h) / 2};
 };
 
+MXF.getTabContentHeight = function () {
+    var contentHeight = $(document.body).height();
+    contentHeight = contentHeight - 89;
+    $('.tab-wrap').css('height', contentHeight);
+}
+
 //弹出提示框
 MXF.alert = function (msg, isSuccess) {
     var gPane = $('#globalErrMsgPane');
@@ -537,7 +512,7 @@ MXF.dateTimeFormatter = function (val, row) {
     return now.format("yyyy-MM-dd hh:mm:ss");
 };
 
-MXF.openDialog = function (el , title, url, callback, width, height) {
+MXF.openDialog = function (el, title, url, callback, width, height) {
     var editWindow = $('<div id="' + el + '"></div>');
     editWindow.appendTo('body');
     var _width = width || 600;

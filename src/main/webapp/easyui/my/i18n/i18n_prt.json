@@ -5,5 +5,7 @@
   "user.loginOut": "cancelamento",
   "table.add": "adicionar",
   "table.edit": "editor",
-  "table.delete": "apagar"
+  "table.delete": "apagar",
+  "permission.title": "Informações sobre a autoridade",
+  "user.keyword": "Nome do utilizador"
 }

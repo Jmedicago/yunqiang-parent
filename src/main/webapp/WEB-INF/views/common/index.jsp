@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html>
@@ -7,7 +8,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="edge"/>
     <link rel="shortcut icon" href="favicon.ico"/>
-    <title>云强系统</title>
+    <title><spring:message code="common.title"/></title>
     <link href="/easyui/themes/insdep/easyui.css" rel="stylesheet" type="text/css">
     <link href="/easyui/themes/insdep/easyui_animation.css" rel="stylesheet" type="text/css">
     <link href="/easyui/themes/insdep/easyui_plus.css" rel="stylesheet" type="text/css">
@@ -32,7 +33,7 @@
 <body>
 <div id="loading" style="position:absolute;z-index:1000;height:100%;text-align:center; background:#fff;width:100%;">
     <img style="margin-top:270px;" src="/easyui/themes/insdep/images/ring.svg"/>
-    <h5 style="margin-top: 20px" i18n="global.loading">加载中...</h5>
+    <h5 style="margin-top: 20px" i18n="global.loading"><spring:message code="common.loading"/></h5>
 </div>
 
 <div id="master-layout">
@@ -42,40 +43,41 @@
         <div class="theme-navigate">
             <div class="left">
                 <div class="logo">
-                    <span i18n="header.logo">云强ERP</span>
+                    <span><spring:message code="common.title"/></span>
                 </div>
             </div>
             <div class="right">
                 <a href="#" class="easyui-menubutton theme-navigate-user-button"
                    data-options="menu:'.theme-navigate-user-panel'">${userInfo.username}</a>
-                <a href="#" class="easyui-menubutton" data-options="menu:'#lang',hasDownArrow:false">语言</a>
+                <a href="#" class="easyui-menubutton" data-options="menu:'#lang',hasDownArrow:false"><spring:message
+                        code="common.lang"/></a>
                 <div class="theme-navigate-user-panel">
                     <dl>
                         <dd>
                             <b class="badge-prompt">${userInfo.username}</b>
                             <span>${userInfo.phone}</span>
-                            <p><i i18n="user.roles">拥有角色</i>：
+                            <p><i i18n="user.roles"><spring:message code="common.roles"/></i>：
                                 <c:forEach var="role" items="${roleInfo}">
                                     <i class="text-success">${role.name}</i>
                                 </c:forEach>
                             </p>
                         </dd>
                         <dt>
-                            <%--<a class="theme-navigate-user-modify">修改资料</a>--%>
-                            <a class="theme-navigate-user-logout" href="/login" i18n="user.loginOut">注销</a>
+                            <a class="theme-navigate-user-logout" href="/login" i18n="user.loginOut"><spring:message
+                                    code="common.logout"/></a>
                         </dt>
                     </dl>
                 </div>
 
                 <div id="lang" class="theme-navigate-menu-panel">
                     <div>
-                        <a href="javascript:" class="chinese">切换为中文</a>
+                        <a href="/index?lang=zh">切换为中文</a>
                     </div>
                     <div>
-                        <a href="javascript:" class="english">switch to english</a>
+                        <a href="/index?lang=en">Switch to english</a>
                     </div>
                     <div>
-                        <a href="javascript:" class="portugal">Mude para português</a>
+                        <a href="/index?lang=pt">Mude para português</a>
                     </div>
                 </div>
             </div>
@@ -84,7 +86,7 @@
     <!-- 结束头部菜单 -->
 
     <!--开始左侧菜单-->
-    <div data-options="region:'west',border:false,bodyCls:'theme-left-layout'" style="width:200px;">
+    <div data-options="region:'west',border:false,bodyCls:'theme-left-layout'" style="width:250px;">
         <!--正常菜单-->
         <div class="theme-left-normal">
             <!--start class="easyui-layout"-->
@@ -97,33 +99,38 @@
         </div>
     </div>
     <!--结束左侧菜单-->
-    <div data-options="region:'center',border:false,href:'/main/dashbord'" id="control">
+    <div data-options="region:'center',title:''">
+        <div id="tabs" class="easyui-tabs">
+            <div title="<spring:message code="common.home"/>" style="padding:20px;"
+                 data-options="region:'center',border:false,href:'/main/dashbord'">
+            </div>
+        </div>
     </div>
 </div>
 
 <!--global Modal -->
 <div id="globalMsgPane" class="globalPane bg-primary">
-    <div class="globalContent">消息</div>
+    <div class="globalContent"><spring:message code="common.message"/></div>
 </div>
 <div id="globalErrMsgPane" class="globalPane bg-danger">
-    <div class="globalContent">消息</div>
+    <div class="globalContent"><spring:message code="common.message"/></div>
 </div>
 <!--global Modal -->
 <div id="globalConfirmPane" class="globalPane bg-gradient">
-    <div class="globalContent">消息</div>
+    <div class="globalContent"><spring:message code="common.message"/></div>
     <div class="globalButtons">
         <a class="easyui-linkbutton button-warning btn-confirm">
             <i class="fa fa-warning"></i>
-            <span>确定</span>
+            <span><spring:message code="common.confirm"/></span>
         </a>
         <a class="easyui-linkbutton  btn-cancel">
             <i class="fa fa-reply"></i>
-            <span>取消</span>
+            <span><spring:message code="common.cancel"/></span>
         </a>
     </div>
 </div>
 <div id="globalAjaxing" class="globalPane">
-    <div class="globalContent">加载中...</div>
+    <div class="globalContent"><spring:message code="common.loading"/></div>
 </div>
 
 <script src="/easyui/plugin/Highcharts-5.0.0/js/highcharts.js"></script>
@@ -131,8 +138,6 @@
 <script type="text/javascript" src="/easyui/plugin/ueditor/ueditor.all.min.js"></script>
 <link href="/easyui/plugin/cropper-2.3.4/dist/cropper.min.css" rel="stylesheet" type="text/css">
 <script src="/easyui/plugin/cropper-2.3.4/dist/cropper.min.js"></script>
-<!-- i18n-->
-<script type="text/javascript" src="/easyui/plugin/jquery.i18n-master/jquery.i18n.min.js"></script>
 <!-- 七牛云上传 -->
 <script type="text/javascript" src="http://cdn.staticfile.org/plupload/2.1.1/plupload.full.min.js"></script>
 <script type="text/javascript" src="http://cdn.staticfile.org/plupload/2.1.1/i18n/zh_CN.js"></script>

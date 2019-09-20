@@ -117,7 +117,7 @@ public class SysPermissionServiceImpl extends BaseServiceImpl<SysPermission> imp
 
         for (SysPermission permission : permissions) {
             MenuModel menu = new MenuModel();
-            menu.setText(permission.getName());
+            menu.setText(permission.getIdentity());
             menu.setIcon(permission.getIcon());
             menu.setUrl(permission.getUrl());
             menu.setChildren(this.menus(roles, permission.getId()));

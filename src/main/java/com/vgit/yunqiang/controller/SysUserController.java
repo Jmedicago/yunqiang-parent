@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/" + SysUserController.DOMAIN)
@@ -36,7 +38,13 @@ public class SysUserController {
     private SysUserService sysUserService;
 
     @RequestMapping(ControllerConsts.URL_INDEX)
-    public String index() {
+    public String index(Model model) {
+        // 国际化
+        Map<String, Object> i18n = new HashMap<String, Object>();
+        i18n.put("title", "User Information");
+        i18n.put("username", "username");
+        model.addAttribute("i18n", i18n);
+
         return DOMAIN + ControllerConsts.VIEW_INDEX;
     }
 

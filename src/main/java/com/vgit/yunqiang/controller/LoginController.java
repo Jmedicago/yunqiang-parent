@@ -51,7 +51,7 @@ public class LoginController {
                 // 登录校验
                 subject.login(token);
                 LOGGER.info("用户是否登录：{}", subject.isAuthenticated());
-                return "redirect:/";
+                return "redirect:/index";
             } catch (UnknownAccountException e) {
                 message = "用户账户不存在！";
                 LOGGER.error("用户账户不存在，错误信息：{}", e.getMessage());

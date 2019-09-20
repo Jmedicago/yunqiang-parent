@@ -3,7 +3,7 @@
 <mapper namespace="com.vgit.yunqiang.mapper.SysPermissionMapper">
 
     <sql id="Base_Column_List">
-        id, name, icon, description, type, url, permission, parentId, path, sort, available
+        id, name, icon, identity, description, type, url, permission, parentId, path, sort, available
     </sql>
 
     <select id="get" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.SysPermission">
@@ -23,13 +23,13 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
         insert into t_sys_permission (
-        name, icon, description, type, url, permission, parentId, path, sort, available
+        name, icon, identity, description, type, url, permission, parentId, path, sort, available
         )
         values (
-        #{name, jdbcType=VARCHAR}, #{icon, jdbcType=VARCHAR}, #{description, jdbcType=VARCHAR},
-        #{type, jdbcType=TINYINT}, #{url, jdbcType=VARCHAR}, #{permission, jdbcType=VARCHAR},
-        #{parentId, jdbcType=BIGINT}, #{path, jdbcType=VARCHAR}, #{sort, jdbcType=INTEGER},
-        #{available, jdbcType=TINYINT}
+        #{name, jdbcType=VARCHAR}, #{icon, jdbcType=VARCHAR}, #{identity, jdbcType=VARCHAR},
+        #{description, jdbcType=VARCHAR}, #{type, jdbcType=TINYINT}, #{url, jdbcType=VARCHAR},
+        #{permission, jdbcType=VARCHAR}, #{parentId, jdbcType=BIGINT}, #{path, jdbcType=VARCHAR},
+        #{sort, jdbcType=INTEGER}, #{available, jdbcType=TINYINT}
         )
     </insert>
 
@@ -44,6 +44,9 @@
             </if>
             <if test="icon != null">
                 icon,
+            </if>
+            <if test="identity != null">
+                identity
             </if>
             <if test="description != null">
                 description,
@@ -77,6 +80,9 @@
             <if test="icon != null">
                 #{icon, jdbcType=VARCHAR},
             </if>
+            <if test="identity != null">
+                #{identity, jdbcType=VARCHAR},
+            </if>
             <if test="description != null">
                 #{description, jdbcType=VARCHAR},
             </if>
@@ -106,7 +112,7 @@
 
     <update id="update" parameterType="com.vgit.yunqiang.pojo.SysPermission">
         update t_sys_permission
-        set name = #{name, jdbcType=VARCHAR}, icon = #{icon, jdbcType=VARCHAR}, description = #{description, jdbcType=VARCHAR},
+        set name = #{name, jdbcType=VARCHAR}, icon = #{icon, jdbcType=VARCHAR}, identity = #{identity, jdbcType=VARCHAR}, description = #{description, jdbcType=VARCHAR},
         type = #{type, jdbcType=TINYINT}, url = #{url, jdbcType=VARCHAR}, permission = #{permission, jdbcType=VARCHAR},
         parentId = #{parentId, jdbcType=BIGINT}, path= #{path, jdbcType=VARCHAR}, sort = #{sort, jdbcType=INTEGER},
         available = #{available, jdbcType=TINYINT}
@@ -121,6 +127,9 @@
             </if>
             <if test="icon != null">
                 icon = #{icon, jdbcType=VARCHAR},
+            </if>
+            <if test="identity != null">
+                identity = #{identity, jdbcType=VARCHAR},
             </if>
             <if test="description != null">
                 description = #{description, jdbcType=VARCHAR},
