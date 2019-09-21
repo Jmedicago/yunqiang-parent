@@ -30,15 +30,15 @@ public class LoginController {
             @RequestParam(value = "password", required = false) String password,
             @RequestParam(value = "remember", required = false) String remember,
             Model model) {
-        String message = null;
+        String message = "";
         if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
-            //初始化
+            // 初始化
             Subject subject = SecurityUtils.getSubject();
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 
+            // 记住我
             if (StringUtils.isNotBlank(remember)) {
                 if (remember.equals("on")) {
-                    //记住我
                     token.setRememberMe(true);
                 } else {
                     token.setRememberMe(false);
@@ -72,7 +72,7 @@ public class LoginController {
                 LOGGER.error("未知错误，错误信息：{}", e.getMessage());
             }
         } else {
-            message = "请输入用户名和密码！";
+            // message = "请输入用户名和密码！";
         }
         // 登录失败
         model.addAttribute("message", message);

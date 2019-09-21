@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>登录</title>
+    <title>云强企业管理系统 | 登录</title>
 </head>
 <body>
 <div>
