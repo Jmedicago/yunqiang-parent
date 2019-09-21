@@ -8,15 +8,15 @@
             <thead>
             <tr>
                 <th data-options="field:'id',checkbox:true"></th>
-                <th data-options="field:'name',width:180" i18n="permission.title"><spring:message
+                <th data-options="field:'name',width:180"><spring:message
                         code="permission.name"/></th>
                 <th data-options="field:'icon',width:100,formatter:permissionIconFormatter"><spring:message
                         code="permission.icon"/></th>
-                <th data-options="field:'url',width:100"><spring:message code="permission.resource"/></th>
+                <th data-options="field:'url',width:150"><spring:message code="permission.resource"/></th>
                 <th data-options="field:'type',width:100,formatter:permissionTypeFormatter"><spring:message
                         code="permission.type"/></th>
                 <th data-options="field:'option',width:180,formatter:formatterOptions,align:'center'"><spring:message
-                        code="permission.option"/></th>
+                        code="common.option"/></th>
             </tr>
             </thead>
         </table>

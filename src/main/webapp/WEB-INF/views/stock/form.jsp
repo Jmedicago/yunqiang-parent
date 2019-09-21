@@ -1,21 +1,21 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <form id="stockForm" method="post" action="/stock/store">
     <input type="hidden" name="id" value="${bisStock.id}"/>
     <input type="hidden" name="parentId" value="${bisStock.parentId}"/>
     <div class="input-div">
-        <label class="label-top">仓库名称</label>
+        <label class="label-top"><spring:message code="stock.name"/></label>
         <input class="easyui-textbox theme-textbox-radius" name="name" value="${bisStock.name}"
                data-options="required:true">
     </div>
     <div class="input-div">
-        <label class="label-top">仓库描述</label>
+        <label class="label-top"><spring:message code="stock.desc"/></label>
         <input class="easyui-textbox theme-textbox-radius" data-options="multiline:true" style="height:60px;"
                name="description" value="${bisStock.description}">
     </div>
-    <div class="input-div">
-        <label class="label-top"></label>
-        <a class="easyui-linkbutton button-lg button-default" onclick="storeStock(this)">提交</a>
-        <a class="easyui-linkbutton button-lg" onclick="MXF.clearForm(this)">清空</a>
+    <div class="input-div" style="margin-top: 35px; text-align: center">
+        <a class="easyui-linkbutton button-lg button-default" onclick="storeStock(this)"><spring:message code="common.submit"/></a>
+        <a class="easyui-linkbutton button-lg" onclick="MXF.clearForm(this)"><spring:message code="common.reset"/></a>
     </div>
     <hr style="border:0;margin-bottom:20px;"/>
 </form>

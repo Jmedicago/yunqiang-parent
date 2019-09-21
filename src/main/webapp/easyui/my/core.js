@@ -41,6 +41,7 @@ function commonCmdBind() {
         var grid = $(clickTarget).closest('.tableGroup').find('.easyui-datagrid');
         var width = clickTarget.attr('width');
         var height = clickTarget.attr('height');
+        var title = clickTarget.attr('title');
         var params = {};
         if (width) {
             width.replace('px', '');
@@ -49,6 +50,9 @@ function commonCmdBind() {
         if (height) {
             height.replace('px', '');
             params.height = height;
+        }
+        if (title) {
+            params.title = title;
         }
         if ($(clickTarget).attr('onclick') && '' != $(clickTarget).attr('onclick')) {
         } else {
@@ -96,8 +100,9 @@ var commonCmd = {
         editWindow.appendTo('body');
         var _width = params.width || 600;
         var _height = params.height || 450;
+        var _title = params.title || 'add'
         editWindow.window({
-            title: '新增',
+            title: _title,
             width: _width,
             height: _height,
             modal: true,
@@ -143,8 +148,9 @@ var commonCmd = {
         editWindow.appendTo('body');
         var _width = params.width || 600;
         var _height = params.height || 450;
+        var _title = params.title || 'edit'
         editWindow.window({
-            title: '编辑',
+            title: _title,
             width: _width,
             height: _height,
             modal: true,
