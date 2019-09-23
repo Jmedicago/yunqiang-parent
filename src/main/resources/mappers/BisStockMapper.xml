@@ -26,7 +26,7 @@
         name, parentId, description, status, createTime, updateTime, remark
         )
         values (
-        #{name, jdbcType=VARCHAR}, #{createTime, jdbcType=BIGINT}, #{updateTime, jdbcType=BIGINT}, 
+        #{name, jdbcType=VARCHAR}, #{parentId, jdbcType=BIGINT}, #{description, jdbcType=VARCHAR}, #{status, jdbcType=TINYINT} #{createTime, jdbcType=BIGINT}, #{updateTime, jdbcType=BIGINT}, 
         #{remark, jdbcType=VARCHAR}
         )
     </insert>
@@ -86,7 +86,7 @@
 
     <update id="update" parameterType="com.vgit.yunqiang.pojo.BisStock">
         update t_bis_stock
-        set name = #{name, jdbcType=VARCHAR}, parentId = #{parentId, jdbcType=BIGINT}, parentId = #{parentId, jdbcType=BIGINT},
+        set name = #{name, jdbcType=VARCHAR}, parentId = #{parentId, jdbcType=BIGINT}, description = #{description, jdbcType=VARCHAR},
         status = #{status, jdbcType=TINYINT}, createTime = #{createTime, jdbcType=BIGINT}, updateTime = #{updateTime, jdbcType=BIGINT},
         remark = #{remark, jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}

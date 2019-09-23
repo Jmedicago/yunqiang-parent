@@ -7,7 +7,9 @@ import java.util.List;
 
 public class PermissionModel extends SysPermission implements Serializable {
 
-    private List<PermissionModel> children;
+	private static final long serialVersionUID = 1L;
+	
+	private List<PermissionModel> children;
 
     public List<PermissionModel> getChildren() {
         return children;

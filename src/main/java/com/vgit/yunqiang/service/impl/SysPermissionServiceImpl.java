@@ -45,7 +45,7 @@ public class SysPermissionServiceImpl extends BaseServiceImpl<SysPermission> imp
     public List<TreeModel> getAll(Long root) {
         List<TreeModel> tree = new ArrayList<>();
         List<SysPermission> permissions = this.mapper.findByParentId(root);
-        if (permissions == null && permissions.isEmpty()) {
+        if (permissions.isEmpty()) {
             tree.add(null);
         } else {
             // 遍历权限
