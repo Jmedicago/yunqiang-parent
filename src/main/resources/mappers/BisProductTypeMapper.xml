@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vgit.yunqiang.mapper.BisProductTypeMapper">
+
+    <sql id="Base_Column_List">
+        id, name, parentId, sort
+    </sql>
+
+    <select id="get" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisProductType">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bis_product_type
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from t_bis_product_type
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.BisProductType">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_bis_product_type (
+        name, parentId, sort
+        )
+        values (
+        #{name, jdbcType=VARCHAR}, #{parentId, jdbcType=BIGINT}, #{sort, jdbcType=INTEGER}
+        )
+    </insert>
+
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.BisProductType">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_bis_product_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                name,
+            </if>
+            <if test="parentId != null">
+                parentId,
+            </if>
+            <if test="sort != null">
+                sort,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name, jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                #{parentId, jdbcType=BIGINT},
+            </if>
+            <if test="sort != null">
+                #{sort, jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.BisProductType">
+        update t_bis_product_type
+        set name = #{name, jdbcType=VARCHAR}, parentId = #{parentId, jdbcType=BIGINT}, sort = #{sort, jdbcType=INTEGER},
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.BisProductType">
+        update t_bis_product_type
+        <set>
+            <if test="name != null">
+                name = #{name, jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                parentId = #{parentId, jdbcType=BIGINT},
+            </if>
+            <if test="sort != null">
+                sort = #{sort, jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <sql id="whereSql">
+        <where>
+            <if test="name!=null and name!=''">and s.name like CONCAT('%',#{name},'%')</if>
+            <if test="parentId !=null and parentId != ''"> and s.parentId = #{parentId}</if>
+        </where>
+    </sql>
+
+    <select id="queryTotal" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery" resultType="int">
+        select count(0) from t_bis_product_type s
+        <include refid="whereSql"/>
+    </select>
+
+    <select id="query" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery"
+            resultType="com.vgit.yunqiang.pojo.BisProductType">
+        select * from t_bis_product_type s
+        <include refid="whereSql"/>
+        limit #{start},#{rows}
+    </select>
+
+    <select id="isParent" parameterType="java.lang.Long" resultType="java.lang.Boolean">
+        select count(1) from t_bis_product_type where parentId = #{id}
+    </select>
+
+    <delete id="deleteByParentId" parameterType="java.lang.Long">
+        delete from t_bis_product_type where parentId = #{id}
+    </delete>
+    
+    <select id="queryTree" resultType="com.vgit.yunqiang.pojo.BisProductType">
+        select * from t_bis_product_type where parentId = #{parentId}
+    </select>
+   
+</mapper>
