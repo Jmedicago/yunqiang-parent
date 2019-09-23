@@ -29,7 +29,7 @@
     </div>
     <hr style="border:0;margin-bottom:20px;"/>
 </form>
-<script>
+<script type="text/javascript">
 
     function initPermissionsValue() {
         $('#permissionCombotree').combotree('setValues', ${selectPermissions});

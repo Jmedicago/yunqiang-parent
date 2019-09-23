@@ -35,13 +35,13 @@
             $('#productTypeForm').form('load', {
                 'parentId': node.id
             });
-        }, 600, 550);
+        }, 600, 250);
     }
 
     function editProductType() {
         var node = $('#productTypeGrid').treegrid('getSelected');
         if (node) {
-            MXF.openDialog('editProductTypeWin', '<spring:message code="common.edit"/>', '/product-type/edit?id=' + node.id, null, 600, 550);
+            MXF.openDialog('editProductTypeWin', '<spring:message code="common.edit"/>', '/product-type/edit?id=' + node.id, null, 600, 250);
         }
     }
 

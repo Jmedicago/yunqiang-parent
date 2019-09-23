@@ -17,4 +17,12 @@ public interface BisProductTypeService extends BaseService<BisProductType> {
      */
     List<BisProductType> treegrid(Long root, ProductTypeQuery query);
 
+    /**
+     * 编辑商品类别
+     * 
+     * @param productType
+     * @return
+     */
+	BisProductType saveOrUpdateProductType(BisProductType productType);
+
 }

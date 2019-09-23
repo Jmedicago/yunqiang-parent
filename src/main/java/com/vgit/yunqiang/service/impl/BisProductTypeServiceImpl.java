@@ -11,6 +11,7 @@ import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
 import com.vgit.yunqiang.mapper.BisProductTypeMapper;
 import com.vgit.yunqiang.pojo.BisProductType;
+import com.vgit.yunqiang.pojo.BisStock;
 import com.vgit.yunqiang.service.BisProductTypeService;
 
 @Service
@@ -43,5 +44,26 @@ public class BisProductTypeServiceImpl extends BaseServiceImpl<BisProductType> i
 		}
 		return models;
 	}
+
+	@Override
+	public BisProductType saveOrUpdateProductType(BisProductType productType) {
+		if (productType.getId() == null) {
+			productType.setSort(100);
+            this.mapper.savePart(productType);
+        } else {
+            this.mapper.updatePart(productType);
+        }
+        return productType;
+	}
+	
+	@Override
+    public void delete(Long id) {
+        if (!this.mapper.isParent(id)) {
+            this.mapper.delete(id);
+        } else {
+            this.mapper.deleteByParentId(id);
+            this.mapper.delete(id);
+        }
+    }
 
 }

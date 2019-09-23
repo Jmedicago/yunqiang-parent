@@ -11,4 +11,19 @@ public interface BisProductTypeMapper extends BaseMapper<BisProductType> {
 
 	List<BisProductType> queryTree(@Param("parentId") Long parentId);
 
+	/**
+     * 是否是叶子节点
+     *
+     * @param id
+     * @return
+     */
+    boolean isParent(Long id);
+
+    /**
+     * 根据父节点删除
+     *
+     * @param id
+     */
+    void deleteByParentId(Long id);
+
 }
