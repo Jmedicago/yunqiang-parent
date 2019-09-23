@@ -45,20 +45,16 @@ public class SysPermissionServiceImpl extends BaseServiceImpl<SysPermission> imp
     public List<TreeModel> getAll(Long root) {
         List<TreeModel> tree = new ArrayList<>();
         List<SysPermission> permissions = this.mapper.findByParentId(root);
-        if (permissions.isEmpty()) {
-            tree.add(null);
-        } else {
-            // 遍历权限
-            for (SysPermission permission : permissions) {
-                TreeModel node = new TreeModel();
-                node.setId(permission.getId());
-                node.setText(permission.getName());
-                node.setPid(permission.getParentId());
-                List<TreeModel> children = this.getAll(permission.getId());
-                node.setParent(children.isEmpty() ? false : true);
-                node.setChildren(children);
-                tree.add(node);
-            }
+        // 遍历权限
+        for (SysPermission permission : permissions) {
+            TreeModel node = new TreeModel();
+            node.setId(permission.getId());
+            node.setText(permission.getName());
+            node.setPid(permission.getParentId());
+            List<TreeModel> children = this.getAll(permission.getId());
+            node.setParent(children.isEmpty() ? false : true);
+            node.setChildren(children);
+            tree.add(node);
         }
         return tree;
     }
@@ -111,10 +107,6 @@ public class SysPermissionServiceImpl extends BaseServiceImpl<SysPermission> imp
         }
 
         List<SysPermission> permissions = this.mapper.findByRoleIdAndParentId(root, roleIds);
-        if (permissions.isEmpty()) {
-            menus.add(null);
-        }
-
         for (SysPermission permission : permissions) {
             MenuModel menu = new MenuModel();
             menu.setText(permission.getIdentity());
