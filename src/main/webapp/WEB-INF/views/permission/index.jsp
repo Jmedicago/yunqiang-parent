@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <div class="tab-wrap">
     <div class="tableGroup">
-        <table id="permissionGrid" class="easyui-treegrid" title="<spring:message code="menu.permission"/>"
+        <table id="permissionGrid" class="easyui-treegrid" title="<spring:message code="mu.sys.right"/>"
                data-options="rownumbers:true,fit:true,method:'get',striped:true,url:'/permission/json',idField:'id',treeField:'name'">
             <thead>
             <tr>
@@ -41,10 +41,17 @@
     }
 
     function formatterOptions(value, row, index) {
-        var a = '<a href="#" data-cmd="addPermission"><span class="btn btn-add green"><spring:message code="common.add"/></span></a> ';
-        var e = '<a href="#" data-cmd="editPermission"><span class="btn btn-edit default"><spring:message code="common.edit"/></span></a> ';
-        var d = '<a href="#" data-cmd="deletePermission"><span class="btn btn-delete red"><spring:message code="common.delete"/></span></a> ';
-        return a + e + d;
+        if (row.parentId == 0) {
+            var a = '<a href="#" data-cmd="addPermission"><span class="btn btn-add green"><spring:message code="common.add"/></span></a> ';
+            var e = '<a href="#"><span class="btn btn-edit disable"><spring:message code="common.edit"/></span></a> ';
+            var d = '<a href="#"><span class="btn btn-delete disable"><spring:message code="common.delete"/></span></a> ';
+            return a + e + d;
+        } else {
+            var a = '<a href="#" data-cmd="addPermission"><span class="btn btn-add green"><spring:message code="common.add"/></span></a> ';
+            var e = '<a href="#" data-cmd="editPermission"><span class="btn btn-edit default"><spring:message code="common.edit"/></span></a> ';
+            var d = '<a href="#" data-cmd="deletePermission"><span class="btn btn-delete red"><spring:message code="common.delete"/></span></a> ';
+            return a + e + d;
+        }
     }
 
     function addPermission() {

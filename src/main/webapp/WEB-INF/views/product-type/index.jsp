@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <div class="tab-wrap">
     <div class="tableGroup">
-        <table id="productTypeGrid" class="easyui-treegrid" title="<spring:message code="menu.product.type"/>"
+        <table id="productTypeGrid" class="easyui-treegrid" title="<spring:message code="mu.pt.type"/>"
                data-options="rownumbers:true,fit:true,method:'get',striped:true,url:'/product-type/json',idField:'id',treeField:'name'">
             <thead>
             <tr>

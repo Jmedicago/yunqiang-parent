@@ -83,8 +83,7 @@ public class SysPermissionController {
     @RequestMapping(ControllerConsts.URL_DELETE)
     @ResponseBody
     public Ret delete(Long id) {
-        this.sysPermissionService.delete(id);
-        return Ret.me().setCode(ICodes.SUCCESS);
+        return this.sysPermissionService.deleteById(id);
     }
 
 

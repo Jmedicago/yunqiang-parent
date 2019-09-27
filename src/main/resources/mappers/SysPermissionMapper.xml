@@ -212,7 +212,7 @@
         <foreach collection="roleIds" item="roleId" index="index" open="(" close=")" separator=",">
             #{roleId}
         </foreach>
-        AND p.parentId = #{parentId, jdbcType=BIGINT} AND p.type = 0
+        AND p.parentId = #{parentId, jdbcType=BIGINT} AND p.type = 0 ORDER BY p.sort ASC
     </select>
 
     <select id="isParent" parameterType="java.lang.Long" resultType="java.lang.Boolean">

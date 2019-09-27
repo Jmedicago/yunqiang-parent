@@ -158,4 +158,22 @@ public class SysPermission {
         this.available = available;
     }
 
+    @Override
+    public String toString() {
+        return "SysPermission{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", icon='" + icon + '\'' +
+                ", identity='" + identity + '\'' +
+                ", description='" + description + '\'' +
+                ", type=" + type +
+                ", url='" + url + '\'' +
+                ", permission='" + permission + '\'' +
+                ", parentId=" + parentId +
+                ", path='" + path + '\'' +
+                ", sort=" + sort +
+                ", available=" + available +
+                '}';
+    }
+
 }

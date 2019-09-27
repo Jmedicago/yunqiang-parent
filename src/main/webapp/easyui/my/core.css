@@ -152,6 +152,9 @@ orange {
 .btn.orange {
     color: orange;
 }
+.btn.disable {
+    color: #aaa;
+}
 
 .buttonSplit {
     display: inline-block;

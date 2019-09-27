@@ -2,6 +2,7 @@ package com.vgit.yunqiang.service;
 
 import com.vgit.yunqiang.common.query.PermissionQuery;
 import com.vgit.yunqiang.common.service.BaseService;
+import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.model.MenuModel;
 import com.vgit.yunqiang.model.PermissionModel;
 import com.vgit.yunqiang.model.TreeModel;
@@ -69,4 +70,12 @@ public interface SysPermissionService extends BaseService<SysPermission> {
      * @return
      */
     List<MenuModel> menus(List<SysRole> roles, Long root);
+
+    /**
+     * 删除权限
+     *
+     * @param id
+     * @return
+     */
+    Ret deleteById(Long id);
 }
