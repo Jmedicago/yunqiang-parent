@@ -4,11 +4,14 @@ import java.util.List;
 
 import com.vgit.yunqiang.common.query.ProductTypeQuery;
 import com.vgit.yunqiang.common.service.BaseService;
+import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.pojo.BisProductType;
 
 public interface BisProductTypeService extends BaseService<BisProductType> {
-	
-	 /**
+
+    Long ROOT = 0L;
+
+    /**
      * 树形数据表格
      *
      * @param root
@@ -19,10 +22,18 @@ public interface BisProductTypeService extends BaseService<BisProductType> {
 
     /**
      * 编辑商品类别
-     * 
+     *
      * @param productType
      * @return
      */
-	BisProductType saveOrUpdateProductType(BisProductType productType);
+    BisProductType saveOrUpdateProductType(BisProductType productType);
+
+    /**
+     * 根据ID删除
+     *
+     * @param id
+     * @return
+     */
+    Ret deleteById(Long id);
 
 }

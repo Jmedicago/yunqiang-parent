@@ -1,15 +1,12 @@
 package com.vgit.yunqiang.controller;
 
-import com.vgit.yunqiang.common.consts.ICodes;
 import com.vgit.yunqiang.common.query.PermissionQuery;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.controller.consts.ControllerConsts;
 import com.vgit.yunqiang.model.PermissionModel;
 import com.vgit.yunqiang.model.TreeModel;
 import com.vgit.yunqiang.pojo.SysPermission;
-import com.vgit.yunqiang.pojo.SysUser;
 import com.vgit.yunqiang.service.SysPermissionService;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;

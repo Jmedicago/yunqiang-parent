@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.vgit.yunqiang.common.consts.ICodes;
 import com.vgit.yunqiang.common.query.ProductTypeQuery;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.controller.consts.ControllerConsts;
@@ -70,8 +69,7 @@ public class BisProductTypeController {
     @RequestMapping(ControllerConsts.URL_DELETE)
     @ResponseBody
     public Ret delete(Long id) {
-        this.bisProductTypeService.delete(id);
-        return Ret.me().setCode(ICodes.SUCCESS);
+        return this.bisProductTypeService.deleteById(id);
     }
 
 }

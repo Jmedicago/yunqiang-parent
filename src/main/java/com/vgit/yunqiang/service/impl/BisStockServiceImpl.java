@@ -6,6 +6,8 @@ package com.vgit.yunqiang.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.vgit.yunqiang.common.consts.ICodes;
+import com.vgit.yunqiang.common.utils.Ret;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,13 +83,19 @@ public class BisStockServiceImpl extends BaseServiceImpl<BisStock> implements Bi
         return stock;
     }
 
-    public void delete(Long id) {
+    @Override
+    public Ret deleteById(Long id) {
+        BisStock stock = this.mapper.get(id);
+        if (stock != null && stock.getParentId() == BisStockService.ROOT) {
+            return Ret.me().setSuccess(false).setCode(ICodes.NOT_AUTHORIZED);
+        }
         if (!this.mapper.isParent(id)) {
             this.mapper.delete(id);
         } else {
             this.mapper.deleteByParentId(id);
             this.mapper.delete(id);
         }
+        return Ret.me().setSuccess(true).setCode(ICodes.SUCCESS);
     }
 
 }

@@ -3,6 +3,8 @@ package com.vgit.yunqiang.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.vgit.yunqiang.common.consts.ICodes;
+import com.vgit.yunqiang.common.utils.Ret;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,15 +57,20 @@ public class BisProductTypeServiceImpl extends BaseServiceImpl<BisProductType> i
         }
         return productType;
 	}
-	
+
 	@Override
-    public void delete(Long id) {
-        if (!this.mapper.isParent(id)) {
-            this.mapper.delete(id);
-        } else {
-            this.mapper.deleteByParentId(id);
-            this.mapper.delete(id);
-        }
-    }
+	public Ret deleteById(Long id) {
+		BisProductType productType = this.mapper.get(id);
+		if (productType != null && productType.getParentId() == BisProductTypeService.ROOT) {
+
+		}
+		if (!this.mapper.isParent(id)) {
+			this.mapper.delete(id);
+		} else {
+			this.mapper.deleteByParentId(id);
+			this.mapper.delete(id);
+		}
+		return Ret.me().setSuccess(true).setCode(ICodes.SUCCESS);
+	}
 
 }

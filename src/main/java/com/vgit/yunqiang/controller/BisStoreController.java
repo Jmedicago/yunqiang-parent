@@ -3,7 +3,6 @@ package com.vgit.yunqiang.controller;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import com.vgit.yunqiang.common.consts.ICodes;
 import com.vgit.yunqiang.common.utils.Ret;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -72,8 +71,7 @@ public class BisStoreController {
     @RequestMapping(ControllerConsts.URL_DELETE)
     @ResponseBody
     public Ret delete(Long id) {
-        this.bisStockService.delete(id);
-        return Ret.me().setCode(ICodes.SUCCESS);
+        return this.bisStockService.deleteById(id);
     }
 
 }
