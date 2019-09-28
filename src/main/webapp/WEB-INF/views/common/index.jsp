@@ -63,7 +63,7 @@
                             </p>
                         </dd>
                         <dt>
-                            <a class="theme-navigate-user-logout" href="/login" i18n="user.loginOut"><spring:message
+                            <a class="theme-navigate-user-logout" href="/logout" i18n="user.loginOut"><spring:message
                                     code="common.logout"/></a>
                         </dt>
                     </dl>

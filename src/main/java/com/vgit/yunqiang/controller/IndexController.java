@@ -37,8 +37,8 @@ public class IndexController {
     @Autowired
     private SysPermissionService sysPermissionService;
 
-    @RequestMapping("/index")
-    public String toIndex(HttpServletRequest request, Model model,
+    @RequestMapping({"/index", "/"})
+    public String index(HttpServletRequest request, Model model,
                           @RequestParam(value = "lang", defaultValue = "zh") String lang) {
         // 设置语言
         if ("zh".equals(lang)) {
@@ -78,16 +78,6 @@ public class IndexController {
     }
 
     /**
-     * 后台主页视图
-     *
-     * @return
-     */
-    @RequestMapping("/main")
-    public String index() {
-        return "common/index";
-    }
-
-    /**
      * 个人工作台视图
      *
      * @return
@@ -96,17 +86,6 @@ public class IndexController {
     public String dashbord() {
         return "common/dashbord";
     }
-
-    /**
-     * 注销当前登录用户
-     *
-     * @return
-     */
-    @RequestMapping("/login/logout")
-    public String logout() {
-        return "common/login";
-    }
-
 
     /**
      * 获取后台常量KV列表

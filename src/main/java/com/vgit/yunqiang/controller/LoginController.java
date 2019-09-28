@@ -72,7 +72,7 @@ public class LoginController {
                 LOGGER.error("未知错误，错误信息：{}", e.getMessage());
             }
         } else {
-            // message = "请输入用户名和密码！";
+            message = "请输入用户名和密码！";
         }
         // 登录失败
         model.addAttribute("message", message);
