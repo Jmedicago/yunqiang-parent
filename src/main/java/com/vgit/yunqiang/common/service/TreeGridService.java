@@ -1,7 +1,6 @@
 package com.vgit.yunqiang.common.service;
 
 import com.vgit.yunqiang.common.query.base.BaseQuery;
-import com.vgit.yunqiang.common.utils.Ret;
 
 import java.util.List;
 
