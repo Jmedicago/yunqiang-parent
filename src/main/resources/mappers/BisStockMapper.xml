@@ -138,17 +138,20 @@
         <include refid="whereSql"/>
         limit #{start},#{rows}
     </select>
+    
+    <select id="queryTree" resultType="com.vgit.yunqiang.pojo.BisStock">
+        select * from t_bis_stock where parentId = #{parentId}
+    </select>
 
     <select id="isParent" parameterType="java.lang.Long" resultType="java.lang.Boolean">
         select count(1) from t_bis_stock where parentId = #{id}
     </select>
 
-    <delete id="deleteByParentId" parameterType="java.lang.Long">
-        delete from t_bis_stock where parentId = #{id}
+    <delete id="delByIds" parameterType="java.util.List">
+        delete from t_bis_stock where id in
+        <foreach collection="list" item="id" index="id" open="(" separator="," close=")">
+          #{id}
+        </foreach>
     </delete>
-    
-    <select id="queryTree" resultType="com.vgit.yunqiang.pojo.BisStock">
-        select * from t_bis_stock where parentId = #{parentId}
-    </select>
    
 </mapper>

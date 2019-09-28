@@ -3,11 +3,11 @@ package com.vgit.yunqiang.service;
 import java.util.List;
 
 import com.vgit.yunqiang.common.query.ProductTypeQuery;
-import com.vgit.yunqiang.common.service.BaseService;
+import com.vgit.yunqiang.common.service.TreeGrid;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.pojo.BisProductType;
 
-public interface BisProductTypeService extends BaseService<BisProductType> {
+public interface BisProductTypeService extends TreeGrid<BisProductType> {
 
     Long ROOT = 0L;
 

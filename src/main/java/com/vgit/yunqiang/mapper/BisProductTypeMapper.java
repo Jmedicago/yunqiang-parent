@@ -26,4 +26,10 @@ public interface BisProductTypeMapper extends BaseMapper<BisProductType> {
      */
     void deleteByParentId(Long id);
 
+    /**
+     * 根据ID列表删除
+     *
+     * @param ids
+     */
+    void delByIds(List<Long> ids);
 }

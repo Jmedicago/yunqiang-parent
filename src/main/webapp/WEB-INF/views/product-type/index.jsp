@@ -7,7 +7,7 @@
                data-options="rownumbers:true,fit:true,method:'get',striped:true,url:'/product-type/json',idField:'id',treeField:'name'">
             <thead>
             <tr>
-                <th data-options="field:'id',checkbox:true"></th>
+                <th data-options="field:'id'">ID</th>
                 <th data-options="field:'name',width:180"><spring:message
                         code="product.type.name"/></th>
                 <th data-options="field:'option',width:180,formatter:formatterOptions,align:'center'"><spring:message
@@ -23,10 +23,17 @@
     });
 
     function formatterOptions(value, row, index) {
-        var a = '<a href="#" data-cmd="addProductType"><span class="btn btn-add green"><spring:message code="common.add"/></span></a> ';
-        var e = '<a href="#" data-cmd="editProductType"><span class="btn btn-edit default"><spring:message code="common.edit"/></span></a> ';
-        var d = '<a href="#" data-cmd="deleteProductType"><span class="btn btn-delete red"><spring:message code="common.delete"/></span></a> ';
-        return a + e + d;
+        if (row.parentId == 0) {
+            var a = '<a href="#" data-cmd="addProductType"><span class="btn btn-add green"><spring:message code="common.add"/></span></a> ';
+            var e = '<a href="#"><span class="btn btn-edit disable"><spring:message code="common.edit"/></span></a> ';
+            var d = '<a href="#"><span class="btn btn-delete disable"><spring:message code="common.delete"/></span></a> ';
+            return a + e + d;
+        } else {
+            var a = '<a href="#" data-cmd="addProductType"><span class="btn btn-add green"><spring:message code="common.add"/></span></a> ';
+            var e = '<a href="#" data-cmd="editProductType"><span class="btn btn-edit default"><spring:message code="common.edit"/></span></a> ';
+            var d = '<a href="#" data-cmd="deleteProductType"><span class="btn btn-delete red"><spring:message code="common.delete"/></span></a> ';
+            return a + e + d;
+        }
     }
 
     function addProductType() {

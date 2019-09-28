@@ -215,12 +215,19 @@
         AND p.parentId = #{parentId, jdbcType=BIGINT} AND p.type = 0 ORDER BY p.sort ASC
     </select>
 
+    <select id="queryTree" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.SysPermission">
+        select * from t_sys_permission where parentId = #{id}
+    </select>
+
     <select id="isParent" parameterType="java.lang.Long" resultType="java.lang.Boolean">
         select count(1) from t_sys_permission where parentId = #{id}
     </select>
 
-    <delete id="deleteByParentId" parameterType="java.lang.Long">
-        delete from t_sys_permission where parentId = #{id}
+    <delete id="delByIds" parameterType="java.util.List">
+        delete from t_sys_permission where id in
+        <foreach collection="list" index="id" item="id" open="(" separator="," close=")">
+          #{id}
+        </foreach>
     </delete>
 
 </mapper>

@@ -1,7 +1,7 @@
 package com.vgit.yunqiang.service;
 
 import com.vgit.yunqiang.common.query.PermissionQuery;
-import com.vgit.yunqiang.common.service.BaseService;
+import com.vgit.yunqiang.common.service.TreeGrid;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.model.MenuModel;
 import com.vgit.yunqiang.model.PermissionModel;
@@ -11,7 +11,7 @@ import com.vgit.yunqiang.pojo.SysRole;
 
 import java.util.List;
 
-public interface SysPermissionService extends BaseService<SysPermission> {
+public interface SysPermissionService extends TreeGrid<SysPermission> {
 
     Long ROOT = 0L;
 

@@ -1,7 +1,7 @@
 package com.vgit.yunqiang.service.impl;
 
 import com.vgit.yunqiang.common.service.BaseMapper;
-import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
+import com.vgit.yunqiang.common.service.impl.TreeGridImpl;
 import com.vgit.yunqiang.mapper.MendianMapper;
 import com.vgit.yunqiang.model.MendianModel;
 import com.vgit.yunqiang.pojo.Mendian;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class MendianServiceImpl extends BaseServiceImpl<Mendian> implements MendianService {
+public class MendianServiceImpl extends TreeGridImpl<Mendian> implements MendianService {
 
     @Autowired
     private MendianMapper mapper;
@@ -40,7 +40,8 @@ public class MendianServiceImpl extends BaseServiceImpl<Mendian> implements Mend
                 model.setChildren(this.treegrid(mendian.getId()));
                 models.add(model);
             }
-        } 
+        }
         return models;
     }
+
 }

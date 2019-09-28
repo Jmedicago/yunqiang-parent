@@ -1,12 +1,12 @@
 package com.vgit.yunqiang.service;
 
-import com.vgit.yunqiang.common.service.BaseService;
+import com.vgit.yunqiang.common.service.TreeGrid;
 import com.vgit.yunqiang.model.MendianModel;
 import com.vgit.yunqiang.pojo.Mendian;
 
 import java.util.List;
 
-public interface MendianService extends BaseService<Mendian> {
+public interface MendianService extends TreeGrid<Mendian> {
 
     Long ROOT = 0L;
 

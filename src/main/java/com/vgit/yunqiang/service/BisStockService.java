@@ -1,17 +1,17 @@
 package com.vgit.yunqiang.service;
 
-import java.util.List;
-
-import com.vgit.yunqiang.common.service.BaseService;
+import com.vgit.yunqiang.common.service.TreeGrid;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.pojo.BisStock;
+
+import java.util.List;
 
 /**
  * 业务 - 库存
  *
  * @author Admin
  */
-public interface BisStockService extends BaseService<BisStock> {
+public interface BisStockService extends TreeGrid<BisStock> {
 
     Long ROOT = 0L;
 

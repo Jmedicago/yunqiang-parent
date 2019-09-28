@@ -19,8 +19,13 @@ public class ProductTypeServiceTest {
 	
 	@Test
 	public void testGetProductType() throws Exception {
-		BisProductType pt = this.bisProductTypeService.get(1000);
+		BisProductType pt = this.bisProductTypeService.get(1001);
 		System.out.println(pt.getName());
+	}
+
+	@Test
+	public void testDeleteProductType() throws Exception {
+		this.bisProductTypeService.deleteById(11L);
 	}
 	
 }

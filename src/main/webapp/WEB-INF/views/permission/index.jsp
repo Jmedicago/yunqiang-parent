@@ -7,7 +7,7 @@
                data-options="rownumbers:true,fit:true,method:'get',striped:true,url:'/permission/json',idField:'id',treeField:'name'">
             <thead>
             <tr>
-                <th data-options="field:'id',checkbox:true"></th>
+                <th data-options="field:'id'">ID</th>
                 <th data-options="field:'name',width:180"><spring:message
                         code="permission.name"/></th>
                 <th data-options="field:'icon',width:100,formatter:permissionIconFormatter"><spring:message

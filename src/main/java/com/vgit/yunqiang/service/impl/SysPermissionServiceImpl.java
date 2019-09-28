@@ -3,14 +3,16 @@ package com.vgit.yunqiang.service.impl;
 import com.vgit.yunqiang.common.consts.ICodes;
 import com.vgit.yunqiang.common.query.PermissionQuery;
 import com.vgit.yunqiang.common.service.BaseMapper;
-import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
+import com.vgit.yunqiang.common.service.impl.TreeGridImpl;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.mapper.SysPermissionMapper;
 import com.vgit.yunqiang.model.MenuModel;
 import com.vgit.yunqiang.model.PermissionModel;
 import com.vgit.yunqiang.model.TreeModel;
+import com.vgit.yunqiang.pojo.BisStock;
 import com.vgit.yunqiang.pojo.SysPermission;
 import com.vgit.yunqiang.pojo.SysRole;
+import com.vgit.yunqiang.service.BisStockService;
 import com.vgit.yunqiang.service.SysPermissionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class SysPermissionServiceImpl extends BaseServiceImpl<SysPermission> implements SysPermissionService {
+public class SysPermissionServiceImpl extends TreeGridImpl<SysPermission> implements SysPermissionService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SysPermissionServiceImpl.class);
 
@@ -127,18 +129,19 @@ public class SysPermissionServiceImpl extends BaseServiceImpl<SysPermission> imp
     @Override
     public Ret deleteById(Long id) {
         SysPermission permission = this.mapper.get(id);
-        LOGGER.info("[权限管理]delete permission = {}", permission.toString());
         // 查询是否是根节点
         if (permission != null && permission.getParentId() == SysPermissionService.ROOT) {
             // 该节点是根节点
             return Ret.me().setSuccess(false).setCode(ICodes.NOT_AUTHORIZED);
         }
-        if (!this.mapper.isParent(id)) {
-            this.mapper.delete(id);
-        } else {
-            this.mapper.deleteByParentId(id);
-            this.mapper.delete(id);
+        List<Long> ids = new ArrayList<Long>();
+        this.depth(id, ids);
+        if (!ids.isEmpty()) {
+            // 删除所有子节点
+            this.mapper.delByIds(ids);
         }
+        // 删除当前节点
+        this.mapper.delete(id);
         return Ret.me().setSuccess(true).setCode(ICodes.SUCCESS);
     }
 

@@ -143,4 +143,12 @@
         select * from t_mendian where pid = #{pid}
     </select>
 
+    <select id="queryTree" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.Mendian">
+        select * from t_mendian where pid = #{id}
+    </select>
+
+    <select id="isParent" parameterType="java.lang.Long" resultType="java.lang.Boolean">
+        select count(1) from t_mendian where pid = #{id}
+    </select>
+
 </mapper>

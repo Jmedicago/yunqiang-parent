@@ -60,7 +60,7 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
     /**
      * 根据父节点删除
      *
-     * @param id
+     * @param ids
      */
-    void deleteByParentId(Long id);
+    void delByIds(List<Long> ids);
 }

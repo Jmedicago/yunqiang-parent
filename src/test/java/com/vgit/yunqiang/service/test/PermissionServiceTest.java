@@ -1,6 +1,8 @@
 package com.vgit.yunqiang.service.test;
 
+import com.vgit.yunqiang.pojo.Mendian;
 import com.vgit.yunqiang.pojo.SysRole;
+import com.vgit.yunqiang.service.MendianService;
 import com.vgit.yunqiang.service.SysPermissionService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +20,9 @@ public class PermissionServiceTest {
     @Autowired
     private SysPermissionService permissionService;
 
+    @Autowired
+    private MendianService mendianService;
+
     @Test
     public void testGetMenus() {
         List<SysRole> roles = new ArrayList<>();
@@ -31,4 +36,17 @@ public class PermissionServiceTest {
 
         System.out.println(this.permissionService.menus(roles, 0L));
     }
+
+    @Test
+    public void testDepth() throws Exception {
+        List<Long> ids = new ArrayList<Long>();
+        this.mendianService.depth(2L, ids);
+        System.out.println("####" + ids.toString());
+
+        /*Mendian mendian = new Mendian();
+        mendian.setName("**总值**");
+        Mendian mendian2 = this.mendianService.getTree(mendian);
+        System.out.println(mendian2.getName());*/
+    }
+
 }

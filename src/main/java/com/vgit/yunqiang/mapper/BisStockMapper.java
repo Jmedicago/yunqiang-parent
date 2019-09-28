@@ -34,8 +34,7 @@ public interface BisStockMapper extends BaseMapper<BisStock> {
 	/**
 	 * 删除所有子节点
 	 *
-	 * @param id
+	 * @param ids
 	 */
-	void deleteByParentId(Long id);
-
+	void delByIds(List<Long> ids);
 }
