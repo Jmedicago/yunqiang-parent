@@ -33,14 +33,6 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
     void correlationRoles(Long permissionId, Long roleId);
 
     /**
-     * 根据父ID查找
-     *
-     * @param parentId
-     * @return
-     */
-    List<SysPermission> findByParentId(@Param("parentId") Long parentId);
-
-    /**
      * 根据角色ID查询拥有权限
      *
      * @param roleIds
@@ -49,18 +41,4 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
      */
     List<SysPermission> findByRoleIdAndParentId(@Param("parentId") Long parentId, @Param("roleIds") List<Long> roleIds);
 
-    /**
-     * 是否是叶子节点
-     *
-     * @param id
-     * @return
-     */
-    boolean isParent(Long id);
-
-    /**
-     * 根据父节点删除
-     *
-     * @param ids
-     */
-    void delByIds(List<Long> ids);
 }

@@ -20,6 +20,8 @@ public class ControllerConsts {
 
     public static final String URL_TREE_JSON = "/tree";
 
+    public static final String URL_COMBO = "/combo";
+
     public static final String VIEW_INDEX = "/index";
 
     public static final String VIEW_EDIT = "/form";

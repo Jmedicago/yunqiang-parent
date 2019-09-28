@@ -3,6 +3,7 @@ package com.vgit.yunqiang.controller;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import com.vgit.yunqiang.common.service.TreeGridService;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,30 +17,29 @@ import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.controller.consts.ControllerConsts;
 import com.vgit.yunqiang.pojo.BisProductType;
 import com.vgit.yunqiang.service.BisProductTypeService;
-import com.vgit.yunqiang.service.BisStockService;
 
 @Controller
 @RequestMapping("/" + BisProductTypeController.DOMAIN)
 public class BisProductTypeController {
 
-	public static final String DOMAIN = "product-type";
+    public static final String DOMAIN = "product-type";
 
-	@Autowired
-	private BisProductTypeService bisProductTypeService;
+    @Autowired
+    private BisProductTypeService bisProductTypeService;
 
-	@RequestMapping(ControllerConsts.URL_INDEX)
-	public String index() {
-		return DOMAIN + ControllerConsts.VIEW_INDEX;
-	}
+    @RequestMapping(ControllerConsts.URL_INDEX)
+    public String index() {
+        return DOMAIN + ControllerConsts.VIEW_INDEX;
+    }
 
-	@RequiresRoles(value = { "admin", "product" }, logical = Logical.OR)
-	@RequestMapping(ControllerConsts.URL_JSON)
-	@ResponseBody
-	public List<BisProductType> json(ProductTypeQuery query) {
-		return this.bisProductTypeService.treegrid(BisStockService.ROOT, query);
-	}
-	
-	@RequestMapping(ControllerConsts.URL_EDIT)
+    @RequiresRoles(value = {"admin", "product"}, logical = Logical.OR)
+    @RequestMapping(ControllerConsts.URL_JSON)
+    @ResponseBody
+    public List<BisProductType> json(ProductTypeQuery query) {
+        return this.bisProductTypeService.treegrid(TreeGridService.ROOT, query);
+    }
+
+    @RequestMapping(ControllerConsts.URL_EDIT)
     public String edit(Long id, Model model) {
         if (id != null) {
             // 商品类型信息

@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.vgit.yunqiang.common.consts.ICodes;
-import com.vgit.yunqiang.common.service.impl.TreeGridImpl;
+import com.vgit.yunqiang.common.service.TreeGridService;
+import com.vgit.yunqiang.common.service.impl.TreeGridServiceImpl;
 import com.vgit.yunqiang.common.utils.Ret;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.vgit.yunqiang.common.query.ProductTypeQuery;
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.mapper.BisProductTypeMapper;
 import com.vgit.yunqiang.pojo.BisProductType;
 import com.vgit.yunqiang.service.BisProductTypeService;
 
 @Service
-public class BisProductTypeServiceImpl extends TreeGridImpl<BisProductType> implements BisProductTypeService {
+public class BisProductTypeServiceImpl extends TreeGridServiceImpl<BisProductType> implements BisProductTypeService {
 
 	@Autowired
 	private BisProductTypeMapper mapper;
@@ -25,25 +25,6 @@ public class BisProductTypeServiceImpl extends TreeGridImpl<BisProductType> impl
 	protected BaseMapper<BisProductType> getMapper() {
 		// TODO Auto-generated method stub
 		return this.mapper;
-	}
-
-	@Override
-	public List<BisProductType> treegrid(Long root, ProductTypeQuery query) {
-		List<BisProductType> models = new ArrayList<BisProductType>();
-		// 查询商品类型列表
-		List<BisProductType> productTypes = this.mapper.queryTree(root);
-		// 遍历商品类型
-		for (BisProductType productType : productTypes) {
-			BisProductType model = new BisProductType();
-			model.setId(productType.getId());
-			model.setName(productType.getName());
-			model.setParentId(productType.getParentId());
-			model.setSort(productType.getSort());
-			List<BisProductType> children = this.treegrid(productType.getId(), query);
-			model.setChildren(children);
-			models.add(model);
-		}
-		return models;
 	}
 
 	@Override
@@ -60,17 +41,10 @@ public class BisProductTypeServiceImpl extends TreeGridImpl<BisProductType> impl
 	@Override
 	public Ret deleteById(Long id) {
 		BisProductType productType = this.mapper.get(id);
-		if (productType != null && productType.getParentId() == BisProductTypeService.ROOT) {
+		if (productType != null && productType.getParentId() == TreeGridService.ROOT) {
 			return Ret.me().setSuccess(false).setCode(ICodes.NOT_AUTHORIZED);
 		}
-		List<Long> ids = new ArrayList<Long>();
-		this.depth(id, ids);
-		if (!ids.isEmpty()) {
-			// 删除所有子节点
-			this.mapper.delByIds(ids);
-		}
-		// 删除当前节点
-		this.mapper.delete(id);
+		this.delByRoot(id); // 删除该节点及所有子节点
 		return Ret.me().setSuccess(true).setCode(ICodes.SUCCESS);
 	}
 

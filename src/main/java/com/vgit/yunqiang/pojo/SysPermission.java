@@ -1,5 +1,7 @@
 package com.vgit.yunqiang.pojo;
 
+import java.util.List;
+
 /**
  * 权限
  */
@@ -61,6 +63,10 @@ public class SysPermission {
     是否显示
      */
     private Boolean available;
+
+    private String text;
+
+    private List<SysPermission> children;
 
     public Long getId() {
         return id;
@@ -156,6 +162,18 @@ public class SysPermission {
 
     public void setAvailable(Boolean available) {
         this.available = available;
+    }
+
+    public String getText() {
+        return name;
+    }
+
+    public List<SysPermission> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<SysPermission> children) {
+        this.children = children;
     }
 
     @Override

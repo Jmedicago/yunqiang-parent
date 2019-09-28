@@ -1,19 +1,14 @@
 package com.vgit.yunqiang.service;
 
-import com.vgit.yunqiang.common.query.PermissionQuery;
-import com.vgit.yunqiang.common.service.TreeGrid;
+import com.vgit.yunqiang.common.service.TreeGridService;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.model.MenuModel;
-import com.vgit.yunqiang.model.PermissionModel;
-import com.vgit.yunqiang.model.TreeModel;
 import com.vgit.yunqiang.pojo.SysPermission;
 import com.vgit.yunqiang.pojo.SysRole;
 
 import java.util.List;
 
-public interface SysPermissionService extends TreeGrid<SysPermission> {
-
-    Long ROOT = 0L;
+public interface SysPermissionService extends TreeGridService<SysPermission> {
 
     /**
      * 根据权限ID查询其所关联的角色数据
@@ -37,23 +32,6 @@ public interface SysPermissionService extends TreeGrid<SysPermission> {
      * @param roleId
      */
     void correlationRoles(Long permissionId, Long roleId);
-
-    /**
-     * 查询所有权限
-     *
-     * @param root
-     * @return
-     */
-    List<TreeModel> getAll(Long root);
-
-    /**
-     * 树形数据表格
-     *
-     * @param root
-     * @param query
-     * @return
-     */
-    List<PermissionModel> treegrid(Long root, PermissionQuery query);
 
     /**
      * 编辑权信息

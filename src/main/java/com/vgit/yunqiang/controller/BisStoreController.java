@@ -3,6 +3,8 @@ package com.vgit.yunqiang.controller;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import com.vgit.yunqiang.common.query.StockQuery;
+import com.vgit.yunqiang.common.service.TreeGridService;
 import com.vgit.yunqiang.common.utils.Ret;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -37,8 +39,8 @@ public class BisStoreController {
     @RequiresRoles(value = {"admin", "stock"}, logical = Logical.OR)
     @RequestMapping(ControllerConsts.URL_JSON)
     @ResponseBody
-    public List<BisStock> json() {
-        return this.bisStockService.treegrid(BisStockService.ROOT);
+    public List<BisStock> json(StockQuery query) {
+        return this.bisStockService.treegrid(TreeGridService.ROOT, query);
     }
 
     @RequestMapping(ControllerConsts.URL_EDIT)

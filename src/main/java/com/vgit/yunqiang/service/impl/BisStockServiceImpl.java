@@ -1,10 +1,8 @@
 package com.vgit.yunqiang.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.vgit.yunqiang.common.consts.ICodes;
-import com.vgit.yunqiang.common.service.impl.TreeGridImpl;
+import com.vgit.yunqiang.common.service.TreeGridService;
+import com.vgit.yunqiang.common.service.impl.TreeGridServiceImpl;
 import com.vgit.yunqiang.common.utils.Ret;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +20,7 @@ import com.vgit.yunqiang.service.BisStockService;
  * @author Admin
  */
 @Service
-public class BisStockServiceImpl extends TreeGridImpl<BisStock> implements BisStockService {
+public class BisStockServiceImpl extends TreeGridServiceImpl<BisStock> implements BisStockService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BisStockServiceImpl.class);
 
@@ -48,27 +46,6 @@ public class BisStockServiceImpl extends TreeGridImpl<BisStock> implements BisSt
     }
 
     @Override
-    public List<BisStock> treegrid(Long parentId) {
-        List<BisStock> models = new ArrayList<BisStock>();
-        // 查询仓库列表
-        List<BisStock> stocks = this.mapper.queryTree(parentId);
-        // 遍历仓库
-        for (BisStock stock : stocks) {
-            BisStock model = new BisStock();
-            model.setId(stock.getId());
-            model.setName(stock.getName());
-            model.setParentId(stock.getParentId());
-            model.setDescription(stock.getDescription());
-            model.setStatus(stock.getStatus());
-            model.setCreateTime(stock.getCreateTime());
-            model.setUpdateTime(stock.getUpdateTime());
-            model.setChildren(this.treegrid(stock.getId()));
-            models.add(model);
-        }
-        return models;
-    }
-
-    @Override
     public BisStock saveOrUpdateStock(BisStock stock) {
         if (stock.getId() == null) {
             stock.setCreateTime(System.currentTimeMillis());
@@ -83,18 +60,10 @@ public class BisStockServiceImpl extends TreeGridImpl<BisStock> implements BisSt
     @Override
     public Ret deleteById(Long id) {
         BisStock stock = this.mapper.get(id);
-        if (stock != null && stock.getParentId() == BisStockService.ROOT) {
+        if (stock != null && stock.getParentId() == TreeGridService.ROOT) {
             return Ret.me().setSuccess(false).setCode(ICodes.NOT_AUTHORIZED);
         }
-
-        List<Long> ids = new ArrayList<Long>();
-        this.depth(id, ids);
-        if (!ids.isEmpty()) {
-            // 删除所有子节点
-            this.mapper.delByIds(ids);
-        }
-        // 删除当前节点
-        this.mapper.delete(id);
+        this.delByRoot(id); // 删除该节点及所有子节点
         return Ret.me().setSuccess(true).setCode(ICodes.SUCCESS);
     }
 

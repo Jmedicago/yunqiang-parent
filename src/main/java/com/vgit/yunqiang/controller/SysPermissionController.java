@@ -1,10 +1,10 @@
 package com.vgit.yunqiang.controller;
 
 import com.vgit.yunqiang.common.query.PermissionQuery;
+import com.vgit.yunqiang.common.query.base.BaseQuery;
+import com.vgit.yunqiang.common.service.TreeGridService;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.controller.consts.ControllerConsts;
-import com.vgit.yunqiang.model.PermissionModel;
-import com.vgit.yunqiang.model.TreeModel;
 import com.vgit.yunqiang.pojo.SysPermission;
 import com.vgit.yunqiang.service.SysPermissionService;
 import org.apache.shiro.authz.annotation.Logical;
@@ -36,17 +36,17 @@ public class SysPermissionController {
         return DOMAIN + ControllerConsts.VIEW_INDEX;
     }
 
-    @RequestMapping(ControllerConsts.URL_TREE_JSON)
+    @RequestMapping(ControllerConsts.URL_COMBO)
     @ResponseBody
-    public List<TreeModel> tree() {
+    public List<SysPermission> combo() {
         // 查询所有权限
-        return this.sysPermissionService.getAll(SysPermissionService.ROOT);
+        return this.sysPermissionService.treegrid(TreeGridService.ROOT, new BaseQuery());
     }
 
     @RequestMapping(ControllerConsts.URL_JSON)
     @ResponseBody
-    public List<PermissionModel> json(PermissionQuery query) {
-        return this.sysPermissionService.treegrid(SysPermissionService.ROOT, query);
+    public List<SysPermission> json(PermissionQuery query) {
+        return this.sysPermissionService.treegrid(TreeGridService.ROOT, query);
     }
 
     @RequestMapping(ControllerConsts.URL_EDIT)

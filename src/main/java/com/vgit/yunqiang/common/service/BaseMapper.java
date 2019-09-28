@@ -27,4 +27,6 @@ public interface BaseMapper<T> {
 
     boolean isParent(Long id);
 
+    void delByIds(List<Long> ids);
+
 }

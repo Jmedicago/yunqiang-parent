@@ -4,7 +4,6 @@ import com.vgit.yunqiang.common.consts.ICodes;
 import com.vgit.yunqiang.common.query.MendianQuery;
 import com.vgit.yunqiang.common.utils.Page;
 import com.vgit.yunqiang.common.utils.Ret;
-import com.vgit.yunqiang.model.MendianModel;
 import com.vgit.yunqiang.pojo.Mendian;
 import com.vgit.yunqiang.service.MendianService;
 import org.slf4j.Logger;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @Controller
 @RequestMapping("/mendian")
@@ -28,9 +26,9 @@ public class MendianController {
     @RequestMapping("/treegrid")
     @ResponseBody
     public Ret treegrid() {
-        List<MendianModel> results = this.mendianService.treegrid(mendianService.ROOT);
-        LOGGER.info("[mendian]treegrid={}", results);
-        return Ret.me().setCode(ICodes.SUCCESS).setData(results);
+        /*List<MendianModel> results = this.mendianService.treegrid(mendianService.ROOT);
+        LOGGER.info("[mendian]treegrid={}", results);*/
+        return Ret.me().setCode(ICodes.SUCCESS);
     }
 
     @RequestMapping("/list")

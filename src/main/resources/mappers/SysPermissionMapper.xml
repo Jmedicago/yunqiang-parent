@@ -200,10 +200,6 @@
         )
     </insert>
 
-    <select id="findByParentId" resultType="com.vgit.yunqiang.pojo.SysPermission">
-        select * from t_sys_permission where parentId = #{parentId}
-    </select>
-
     <select id="findByRoleIdAndParentId" resultType="com.vgit.yunqiang.pojo.SysPermission">
         SELECT DISTINCT p.* FROM t_sys_role_permission rp
         LEFT JOIN t_sys_permission p ON rp.permissionId = p.id

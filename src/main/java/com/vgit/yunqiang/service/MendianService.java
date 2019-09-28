@@ -1,14 +1,9 @@
 package com.vgit.yunqiang.service;
 
-import com.vgit.yunqiang.common.service.TreeGrid;
-import com.vgit.yunqiang.model.MendianModel;
+import com.vgit.yunqiang.common.service.TreeGridService;
 import com.vgit.yunqiang.pojo.Mendian;
 
-import java.util.List;
-
-public interface MendianService extends TreeGrid<Mendian> {
-
-    Long ROOT = 0L;
+public interface MendianService extends TreeGridService<Mendian> {
 
     /**
      * 门店树形表格
@@ -16,5 +11,5 @@ public interface MendianService extends TreeGrid<Mendian> {
      * @param pid
      * @return
      */
-    List<MendianModel> treegrid (Long pid);
+    /*List<MendianModel> treegrid (Long pid);*/
 }

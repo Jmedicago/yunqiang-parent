@@ -1,10 +1,7 @@
 package com.vgit.yunqiang.service.impl;
 
-import com.vgit.yunqiang.common.consts.bis.SysRoleConsts;
-import com.vgit.yunqiang.common.consts.bis.SysUserStateConsts;
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
-import com.vgit.yunqiang.common.utils.PassUtils;
 import com.vgit.yunqiang.mapper.SysRoleMapper;
 import com.vgit.yunqiang.pojo.SysPermission;
 import com.vgit.yunqiang.pojo.SysRole;

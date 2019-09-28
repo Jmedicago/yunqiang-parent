@@ -2,6 +2,8 @@ package com.vgit.yunqiang.pojo;
 
 import com.vgit.yunqiang.pojo.base.BasePojo;
 
+import java.util.List;
+
 /**
  * 门店
  */
@@ -19,6 +21,8 @@ public class Mendian extends BasePojo {
     private Integer level;
 
     private Integer state;
+
+    private List<Mendian> children;
 
     public Long getId() {
         return id;
@@ -60,14 +64,23 @@ public class Mendian extends BasePojo {
         this.state = state;
     }
 
+    public List<Mendian> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Mendian> children) {
+        this.children = children;
+    }
+
     @Override
     public String toString() {
-        return "Mendian{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", pid=" + pid +
-                ", level=" + level +
-                ", state=" + state +
+        return "{" +
+                " \"id\" : " + id +
+                ", \"name\":\"" + name + "\"" +
+                ", \"pid\":" + pid +
+                ", \"level\":" + level +
+                ", \"state\":" + state +
+                ", \"children\":" + children +
                 '}';
     }
 

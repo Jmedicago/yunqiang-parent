@@ -5,8 +5,6 @@ import java.util.List;
 
 public class BisProductType implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-
 	private Long id;
 	
 	private String name;
@@ -55,6 +53,17 @@ public class BisProductType implements Serializable {
 
 	public void setChildren(List<BisProductType> children) {
 		this.children = children;
+	}
+
+	@Override
+	public String toString() {
+		return "BisProductType{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", parentId=" + parentId +
+				", sort=" + sort +
+				", children=" + children +
+				'}';
 	}
 
 }

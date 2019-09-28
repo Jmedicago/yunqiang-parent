@@ -1,19 +1,15 @@
 package com.vgit.yunqiang.service;
 
-import com.vgit.yunqiang.common.service.TreeGrid;
+import com.vgit.yunqiang.common.service.TreeGridService;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.pojo.BisStock;
-
-import java.util.List;
 
 /**
  * 业务 - 库存
  *
  * @author Admin
  */
-public interface BisStockService extends TreeGrid<BisStock> {
-
-    Long ROOT = 0L;
+public interface BisStockService extends TreeGridService<BisStock> {
 
     /**
      * 入库
@@ -24,14 +20,6 @@ public interface BisStockService extends TreeGrid<BisStock> {
      * 出库
      */
     void stockOut();
-
-    /**
-     * 仓库列表
-     *
-     * @param parentId
-     * @return
-     */
-    List<BisStock> treegrid(Long parentId);
 
     /**
      * 编辑仓库信息
