@@ -48,7 +48,9 @@
     function editProductType() {
         var node = $('#productTypeGrid').treegrid('getSelected');
         if (node) {
-            MXF.openDialog('editProductTypeWin', '<spring:message code="common.edit"/>', '/product-type/edit?id=' + node.id, null, 600, 250);
+            MXF.openDialog('editProductTypeWin', '<spring:message code="common.edit"/>', '/product-type/edit?id=' + node.id, function () {
+                console.log("[dialog] open edit product type dialog..");
+            }, 600, 250);
         }
     }
 

@@ -66,7 +66,9 @@
     function editPermission() {
         var node = $('#permissionGrid').treegrid('getSelected');
         if (node) {
-            MXF.openDialog('editPermissionWin', '<spring:message code="common.edit"/>', '/permission/edit?id=' + node.id, null, 600, 550);
+            MXF.openDialog('editPermissionWin', '<spring:message code="common.edit"/>', '/permission/edit?id=' + node.id, function () {
+                console.log('[dialog] open edit permission dialog..');
+            }, 600, 550);
         }
     }
 
