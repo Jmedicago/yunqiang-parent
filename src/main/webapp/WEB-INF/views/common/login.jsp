@@ -17,7 +17,6 @@
     <script type="text/javascript" src="/easyui/themes/insdep/jquery.insdep-extend.min.js"></script>
 </head>
 <body class="theme-login-layout">
-    <div class="theme-login-header"></div>
     <div id="theme-login-form">
         <form id="form" class="theme-login-form" action="/login" method="post">
             <dl>
@@ -41,11 +40,5 @@
             </dl>
         </form>
     </div>
-    <%--<div class="theme-login-footer">
-        <dl>
-            <dt></dt>
-            <dd>&copy 2019 - <script>var year = new Date();document.write(year.getFullYear());</script> 云强集团</dd>
-        </dl>
-    </div>--%>
 </body>
 </html>
