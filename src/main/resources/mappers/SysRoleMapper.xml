@@ -111,10 +111,13 @@
         limit #{start},#{rows}
     </select>
 
-    <insert id="correlationPermissions" parameterType="Long">
+    <insert id="correlationPermissions" parameterType="java.util.List">
         INSERT INTO
-        t_sys_role_permission(permissionId, roleId)
-        VALUES(#{permissionId}, #{roleId})
+        t_sys_role_permission (roleId, permissionId)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.roleId, jdbcType=BIGINT},#{item.permissionId, jdbcType=BIGINT})
+        </foreach>
     </insert>
 
     <delete id="unCorrelationPermissions" parameterType="Long">
@@ -130,7 +133,8 @@
         SELECT COUNT(1) FROM t_sys_role_permission WHERE roleId = #{roleId} AND permissionId = #{permissionId}
     </select>
 
-    <select id="findRolePermissionByRoleId" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.SysPermission">
+    <select id="findRolePermissionByRoleId" parameterType="java.lang.Long"
+            resultType="com.vgit.yunqiang.pojo.SysPermission">
         SELECT p.*
         FROM t_sys_permission p,
              t_sys_role r,
@@ -140,7 +144,8 @@
         AND rp.permissionId = p.id;
     </select>
 
-    <select id="findPermissionByRoleId" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.SysPermission">
+    <select id="findPermissionByRoleId" parameterType="java.lang.Long"
+            resultType="com.vgit.yunqiang.pojo.SysPermission">
         SELECT p.* FROM t_sys_role_permission rp LEFT JOIN t_sys_permission p ON p.id = rp.permissionId WHERE rp.roleId = #{roleId}
     </select>
 

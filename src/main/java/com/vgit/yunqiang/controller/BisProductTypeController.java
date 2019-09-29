@@ -32,7 +32,6 @@ public class BisProductTypeController {
         return DOMAIN + ControllerConsts.VIEW_INDEX;
     }
 
-    @RequiresRoles(value = {"admin", "product"}, logical = Logical.OR)
     @RequestMapping(ControllerConsts.URL_JSON)
     @ResponseBody
     public List<BisProductType> json(ProductTypeQuery query) {

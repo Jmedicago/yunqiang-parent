@@ -34,7 +34,10 @@
 <script>
 
     function initRolesValue() {
-        $('#rolesCombobox').combobox('setValues', ${selectRoles});
+        console.log('[roles]', ${selectRoles});
+        if (Array.isArray(${selectRoles})) {
+            $('#rolesCombobox').combobox('setValues', ${selectRoles});
+        }
     }
 
 </script>

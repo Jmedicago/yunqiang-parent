@@ -66,4 +66,5 @@ public interface SysRoleService extends BaseService<SysRole> {
      * @param role
      */
     SysRole saveOrUpdateRole(SysRole role);
+
 }

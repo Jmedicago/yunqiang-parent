@@ -69,7 +69,7 @@ public class IndexController {
             if (roles != null && !roles.isEmpty()) {
                 List<MenuModel> menus = this.sysPermissionService.menus(roles, SysPermissionService.ROOT);
                 LOGGER.info("当前登录系统用户菜单={}", menus.toString());
-                if (menus.get(0) != null) {
+                if (menus.size() > 0) {
                     model.addAttribute("menus", menus.get(0).getChildren());
                 }
             }

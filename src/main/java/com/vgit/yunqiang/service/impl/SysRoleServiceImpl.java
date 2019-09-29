@@ -5,10 +5,13 @@ import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
 import com.vgit.yunqiang.mapper.SysRoleMapper;
 import com.vgit.yunqiang.pojo.SysPermission;
 import com.vgit.yunqiang.pojo.SysRole;
+import com.vgit.yunqiang.pojo.SysRolePermission;
+import com.vgit.yunqiang.service.SysPermissionService;
 import com.vgit.yunqiang.service.SysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,6 +19,9 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
 
     @Autowired
     private SysRoleMapper mapper;
+
+    @Autowired
+    private SysPermissionService sysPermissionService;
 
     @Override
     protected BaseMapper<SysRole> getMapper() {
@@ -27,10 +33,37 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
         if (permissionIds == null || permissionIds.length == 0) {
             return;
         }
+
+        List<Long> ids = new ArrayList<Long>();
+        // 遍历
         for (Long permissionId : permissionIds) {
-            if (!exists(roleId, permissionId)) {
-                this.mapper.correlationPermissions(roleId, permissionId);
+            this.correlation(permissionId, ids);
+        }
+        // 去重
+        for (int i = 0; i < ids.size() - 1; i++) {
+            for (int j = i + 1; j < ids.size(); j++) {
+                if (ids.get(i).equals(ids.get(j))) {
+                    ids.remove(j);
+                }
             }
+        }
+
+        // 保存角色权限关联关系
+        List<SysRolePermission> rolePermissions = new ArrayList<SysRolePermission>();
+        for (Long id : ids) {
+            SysRolePermission rolePermission = new SysRolePermission();
+            rolePermission.setRoleId(roleId);
+            rolePermission.setPermissionId(id);
+            rolePermissions.add(rolePermission);
+        }
+        this.mapper.correlationPermissions(rolePermissions);
+    }
+
+    private void correlation(Long leaf, List<Long> ids) {
+        SysPermission permission = this.sysPermissionService.get(leaf);
+        if (permission != null) {
+            ids.add(leaf);
+            this.correlation(permission.getParentId(), ids);
         }
     }
 

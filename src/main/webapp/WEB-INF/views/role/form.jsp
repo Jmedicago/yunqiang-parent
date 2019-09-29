@@ -20,7 +20,7 @@
     <div class="input-div">
         <label class="label-top"><spring:message code="role.permissions"/></label>
         <select id="permissionCombotree" class="easyui-combotree" style="width:420px;" name="permissionIds"
-                data-options="url:'/permission/combo', required:true, multiple:true, onLoadSuccess:initPermissionsValue"></select>
+                data-options="url:'/permission/combo', cascadeCheck:false, required:true, multiple:true, onLoadSuccess:initPermissionsValue"></select>
     </div>
     <div class="input-div" style="text-align: center; margin-top: 35px">
         <a class="easyui-linkbutton button-lg button-default" onclick="MXF.ajaxForm(this)"><spring:message
@@ -32,7 +32,10 @@
 <script type="text/javascript">
 
     function initPermissionsValue() {
-        $('#permissionCombotree').combotree('setValues', ${selectPermissions});
+        console.log('[permissions]', ${selectPermissions});
+        if (Array.isArray(${selectPermissions})) {
+            $('#permissionCombotree').combotree('setValues', ${selectPermissions});
+        }
     }
 
 </script>

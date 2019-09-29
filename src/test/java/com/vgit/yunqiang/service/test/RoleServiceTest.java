@@ -18,6 +18,9 @@ public class RoleServiceTest {
     @Test
     public void testFindRoles() throws Exception {
         //System.out.println(this.roleService.findRoles(1L, 2L));
+
+        Long[] ids = new Long[]{1013L};
+        this.sysRoleService.correlationPermissions(1003L, ids);
     }
 
 }

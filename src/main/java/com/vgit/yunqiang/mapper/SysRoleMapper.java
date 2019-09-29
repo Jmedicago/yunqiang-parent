@@ -3,6 +3,7 @@ package com.vgit.yunqiang.mapper;
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.pojo.SysPermission;
 import com.vgit.yunqiang.pojo.SysRole;
+import com.vgit.yunqiang.pojo.SysRolePermission;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,10 +13,9 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
     /**
      * 创建角色 - 权限
      *
-     * @param roleId
-     * @param permissionId
+     * @param list
      */
-    void correlationPermissions(@Param("roleId") Long roleId, @Param("permissionId") Long permissionId);
+    void correlationPermissions(List<SysRolePermission> list);
 
     /**
      * 删除角色 - 权限
