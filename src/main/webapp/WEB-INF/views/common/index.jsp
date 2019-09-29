@@ -32,12 +32,13 @@
 
 <body>
 <div id="loading" style="position:absolute;z-index:1000;height:100%;text-align:center; background:#fff;width:100%;">
-    <img style="margin-top:270px;" src="/easyui/themes/insdep/images/ring.svg"/>
-    <h5 style="margin-top: 20px" i18n="global.loading"><spring:message code="common.loading"/></h5>
+    <div style="position: absolute; left: 50%; top: 50%; margin-top: -71px; margin-left: -50px;">
+        <img src="/easyui/themes/insdep/images/ring.svg"/>
+        <h5 style="margin-top: 20px"><spring:message code="common.loading"/></h5>
+    </div>
 </div>
 
 <div id="master-layout">
-
     <!-- 开始头部菜单 -->
     <div data-options="region:'north',border:false,bodyCls:'theme-header-layout'">
         <div class="theme-navigate">
@@ -56,19 +57,18 @@
                         <dd>
                             <b class="badge-prompt">${userInfo.username}</b>
                             <span>${userInfo.phone}</span>
-                            <p><i i18n="user.roles"><spring:message code="common.roles"/></i>：
+                            <p><i><spring:message code="common.roles"/></i>：
                                 <c:forEach var="role" items="${roleInfo}">
                                     <i class="text-success">${role.name}</i>
                                 </c:forEach>
                             </p>
                         </dd>
                         <dt>
-                            <a class="theme-navigate-user-logout" href="/logout" i18n="user.loginOut"><spring:message
+                            <a class="theme-navigate-user-logout" href="/logout"><spring:message
                                     code="common.logout"/></a>
                         </dt>
                     </dl>
                 </div>
-
                 <div id="lang" class="theme-navigate-menu-panel">
                     <div>
                         <a href="/index?lang=zh">切换为中文</a>
@@ -84,7 +84,6 @@
         </div>
     </div>
     <!-- 结束头部菜单 -->
-
     <!--开始左侧菜单-->
     <div data-options="region:'west',border:false,bodyCls:'theme-left-layout'" style="width:250px;">
         <!--正常菜单-->
