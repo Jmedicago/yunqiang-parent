@@ -39,4 +39,13 @@ public class BisPropertyOptionServiceImpl extends BaseServiceImpl<BisPropertyOpt
         return propertyOption;
     }
 
+    @Override
+    public void deletePropertyOption(String ids) {
+        String[] idArr = ids.split(",");
+        for (String idStr : idArr) {
+            Long id = Long.valueOf(idStr);
+            this.delete(id);
+        }
+    }
+
 }

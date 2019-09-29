@@ -23,4 +23,11 @@ public interface BisPropertyOptionService extends BaseService<BisPropertyOption>
      * @return
      */
     BisPropertyOption saveOrUpdatePropertyOption(BisPropertyOption propertyOption);
+
+    /**
+     * 删除指定ID的属性选项
+     *
+     * @param ids
+     */
+    void deletePropertyOption(String ids);
 }
