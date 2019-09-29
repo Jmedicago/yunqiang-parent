@@ -12,6 +12,8 @@ public class BisProductType implements Serializable {
 	private Long parentId;
 	
 	private Integer sort;
+
+	private String text;
 	
 	private List<BisProductType> children;
 
@@ -45,6 +47,10 @@ public class BisProductType implements Serializable {
 
 	public void setSort(Integer sort) {
 		this.sort = sort;
+	}
+
+	public String getText() {
+		return name;
 	}
 
 	public List<BisProductType> getChildren() {

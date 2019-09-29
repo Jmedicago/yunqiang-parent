@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vgit.yunqiang.mapper.BisPropertyOptionMapper">
+
+    <sql id="Base_Column_List">
+        id, property, optionValue, optionIcon, createTime, updateTime, remark
+    </sql>
+
+    <select id="get" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisPropertyOption">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bis_property_option
+        where id = #{id, jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from t_bis_property_option
+        where id = #{id, jdbcType=BIGINT}
+    </delete>
+
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.BisPropertyOption">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_bis_property_option (property, optionValue, optionIcon, createTime, updateTime, remark)
+        values (#{property, jdbcType=BIGINT}, #{optionValue, jdbcType=VARCHAR}, #{optionIcon, jdbcType=VARCHAR},
+        #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.BisPropertyOption">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_bis_property_option
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="property != null">
+                property,
+            </if>
+            <if test="optionValue != null">
+                optionValue,
+            </if>
+            <if test="optionIcon != null">
+                optionIcon,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+            <if test="updateTime != null">
+                updateTime,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="property != null">
+                #{property, jdbcType=BIGINT},
+            </if>
+            <if test="optionValue != null">
+                #{optionValue, jdbcType=VARCHAR},
+            </if>
+            <if test="optionIcon != null">
+                #{optionIcon, jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.BisPropertyOption">
+        update t_bis_property_option
+        <set>
+            <if test="property != null">
+                property = #{property, jdbcType=BIGINT},
+            </if>
+            <if test="optionValue != null">
+                optionValue = #{optionValue, jdbcType=VARCHAR},
+            </if>
+            <if test="optionIcon != null">
+                optionIcon = #{optionIcon, jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                updateTime = #{updateTime,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.BisPropertyOption">
+        update t_bis_property_option
+        set property = #{property, jdbcType=BIGINT}, optionValue = #{optionValue, jdbcType=VARCHAR}, optionIcon = #{optionIcon, jdbcType=VARCHAR},
+        createTime = #{createTime,jdbcType=BIGINT}, updateTime = #{updateTime,jdbcType=BIGINT}, remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <sql id="whereSql">
+        <where>
+            <if test="property!=null">
+                and po.property = #{property, jdbcType=BIGINT}
+            </if>
+        </where>
+    </sql>
+
+    <select id="getPropertiesOptions" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery" resultType="com.vgit.yunqiang.pojo.BisPropertyOption">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bis_property_option po
+        <include refid="whereSql"/>
+    </select>
+
+</mapper>

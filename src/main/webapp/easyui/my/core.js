@@ -42,6 +42,8 @@ function commonCmdBind() {
         var width = clickTarget.attr('width');
         var height = clickTarget.attr('height');
         var title = clickTarget.attr('title');
+        var msg = clickTarget.attr('msg');
+        var error = clickTarget.attr('error');
         var params = {};
         if (width) {
             width.replace('px', '');
@@ -53,6 +55,12 @@ function commonCmdBind() {
         }
         if (title) {
             params.title = title;
+        }
+        if (msg) {
+            params.msg = msg;
+        }
+        if (error) {
+            params.error = error;
         }
         if ($(clickTarget).attr('onclick') && '' != $(clickTarget).attr('onclick')) {
         } else {
@@ -133,8 +141,9 @@ var commonCmd = {
     },
     edit: function (grid, clickTarget, params) {
         var row = grid.datagrid('getSelected');
+        var _error = params.error || 'Please select at least one data ?';
         if (row == null) {
-            MXF.error('请至少选中一条数据');
+            MXF.error(_error);
             return;
         }
 
@@ -203,15 +212,17 @@ var commonCmd = {
         $(searchForm).form('clear');
         grid.datagrid('load', {});
     },
-    del: function (grid) {
+    del: function (grid, clickTarget, params) {
         var rows = grid.datagrid('getSelections');
+        var _msg = params.msg || 'Confirm delete';
+        var _error = params.error || 'Please select at least one data';
         var ids = '';
         for (var i = 0; i < rows.length; i++) {
             ids += ',' + rows[i].id;
         }
         if (ids.length > 1) ids = ids.substring(1);
         if ('' != ids) {
-            MXF.confirm('确认删除?', function () {
+            MXF.confirm(_msg + '?', function () {
                 MXF.ajaxing(true);
                 var urlPrefix = MXF.getPrefix(grid);
                 $.post(urlPrefix + '/delete', {id: ids}, function (data) {
@@ -223,7 +234,7 @@ var commonCmd = {
                 });
             });
         } else {
-            MXF.error('请至少选中一条数据');
+            MXF.error(_error);
         }
     },
     show: function (grid, clickTarget, params) {
