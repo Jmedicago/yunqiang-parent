@@ -2,87 +2,114 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <div class="tab-wrap">
-    <div class="tableGroup">
-        <table id="stockGrid" class="easyui-treegrid" title="<spring:message code="mu.st"/>"
-               data-options="rownumbers:true,fit:true,method:'get',striped:true,url:'/stock/json',idField:'id',treeField:'name'">
-            <thead>
-            <tr>
-                <th data-options="field:'id'">ID</th>
-                <th data-options="field:'name',width:180"><spring:message code="stock.name"/></th>
-                <th data-options="field:'description',width:180,formatter:stackDescFormatter"><spring:message code="stock.desc"/></th>
-                <th data-options="field:'status',width:50,formatter:stackStatusFormatter,align:'center'"><spring:message code="common.status"/></th>
-                <th data-options="field:'createTime',width:180,formatter:MXF.dateTimeFormatter,align:'center'"><spring:message code="common.createTime"/></th>
-                <th data-options="field:'option',width:180,formatter:formatterOptions,align:'center'"><spring:message code="common.option"/></th>
-            </tr>
-            </thead>
-        </table>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'west',title:'<spring:message code="mu.st"/>',split:true,border:true"
+             style="width:300px;">
+            <ul id="stockTree" class="easyui-tree"
+                data-options="
+                    url: '/stock/json',
+					state:'closed',
+					method: 'get',
+					animate: true,
+					onClick: clickStockTreeNode,
+					onAfterEdit : updateStockTreeNode,
+					onContextMenu: function(e,node){
+						e.preventDefault();
+						$(this).tree('select',node.target);
+						$('#stockTreeContextMenu').menu('show',{
+							left: e.pageX,
+							top: e.pageY
+						});
+					},
+					onLoadSuccess:function(){
+						$('#stockTree').tree('expandAll');
+					}">
+            </ul>
+        </div>
+        <div data-options="region:'center',border:true,title:'<spring:message code="common.edit"/>',href:'/stock/edit'"
+             style="padding: 15px;"></div>
+    </div>
+    <!-- 鼠标左键菜单 -->
+    <div id="stockTreeContextMenu" class="easyui-menu" style="width: 120px;">
+        <div onclick="appendStockTreeNode()" data-options="iconCls:'icon-add'">
+            <spring:message code="common.tree.append"/>
+        </div>
+        <div onclick="removeStockTreeNode()" data-options="iconCls:'icon-remove'">
+            <spring:message code="common.tree.remove"/>
+        </div>
+        <div class="menu-sep"></div>
+        <div onclick="expandStockTree()">
+            <spring:message code="common.tree.expand"/>
+        </div>
+        <div onclick="collapseStockTree()">
+            <spring:message code="common.tree.collapse"/>
+        </div>
+        <div onclick="reloadStockTree()">
+            <spring:message code="common.tree.reload"/>
+        </div>
     </div>
 </div>
 
-<script>
+<script type="text/javascript">
     $(function () {
         MXF.getTabContentHeight();
     });
 
-    function stackDescFormatter(v) {
-        if (v) {
-            return v.substring(0, 10);
-        } else {
-            return '<spring:message code="common.un"/>';
-        }
-    }
-    
-    function stackStatusFormatter(v) {
-        if (v == 0) { return '<green><spring:message code="status.normal"/></green>'}
-        if (v == 1) {return '<red><spring:message code="status.disable"/></red>'}
+    function clickStockTreeNode(node) {
+        //$(this).tree('beginEdit',node.target);
+        MXF.clearForm($('#stockForm'));
+        $('#stockForm').form('load', node);
     }
 
-    function formatterOptions(value, row, index) {
-        if (row.parentId == 0) {
-            var a = '<a href="#" data-cmd="addStock"><span class="btn btn-add green"><spring:message code="common.add"/></span></a> ';
-            var e = '<a href="#"><span class="btn btn-edit disable"><spring:message code="common.edit"/></span></a> ';
-            var d = '<a href="#"><span class="btn btn-delete disable"><spring:message code="common.delete"/></span></a> ';
-            return a + e + d;
-        } else {
-            var a = '<a href="#" data-cmd="addStock"><span class="btn btn-add green"><spring:message code="common.add"/></span></a> ';
-            var e = '<a href="#" data-cmd="editStock"><span class="btn btn-edit default"><spring:message code="common.edit"/></span></a> ';
-            var d = '<a href="#" data-cmd="deleteStock"><span class="btn btn-delete red"><spring:message code="common.delete"/></span></a> ';
-            return a + e + d;
-        }
+    function updateStockTreeNode(node) {
+        console.debug(node);
     }
 
-    function addStock() {
-        MXF.openDialog('addStockWin', '<spring:message code="common.add"/>', '/stock/edit', function (data) {
-            var node = $('#stockGrid').treegrid('getSelected');
-            $('#stockForm').form('load', {
-                'parentId': node.id
-            });
+    function appendStockTreeNode() {
+        var t = $('#stockTree');
+        var node = t.tree('getSelected');
+        var parentNode = (node ? node.target : null);
+        var parentNodeId = 1000;
+        if (null != node) parentNodeId = node.id;
+        t.tree('append', {
+            parent: parentNode,
+            data: [{
+                pid: parentNodeId, text: '<spring:message code="common.tree.node"/>'
+            }]
         });
     }
 
-    function editStock() {
-        var node = $('#stockGrid').treegrid('getSelected');
-        if (node) {
-            MXF.openDialog('editStockWin', '<spring:message code="common.edit"/>', '/stock/edit?id=' + node.id);
-        }
-    }
-
-    function deleteStock() {
-        var node = $('#stockGrid').treegrid('getSelected');
-        if (node.id) {
+    function removeStockTreeNode() {
+        var node = $('#stockTree').tree('getSelected');
+        if (node && node.id != null) {
             MXF.confirm('<spring:message code="message.delete"/>?', function () {
                 MXF.ajaxing(true);
                 $.post('/stock/delete', {id: node.id}, function (data) {
                     MXF.ajaxing(false);
                     MXF.ajaxFormDone(data);
                     if (data.success) {
-                        $('#stockGrid').treegrid('reload');
+                        $('#stockTree').tree('remove', node.target);
                     }
                 });
             });
         } else {
-            MXF.error('<spring:message code="message.select"/>');
+            $('#stockTree').tree('remove', node.target);
         }
     }
 
+    function collapseStockTree() {
+        var node = $('#stockTree').tree('getSelected');
+        $('#stockTree').tree('collapse', node.target);
+    }
+
+    function expandStockTree() {
+        var node = $('#stockTree').tree('getSelected');
+        $('#stockTree').tree('expand', node.target);
+    }
+
+    function reloadStockTree() {
+        $('#stockTree').tree('reload');
+    }
+
 </script>
+

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<form method="post" action="/user/store">
+<form method="post" style="width: 600px; margin: 30px auto;" action="/user/store">
     <input type="hidden" name="id" value="${sysUser.id}"/>
     <div class="input-div">
         <label class="label-top"><spring:message code="user.name"/></label>

@@ -22,6 +22,8 @@ public class BisStock extends BasePojo implements Serializable {
 	private String description;
 
 	private Integer status;
+
+	private String text;
 	
 	private List<BisStock> children;
 
@@ -63,6 +65,10 @@ public class BisStock extends BasePojo implements Serializable {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public String getText() {
+		return name;
 	}
 
 	public List<BisStock> getChildren() {

@@ -2,92 +2,113 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <div class="tab-wrap">
-    <div class="tableGroup">
-        <table id="permissionGrid" class="easyui-treegrid" title="<spring:message code="mu.sys.right"/>"
-               data-options="rownumbers:true,fit:true,method:'get',striped:true,url:'/permission/json',idField:'id',treeField:'name'">
-            <thead>
-            <tr>
-                <th data-options="field:'id'">ID</th>
-                <th data-options="field:'name',width:180"><spring:message
-                        code="permission.name"/></th>
-                <th data-options="field:'icon',width:100,formatter:permissionIconFormatter"><spring:message
-                        code="permission.icon"/></th>
-                <th data-options="field:'url',width:150"><spring:message code="permission.resource"/></th>
-                <th data-options="field:'type',width:100,formatter:permissionTypeFormatter"><spring:message
-                        code="permission.type"/></th>
-                <th data-options="field:'option',width:180,formatter:formatterOptions,align:'center'"><spring:message
-                        code="common.option"/></th>
-            </tr>
-            </thead>
-        </table>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'west',title:'<spring:message code="mu.sys.right"/>',split:true,border:true"
+             style="width:300px;">
+            <ul id="permissionTree" class="easyui-tree"
+                data-options="
+                    url: '/permission/json',
+					state:'closed',
+					method: 'get',
+					animate: true,
+					onClick: clickPermissionTreeNode,
+					onAfterEdit : updatePermissionTreeNode,
+					onContextMenu: function(e,node){
+						e.preventDefault();
+						$(this).tree('select',node.target);
+						$('#permissionTreeContextMenu').menu('show',{
+							left: e.pageX,
+							top: e.pageY
+						});
+					},
+					onLoadSuccess:function(){
+						$('#permissionTree').tree('expandAll');
+					}">
+            </ul>
+        </div>
+        <div data-options="region:'center',border:true,title:'<spring:message code="common.edit"/>',href:'/permission/edit'"
+             style="padding: 15px;"></div>
+    </div>
+    <!-- 鼠标左键菜单 -->
+    <div id="permissionTreeContextMenu" class="easyui-menu" style="width: 120px;">
+        <div onclick="appendPermissionTreeNode()" data-options="iconCls:'icon-add'">
+            <spring:message code="common.tree.append"/>
+        </div>
+        <div onclick="removePermissionTreeNode()" data-options="iconCls:'icon-remove'">
+            <spring:message code="common.tree.remove"/>
+        </div>
+        <div class="menu-sep"></div>
+        <div onclick="expandPermissionTree()">
+            <spring:message code="common.tree.expand"/>
+        </div>
+        <div onclick="collapsePermissionTree()">
+            <spring:message code="common.tree.collapse"/>
+        </div>
+        <div onclick="reloadPermissionTree()">
+            <spring:message code="common.tree.reload"/>
+        </div>
     </div>
 </div>
-<script>
+
+<script type="text/javascript">
     $(function () {
         MXF.getTabContentHeight();
     });
 
-    function permissionTypeFormatter(v) {
-        if (v == 0) return '<blue><spring:message code="common.menu"/></blue>';
-        if (v == 1) return '<blue><spring:message code="common.button"/></blue>';
+    function clickPermissionTreeNode(node) {
+        //$(this).tree('beginEdit',node.target);
+        MXF.clearForm($('#permissionForm'));
+        $('#permissionForm').form('load', node);
     }
 
-    function permissionIconFormatter(v) {
-        if (v == null) {
-            return 'default';
-        } else {
-            return v;
-        }
+    function updatePermissionTreeNode(node) {
+        console.debug(node);
     }
 
-    function formatterOptions(value, row, index) {
-        if (row.parentId == 0) {
-            var a = '<a href="#" data-cmd="addPermission"><span class="btn btn-add green"><spring:message code="common.add"/></span></a> ';
-            var e = '<a href="#"><span class="btn btn-edit disable"><spring:message code="common.edit"/></span></a> ';
-            var d = '<a href="#"><span class="btn btn-delete disable"><spring:message code="common.delete"/></span></a> ';
-            return a + e + d;
-        } else {
-            var a = '<a href="#" data-cmd="addPermission"><span class="btn btn-add green"><spring:message code="common.add"/></span></a> ';
-            var e = '<a href="#" data-cmd="editPermission"><span class="btn btn-edit default"><spring:message code="common.edit"/></span></a> ';
-            var d = '<a href="#" data-cmd="deletePermission"><span class="btn btn-delete red"><spring:message code="common.delete"/></span></a> ';
-            return a + e + d;
-        }
+    function appendPermissionTreeNode() {
+        var t = $('#permissionTree');
+        var node = t.tree('getSelected');
+        var parentNode = (node ? node.target : null);
+        var parentNodeId = 1000;
+        if (null != node) parentNodeId = node.id;
+        t.tree('append', {
+            parent: parentNode,
+            data: [{
+                pid: parentNodeId, text: '<spring:message code="common.tree.node"/>'
+            }]
+        });
     }
 
-    function addPermission() {
-        MXF.openDialog('addPermissionWin', '<spring:message code="common.add"/>', '/permission/edit', function (data) {
-            var node = $('#permissionGrid').treegrid('getSelected');
-            $('#permissionForm').form('load', {
-                'parentId': node.id
-            });
-        }, 600, 550);
-    }
-
-    function editPermission() {
-        var node = $('#permissionGrid').treegrid('getSelected');
-        if (node) {
-            MXF.openDialog('editPermissionWin', '<spring:message code="common.edit"/>', '/permission/edit?id=' + node.id, function () {
-                console.log('[dialog] open edit permission dialog..');
-            }, 600, 550);
-        }
-    }
-
-    function deletePermission() {
-        var node = $('#permissionGrid').treegrid('getSelected');
-        if (node.id) {
+    function removePermissionTreeNode() {
+        var node = $('#permissionTree').tree('getSelected');
+        if (node && node.id != null) {
             MXF.confirm('<spring:message code="message.delete"/>?', function () {
                 MXF.ajaxing(true);
                 $.post('/permission/delete', {id: node.id}, function (data) {
                     MXF.ajaxing(false);
                     MXF.ajaxFormDone(data);
                     if (data.success) {
-                        $('#permissionGrid').treegrid('reload');
+                        $('#permissionTree').tree('remove', node.target);
                     }
                 });
             });
         } else {
-            MXF.error('<spring:message code="message.select"/>');
+            $('#permissionTree').tree('remove', node.target);
         }
+    }
+
+    function collapsePermissionTree() {
+        var node = $('#permissionTree').tree('getSelected');
+        $('#permissionTree').tree('collapse', node.target);
+    }
+
+    function expandPermissionTree() {
+        var node = $('#permissionTree').tree('getSelected');
+        $('#permissionTree').tree('expand', node.target);
+    }
+
+    function reloadPermissionTree() {
+        $('#permissionTree').tree('reload');
     }
 
 </script>

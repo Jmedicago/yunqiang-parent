@@ -14,6 +14,7 @@ function initATarget() {
             var title = $this.context.innerText;
             var tab = tabs.tabs("getTab", title);
             if (tab) {
+                console.log('[INFO] On click cur tab.');
                 tabs.tabs("select", title);
             } else {
                 tabs.tabs('add', {

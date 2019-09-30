@@ -1,13 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<form id="permissionForm" method="post" action="/permission/store">
-    <input type="hidden" name="id" value="${sysPermission.id}"/>
-    <input type="hidden" name="parentId" value="${sysPermission.parentId}"/>
+<form id="permissionForm" style="width: 600px; margin: 0 auto;" method="post" action="/permission/store">
+    <input type="hidden" name="id"/>
     <div class="input-div">
         <label class="label-top"><spring:message code="permission.name"/></label>
-        <input class="easyui-textbox theme-textbox-radius" name="name" value="${sysPermission.name}" placeholder="<spring:message code="message.input"/>"
+        <input class="easyui-textbox theme-textbox-radius" name="name" value="${sysPermission.name}"
+               placeholder="<spring:message code="message.input"/>"
                data-options="required:true">
+    </div>
+    <div class="input-div">
+        <label class="label-top"><spring:message code="permission.parent"/></label>
+        <input id="permissionTreeCombo" class="easyui-combotree theme-textbox-radius" name="parentId" data-options="url:'/permission/json', method:'get',
+						onLoadSuccess:function() {
+							var comboTree = $('#permissionTreeCombo').combotree('tree');
+							$(comboTree).tree('collapseAll');
+						}">
     </div>
     <div class="input-div">
         <label class="label-top"><spring:message code="permission.icon"/></label>
@@ -15,10 +23,14 @@
     </div>
     <div class="input-div">
         <label class="label-top"><spring:message code="permission.type"/></label>
-        <select class="easyui-combobox" style="width:420px;" name="type">
+        <select class="easyui-combobox" style="width:450px;" name="type">
             <option value="0"><spring:message code="common.menu"/></option>
             <option value="1"><spring:message code="common.button"/></option>
         </select>
+    </div>
+    <div class="input-div">
+        <label class="label-top"><spring:message code="permission.sort"/></label>
+        <input class="easyui-textbox theme-textbox-radius" name="sort">
     </div>
     <div class="input-div">
         <label class="label-top"><spring:message code="permission.resource"/></label>
@@ -33,47 +45,24 @@
         <input class="easyui-textbox theme-textbox-radius" data-options="multiline:true" style="height:60px;"
                name="description" value="${sysPermission.description}">
     </div>
-    <div class="input-div" style="margin: 35px 0;text-align: center">
-        <a class="easyui-linkbutton button-lg button-default" onclick="storePermission(this)"><spring:message
-                code="common.submit"/></a>
-        <a class="easyui-linkbutton button-lg" onclick="MXF.clearForm(this)"><spring:message code="common.reset"/></a>
+    <div class="input-div" style="margin: 35px 0; padding-left: 100px; text-align: center">
+        <a class="easyui-linkbutton button-lg button-default" onclick="MXF.ajaxForm(this, permissionStoreCallBack)">
+            <spring:message code="common.submit"/>
+        </a>
+        <a class="easyui-linkbutton button-lg" onclick="MXF.clearForm(this)">
+            <spring:message code="common.reset"/>
+        </a>
     </div>
-    <hr style="border:0;margin-bottom:20px;"/>
 </form>
 
-<script>
-    function storePermission(obj, callbackFn, beforeSubmit) {
-        var $form = $(obj);
-        if (!$form.is('form')) {
-            $form = $(obj).closest('form');
+<script type="text/javascript">
+    function permissionStoreCallBack($form, data) {
+        if (data.success) {
+            //MXF.clearForm($form);
+            $('#permissionTree').tree('reload');
+            $('#permissionTreeCombo').combotree('reload');
         }
-        if (!$form.is('form')) return;
-        $form.form('submit', {
-            url: $form.attr('action'),
-            onSubmit: function (param) {
-                var isValid = $(this).form('enableValidation').form('validate');
-                if (isValid) {
-                    MXF.ajaxing(true);
-                }
-                if ($.isFunction(beforeSubmit)) {
-                    beforeSubmit(param);
-                }
-                return isValid;	// 返回false终止表单提交
-            },
-            success: function (text) {
-                var data = JSON.parse(text);
-                MXF.ajaxing(false);
-                MXF.ajaxFormDone(data);
-                if (data.success) {
-                    $('#permissionGrid').treegrid('reload');
-                    $('#addPermissionWin').window('close');
-                    if (callbackFn) {
-                        callbackFn($form, data);
-                    }
-                } else {
-                    MXF.error(data.message + data.info);
-                }
-            }
-        });
     }
 </script>
+
+

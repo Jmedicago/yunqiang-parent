@@ -1,7 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-<form method="post" action="/property-option/store">
+<form style="width: 600px; margin: 30px auto;" action="/property-option/store" method="post">
     <input type="hidden" name="id"/>
     <input type="hidden" name="property"/>
     <div class="input-div">
