@@ -177,3 +177,7 @@ orange {
     height: 30px;
     border-radius: 2px;
 }
+
+.tabs {
+    /*border-style: none !important;*/
+}

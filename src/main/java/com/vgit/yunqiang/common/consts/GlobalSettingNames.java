@@ -43,16 +43,24 @@ public interface GlobalSettingNames {
 
     /**
      * Default module
-     *
      */
     public static final String MODULE_DECLARE = "MODULE_DECLARE";
 
     /**
      * Baidu OCR
-     *
      */
     public static final String APPID = "APPID";
     public static final String API_KEY = "API_KEY";
     public static final String SECRET_KEY = "SECRET_KEY";
+
+    /**
+     * FTP
+     */
+    public static final String FTP_ADDRESS = "FTP_ADDRESS";
+    public static final String FTP_PORT = "FTP_PORT";
+    public static final String FTP_USERNAME = "FTP_USERNAME";
+    public static final String FTP_PASSWORD = "FTP_PASSWORD";
+    public static final String FTP_BASE_PATH = "FTP_BASE_PATH";
+    public static final String IMAGE_BASE_URL = "IMAGE_BASE_URL";
 
 }

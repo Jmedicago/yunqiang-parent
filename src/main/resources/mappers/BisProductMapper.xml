@@ -3,51 +3,62 @@
 <mapper namespace="com.vgit.yunqiang.mapper.BisProductMapper">
 
     <sql id="Base_Column_List">
-        id, name, parentId, description, status, createTime, updateTime, remark
+        id, name, stock, productType, code, state, saleCount, viewProperties, createTime, updateTime, remark
     </sql>
 
-    <select id="get" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisStock">
+    <select id="get" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisProduct">
         select
         <include refid="Base_Column_List"/>
-        from t_bis_stock
-        where id = #{id,jdbcType=BIGINT}
+        from t_bis_product
+        where id = #{id, jdbcType=BIGINT}
     </select>
 
     <delete id="delete" parameterType="java.lang.Long">
-        delete from t_bis_stock
-        where id = #{id,jdbcType=BIGINT}
+        delete from t_bis_product
+        where id = #{id, jdbcType=BIGINT}
     </delete>
 
-    <insert id="save" parameterType="com.vgit.yunqiang.pojo.BisStock">
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.BisProduct">
         <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
             SELECT LAST_INSERT_ID()
         </selectKey>
-        insert into t_bis_stock (
-        name, parentId, description, status, createTime, updateTime, remark
+        insert into t_bis_product (
+        name, stock, productType, code, state, saleCount, viewProperties, createTime, updateTime, remark
         )
         values (
-        #{name, jdbcType=VARCHAR}, #{createTime, jdbcType=BIGINT}, #{updateTime, jdbcType=BIGINT}, 
+        #{name, jdbcType=VARCHAR}, #{stock, jdbcType=BIGINT}, #{productType, jdbcType=BIGINT},
+        #{code, jdbcType=VARCHAR}, #{state, jdbcType=INTEGER}, #{saleCount, jdbcType=INTEGER},
+        #{viewProperties, jdbcType=VARCHAR}, #{createTime, jdbcType=BIGINT}, #{updateTime, jdbcType=BIGINT},
         #{remark, jdbcType=VARCHAR}
         )
     </insert>
 
-    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.BisStock">
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.BisProduct">
         <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
             SELECT LAST_INSERT_ID()
         </selectKey>
-        insert into t_bis_stock
+        insert into t_bis_product
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="name != null">
+            <if test="name">
                 name,
             </if>
-            <if test="parentId != null">
-                parentId,
+            <if test="stock">
+                stock,
             </if>
-            <if test="description != null">
-                description,
+            <if test="productType">
+                productType,
             </if>
-            <if test="status != null">
-                status,
+            <if test="code">
+                code,
+            </if>
+            <if test="state">
+                state,
+            </if>
+            <if test="saleCount">
+                saleCount,
+            </if>
+            <if test="viewProperties">
+                viewProperties,
             </if>
             <if test="createTime != null">
                 createTime,
@@ -55,22 +66,31 @@
             <if test="updateTime != null">
                 updateTime,
             </if>
-            <if test="remark != null">
+            <if test="remark">
                 remark,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="name != null">
+            <if test="name">
                 #{name, jdbcType=VARCHAR},
             </if>
-            <if test="parentId != null">
-                #{parentId, jdbcType=BIGINT},
+            <if test="stock">
+                #{stock, jdbcType=BIGINT},
             </if>
-            <if test="description != null">
-                #{description, jdbcType=VARCHAR},
+            <if test="productType">
+                #{productType, jdbcType=BIGINT},
             </if>
-            <if test="status != null">
-                #{status, jdbcType=TINYINT},
+            <if test="code">
+                #{code, jdbcType=VARCHAR},
+            </if>
+            <if test="state">
+                #{state, jdbcType=INTEGER},
+            </if>
+            <if test="saleCount">
+                #{saleCount, jdbcType=INTEGER},
+            </if>
+            <if test="viewProperties">
+                #{viewProperties, jdbcType=VARCHAR},
             </if>
             <if test="createTime != null">
                 #{createTime, jdbcType=BIGINT},
@@ -78,34 +98,35 @@
             <if test="updateTime != null">
                 #{updateTime, jdbcType=BIGINT},
             </if>
-            <if test="remark != null">
+            <if test="remark">
                 #{remark, jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
 
-    <update id="update" parameterType="com.vgit.yunqiang.pojo.BisStock">
-        update t_bis_stock
-        set name = #{name, jdbcType=VARCHAR}, parentId = #{parentId, jdbcType=BIGINT}, parentId = #{parentId, jdbcType=BIGINT},
-        status = #{status, jdbcType=TINYINT}, createTime = #{createTime, jdbcType=BIGINT}, updateTime = #{updateTime, jdbcType=BIGINT},
-        remark = #{remark, jdbcType=VARCHAR}
-        where id = #{id,jdbcType=BIGINT}
-    </update>
-
-    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.BisStock">
-        update t_bis_stock
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.BisProduct">
+        update t_bis_product
         <set>
-            <if test="name != null">
+            <if test="name">
                 name = #{name, jdbcType=VARCHAR},
             </if>
-            <if test="parentId != null">
-                parentId = #{parentId, jdbcType=BIGINT},
+            <if test="stock">
+                stock = #{stock, jdbcType=BIGINT},
             </if>
-            <if test="description != null">
-                description = #{description, jdbcType=VARCHAR},
+            <if test="productType">
+                productType = #{productType, jdbcType=BIGINT},
             </if>
-            <if test="status != null">
-                status = #{status, jdbcType=TINYINT},
+            <if test="code">
+                code = #{code, jdbcType=VARCHAR},
+            </if>
+            <if test="state">
+                state = #{state, jdbcType=INTEGER},
+            </if>
+            <if test="saleCount">
+                saleCount = #{saleCount, jdbcType=INTEGER},
+            </if>
+            <if test="viewProperties">
+                viewProperties = #{viewProperties, jdbcType=VARCHAR},
             </if>
             <if test="createTime != null">
                 createTime = #{createTime, jdbcType=BIGINT},
@@ -113,42 +134,120 @@
             <if test="updateTime != null">
                 updateTime = #{updateTime, jdbcType=BIGINT},
             </if>
-            <if test="remark != null">
+            <if test="remark">
                 remark = #{remark, jdbcType=VARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
 
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.BisProduct">
+        update t_bis_product
+        set
+        name = #{name, jdbcType=VARCHAR},
+        stock = #{stock, jdbcType=BIGINT},
+        productType = #{productType, jdbcType=BIGINT},
+        code = #{code, jdbcType=VARCHAR},
+        state = #{state, jdbcType=INTEGER},
+        saleCount = #{saleCount, jdbcType=INTEGER},
+        viewProperties = #{viewProperties, jdbcType=VARCHAR},
+        createTime = #{createTime, jdbcType=BIGINT},
+        updateTime = #{updateTime, jdbcType=BIGINT},
+        remark = #{remark, jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
     <sql id="whereSql">
         <where>
-            <if test="name!=null and name!=''">and s.name like CONCAT('%',#{name},'%')</if>
-            <if test="parentId !=null and parentId != ''"> and s.parentId = #{parentId}</if>
+            <if test="name!=null and name!=''">and p.name like CONCAT('%',#{name},'%')</if>
+            <if test="productType!=null">and p.productType=#{productType}</if>
         </where>
     </sql>
 
     <select id="queryTotal" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery" resultType="int">
-        select count(0) from t_bis_stock s
+        select count(0) from t_bis_product p
         <include refid="whereSql"/>
     </select>
 
     <select id="query" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery"
-            resultType="com.vgit.yunqiang.pojo.BisStock">
-        select * from t_bis_stock s
+            resultType="com.vgit.yunqiang.pojo.BisProduct">
+        select * from t_bis_product p
         <include refid="whereSql"/>
-        limit #{start},#{rows}
+        limit #{start}, #{rows}
     </select>
 
-    <select id="isParent" parameterType="java.lang.Long" resultType="java.lang.Boolean">
-        select count(1) from t_bis_stock where parentId = #{id}
+    <select id="getProperties" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisProperty">
+        select tp.* from t_bis_property tp, t_bis_product p, t_bis_product_property tpp where tp.id = tpp.propertyId and p.id = tpp.productId and p.id = #{productId}
     </select>
 
-    <delete id="deleteByParentId" parameterType="java.lang.Long">
-        delete from t_bis_stock where parentId = #{id}
+    <select id="getViewProperties" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisProperty">
+        select tp.* from t_bis_property tp, t_bis_product p, t_bis_product_property tpp where tp.id = tpp.propertyId and p.id = tpp.productId and p.id = #{productId} and tp.type=0
+    </select>
+
+    <delete id="deleteProperties" parameterType="java.lang.Long">
+        delete from t_bis_product_property
+        where productId = #{productId, jdbcType=BIGINT}
     </delete>
-    
-    <select id="queryTree" resultType="com.vgit.yunqiang.pojo.BisStock">
-        select * from t_bis_stock where parentId = #{parentId}
+
+    <insert id="saveProperties" parameterType="list">
+        INSERT INTO t_bis_product_property(productId, propertyId) VALUES
+        <foreach separator="," index="index" item="item" collection="list">
+            (#{item.productId}, #{item.propertyId})
+        </foreach>
+    </insert>
+
+    <delete id="deleteMedias" parameterType="java.lang.Long">
+        delete from t_bis_product_media
+        where productId = #{id, jdbcType=BIGINT}
+    </delete>
+
+    <insert id="saveMedias" parameterType="list">
+        INSERT INTO t_bis_product_media(productId, resource, updateTime, createTime) VALUES
+        <foreach separator="," index="index" item="item" collection="list">
+            (#{item.productId}, #{item.resource}, #{item.updateTime}, #{item.createTime})
+        </foreach>
+    </insert>
+
+    <select id="getMedias" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisProductMedia">
+        select * from t_bis_product_media where productId = #{id, jdbcType=BIGINT}
     </select>
-   
+
+    <select id="getSkuProperties" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisProperty">
+        select tp.* from t_bis_property tp, t_bis_product p, t_bis_product_property tpp where tp.id = tpp.propertyId and p.id = tpp.productId and p.id = #{productId} and tp.type = 1
+    </select>
+
+    <resultMap id="SkuResultMap" type="com.vgit.yunqiang.pojo.BisSku">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="productId" jdbcType="BIGINT" property="productId"/>
+        <result column="skuCode" jdbcType="VARCHAR" property="skuCode"/>
+        <result column="skuName" jdbcType="VARCHAR" property="skuName"/>
+        <result column="pack" jdbcType="INTEGER" property="pack"/>
+        <result column="volume" jdbcType="INTEGER" property="volume"/>
+        <result column="costPrice" jdbcType="INTEGER" property="costPrice"/>
+        <result column="marketPrice" jdbcType="INTEGER" property="marketPrice"/>
+        <result column="profit" jdbcType="INTEGER" property="profit"/>
+        <result column="supplier" jdbcType="VARCHAR" property="supplier"/>
+        <result column="container" jdbcType="VARCHAR" property="container"/>
+        <result column="availableStock" jdbcType="INTEGER" property="availableStock"/>
+        <result column="frozenStock" jdbcType="INTEGER" property="frozenStock"/>
+        <result column="pushStockTime" jdbcType="BIGINT" property="pushStockTime"/>
+        <result column="skuProperties" jdbcType="VARCHAR" property="skuProperties"/>
+        <result column="skuMainPic" jdbcType="VARCHAR" property="skuMainPic"/>
+        <result column="createTime" jdbcType="BIGINT" property="createTime"/>
+        <result column="updateTime" jdbcType="BIGINT" property="updateTime"/>
+        <collection property="skuPropertyList" javaType="list" ofType="com.vgit.yunqiang.pojo.BisSkuProperty">
+            <id column="spId" property="id"/>
+            <result column="propId" property="propId"/>
+            <result column="propName" property="propName"/>
+            <result column="optionId" property="optionId"/>
+            <result column="value" property="value"/>
+        </collection>
+    </resultMap>
+
+    <select id="getSkuList" parameterType="java.lang.Long" resultMap="SkuResultMap">
+        select ts.*, tsp.id spId, tsp.propId, tsp.propName, tsp.optionId, tsp.value from t_bis_sku ts
+        LEFT JOIN t_bis_sku_property tsp on ts.id = tsp.skuId
+        where ts.productId = #{productId} order by ts.id
+    </select>
+
 </mapper>

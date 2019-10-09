@@ -282,6 +282,22 @@ MXF.getPrefix = function (grid) {
     return urlPrefix;
 }
 
+$.fn.serializeObject = function () {
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function () {
+        if (o[this.name]) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+}
+
 //将指定的form表单变为ajax提交方式，然后提交表单
 MXF.ajaxForm = function (obj, callbackFn, beforeSubmit) {
     var $form = $(obj);
@@ -297,6 +313,9 @@ MXF.ajaxForm = function (obj, callbackFn, beforeSubmit) {
                 MXF.ajaxing(true);
             }
             if ($.isFunction(beforeSubmit)) {
+                // 提交前处理参数
+                /*var formData = $form.serializeObject();
+                console.log('formData', formData);*/
                 beforeSubmit(param);
             }
             return isValid;	// 返回false终止表单提交
@@ -306,7 +325,6 @@ MXF.ajaxForm = function (obj, callbackFn, beforeSubmit) {
             MXF.ajaxing(false);
             MXF.ajaxFormDone(data);
             if (data.success) {
-                console.log($form);
                 var formWindow = $form.data('window');
                 if (formWindow) {//关闭窗口
                     var formGrid = $form.data('grid');
@@ -547,6 +565,90 @@ MXF.openDialog = function (el, title, url, callback, width, height) {
         onClose: function () {
             editWindow.window('destroy');
         }
+    });
+}
+
+MXF.initPicFileUploader = function (data) {
+    $(".picFileUpload").each(function (i, e) {
+        var _ele = $(e);
+        _ele.siblings("div.pics").remove();
+        _ele.after('\
+    			<div class="pics">\
+        			<ul></ul>\
+        		</div>');
+
+        // 回显图片
+        if (data) {
+            var imgs = data.split(",");
+            for (var i in imgs) {
+                if ($.trim(imgs[i]).length > 0) {
+                    _ele.siblings(".pics").find("ul").append("<li style='display: inline-block;'><a style='display: block; height: 80px; width: 80px; border: 1px solid #eee; padding: 5px 5px; margin: 15px 10px 0 0;' href='" + imgs[i] + "' target='_blank'><img src='" + imgs[i] + "' width='80' height='80' /></a></li>");
+                }
+            }
+        }
+
+        //给“上传图片按钮”绑定click事件
+        $(e).click(function () {
+            var form = $(this).parentsUntil("form").parent("form");
+            // 编辑器参数
+            var kingEditorParams = {
+                //指定上传文件参数名称
+                filePostName: "uploadFile",
+                //指定上传文件请求的url。
+                uploadJson: '/resources/upload',
+                //上传类型，分别为image、flash、media、file
+                dir: "image"
+            };
+            //打开图片上传窗口
+            KindEditor.editor(kingEditorParams).loadPlugin('multiimage', function () {
+                var editor = this;
+                editor.plugin.multiImageDialog({
+                    clickFn: function (urlList) {
+                        var imgArray = [];
+                        KindEditor.each(urlList, function (i, data) {
+                            imgArray.push(data.url);
+                            form.find(".pics ul").append("<li style='display: inline-block;'><a style='display: block; height: 80px; width: 80px; border: 1px solid #eee; padding: 5px 5px; margin: 15px 10px 0 0;' href='" + data.url + "' target='_blank'><img src='" + data.url + "' width='80' height='80' /></a></li>");
+                        });
+                        form.find("[name=resources]").val(imgArray.join(","));
+                        editor.hideDialog();
+                    }
+                });
+            });
+        });
+    });
+}
+
+MXF.initOnePicUploader = function (data) {
+    // 图片回显
+    if (data) {
+        var input = $(".onePicUpload").siblings("input");
+        input.parent().find(".pic-are").remove();
+        input.val(data);
+        input.after("<a class='pic-are' style='display: block; width: 80px; height: 80px; border: 1px solid #eee; margin-top: 15px; padding: 5px;' href='" + data + "' target='_blank'><img src='" + data + "' width='80' height='80'/></a>")
+    }
+    $(".onePicUpload").click(function () {
+        var _self = $(this);
+        // 编辑器参数
+        var kingEditorParams = {
+            //指定上传文件参数名称
+            filePostName: "uploadFile",
+            //指定上传文件请求的url。
+            uploadJson: '/resources/upload',
+            //上传类型，分别为image、flash、media、file
+            dir: "image"
+        };
+        KindEditor.editor(kingEditorParams).loadPlugin('image', function () {
+            this.plugin.imageDialog({
+                showRemote: false,
+                clickFn: function (url, title, width, height, border, align) {
+                    var input = _self.siblings("input");
+                    input.parent().find(".pic-are").remove();
+                    input.val(url);
+                    input.after("<a class='pic-are' style='display: block; width: 80px; height: 80px; border: 1px solid #eee; margin-top: 15px; padding: 5px;' href='" + url + "' target='_blank'><img src='" + url + "' width='80' height='80'/></a>");
+                    this.hideDialog();
+                }
+            });
+        });
     });
 }
 

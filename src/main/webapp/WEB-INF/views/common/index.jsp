@@ -14,6 +14,7 @@
     <link href="/easyui/themes/insdep/easyui_plus.css" rel="stylesheet" type="text/css">
     <link href="/easyui/themes/insdep/insdep_theme_default.css" rel="stylesheet" type="text/css">
     <link href="/easyui/themes/insdep/icon.css" rel="stylesheet" type="text/css">
+    <link href="/easyui/plugin/kindeditor-4.1.10/themes/default/default.css" rel="stylesheet" type="text/css">
     <link href="/easyui/plugin/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="/easyui/my/core.css" rel="stylesheet" type="text/css">
 
@@ -143,6 +144,9 @@
 <script type="text/javascript" src="/easyui/plugin/qiniu/qiniu.js"></script>
 <script type="text/javascript" src="/easyui/plugin/qiniu/qiniu.uploader.js"></script>
 <link rel="stylesheet" href="/easyui/plugin/qiniu/qiniu.uploader.css" type="text/css"/>
+<!-- Kindeditor -->
+<script type="text/javascript" charset="utf-8" src="/easyui/plugin/kindeditor-4.1.10/kindeditor-all-min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/easyui/plugin/kindeditor-4.1.10/lang/zh_CN.js"></script>
 <!--第三方插件加载结束-->
 </body>
 </html>

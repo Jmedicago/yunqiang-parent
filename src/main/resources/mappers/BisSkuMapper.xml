@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vgit.yunqiang.mapper.BisSkuMapper">
+
+    <sql id="Base_Column_List">
+        id, productId, skuCode, skuName, pack, volume, costPrice, marketPrice, profit, supplier, container, availableStock, frozenStock, pushStockTime, skuProperties,
+        skuMainPic, createTime, updateTime, remark
+    </sql>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from t_bis_sku
+        where id = #{id, jdbcType=BIGINT}
+    </delete>
+
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.BisSku">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_bis_sku (
+        productId, skuCode, skuName, pack, volume, costPrice, marketPrice, profit, supplier, container, availableStock,
+        frozenStock, pushStockTime, skuProperties,
+        skuMainPic, createTime, updateTime, remark
+        )
+        values (
+        #{productId, jdbcType=BIGINT}, #{skuCode, jdbcType=VARCHAR}, #{skuName, jdbcType=VARCHAR},
+        #{pack, jdbcType=INTEGER}, #{volume, jdbcType=DOUBLE},
+        #{costPrice, jdbcType=DOUBLE}, #{marketPrice, jdbcType=DOUBLE}, #{profit, jdbcType=DOUBLE},
+        #{supplier, jdbcType=VARCHAR}, #{container, jdbcType=VARCHAR},
+        #{availableStock, jdbcType=INTEGER}, #{frozenStock, jdbcType=INTEGER}, #{pushStockTime, jdbcType=BIGINT},
+        #{skuProperties, jdbcType=VARCHAR}, #{skuMainPic, jdbcType=VARCHAR},
+        #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, #{remark, jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.BisSku">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_bis_sku
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productId != null">
+                productId,
+            </if>
+            <if test="skuCode != null">
+                skuCode,
+            </if>
+            <if test="skuName != null">
+                skuName,
+            </if>
+            <if test="pack != null">
+                pack,
+            </if>
+            <if test="volume != null">
+                volume,
+            </if>
+            <if test="costPrice != null">
+                costPrice,
+            </if>
+            <if test="marketPrice != null">
+                marketPrice,
+            </if>
+            <if test="profit != null">
+                profit,
+            </if>
+            <if test="supplier != null">
+                supplier,
+            </if>
+            <if test="container != null">
+                container,
+            </if>
+            <if test="availableStock != null">
+                availableStock,
+            </if>
+            <if test="frozenStock != null">
+                frozenStock,
+            </if>
+            <if test="pushStockTime != null">
+                pushStockTime,
+            </if>
+            <if test="skuProperties != null">
+                skuProperties,
+            </if>
+            <if test="skuMainPic != null">
+                skuMainPic,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+            <if test="updateTime != null">
+                updateTime,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productId != null">
+                #{productId, jdbcType=BIGINT},
+            </if>
+            <if test="skuCode != null">
+                #{skuCode, jdbcType=VARCHAR},
+            </if>
+            <if test="skuName != null">
+                #{skuName, jdbcType=VARCHAR},
+            </if>
+            <if test="pack != null">
+                #{pack, jdbcType=INTEGER},
+            </if>
+            <if test="volume != null">
+                #{volume, jdbcType=DOUBLE},
+            </if>
+            <if test="costPrice != null">
+                #{costPrice, jdbcType=DOUBLE},
+            </if>
+            <if test="marketPrice != null">
+                #{marketPrice, jdbcType=DOUBLE},
+            </if>
+            <if test="profit != null">
+                #{profit, jdbcType=DOUBLE},
+            </if>
+            <if test="supplier != null">
+                #{supplier, jdbcType=VARCHAR},
+            </if>
+            <if test="container != null">
+                #{container, jdbcType=VARCHAR},
+            </if>
+            <if test="availableStock != null">
+                #{availableStock, jdbcType=INTEGER},
+            </if>
+            <if test="frozenStock != null">
+                #{frozenStock, jdbcType=INTEGER},
+            </if>
+            <if test="pushStockTime != null">
+                #{pushStockTime, jdbcType=BIGINT},
+            </if>
+            <if test="skuProperties != null">
+                #{skuProperties, jdbcType=VARCHAR},
+            </if>
+            <if test="skuMainPic != null">
+                #{skuMainPic, jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                #{remark, jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.BisSku">
+        update t_bis_sku
+        <set>
+            <if test="productId != null">
+                productId = #{productId, jdbcType=BIGINT},
+            </if>
+            <if test="skuCode != null">
+                skuCode = #{skuCode, jdbcType=VARCHAR},
+            </if>
+            <if test="skuName != null">
+                skuName = #{skuName, jdbcType=VARCHAR},
+            </if>
+            <if test="pack != null">
+                pack = #{pack, jdbcType=INTEGER},
+            </if>
+            <if test="volume != null">
+                volume = #{volume, jdbcType=DOUBLE},
+            </if>
+            <if test="costPrice != null">
+                costPrice = #{costPrice, jdbcType=DOUBLE},
+            </if>
+            <if test="marketPrice != null">
+                marketPrice = #{marketPrice, jdbcType=DOUBLE},
+            </if>
+            <if test="profit != null">
+                profit = #{profit, jdbcType=DOUBLE},
+            </if>
+            <if test="supplier != null">
+                supplier = #{supplier, jdbcType=VARCHAR},
+            </if>
+            <if test="container != null">
+                container = #{container, jdbcType=VARCHAR},
+            </if>
+            <if test="availableStock != null">
+                availableStock = #{availableStock, jdbcType=INTEGER},
+            </if>
+            <if test="frozenStock != null">
+                frozenStock = #{frozenStock, jdbcType=INTEGER},
+            </if>
+            <if test="pushStockTime != null">
+                pushStockTime = #{pushStockTime, jdbcType=BIGINT},
+            </if>
+            <if test="skuProperties != null">
+                skuProperties = #{skuProperties, jdbcType=VARCHAR},
+            </if>
+            <if test="skuMainPic != null">
+                skuMainPic = #{skuMainPic, jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                createTime = #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark, jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.BisSku">
+        update t_bis_sku
+        set productId = #{productId, jdbcType=BIGINT}, skuCode = #{skuCode, jdbcType=VARCHAR}, skuName = #{skuName, jdbcType=VARCHAR},
+            pack = #{pack, jdbcType=INTEGER}, volume = #{volume, jdbcType=DOUBLE},
+            costPrice = #{costPrice, jdbcType=DOUBLE}, marketPrice = #{marketPrice, jdbcType=DOUBLE}, profit = #{profit, jdbcType=DOUBLE},
+            supplier = #{supplier, jdbcType=VARCHAR}, container = #{container, jdbcType=VARCHAR},
+            availableStock = #{availableStock, jdbcType=INTEGER}, frozenStock = #{frozenStock, jdbcType=INTEGER}, pushStockTime = #{pushStockTime, jdbcType=BIGINT},
+            skuProperties = #{skuProperties, jdbcType=VARCHAR}, skuMainPic = #{skuMainPic, jdbcType=VARCHAR},
+            createTime = #{createTime,jdbcType=BIGINT}, updateTime = #{updateTime,jdbcType=BIGINT}, remark = #{remark, jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <insert id="saveProperties" parameterType="list">
+        INSERT INTO t_bis_sku_property(skuId, propId, propName, optionId, value) VALUES
+        <foreach separator="," index="index" item="item" collection="list">
+            (#{item.skuId}, #{item.propId}, #{item.propName}, #{item.optionId}, #{item.value})
+        </foreach>
+    </insert>
+
+    <delete id="deleteProperties" parameterType="java.lang.Long">
+        delete from t_bis_sku_property
+        where skuId = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <select id="getMaxCode" parameterType="java.lang.Long" resultType="java.lang.String">
+        select max(skuCode) from t_bis_sku where productId = #{productId}
+    </select>
+
+    <resultMap id="SkuResultMap" type="com.vgit.yunqiang.pojo.BisSku">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="productId" jdbcType="BIGINT" property="productId" />
+        <result column="skuCode" jdbcType="VARCHAR" property="skuCode" />
+        <result column="skuName" jdbcType="VARCHAR" property="skuName" />
+        <result column="pack" jdbcType="INTEGER" property="pack" />
+        <result column="volume" jdbcType="DOUBLE" property="volume" />
+        <result column="costPrice" jdbcType="DOUBLE" property="costPrice" />
+        <result column="marketPrice" jdbcType="DOUBLE" property="marketPrice" />
+        <result column="profit" jdbcType="DOUBLE" property="profit" />
+        <result column="supplier" jdbcType="VARCHAR" property="supplier" />
+        <result column="container" jdbcType="VARCHAR" property="container" />
+        <result column="availableStock" jdbcType="INTEGER" property="availableStock" />
+        <result column="frozenStock" jdbcType="INTEGER" property="frozenStock" />
+        <result column="pushStockTime" jdbcType="BIGINT" property="pushStockTime"/>
+        <result column="skuProperties" jdbcType="VARCHAR" property="skuProperties" />
+        <result column="skuMainPic" jdbcType="VARCHAR" property="skuMainPic" />
+        <result column="createTime" jdbcType="BIGINT" property="createTime" />
+        <result column="updateTime" jdbcType="BIGINT" property="updateTime" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <collection property="skuPropertyList" javaType="list" ofType="com.vgit.yunqiang.pojo.BisSkuProperty">
+            <id column="spId" property="id"/>
+            <result column="propId" property="propId"/>
+            <result column="propName" property="propName"/>
+            <result column="optionId" property="optionId"/>
+            <result column="value" property="value"/>
+        </collection>
+    </resultMap>
+
+    <select id="get" parameterType="java.lang.Long" resultMap="SkuResultMap">
+        select ts.*, tsp.id spId, tsp.propId, tsp.propName, tsp.optionId, tsp.value from t_bis_sku ts LEFT JOIN t_bis_sku_property tsp on ts.id = tsp.skuId
+        where ts.id = #{id} order by ts.id
+    </select>
+
+</mapper>

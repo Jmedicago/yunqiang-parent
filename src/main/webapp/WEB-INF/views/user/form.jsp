@@ -24,7 +24,7 @@
                 style="width:420px;">
         </select>
     </div>
-    <div class="input-div" style="text-align: center;margin-top: 35px">
+    <div class="input-div" style="text-align: center; margin-top: 35px">
         <a class="easyui-linkbutton button-lg button-default" onclick="MXF.ajaxForm(this)"><spring:message
                 code="common.submit"/></a>
         <a class="easyui-linkbutton button-lg" onclick="MXF.clearForm(this)"><spring:message code="common.reset"/></a>

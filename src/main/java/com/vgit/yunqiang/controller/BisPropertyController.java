@@ -4,6 +4,7 @@ import com.vgit.yunqiang.common.query.PropertyQuery;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.controller.consts.ControllerConsts;
 import com.vgit.yunqiang.pojo.BisProperty;
+import com.vgit.yunqiang.pojo.BisPropertyOption;
 import com.vgit.yunqiang.service.BisPropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,6 +50,12 @@ public class BisPropertyController {
     public Ret store(BisProperty property) {
         this.bisPropertyService.saveOrUpdateProperty(property);
         return Ret.me();
+    }
+
+    @RequestMapping("/getOptions")
+    @ResponseBody
+    public List<BisPropertyOption> getOptions(Long id){
+        return this.bisPropertyService.getOptions(id);
     }
 
 }

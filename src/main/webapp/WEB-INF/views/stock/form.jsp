@@ -22,7 +22,7 @@
         <input class="easyui-textbox theme-textbox-radius" data-options="multiline:true" style="height:60px;"
                name="description" value="${bisStock.description}">
     </div>
-    <div class="input-div" style="margin: 35px 0; padding-left: 100px; text-align: center">
+    <div class="input-div" style="margin: 35px 0; text-align: center">
         <a class="easyui-linkbutton button-lg button-default" onclick="MXF.ajaxForm(this, stockStoreCallBack)">
             <spring:message code="common.submit"/>
         </a>

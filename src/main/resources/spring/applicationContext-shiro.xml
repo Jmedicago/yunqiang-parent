@@ -141,6 +141,7 @@
                 <!-- 静态资源不拦截 -->
                 /static/** = anon
                 /easyui/** = anon
+                /resources/** = anon
                 <!-- 登录页面不拦截 -->
                 /login = anon
                 <!-- Shiro提供了退出登录的配置`logout`，会生成路径为`/logout`的请求地址，访问这个地址即会退出当前账户并清空缓存 -->
