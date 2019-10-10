@@ -3,7 +3,7 @@
 <mapper namespace="com.vgit.yunqiang.mapper.SysUserMapper">
 
     <sql id="Base_Column_List">
-        id, username, email, phone, password, salt, roleIds, status, createTime, updateTime
+        id, username, email, phone, password, salt, roleIds, stockIds, status, createTime, updateTime
     </sql>
 
     <select id="get" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.SysUser">
@@ -23,12 +23,13 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
         insert into t_sys_user (
-        username, email, phone, password, salt, roleIds, status, createTime, updateTime
+        username, email, phone, password, salt, roleIds, stockIds, status, createTime, updateTime
         )
         values (
         #{username, jdbcType=VARCHAR}, #{email, jdbcType=VARCHAR}, #{phone, jdbcType=VARCHAR},
         #{password, jdbcType=VARCHAR}, #{salt, jdbcType=VARCHAR}, #{roleIds, jdbcType=VARCHAR},
-        #{status, jdbcType=TINYINT}, #{createTime, jdbcType=BIGINT}, #{updateTime, jdbcType=BIGINT}
+        #{stockIds, jdbcType=VARCHAR}, #{status, jdbcType=TINYINT}, #{createTime, jdbcType=BIGINT}, 
+        #{updateTime, jdbcType=BIGINT}
         )
     </insert>
 
@@ -55,6 +56,9 @@
             </if>
             <if test="roleIds != null">
                 roleIds,
+            </if>
+            <if test="stockIds != null">
+                stockIds,
             </if>
             <if test="status != null">
                 status,
@@ -85,6 +89,9 @@
             <if test="roleIds != null">
                 #{roleIds, jdbcType=VARCHAR},
             </if>
+            <if test="stockIds != null">
+                #{stockIds, jdbcType=VARCHAR},
+            </if>
             <if test="status != null">
                 #{status, jdbcType=TINYINT},
             </if>
@@ -101,7 +108,8 @@
         update t_sys_user
         set username = #{username, jdbcType=VARCHAR}, email = #{email, jdbcType=VARCHAR}, phone = #{phone, jdbcType=VARCHAR},
         password = #{password, jdbcType=VARCHAR}, salt = #{salt, jdbcType=VARCHAR}, roleIds = #{roleIds, jdbcType=VARCHAR},
-        status = #{status, jdbcType=TINYINT}, createTime = #{createTime, jdbcType=BIGINT}, updateTime = #{updateTime, jdbcType=BIGINT},
+        stockIds = #{stockIds, jdbcType=VARCHAR}, status = #{status, jdbcType=TINYINT}, createTime = #{createTime, jdbcType=BIGINT}, 
+        updateTime = #{updateTime, jdbcType=BIGINT},
         where id = #{id,jdbcType=BIGINT}
     </update>
 
@@ -125,6 +133,9 @@
             </if>
             <if test="roleIds != null">
                 roleIds = #{roleIds, jdbcType=VARCHAR},
+            </if>
+            <if test="stockIds != null">
+                stockIds = #{stockIds, jdbcType=VARCHAR},
             </if>
             <if test="status != null">
                 status = #{status, jdbcType=TINYINT},
@@ -153,7 +164,7 @@
 
     <select id="query" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery"
             resultType="com.vgit.yunqiang.pojo.SysUser">
-        select u.id, u.username, u.email, u.phone, u.roleIds, u.status, u.createTime, u.updateTime from t_sys_user u
+        select u.id, u.username, u.email, u.phone, u.roleIds, u.stockIds, u.status, u.createTime, u.updateTime from t_sys_user u
         <include refid="whereSql"/>
         limit #{start},#{rows}
     </select>
@@ -203,5 +214,13 @@
     <delete id="deleteAllUserRoles" parameterType="java.lang.Long">
         DELETE FROM t_sys_user_role WHERE userId = #{userId}
     </delete>
+    
+    <delete id="deleteAllUserStocks" parameterType="java.lang.Long">
+    	DELETE FROM t_bis_user_stock WHERE userId = #{userId}
+    </delete>
+    
+    <insert id="correlationStocks" parameterType="java.lang.Long">
+        INSERT INTO t_bis_user_stock(userId, stockId) VALUES(#{userId}, #{stockId})
+    </insert>
 
 </mapper>

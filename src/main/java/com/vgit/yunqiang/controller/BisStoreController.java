@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import com.vgit.yunqiang.common.query.StockQuery;
+import com.vgit.yunqiang.common.query.base.BaseQuery;
 import com.vgit.yunqiang.common.service.TreeGridService;
 import com.vgit.yunqiang.common.utils.Ret;
 import org.apache.shiro.authz.annotation.Logical;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.vgit.yunqiang.controller.consts.ControllerConsts;
 import com.vgit.yunqiang.pojo.BisStock;
+import com.vgit.yunqiang.pojo.SysPermission;
 import com.vgit.yunqiang.service.BisStockService;
 
 @Controller
@@ -40,6 +42,13 @@ public class BisStoreController {
     @ResponseBody
     public List<BisStock> json(StockQuery query) {
         return this.bisStockService.treegrid(TreeGridService.ROOT, query);
+    }
+    
+    @RequestMapping(ControllerConsts.URL_COMBO)
+    @ResponseBody
+    public List<BisStock> combo() {
+        // 查询所有仓库
+        return this.bisStockService.treegrid(TreeGridService.ROOT, new BaseQuery());
     }
 
     @RequestMapping(ControllerConsts.URL_EDIT)

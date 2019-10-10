@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vgit.yunqiang.mapper.BisUserStockMapper">
+
+    <sql id="Base_Column_List">
+        id, userId, stockId
+    </sql>
+
+    <select id="get" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisUserStock">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bis_user_stock
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from t_bis_user_stock
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.BisUserStock">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_sys_user_stock (
+        userId, stockId
+        )
+        values (
+        #{userId, jdbcType=BIGINT}, #{stockId, jdbcType=BIGINT}
+        )
+    </insert>
+
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.BisUserStock">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_bis_user_stock
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                userId,
+            </if>
+            <if test="stockId != null">
+                stockId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId, jdbcType=BIGINT},
+            </if>
+            <if test="stockId != null">
+                #{stockId, jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.BisUserStock">
+        update t_bis_user_stock
+        set userId = #{userId, jdbcType=BIGINT}, stockId = #{stockId, jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.BisUserStock">
+        update t_bis_user_stock
+        <set>
+            <if test="userId != null">
+                userId = #{userId, jdbcType=BIGINT},
+            </if>
+            <if test="stockId != null">
+                stockId = #{stockId, jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+</mapper>

@@ -66,4 +66,19 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      */
     void deleteAllUserRoles(@Param("userId") Long userId);
 
+    /**
+     * 删除此用户关联的所有区域信息
+     *
+     * @param userId
+     */
+	void deleteAllUserStocks(@Param("userId") Long userId);
+
+	/**
+     * 创建用户 - 角色关系
+     *
+     * @param userId
+     * @param stockId
+     */
+	void correlationStocks(@Param("userId") Long userId, @Param("stockId") Long stockId);
+
 }

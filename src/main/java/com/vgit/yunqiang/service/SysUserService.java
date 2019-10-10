@@ -70,4 +70,19 @@ public interface SysUserService extends BaseService<SysUser> {
      * @param user
      */
     SysUser saveOrUpdateUser(SysUser user);
+
+    /**
+     * 删除此用户关联的所有归属信息
+     *
+     * @param id
+     */
+	void deleteAllUserStocks(Long id);
+
+	 /**
+     * 添加用户 - 归属关系
+     *
+     * @param userId
+     * @param stockIds
+     */
+	void correlationStocks(Long userId, Long... stockIds);
 }

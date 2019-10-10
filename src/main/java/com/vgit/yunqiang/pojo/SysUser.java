@@ -22,6 +22,8 @@ public class SysUser {
     private String salt;
 
     private String roleIds;
+    
+    private String stockIds;
 
     private Byte status;
 
@@ -85,7 +87,15 @@ public class SysUser {
         this.roleIds = roleIds;
     }
 
-    public Byte getStatus() {
+    public String getStockIds() {
+		return stockIds;
+	}
+
+	public void setStockIds(String stockIds) {
+		this.stockIds = stockIds;
+	}
+
+	public Byte getStatus() {
         return status;
     }
 

@@ -221,6 +221,12 @@
             <artifactId>solr-solrj</artifactId>
             <version>${solrj.version}</version>
         </dependency>
+        <!-- Excel -->
+        <dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>3.17</version>
+		</dependency>
     </dependencies>
 
     <build>

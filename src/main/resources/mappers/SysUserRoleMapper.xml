@@ -47,7 +47,7 @@
             <if test="userId != null">
                 #{userId, jdbcType=BIGINT},
             </if>
-            <if test="roleIds != null">
+            <if test="roleId != null">
                 #{roleId, jdbcType=BIGINT},
             </if>
         </trim>

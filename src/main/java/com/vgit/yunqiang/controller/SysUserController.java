@@ -9,6 +9,8 @@ import com.vgit.yunqiang.controller.consts.ControllerConsts;
 import com.vgit.yunqiang.pojo.SysRole;
 import com.vgit.yunqiang.pojo.SysUser;
 import com.vgit.yunqiang.service.SysUserService;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -45,10 +47,17 @@ public class SysUserController {
         if (id != null) {
             SysUser sysUser = this.sysUserService.get(id);
             // 获取用户角色集合ID字符串集合
-            String[] arr = sysUser.getRoleIds().split(",");
-            List<String> roles =  Arrays.asList(arr);
+            String[] roleArr = sysUser.getRoleIds().split(",");
+            List<String> roles =  Arrays.asList(roleArr);
             LOGGER.info("用户拥有的角色{}", roles);
             model.addAttribute("selectRoles", roles);
+            if (StringUtils.isNotBlank(sysUser.getStockIds())) {
+            	 // 获取用户所属区域集合ID字符串集合
+                String[] stockArr = sysUser.getStockIds().split(",");
+                List<String> stocks =  Arrays.asList(stockArr);
+                LOGGER.info("用户归属区域{}", stocks);
+                model.addAttribute("selectStocks", stocks);
+            }
             // 用户信息
             LOGGER.info("用户信息{}", sysUser);
             model.addAttribute("sysUser", sysUser);
@@ -87,6 +96,12 @@ public class SysUserController {
         if (user != null) {
             this.sysUserService.deleteAllUserRoles(user.getId());
             this.sysUserService.correlationRoles(user.getId(), StrUtils.splitToLong(user.getRoleIds(), ","));
+        }
+        
+        // 更新用户所属区域信息
+        if (user != null) {
+        	this.sysUserService.deleteAllUserStocks(user.getId());
+        	this.sysUserService.correlationStocks(user.getId(), StrUtils.splitToLong(user.getStockIds(), ","));
         }
 
         return Ret.me();

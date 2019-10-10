@@ -100,4 +100,23 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
         return this.mapper.exists(userId, roleId);
     }
 
+	@Override
+	public void deleteAllUserStocks(Long id) {
+		// TODO Auto-generated method stub
+		this.mapper.deleteAllUserStocks(id);
+	}
+
+	@Override
+	public void correlationStocks(Long userId, Long... stockIds) {
+		// TODO Auto-generated method stub
+		if (stockIds == null || stockIds.length == 0) {
+            return;
+        }
+        for (Long stockId : stockIds) {
+            if (!exists(userId, stockId)) {
+                this.mapper.correlationStocks(userId, stockId);
+            }
+        }
+	}
+
 }

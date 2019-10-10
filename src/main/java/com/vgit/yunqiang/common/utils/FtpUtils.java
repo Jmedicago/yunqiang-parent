@@ -5,6 +5,8 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
+import com.vgit.yunqiang.common.consts.GlobalSettingNames;
+
 import java.io.*;
 
 /**
@@ -134,8 +136,14 @@ public class FtpUtils {
 
     public static void main(String[] args) {
         try {
-            FileInputStream in = new FileInputStream(new File("F:\\69185527.jpg"));
-            boolean flag = uploadFile("47.101.150.9", 21, "yunqiang", "p6Dx8bz6dk7cyZYN", "/www/wwwroot/yunqiang/images", "/2019/10/08", "test01.jpg", in);
+            FileInputStream in = new FileInputStream(new File("C:\\Users\\Admin\\Desktop\\1\\1.png"));
+            boolean flag = uploadFile(
+            		GlobalSetting.get(GlobalSettingNames.FTP_ADDRESS), 
+            		Integer.parseInt(GlobalSetting.get(GlobalSettingNames.FTP_PORT)),
+            		GlobalSetting.get(GlobalSettingNames.FTP_USERNAME),
+            		GlobalSetting.get(GlobalSettingNames.FTP_PASSWORD), 
+            		GlobalSetting.get(GlobalSettingNames.FTP_BASE_PATH),
+            		"/2019/10/08", "test01.jpg", in);
             System.out.println(flag);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
