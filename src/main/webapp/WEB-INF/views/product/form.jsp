@@ -15,7 +15,7 @@
     <div class="input-div">
         <label class="label-top"><spring:message code="product.stock"/></label>
         <input class="easyui-combotree theme-textbox-radius" name="stock"
-               data-options="required: true, url: '/stock/json', method: 'get'">
+               data-options="url: '/stock/json', method: 'get'">
     </div>
     <div class="input-div">
         <label class="label-top"><spring:message code="product.code"/></label>
