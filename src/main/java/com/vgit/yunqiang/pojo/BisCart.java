@@ -22,6 +22,8 @@ public class BisCart extends BasePojo {
 
     private Boolean selected;
 
+    private BisSku sku;
+
     public Long getId() {
         return id;
     }
@@ -92,6 +94,14 @@ public class BisCart extends BasePojo {
 
     public void setSelected(Boolean selected) {
         this.selected = selected;
+    }
+
+    public BisSku getSku() {
+        return sku;
+    }
+
+    public void setSku(BisSku sku) {
+        this.sku = sku;
     }
 
     @Override

@@ -54,15 +54,15 @@ public class IndexController {
             request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, LocaleContextHolder.getLocale());
         }
 
-        String username = (String) SecurityUtils.getSubject().getPrincipal();
-        if (StringUtils.isNotBlank(username)) {
+        SysUser existUser = (SysUser) SecurityUtils.getSubject().getPrincipal();
+        if (existUser.isNotEmpty()) {
             // 当前登录用户信息
-            SysUser userInfo = this.sysUserService.findByUsername(username);
-            LOGGER.info("当前登录系统用户信息={}", username);
-            model.addAttribute("userInfo", userInfo);
+            // SysUser userInfo = this.sysUserService.findByUsername(username);
+            LOGGER.info("当前登录系统用户信息={}", existUser);
+            model.addAttribute("userInfo", existUser);
 
             // 角色列表
-            List<SysRole> roles = this.sysUserService.findRoles(username);
+            List<SysRole> roles = this.sysUserService.findRoles(existUser.getUsername());
             model.addAttribute("roleInfo", roles);
 
             // 菜单列表
