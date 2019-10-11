@@ -2,6 +2,65 @@ package com.vgit.yunqiang.mapper;
 
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.pojo.BisCart;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface BisCartMapper extends BaseMapper<BisCart> {
+
+    /**
+     * 通过userId获取购物车中skuId的购物条目
+     *
+     * @param userId
+     * @param skuId
+     * @return
+     */
+    BisCart getByUserSku(@Param("userId") Long userId, @Param("skuId") Long skuId);
+
+    /**
+     * 用户删除购物车
+     *
+     * @param userId
+     * @param cartIds
+     */
+    void delCartByUser(@Param("userId") Long userId, @Param("cartIds") Long[] cartIds);
+
+    /**
+     * 修改购物车条目数量
+     *
+     * @param userId
+     * @param cartId
+     * @param number
+     */
+    void changeNumber(Long userId, Long cartId, Integer number);
+
+    /**
+     * 取消用户已选择的购物车所有条目
+     *
+     * @param userId
+     */
+    void cancelSelectAll(Long userId);
+
+    /**
+     * 选中购物车
+     *
+     * @param userId
+     * @param cartIdArr
+     */
+    void updateSelectCart(Long userId, Long[] cartIdArr);
+
+    /**
+     * 获取用户购物车数据
+     *
+     * @param userId
+     * @return
+     */
+    List<BisCart> getCarts(Long userId);
+
+    /**
+     * 删除购物车已购买部分的数据
+     *
+     * @param userId
+     */
+    void clearQuick(Long userId);
 }
