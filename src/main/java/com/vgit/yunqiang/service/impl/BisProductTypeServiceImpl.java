@@ -18,34 +18,55 @@ import com.vgit.yunqiang.service.BisProductTypeService;
 @Service
 public class BisProductTypeServiceImpl extends TreeGridServiceImpl<BisProductType> implements BisProductTypeService {
 
-	@Autowired
-	private BisProductTypeMapper mapper;
+    @Autowired
+    private BisProductTypeMapper mapper;
 
-	@Override
-	protected BaseMapper<BisProductType> getMapper() {
-		// TODO Auto-generated method stub
-		return this.mapper;
-	}
+    @Override
+    protected BaseMapper<BisProductType> getMapper() {
+        // TODO Auto-generated method stub
+        return this.mapper;
+    }
 
-	@Override
-	public BisProductType saveOrUpdateProductType(BisProductType productType) {
-		if (productType.getId() == null) {
-			productType.setSort(100);
+    @Override
+    public BisProductType saveOrUpdateProductType(BisProductType productType) {
+        if (productType.getId() == null) {
+            productType.setSort(100);
             this.mapper.savePart(productType);
+            this.handleSave(productType);
+            this.mapper.updatePart(productType);
         } else {
+            this.handleSave(productType);
             this.mapper.updatePart(productType);
         }
         return productType;
-	}
+    }
 
-	@Override
-	public Ret deleteById(Long id) {
-		BisProductType productType = this.mapper.get(id);
-		if (productType != null && productType.getParentId() == TreeGridService.ROOT) {
-			return Ret.me().setSuccess(false).setCode(ICodes.NOT_AUTHORIZED);
-		}
-		this.delByRoot(id); // 删除该节点及所有子节点
-		return Ret.me().setSuccess(true).setCode(ICodes.SUCCESS);
-	}
+    @Override
+    public Ret deleteById(Long id) {
+        BisProductType productType = this.mapper.get(id);
+        if (productType != null && productType.getParentId() == TreeGridService.ROOT) {
+            return Ret.me().setSuccess(false).setCode(ICodes.NOT_AUTHORIZED);
+        }
+        this.delByRoot(id); // 删除该节点及所有子节点
+        return Ret.me().setSuccess(true).setCode(ICodes.SUCCESS);
+    }
+
+    /**
+     * 存储修改分类前进行预处理数据
+     *
+     * @param o
+     */
+    private void handleSave(BisProductType o) {
+        Long id = o.getId();
+        Long pid = o.getParentId();
+        String path = "";
+        if (pid == null || 0 == pid) { // 一级分类
+            path = "." + id + ".";
+        } else { // 子类
+            BisProductType parentType = this.get(pid);
+            path = parentType.getPath() + id + ".";
+        }
+        o.setPath(path);
+    }
 
 }

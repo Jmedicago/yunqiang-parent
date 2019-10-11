@@ -9,6 +9,7 @@ import com.vgit.yunqiang.mapper.BisProductMapper;
 import com.vgit.yunqiang.mapper.BisSkuMapper;
 import com.vgit.yunqiang.pojo.*;
 import com.vgit.yunqiang.service.BisProductService;
+import com.vgit.yunqiang.service.BisProductTypeService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,9 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
 
     @Autowired
     private BisSkuMapper skuMapper;
+
+    @Autowired
+    private BisProductTypeService bisProductTypeService;
 
     @Override
     protected BaseMapper<BisProduct> getMapper() {

@@ -34,16 +34,16 @@ public class SysUserRealm extends AuthorizingRealm {
      */
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         LOGGER.info("权限校验--执行了doGetAuthorizationInfo...");
-        String username = (String) principals.getPrimaryPrincipal();
+        SysUser existUser = (SysUser) principals.getPrimaryPrincipal();
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         Set<String> roles = new HashSet<String>();
-        List<SysRole> roleList = this.sysUserService.findRoles(username);
+        List<SysRole> roleList = this.sysUserService.findRoles(existUser.getUsername());
         for (SysRole role : roleList) {
             roles.add(role.getRole());
         }
         authorizationInfo.setRoles(roles);
         Set<String> permissions = new HashSet<String>();
-        List<SysPermission> permissionList = this.sysUserService.findPermissions(username);
+        List<SysPermission> permissionList = this.sysUserService.findPermissions(existUser.getUsername());
         for (SysPermission permission : permissionList) {
             if (StringUtils.isNotBlank(permission.getPermission())) {
                 permissions.add(permission.getPermission());

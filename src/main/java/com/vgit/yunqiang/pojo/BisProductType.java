@@ -1,75 +1,97 @@
 package com.vgit.yunqiang.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.List;
 
 public class BisProductType implements Serializable {
 
-	private Long id;
-	
-	private String name;
-	
-	private Long parentId;
-	
-	private Integer sort;
+    private Long id;
 
-	private String text;
-	
-	private List<BisProductType> children;
+    private String name;
 
-	public Long getId() {
-		return id;
-	}
+    private Long parentId;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    private Integer sort;
 
-	public String getName() {
-		return name;
-	}
+    private String path;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private String text;
 
-	public Long getParentId() {
-		return parentId;
-	}
+    private List<BisProductType> children;
 
-	public void setParentId(Long parentId) {
-		this.parentId = parentId;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public Integer getSort() {
-		return sort;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setSort(Integer sort) {
-		this.sort = sort;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getText() {
-		return name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public List<BisProductType> getChildren() {
-		return children;
-	}
+    public Long getParentId() {
+        return parentId;
+    }
 
-	public void setChildren(List<BisProductType> children) {
-		this.children = children;
-	}
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
 
-	@Override
-	public String toString() {
-		return "BisProductType{" +
-				"id=" + id +
-				", name='" + name + '\'' +
-				", parentId=" + parentId +
-				", sort=" + sort +
-				", children=" + children +
-				'}';
-	}
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getText() {
+        return name;
+    }
+
+    public List<BisProductType> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<BisProductType> children) {
+        this.children = children;
+    }
+
+    @JsonIgnore
+    public boolean isEmpty() {
+        if (this == null) return true;
+        return false;
+    }
+
+    public boolean isNotEmpty() {
+        return !isEmpty();
+    }
+
+    @Override
+    public String toString() {
+        return "BisProductType{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", parentId=" + parentId +
+                ", sort=" + sort +
+                ", children=" + children +
+                '}';
+    }
 
 }

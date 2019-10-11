@@ -159,19 +159,19 @@
 
     <sql id="whereSql">
         <where>
-            <if test="name!=null and name!=''">and p.name like CONCAT('%',#{name},'%')</if>
-            <if test="productType!=null">and p.productType=#{productType}</if>
+            <if test="name!=null and name!=''">and p.name like CONCAT('%', #{name}, '%')</if>
+            <if test="productType!=null">and pt.path like CONCAT('%', #{productType}, '%')</if>
         </where>
     </sql>
 
     <select id="queryTotal" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery" resultType="int">
-        select count(0) from t_bis_product p
+        select count(0) from t_bis_product p left join t_bis_product_type pt on p.productType = pt.id
         <include refid="whereSql"/>
     </select>
 
     <select id="query" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery"
             resultType="com.vgit.yunqiang.pojo.BisProduct">
-        select * from t_bis_product p
+        select p.* from t_bis_product p left join t_bis_product_type pt on p.productType = pt.id
         <include refid="whereSql"/>
         limit #{start}, #{rows}
     </select>

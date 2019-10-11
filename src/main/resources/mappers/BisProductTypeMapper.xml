@@ -3,7 +3,7 @@
 <mapper namespace="com.vgit.yunqiang.mapper.BisProductTypeMapper">
 
     <sql id="Base_Column_List">
-        id, name, parentId, sort
+        id, name, parentId, sort, path
     </sql>
 
     <select id="get" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisProductType">
@@ -23,10 +23,10 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
         insert into t_bis_product_type (
-        name, parentId, sort
+        name, parentId, sort, path
         )
         values (
-        #{name, jdbcType=VARCHAR}, #{parentId, jdbcType=BIGINT}, #{sort, jdbcType=INTEGER}
+        #{name, jdbcType=VARCHAR}, #{parentId, jdbcType=BIGINT}, #{sort, jdbcType=INTEGER}, #{path, jdbcType=VARCHAR}
         )
     </insert>
 
@@ -45,6 +45,9 @@
             <if test="sort != null">
                 sort,
             </if>
+            <if test="path != null">
+                path,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="name != null">
@@ -56,12 +59,15 @@
             <if test="sort != null">
                 #{sort, jdbcType=INTEGER},
             </if>
+            <if test="path != null">
+                #{path, jdbcType=VARCHAR},
+            </if>
         </trim>
     </insert>
 
     <update id="update" parameterType="com.vgit.yunqiang.pojo.BisProductType">
         update t_bis_product_type
-        set name = #{name, jdbcType=VARCHAR}, parentId = #{parentId, jdbcType=BIGINT}, sort = #{sort, jdbcType=INTEGER},
+        set name = #{name, jdbcType=VARCHAR}, parentId = #{parentId, jdbcType=BIGINT}, sort = #{sort, jdbcType=INTEGER}, path = #{path, jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
@@ -76,6 +82,9 @@
             </if>
             <if test="sort != null">
                 sort = #{sort, jdbcType=INTEGER},
+            </if>
+            <if test="path != null">
+                path = #{path, jdbcType=VARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
