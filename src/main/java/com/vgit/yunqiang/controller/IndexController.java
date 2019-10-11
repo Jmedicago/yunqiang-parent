@@ -57,7 +57,6 @@ public class IndexController {
         SysUser existUser = (SysUser) SecurityUtils.getSubject().getPrincipal();
         if (existUser.isNotEmpty()) {
             // 当前登录用户信息
-            // SysUser userInfo = this.sysUserService.findByUsername(username);
             LOGGER.info("当前登录系统用户信息={}", existUser);
             model.addAttribute("userInfo", existUser);
 

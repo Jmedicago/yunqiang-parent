@@ -27,7 +27,7 @@
         )
         values (
         #{userId, jdbcType=BIGINT}, #{productId, jdbcType=BIGINT}, #{skuId, jdbcType=BIGINT},
-        #{name, jdbcType=VARCHAR}, #{skuProperties, jdbcType=VARCHAR}, #{amount, jdbcType=INT},
+        #{name, jdbcType=VARCHAR}, #{skuProperties, jdbcType=VARCHAR}, #{amount, jdbcType=INTEGER},
         #{selected, jdbcType=TINYINT}
         )
     </insert>
@@ -78,7 +78,7 @@
                 #{skuProperties, jdbcType=VARCHAR},
             </if>
             <if test="amount != null">
-                #{amount, jdbcType=INT},
+                #{amount, jdbcType=INTEGER},
             </if>
             <if test="selected != null">
                  #{selected, jdbcType=TINYINT},
@@ -89,7 +89,7 @@
     <update id="update" parameterType="com.vgit.yunqiang.pojo.BisCart">
         update t_bis_cart
         set userId =#{userId, jdbcType=BIGINT}, productId =#{productId, jdbcType=BIGINT}, skuId =#{skuId, jdbcType=BIGINT},
-        name =#{name, jdbcType=VARCHAR}, skuProperties =#{skuProperties, jdbcType=VARCHAR}, amount =#{amount, jdbcType=INT},
+        name =#{name, jdbcType=VARCHAR}, skuProperties =#{skuProperties, jdbcType=VARCHAR}, amount =#{amount, jdbcType=INTEGER},
         selected = #{selected, jdbcType=TINYINT},
         where id = #{id,jdbcType=BIGINT}
     </update>
@@ -113,7 +113,7 @@
                 skuProperties =#{skuProperties, jdbcType=VARCHAR},
             </if>
             <if test="amount != null">
-                amount =#{amount, jdbcType=INT},
+                amount =#{amount, jdbcType=INTEGER},
             </if>
             <if test="selected != null">
              	selected = #{selected, jdbcType=TINYINT},

@@ -71,9 +71,8 @@ public class SysUserRealm extends AuthorizingRealm {
             throw new LockedAccountException();  //账号已锁定
         }
         // 密码匹配
-        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-                // user.getUsername(), 用户名
-                user,
+        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo( 
+                user, // 用户登录信息
                 user.getPassword(), //密码
                 ByteSource.Util.bytes(user.getCredentialsSalt()), //salt=username+salt
                 getName() //realm name
