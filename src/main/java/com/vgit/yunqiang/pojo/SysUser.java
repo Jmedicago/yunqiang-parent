@@ -22,7 +22,7 @@ public class SysUser {
     private String salt;
 
     private String roleIds;
-    
+
     private String stockIds;
 
     private Byte status;
@@ -88,14 +88,14 @@ public class SysUser {
     }
 
     public String getStockIds() {
-		return stockIds;
-	}
+        return stockIds;
+    }
 
-	public void setStockIds(String stockIds) {
-		this.stockIds = stockIds;
-	}
+    public void setStockIds(String stockIds) {
+        this.stockIds = stockIds;
+    }
 
-	public Byte getStatus() {
+    public Byte getStatus() {
         return status;
     }
 
@@ -122,6 +122,17 @@ public class SysUser {
     @JsonIgnore
     public String getCredentialsSalt() {
         return this.username + this.salt;
+    }
+
+    @JsonIgnore
+    public boolean isEmpty() {
+        if (this == null) return true;
+        return false;
+    }
+
+    @JsonIgnore
+    public boolean isNotEmpty() {
+        return !isEmpty();
     }
 
 }
