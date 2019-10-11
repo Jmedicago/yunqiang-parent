@@ -7,7 +7,6 @@ import com.vgit.yunqiang.pojo.SysRole;
 import com.vgit.yunqiang.pojo.SysUser;
 import com.vgit.yunqiang.service.SysPermissionService;
 import com.vgit.yunqiang.service.SysUserService;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
