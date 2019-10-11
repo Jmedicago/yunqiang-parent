@@ -23,7 +23,7 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
         insert into t_bis_cart (
-        userId, productId, skuId, skuMainPic, name, skuProperties, amount,  selected
+        userId, productId, skuId, skuMainPic, name, skuProperties, amount, selected
         )
         values (
         #{userId, jdbcType=BIGINT}, #{productId, jdbcType=BIGINT}, #{skuId, jdbcType=BIGINT},
@@ -38,7 +38,7 @@
         </selectKey>
         insert into t_bis_cart
         <trim prefix="(" suffix=")" suffixOverrides=",">
-        	<if test="userId != null">
+            <if test="userId != null">
                 userId,
             </if>
             <if test="productId != null">
@@ -57,9 +57,9 @@
                 amount,
             </if>
             <if test="selected != null">
-               selected,
+                selected,
             </if>
-            
+
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="userId != null">
@@ -81,7 +81,7 @@
                 #{amount, jdbcType=INTEGER},
             </if>
             <if test="selected != null">
-                 #{selected, jdbcType=TINYINT},
+                #{selected, jdbcType=TINYINT},
             </if>
         </trim>
     </insert>
@@ -116,7 +116,7 @@
                 amount =#{amount, jdbcType=INTEGER},
             </if>
             <if test="selected != null">
-             	selected = #{selected, jdbcType=TINYINT},
+                selected = #{selected, jdbcType=TINYINT},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
@@ -139,5 +139,43 @@
         <include refid="whereSql"/>
         limit #{start},#{rows}
     </select>
+
+    <select id="getByUserSku" resultType="com.vgit.yunqiang.pojo.BisCart">
+        select * from t_bis_cart where userId = #{userId} and skuId = #{skuId}
+    </select>
+
+    <delete id="delCartByUser">
+        delete from t_bis_cart where userId = #{userId} and id in
+        <foreach collection="cartIds" item="cartId" open="(" close=")" separator=",">
+            #{cartId}
+        </foreach>
+    </delete>
+
+    <update id="changeNumber">
+        update t_bis_cart set amount = #{number} where userId = #{userId} and id = #{cartId}
+    </update>
+
+    <update id="cancelSelectAll" parameterType="java.lang.Long">
+        update t_bis_cart set selected = 0 where userId = #{userId}
+    </update>
+
+    <update id="updateSelectCart">
+        update t_bis_cart set selected = 0 where userId = #{userId} and id not in
+        <foreach collection="cartIdArr" item="cartId" open="(" close=")" separator=",">
+            #{cartId}
+        </foreach>;
+        update t_bis_cart set selected=1 where userId = #{userId} and id in
+        <foreach collection="cartIdArr" item="cartId" open="(" close=")" separator=",">
+            #{cartId}
+        </foreach>;
+    </update>
+
+    <select id="getCarts" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisCart">
+        select * from t_bis_cart where userId = #{userId}
+    </select>
+
+    <delete id="clearQuick" parameterType="java.lang.Long">
+        delete from t_bis_cart where userId = #{userId} and selected = 1
+    </delete>
 
 </mapper>
