@@ -1,6 +1,5 @@
 package com.vgit.yunqiang.controller;
 
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.pojo.SysUser;
 import com.vgit.yunqiang.service.BisCartService;
