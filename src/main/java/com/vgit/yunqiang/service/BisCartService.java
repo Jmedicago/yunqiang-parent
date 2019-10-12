@@ -19,6 +19,14 @@ public interface BisCartService extends BaseService<BisCart> {
     void add(Long userId, Long skuId, Integer number);
 
     /**
+     * 批量加入购物车
+     *
+     * @param userId
+     * @param skuIds
+     */
+    void add(Long userId, Long... skuIds);
+
+    /**
      * 用户删除购物车
      *
      * @param userId    用户id
@@ -118,5 +126,14 @@ public interface BisCartService extends BaseService<BisCart> {
      * @param userId
      */
     void clearQuick(Long userId);
+
+    /**
+     * 设置勾选状态
+     *
+     * @param userId
+     * @param cartId
+     * @param selected
+     */
+    void changeSelected(Long userId, Long cartId, Integer selected);
 
 }

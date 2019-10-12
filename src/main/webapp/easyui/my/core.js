@@ -73,8 +73,6 @@ function commonCmdBind() {
                 console.error("[" + cmd + "]命令无处理函数,请实现" + cmd + "(clickTarget)方法，或绑定onclick处理方法");
             }
         }
-
-
     });
 }
 
@@ -542,6 +540,10 @@ Date.prototype.format = function (format) {
     }
     return format;
 };
+
+MXF.priceFormatter = function(val) {
+    return OSREC.CurrencyFormatter.format(val * 0.01, { currency: 'JPY' });
+}
 
 MXF.dateTimeFormatter = function (val, row) {
     var now = new Date(val);

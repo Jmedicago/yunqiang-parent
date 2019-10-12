@@ -14,6 +14,7 @@
     <link href="/easyui/themes/insdep/easyui_plus.css" rel="stylesheet" type="text/css">
     <link href="/easyui/themes/insdep/insdep_theme_default.css" rel="stylesheet" type="text/css">
     <link href="/easyui/themes/insdep/icon.css" rel="stylesheet" type="text/css">
+    <link href="/easyui/themes/insdep/iconfont/iconfont.css" rel="stylesheet" type="text/css">
     <link href="/easyui/plugin/kindeditor-4.1.10/themes/default/default.css" rel="stylesheet" type="text/css">
     <link href="/easyui/plugin/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="/easyui/my/core.css" rel="stylesheet" type="text/css">
@@ -21,6 +22,7 @@
     <script type="text/javascript" src="/easyui/jquery.min.js"></script>
     <script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/easyui/themes/insdep/jquery.insdep-extend.min.js"></script>
+    <script type="text/javascript" src="/easyui/plugin/currencyFormatter-master/dist/currencyFormatter.js"></script>
 
     <!-- 后台首页js -->
     <script type="text/javascript" src="/easyui/app.js"></script>

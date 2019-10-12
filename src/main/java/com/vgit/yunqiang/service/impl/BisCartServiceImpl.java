@@ -1,5 +1,6 @@
 package com.vgit.yunqiang.service.impl;
 
+import com.vgit.yunqiang.common.consts.bis.BooleanConsts;
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
 import com.vgit.yunqiang.common.utils.StrUtils;
@@ -40,7 +41,7 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
         // 存在则增加数量
         if (null != existBisCart) {
             existBisCart.setAmount(existBisCart.getAmount() + number);
-            existBisCart.setSelected(true);
+            existBisCart.setSelected(BooleanConsts.YES);
             this.mapper.updatePart(existBisCart);
             return;
         }
@@ -66,10 +67,20 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
         cart.setName(product.getName());
         cart.setAmount(number);
         cart.setCreateTime(System.currentTimeMillis());
-        cart.setSelected(true);
+        cart.setSelected(BooleanConsts.YES);
         cart.setSkuId(skuId);
         cart.setUserId(userId);
         this.mapper.save(cart);
+    }
+
+    @Override
+    public void add(Long userId, Long... skuIds) {
+        if (skuIds == null || skuIds.length == 0) {
+            return;
+        }
+        for (Long skuId : skuIds) {
+            this.add(userId, skuId, 1);
+        }
     }
 
     @Override
@@ -107,7 +118,7 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
         } else {
             // 已存在，更新购物车数量为申购的数量，选中该条项目
             existCart.setAmount(number);
-            existCart.setSelected(true);
+            existCart.setSelected(BooleanConsts.YES);
             this.mapper.updatePart(existCart);
         }
     }
@@ -127,6 +138,23 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
         return carts;
     }
 
+    private List<Map<String, Object>> getCartFooter(List<BisCart> cartList) {
+        List<Map<String, Object>> footer = new ArrayList<Map<String, Object>>();
+        Map<String, Object> infoMap = this.statistic(cartList);
+
+        Map<String, Object> selectedGoodsTotalVolumeItem = new HashMap<String, Object>();
+        selectedGoodsTotalVolumeItem.put("name", "MT");
+        selectedGoodsTotalVolumeItem.put("code", infoMap.get("selectedGoodsTotalVolume"));
+        footer.add(selectedGoodsTotalVolumeItem);
+
+        Map<String, Object> selectedGoodsNumberItem = new HashMap<String, Object>();
+        selectedGoodsNumberItem.put("name", "已选商品");
+        selectedGoodsNumberItem.put("code", infoMap.get("selectedGoodsNumber"));
+        footer.add(selectedGoodsNumberItem);
+
+        return footer;
+    }
+
     @Override
     public Map<String, Object> statistic(List<BisCart> cartList) {
         HashMap<String, Object> result = new HashMap<>();
@@ -138,7 +166,7 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
             for (BisCart bisCart : cartList) {
                 goodsNumber += bisCart.getAmount();
                 goodsTotalVolume += bisCart.getSku().getVolume();
-                if (bisCart.getSelected() == true) {
+                if (bisCart.getSelected() == BooleanConsts.YES) {
                     selectedGoodsNumber += bisCart.getAmount();
                     selectedGoodsTotalVolume += bisCart.getSku().getVolume();
                 }
@@ -147,22 +175,26 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
         result.put("goodsNumber", goodsNumber);
         result.put("goodsTotalVolume", goodsTotalVolume);
         result.put("selectedGoodsNumber", selectedGoodsNumber);
-        result.put("selectedGoodsTotalPrice", selectedGoodsTotalVolume);
+        result.put("selectedGoodsTotalVolume", selectedGoodsTotalVolume);
         return result;
     }
 
     @Override
     public Map<String, Object> info(Long userId) {
-        List<BisCart> cartList = this.getCarts(userId);
-        Map<String, Object> infoMap = this.statistic(cartList);
+        Map<String, Object> result = new HashMap<String, Object>();
 
+        int total = this.mapper.getCartsTotal(userId);
+        result.put("total", total);
+
+        List<BisCart> cartList = this.getCarts(userId);
         for (BisCart bisCart : cartList) {
             String skuProperties = bisCart.getSkuProperties();
             bisCart.setSkuProperties(StrUtils.convertPropertiesToHtml(skuProperties));
         }
+        result.put("rows", cartList);
 
-        infoMap.put("data", cartList);
-        return infoMap;
+        result.put("footer", this.getCartFooter(cartList));
+        return result;
     }
 
     @Override
@@ -170,7 +202,7 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
         List<BisCart> selectedList = new ArrayList<>();
         List<BisCart> cartList = this.getCarts(userId);
         for (BisCart bisCart : cartList) {
-            if(bisCart.getSelected() == true){
+            if (bisCart.getSelected() == BooleanConsts.YES) {
                 String skuProperties = bisCart.getSkuProperties();
                 bisCart.setSkuProperties(StrUtils.convertPropertiesToHtml(skuProperties));
                 selectedList.add(bisCart);
@@ -185,6 +217,11 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
     @Override
     public void clearQuick(Long userId) {
         this.mapper.clearQuick(userId);
+    }
+
+    @Override
+    public void changeSelected(Long userId, Long cartId, Integer selected) {
+        this.mapper.changeSelected(userId, cartId, selected);
     }
 
 }

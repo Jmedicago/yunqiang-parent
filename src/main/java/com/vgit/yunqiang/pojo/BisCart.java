@@ -20,7 +20,7 @@ public class BisCart extends BasePojo {
 
     private Integer amount;
 
-    private Boolean selected;
+    private Byte selected;
 
     private BisSku sku;
 
@@ -88,11 +88,11 @@ public class BisCart extends BasePojo {
         this.amount = amount;
     }
 
-    public Boolean getSelected() {
+    public Byte getSelected() {
         return selected;
     }
 
-    public void setSelected(Boolean selected) {
+    public void setSelected(Byte selected) {
         this.selected = selected;
     }
 

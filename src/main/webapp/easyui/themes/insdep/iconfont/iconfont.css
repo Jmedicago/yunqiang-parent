@@ -15,7 +15,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-all:before { content: "\e696"; }
+/*.icon-all:before { content: "\e696"; }
 
 .icon-back:before { content: "\e697"; }
 
@@ -297,5 +297,8 @@
 
 .icon-logistic:before { content: "\e811"; }
 
-.icon-Calculator:before { content: "\e812"; }
+.icon-Calculator:before { content: "\e812"; }*/
 
+.icon-cart-add:before { content: "\e6b9"; }
+
+.icon-cart-remove:before { content: "\e6fe"; }

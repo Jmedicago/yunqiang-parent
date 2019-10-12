@@ -3,7 +3,7 @@
 <mapper namespace="com.vgit.yunqiang.mapper.BisCartMapper">
 
     <sql id="Base_Column_List">
-        id, userId, productId, skuId, skuMainPic, name, skuProperties,amount,selected
+        id, userId, productId, skuId, skuMainPic, name, skuProperties, amount, selected
     </sql>
 
     <select id="get" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisCart">
@@ -26,7 +26,7 @@
         userId, productId, skuId, skuMainPic, name, skuProperties, amount, selected
         )
         values (
-        #{userId, jdbcType=BIGINT}, #{productId, jdbcType=BIGINT}, #{skuId, jdbcType=BIGINT},
+        #{userId, jdbcType=BIGINT}, #{productId, jdbcType=BIGINT}, #{skuId, jdbcType=BIGINT}, #{skuMainPic, jdbcType=VARCHAR},
         #{name, jdbcType=VARCHAR}, #{skuProperties, jdbcType=VARCHAR}, #{amount, jdbcType=INTEGER},
         #{selected, jdbcType=TINYINT}
         )
@@ -46,6 +46,9 @@
             </if>
             <if test="skuId != null">
                 skuId,
+            </if>
+            <if test="skuMainPic != null">
+                skuMainPic,
             </if>
             <if test="name != null">
                 name,
@@ -71,6 +74,9 @@
             <if test="skuId != null">
                 #{skuId, jdbcType=BIGINT},
             </if>
+            <if test="skuMainPic != null">
+                #{skuMainPic, jdbcType=VARCHAR},
+            </if>
             <if test="name != null">
                 #{name, jdbcType=VARCHAR},
             </if>
@@ -88,7 +94,7 @@
 
     <update id="update" parameterType="com.vgit.yunqiang.pojo.BisCart">
         update t_bis_cart
-        set userId =#{userId, jdbcType=BIGINT}, productId =#{productId, jdbcType=BIGINT}, skuId =#{skuId, jdbcType=BIGINT},
+        set userId =#{userId, jdbcType=BIGINT}, productId =#{productId, jdbcType=BIGINT}, skuId =#{skuId, jdbcType=BIGINT}, skuMainPic = #{skuMainPic, jdbcType=VARCHAR},
         name =#{name, jdbcType=VARCHAR}, skuProperties =#{skuProperties, jdbcType=VARCHAR}, amount =#{amount, jdbcType=INTEGER},
         selected = #{selected, jdbcType=TINYINT},
         where id = #{id,jdbcType=BIGINT}
@@ -105,6 +111,9 @@
             </if>
             <if test="skuId != null">
                 skuId =#{skuId, jdbcType=BIGINT},
+            </if>
+            <if test="skuMainPic != null">
+                skuMainPic = #{skuMainPic, jdbcType=VARCHAR},
             </if>
             <if test="name != null">
                 name =#{name, jdbcType=VARCHAR},
@@ -155,6 +164,10 @@
         update t_bis_cart set amount = #{number} where userId = #{userId} and id = #{cartId}
     </update>
 
+    <update id="changeSelected">
+        update t_bis_cart set selected = #{selected} where userId = #{userId} and id = #{cartId}
+    </update>
+
     <update id="cancelSelectAll" parameterType="java.lang.Long">
         update t_bis_cart set selected = 0 where userId = #{userId}
     </update>
@@ -172,6 +185,10 @@
 
     <select id="getCarts" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisCart">
         select * from t_bis_cart where userId = #{userId}
+    </select>
+
+    <select id="getCartsTotal" parameterType="java.lang.Long" resultType="int">
+        select count(0) from t_bis_cart where userId = #{userId}
     </select>
 
     <delete id="clearQuick" parameterType="java.lang.Long">

@@ -150,6 +150,9 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                 }
             }
             BisProduct product = this.get(sku.getProductId());
+            if (null != product.getName()) {
+                sku.setSkuName(product.getName());
+            }
             if (null != product) {
                 sku.setSkuCode(product.getCode() + seq);
             }

@@ -6,6 +6,7 @@ import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.controller.consts.ControllerConsts;
 import com.vgit.yunqiang.pojo.*;
 import com.vgit.yunqiang.service.BisProductService;
+import com.vgit.yunqiang.service.BisSkuService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -28,6 +29,9 @@ public class BisProductController {
 
     @Autowired
     private BisProductService bisProductService;
+
+    @Autowired
+    private BisSkuService bisSkuService;
 
     @RequestMapping(ControllerConsts.URL_INDEX)
     public String index() {

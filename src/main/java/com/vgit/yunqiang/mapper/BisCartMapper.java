@@ -32,7 +32,7 @@ public interface BisCartMapper extends BaseMapper<BisCart> {
      * @param cartId
      * @param number
      */
-    void changeNumber(Long userId, Long cartId, Integer number);
+    void changeNumber(@Param("userId") Long userId, @Param("cartId") Long cartId, @Param("number") Integer number);
 
     /**
      * 取消用户已选择的购物车所有条目
@@ -63,4 +63,21 @@ public interface BisCartMapper extends BaseMapper<BisCart> {
      * @param userId
      */
     void clearQuick(Long userId);
+
+    /**
+     * 获取用户购物车数量
+     *
+     * @param userId
+     * @return
+     */
+    int getCartsTotal(Long userId);
+
+    /**
+     * 修改勾选状态
+     *
+     * @param userId
+     * @param cartId
+     * @param selected
+     */
+    void changeSelected(@Param("userId") Long userId, @Param("cartId") Long cartId, @Param("selected") Integer selected);
 }
