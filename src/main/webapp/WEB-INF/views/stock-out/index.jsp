@@ -120,9 +120,53 @@
                     </div>
                 </div>
             </div>
+            <!-- 购物车统计 -->
+            <div class="cart statistics">
+                <div class="statistics-box">
+                    <div class="statistics-group">
+                        <label for="selectedGoodsTotalVolume">总体积：</label>
+                        <span id="selectedGoodsTotalVolume">N/A</span>
+                    </div>
+                    <div class="statistics-group">
+                        <label for="subTotal">总计：</label>
+                        <span id="subTotal">N/A</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+<style type="text/css">
+    .cart.statistics {
+        position: absolute;
+        bottom: 0;
+    }
+
+    .cart.statistics .statistics-box {
+        width: 520px;
+        height: 50px;
+        background: #fff;
+        border-top: 1px solid #eee;
+    }
+
+    .cart.statistics .statistics-box .statistics-group {
+        display: inline-block;
+        height: 50px;
+        line-height: 50px;
+    }
+
+    .cart.statistics .statistics-box .statistics-group label {
+        vertical-align: unset;
+        font-size: 16px;
+        font-weight: 600;
+        margin-left: 15px;
+    }
+
+    .cart.statistics .statistics-box .statistics-group span {
+        font-size: 16px;
+    }
+
+</style>
 
 <script>
     $(function () {
@@ -155,7 +199,6 @@
     }
 
     function addCartAmount(obj) {
-        console.log(obj);
         obj.amount++;
         $.post('/cart/addAmount', {cartId: obj.id, number: obj.amount}, function (res) {
             if (res.success) {
@@ -166,6 +209,8 @@
                         amount: obj.amount //行中的某个字段
                     }
                 });
+                // 更新统计
+                statistics(res.data);
             } else {
                 MXF.alert(res.info, res.success);
             }
@@ -183,6 +228,8 @@
                         amount: obj.amount //行中的某个字段
                     }
                 });
+                // 更新统计
+                statistics(res.data);
             } else {
                 MXF.alert(res.info, res.success);
             }
@@ -229,6 +276,13 @@
                 }
             });
         }
+    }
+
+    function statistics(data) {
+        // 总体积
+        $('#selectedGoodsTotalVolume').text(data.selectedGoodsTotalVolume);
+        // 总计
+        $('#subTotal').text(OSREC.CurrencyFormatter.format(data.subTotal * 0.01, { currency: 'CNY' }));
     }
 
 </script>

@@ -4,7 +4,7 @@
 <div class="tab-wrap">
     <div class="easyui-layout" data-options="fit:true">
         <div data-options="region:'west',title:'<spring:message code="mu.pt.type"/>',split:true,border:true" style="width:300px;">
-            <ul id="productTypeTree" class="easyui-tree"
+            <ul class="easyui-tree"
                 data-options="
 				    url: '/product-type/json',
 					method: 'get',
