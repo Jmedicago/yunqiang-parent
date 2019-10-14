@@ -136,4 +136,11 @@ public interface BisCartService extends BaseService<BisCart> {
      */
     void changeSelected(Long userId, Long cartId, Integer selected);
 
+    /**
+     * 清空购物车
+     * 
+     * @param userId
+     */
+	void deleleAll(Long userId);
+
 }

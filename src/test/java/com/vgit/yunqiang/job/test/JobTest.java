@@ -39,7 +39,7 @@ public class JobTest {
         info.setFireDate(new Date(lastPayTime));
         info.setParams(jobParams);
         info.setJobName("CANCEL_ORDER_TASK_" + 2019101401);
-        info.setType(JobTypeConsts.WAIT_ORDER_PAY_CANCEL_JOB);
+        info.setType(JobTypeConsts.WAIT_ORDER_CANCEL_JOB);
         this.quartzService.addJob(info);
 
         System.in.read();

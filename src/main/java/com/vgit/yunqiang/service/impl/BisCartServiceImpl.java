@@ -1,8 +1,12 @@
 package com.vgit.yunqiang.service.impl;
 
+import com.vgit.yunqiang.common.consts.GlobalSettingNames;
 import com.vgit.yunqiang.common.consts.bis.BooleanConsts;
+import com.vgit.yunqiang.common.consts.bis.JobTypeConsts;
+import com.vgit.yunqiang.common.query.QuartzJobInfo;
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
+import com.vgit.yunqiang.common.utils.GlobalSetting;
 import com.vgit.yunqiang.common.utils.StrUtils;
 import com.vgit.yunqiang.mapper.BisCartMapper;
 import com.vgit.yunqiang.pojo.BisCart;
@@ -11,14 +15,19 @@ import com.vgit.yunqiang.pojo.BisProductMedia;
 import com.vgit.yunqiang.pojo.BisSku;
 import com.vgit.yunqiang.service.BisCartService;
 import com.vgit.yunqiang.service.BisProductService;
+import com.vgit.yunqiang.service.QuartzService;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisCartService {
@@ -28,6 +37,9 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
 
     @Autowired
     private BisProductService bisProductService;
+    
+    @Autowired
+    private QuartzService quartzService;
 
     @Override
     protected BaseMapper<BisCart> getMapper() {
@@ -81,6 +93,22 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
         for (Long skuId : skuIds) {
             this.add(userId, skuId, 1);
         }
+        
+        // 计算移除购物车截止时间
+        BigDecimal hours = new BigDecimal(GlobalSetting.get(GlobalSettingNames.SYSTEM_PAY_TIME_LIMIT_HOURS));
+        BigDecimal millsExpires = hours.multiply(new BigDecimal(3600000));
+        long lastPayTime = (millsExpires.add(new BigDecimal(System.currentTimeMillis()))).longValue();
+
+        
+        // 定时移除购物车
+        Map<String, Object> jobParams = new HashMap<>();
+        jobParams.put("userId", userId);
+        QuartzJobInfo info = new QuartzJobInfo();
+        info.setFireDate(new Date(lastPayTime));
+        info.setParams(jobParams);
+        info.setJobName("CANCEL_ORDER_TASK_" + UUID.randomUUID());
+        info.setType(JobTypeConsts.WAIT_ORDER_CANCEL_JOB);
+        this.quartzService.addJob(info);
     }
 
     @Override
@@ -223,5 +251,11 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
     public void changeSelected(Long userId, Long cartId, Integer selected) {
         this.mapper.changeSelected(userId, cartId, selected);
     }
+
+	@Override
+	public void deleleAll(Long userId) {
+		// TODO Auto-generated method stub
+		this.mapper.deleteAll(userId);
+	}
 
 }
