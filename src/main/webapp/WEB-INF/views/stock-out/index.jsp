@@ -8,7 +8,7 @@
                 <table id="stockOutGrid" class="easyui-datagrid" data-options="
                            rownumbers: true,
                            fit: true,
-                           method: 'get',
+                           method: 'post',
                            pagination: true,
                            pageSize: 10,
                            striped: true,
@@ -54,7 +54,7 @@
                     <div class="searchForm">
                         <form>
                             <spring:message code="product.info.name"/>：
-                            <input class="easyui-textbox theme-textbox-radius" name="role" style="width:200px;">&nbsp;
+                            <input class="easyui-textbox theme-textbox-radius" name="name" style="width:200px;">&nbsp;
                             <spring:message code="product.info.type"/>：
                             <input class="easyui-combotree theme-textbox-radius" name="productType"
                                    data-options="url:'/product-type/json',method:'get'" style="width:200px;">
