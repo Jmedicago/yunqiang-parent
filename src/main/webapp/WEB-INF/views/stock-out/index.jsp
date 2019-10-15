@@ -70,7 +70,7 @@
             </div>
         </div>
         <div data-options="region:'east',border:true,title:'购物车'" style="width: 520px;">
-            <div class="tableGroup">
+            <div class="tableGroup cart-table">
                 <table id="cartGrid" class="easyui-datagrid" data-options="
                             singleSelect: false,
                             fit: true,
@@ -184,6 +184,11 @@
 <script>
     $(function () {
         MXF.getTabContentHeight();
+
+        // 初始化购物车高度
+        var cartHeight = $(document.body).height();
+        cartHeight = cartHeight - (89 + 89);
+        $(".cart-table").css("height", cartHeight);
     });
 
     function productStateFormatter(value) {
