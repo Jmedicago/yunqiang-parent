@@ -1,6 +1,9 @@
 package com.vgit.yunqiang.controller;
 
+import com.vgit.yunqiang.common.query.OrderQuery;
+import com.vgit.yunqiang.common.utils.Page;
 import com.vgit.yunqiang.common.utils.Ret;
+import com.vgit.yunqiang.controller.consts.ControllerConsts;
 import com.vgit.yunqiang.controller.utils.UserContext;
 import com.vgit.yunqiang.pojo.BisOrder;
 import com.vgit.yunqiang.pojo.SysUser;
@@ -18,6 +21,17 @@ public class BisOrderController {
 
     @Autowired
     private BisOrderService bisOrderService;
+
+    @RequestMapping(ControllerConsts.URL_INDEX)
+    public String index() {
+        return DOMAIN + ControllerConsts.VIEW_INDEX;
+    }
+
+    @RequestMapping(ControllerConsts.URL_JSON)
+    @ResponseBody
+    public Page<BisOrder> json(OrderQuery query) {
+        return this.bisOrderService.queryPage(query);
+    }
 
     /**
      * 提交订单
