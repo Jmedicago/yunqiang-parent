@@ -27,7 +27,7 @@
     <div class="input-div">
         <label class="label-top">归属区域</label>
         <select id="stocksCombotree" class="easyui-combotree" style="width:420px;" name="stockIds"
-                data-options="url:'/stock/combo', cascadeCheck:false, multiple:true, onLoadSuccess:initStocksValue"></select>
+                data-options="url: '/stock/combo', cascadeCheck: false, multiple: false, onLoadSuccess: initStocksValue"></select>
     </div>
     <div class="input-div" style="text-align: center; margin-top: 35px">
         <a class="easyui-linkbutton button-lg button-default" onclick="MXF.ajaxForm(this)"><spring:message

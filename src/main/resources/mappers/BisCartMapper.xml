@@ -194,9 +194,5 @@
     <delete id="clearQuick" parameterType="java.lang.Long">
         delete from t_bis_cart where userId = #{userId} and selected = 1
     </delete>
-    
-    <delete id="deleteAll">
-    	delete from t_bis_cart where userId = #{userId}
-    </delete>
 
 </mapper>

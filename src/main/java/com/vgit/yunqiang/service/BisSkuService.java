@@ -15,4 +15,20 @@ public interface BisSkuService extends BaseService<BisSku> {
      */
     Page<BisSku> queryPage(ProductQuery query);
 
+    /**
+     * 恢复SKU锁定的库存
+     *
+     * @param skuId
+     * @param amount
+     */
+    void recoverStock(Long skuId, Integer amount);
+
+    /**
+     * SKU出库
+     *
+     * @param skuId
+     * @param amount
+     */
+    void outbound(Long skuId, Integer amount);
+
 }

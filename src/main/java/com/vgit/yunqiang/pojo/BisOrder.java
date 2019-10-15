@@ -2,6 +2,8 @@ package com.vgit.yunqiang.pojo;
 
 import com.vgit.yunqiang.pojo.base.BasePojo;
 
+import java.util.List;
+
 /**
  * 订单
  */
@@ -32,6 +34,11 @@ public class BisOrder extends BasePojo {
     private String digest;
 
     private Long lastCancelTime;
+
+    /**
+     * 订单明细
+     */
+    private List<BisOrderDetail> detailList;
 
     public Long getId() {
         return id;
@@ -137,4 +144,11 @@ public class BisOrder extends BasePojo {
         this.lastCancelTime = lastCancelTime;
     }
 
+    public List<BisOrderDetail> getDetailList() {
+        return detailList;
+    }
+
+    public void setDetailList(List<BisOrderDetail> detailList) {
+        this.detailList = detailList;
+    }
 }

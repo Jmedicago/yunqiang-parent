@@ -57,15 +57,14 @@ public class BisCartController {
     @RequestMapping("/addAmount")
     @ResponseBody
     public Ret cartAddAmount(Long cartId, Integer number) {
-        SysUser existUser = (SysUser) SecurityUtils.getSubject().getPrincipal();
         BisCart cart = this.bisCartService.get(cartId);
         // 获取商品总库存
         BisSku sku = this.bisSkuService.get(cart.getSkuId());
         if (number > sku.getAvailableStock()) {
             return Ret.me().setSuccess(false).setInfo("商品库存不足！");
         }
-        BisSku bisSku = this.bisCartService.changeNumber(existUser.getId(), cartId, number);
-        Map<String, Object> calResultMap = this.bisCartService.calculate(existUser.getId());
+        BisSku bisSku = this.bisCartService.changeNumber(UserContext.getUserId(), cartId, number);
+        Map<String, Object> calResultMap = this.bisCartService.calculate(UserContext.getUserId());
         Double marketPrice = bisSku.getMarketPrice();
         Double costPrice = bisSku.getCostPrice();
         Double total = costPrice * number;
@@ -78,12 +77,11 @@ public class BisCartController {
     @RequestMapping("/removeAmount")
     @ResponseBody
     public Ret cartRemoveAmount(Long cartId, Integer number) {
-        SysUser existUser = (SysUser) SecurityUtils.getSubject().getPrincipal();
         if (number < 1) {
             return Ret.me().setSuccess(false).setInfo("已减到最小数量！");
         }
-        BisSku bisSku = this.bisCartService.changeNumber(existUser.getId(), cartId, number);
-        Map<String, Object> calResultMap = this.bisCartService.calculate(existUser.getId());
+        BisSku bisSku = this.bisCartService.changeNumber(UserContext.getUserId(), cartId, number);
+        Map<String, Object> calResultMap = this.bisCartService.calculate(UserContext.getUserId());
         Double marketPrice = bisSku.getMarketPrice();
         Double costPrice = bisSku.getCostPrice();
         Double total = costPrice * number;
@@ -103,9 +101,8 @@ public class BisCartController {
     @RequestMapping("/changeNumber")
     @ResponseBody
     public Ret changeCartNumber(Long cartId, Integer number) {
-        SysUser existUser = (SysUser) SecurityUtils.getSubject().getPrincipal();
-        BisSku sku = this.bisCartService.changeNumber(existUser.getId(), cartId, number);
-        Map<String, Object> calResultMap = this.bisCartService.calculate(existUser.getId());
+        BisSku sku = this.bisCartService.changeNumber(UserContext.getUserId(), cartId, number);
+        Map<String, Object> calResultMap = this.bisCartService.calculate(UserContext.getUserId());
         Double marketPrice = sku.getMarketPrice();
         Double costPrice = sku.getCostPrice();
         Double total = costPrice * number;
@@ -119,14 +116,16 @@ public class BisCartController {
     @ResponseBody
     public Ret changeSelected(Long cartId, Integer selected) {
         this.bisCartService.changeSelected(UserContext.getUserId(), cartId, selected);
-        return Ret.me();
+        Map<String, Object> calResultMap = this.bisCartService.calculate(UserContext.getUserId());
+        return Ret.me().setData(calResultMap);
     }
 
     @RequestMapping("/remove")
     @ResponseBody
     public Ret cartRemove(String cartIds) {
         this.bisCartService.del(UserContext.getUserId(), StrUtils.splitToLong(cartIds));
-        return Ret.me();
+        Map<String, Object> calResultMap = this.bisCartService.calculate(UserContext.getUserId());
+        return Ret.me().setData(calResultMap);
     }
 
 }

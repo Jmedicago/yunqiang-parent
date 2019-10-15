@@ -121,7 +121,7 @@ public interface BisCartService extends BaseService<BisCart> {
     Map<String, Object> selectedInfo(Long userId);
 
     /**
-     * 删除购物车已购买部分的数据
+     * 清空购物车
      *
      * @param userId
      */
@@ -135,12 +135,5 @@ public interface BisCartService extends BaseService<BisCart> {
      * @param selected
      */
     void changeSelected(Long userId, Long cartId, Integer selected);
-
-    /**
-     * 清空购物车
-     * 
-     * @param userId
-     */
-	void deleleAll(Long userId);
 
 }

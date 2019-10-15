@@ -35,4 +35,14 @@ public class BisSkuServiceImpl extends BaseServiceImpl<BisSku> implements BisSku
         return new Page<>(list, total, query);
     }
 
+    @Override
+    public void recoverStock(Long skuId, Integer amount) {
+        this.mapper.recoverStock(skuId, amount);
+    }
+
+    @Override
+    public void outbound(Long skuId, Integer amount) {
+        this.mapper.outbound(skuId,amount);
+    }
+
 }
