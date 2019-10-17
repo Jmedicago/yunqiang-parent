@@ -27,7 +27,7 @@ public class JobTest {
     @Test
     public void testCancelOrder() throws IOException {
         // 计算支付截止时间
-        BigDecimal hours = new BigDecimal(GlobalSetting.get(GlobalSettingNames.SYSTEM_PAY_TIME_LIMIT_HOURS));
+        BigDecimal hours = new BigDecimal(GlobalSetting.get(GlobalSettingNames.SYSTEM_TIME_LIMIT_HOURS));
         BigDecimal millsExpires = hours.multiply(new BigDecimal(3600000));
         long lastPayTime = (millsExpires.add(new BigDecimal(System.currentTimeMillis()))).longValue();
         System.out.println("最后取消时间：" + lastPayTime);

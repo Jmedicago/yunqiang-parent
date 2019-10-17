@@ -31,4 +31,10 @@ public interface SysUserMsgConsts extends ICodes {
     @ConstName("手机号码不存在")
     public static final int PHONE_NUMBER_NON_EXISTS = 7 + BASE_CODE;
 
+    @ConstName("库存不足")
+    public static final int ORDER_STOCK_NOT_ENOUGH = 8 + BASE_CODE;
+
+    @ConstName("该订单不允许删除")
+    public static final int ORDER_CANCEL_FORBIDDEN = 9 + BASE_CODE;
+
 }

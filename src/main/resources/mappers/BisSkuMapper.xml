@@ -264,25 +264,25 @@
     </select>
 
     <resultMap id="SkuResultMap" type="com.vgit.yunqiang.pojo.BisSku">
-        <id column="id" jdbcType="BIGINT" property="id" />
-        <result column="productId" jdbcType="BIGINT" property="productId" />
-        <result column="skuCode" jdbcType="VARCHAR" property="skuCode" />
-        <result column="skuName" jdbcType="VARCHAR" property="skuName" />
-        <result column="pack" jdbcType="INTEGER" property="pack" />
-        <result column="volume" jdbcType="DOUBLE" property="volume" />
-        <result column="costPrice" jdbcType="DOUBLE" property="costPrice" />
-        <result column="marketPrice" jdbcType="DOUBLE" property="marketPrice" />
-        <result column="profit" jdbcType="DOUBLE" property="profit" />
-        <result column="supplier" jdbcType="VARCHAR" property="supplier" />
-        <result column="container" jdbcType="VARCHAR" property="container" />
-        <result column="availableStock" jdbcType="INTEGER" property="availableStock" />
-        <result column="frozenStock" jdbcType="INTEGER" property="frozenStock" />
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="productId" jdbcType="BIGINT" property="productId"/>
+        <result column="skuCode" jdbcType="VARCHAR" property="skuCode"/>
+        <result column="skuName" jdbcType="VARCHAR" property="skuName"/>
+        <result column="pack" jdbcType="INTEGER" property="pack"/>
+        <result column="volume" jdbcType="DOUBLE" property="volume"/>
+        <result column="costPrice" jdbcType="DOUBLE" property="costPrice"/>
+        <result column="marketPrice" jdbcType="DOUBLE" property="marketPrice"/>
+        <result column="profit" jdbcType="DOUBLE" property="profit"/>
+        <result column="supplier" jdbcType="VARCHAR" property="supplier"/>
+        <result column="container" jdbcType="VARCHAR" property="container"/>
+        <result column="availableStock" jdbcType="INTEGER" property="availableStock"/>
+        <result column="frozenStock" jdbcType="INTEGER" property="frozenStock"/>
         <result column="pushStockTime" jdbcType="BIGINT" property="pushStockTime"/>
-        <result column="skuProperties" jdbcType="VARCHAR" property="skuProperties" />
-        <result column="skuMainPic" jdbcType="VARCHAR" property="skuMainPic" />
-        <result column="createTime" jdbcType="BIGINT" property="createTime" />
-        <result column="updateTime" jdbcType="BIGINT" property="updateTime" />
-        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="skuProperties" jdbcType="VARCHAR" property="skuProperties"/>
+        <result column="skuMainPic" jdbcType="VARCHAR" property="skuMainPic"/>
+        <result column="createTime" jdbcType="BIGINT" property="createTime"/>
+        <result column="updateTime" jdbcType="BIGINT" property="updateTime"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <collection property="skuPropertyList" javaType="list" ofType="com.vgit.yunqiang.pojo.BisSkuProperty">
             <id column="spId" property="id"/>
             <result column="propId" property="propId"/>
@@ -296,5 +296,13 @@
         select ts.*, tsp.id spId, tsp.propId, tsp.propName, tsp.optionId, tsp.value from t_bis_sku ts LEFT JOIN t_bis_sku_property tsp on ts.id = tsp.skuId
         where ts.id = #{id} order by ts.id
     </select>
+
+    <update id="recoverStock">
+        update t_bis_sku set frozenStock = frozenStock - #{amount}, availableStock = availableStock + #{amount} where id = #{skuId}
+    </update>
+
+    <update id="outbound">
+        update t_bis_sku set frozenStock = frozenStock - #{amount} where id = #{skuId}
+    </update>
 
 </mapper>

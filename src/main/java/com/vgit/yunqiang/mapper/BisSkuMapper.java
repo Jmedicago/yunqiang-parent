@@ -3,6 +3,7 @@ package com.vgit.yunqiang.mapper;
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.pojo.BisSku;
 import com.vgit.yunqiang.pojo.BisSkuProperty;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -30,4 +31,19 @@ public interface BisSkuMapper extends BaseMapper<BisSku> {
      */
     String getMaxCode(Long productId);
 
+    /**
+     * 恢复SKU锁定的库存
+     *
+     * @param skuId
+     * @param amount
+     */
+    void recoverStock(@Param("skuId") Long skuId, @Param("amount") Integer amount);
+
+    /**
+     * SKU确认出库
+     *
+     * @param skuId
+     * @param amount
+     */
+    void outbound(@Param("skuId") Long skuId, @Param("amount") Integer amount);
 }

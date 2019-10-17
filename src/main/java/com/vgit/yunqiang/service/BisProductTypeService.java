@@ -22,4 +22,13 @@ public interface BisProductTypeService extends TreeGridService<BisProductType> {
      */
     Ret deleteById(Long id);
 
+    /**
+     * 根据类目名称查询类目
+     *
+     * @param name
+     * @param parentId
+     * @return
+     */
+    BisProductType getProductTypeByNameAndParentId(String name, Long parentId);
+
 }

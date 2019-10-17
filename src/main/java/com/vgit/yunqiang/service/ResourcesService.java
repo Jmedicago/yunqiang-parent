@@ -14,4 +14,13 @@ public interface ResourcesService {
      */
     Map<String, Object> upload(MultipartFile uploadFile);
 
+    /**
+     * 文件上传
+     *
+     * @param suffix
+     * @param data
+     * @return
+     */
+    Map<String, Object> upload(String suffix, byte[] data);
+
 }

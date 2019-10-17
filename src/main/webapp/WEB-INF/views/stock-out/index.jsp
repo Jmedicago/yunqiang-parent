@@ -8,7 +8,7 @@
                 <table id="stockOutGrid" class="easyui-datagrid" data-options="
                            rownumbers: true,
                            fit: true,
-                           method: 'get',
+                           method: 'post',
                            pagination: true,
                            pageSize: 10,
                            striped: true,
@@ -54,7 +54,7 @@
                     <div class="searchForm">
                         <form>
                             <spring:message code="product.info.name"/>：
-                            <input class="easyui-textbox theme-textbox-radius" name="role" style="width:200px;">&nbsp;
+                            <input class="easyui-textbox theme-textbox-radius" name="name" style="width:200px;">&nbsp;
                             <spring:message code="product.info.type"/>：
                             <input class="easyui-combotree theme-textbox-radius" name="productType"
                                    data-options="url:'/product-type/json',method:'get'" style="width:200px;">
@@ -70,7 +70,7 @@
             </div>
         </div>
         <div data-options="region:'east',border:true,title:'购物车'" style="width: 520px;">
-            <div class="tableGroup">
+            <div class="tableGroup cart-table">
                 <table id="cartGrid" class="easyui-datagrid" data-options="
                             singleSelect: false,
                             fit: true,
@@ -82,6 +82,8 @@
 							checkOnSelect: false,
 							onLoadSuccess: function(data) {
 							    console.log(data);
+							    // 初始化页脚
+							    statistics(data.footer);
 							    if (data) {
 							        $.each(data.rows, function (index, item) {
 							            if (item.selected == 1) {
@@ -91,10 +93,16 @@
 							    }
 							},
 							onCheck: function(index, row) {
-                                $.post('/cart/changeSelected', {cartId: row.id, selected: 1});
+                                $.post('/cart/changeSelected', {cartId: row.id, selected: 1}, function(res) {
+                                    // 更新统计
+                                    statistics(res.data);
+                                });
 							},
 							onUncheck: function(index, row) {
-                                $.post('/cart/changeSelected', {cartId: row.id, selected: 0});
+                                $.post('/cart/changeSelected', {cartId: row.id, selected: 0}, function(res) {
+                                    // 更新统计
+                                    statistics(res.data);
+                                });
 							},
 							url: '/cart/json'">
                     <thead>
@@ -117,6 +125,11 @@
                            iconCls="icon-remove" plain="true">
                             <spring:message code="common.delete"/>
                         </a>
+                        <a href="#" data-cmd="submitOrder" mustsel data-options="disabled:true"
+                           class="easyui-linkbutton"
+                           iconCls="icon-tip" plain="true">
+                            提交订单
+                        </a>
                     </div>
                 </div>
             </div>
@@ -128,8 +141,8 @@
                         <span id="selectedGoodsTotalVolume">N/A</span>
                     </div>
                     <div class="statistics-group">
-                        <label for="subTotal">总计：</label>
-                        <span id="subTotal">N/A</span>
+                        <label for="selectedGoodsTotalPrice">总计：</label>
+                        <span id="selectedGoodsTotalPrice">N/A</span>
                     </div>
                 </div>
             </div>
@@ -171,6 +184,11 @@
 <script>
     $(function () {
         MXF.getTabContentHeight();
+
+        // 初始化购物车高度
+        var cartHeight = $(document.body).height();
+        cartHeight = cartHeight - (89 + 89);
+        $(".cart-table").css("height", cartHeight);
     });
 
     function productStateFormatter(value) {
@@ -268,6 +286,7 @@
         }
         if (ids.length > 1) ids = ids.substring(1);
         if ('' != ids) {
+            MXF.ajaxing(true);
             $.post('/cart/add', {skuIds: ids}, function (data) {
                 MXF.ajaxing(false);
                 MXF.ajaxFormDone(data);
@@ -280,9 +299,25 @@
 
     function statistics(data) {
         // 总体积
-        $('#selectedGoodsTotalVolume').text(data.selectedGoodsTotalVolume);
+        $('#selectedGoodsTotalVolume').text((data.selectedGoodsTotalVolume).toFixed(2));
         // 总计
-        $('#subTotal').text(OSREC.CurrencyFormatter.format(data.subTotal * 0.01, { currency: 'CNY' }));
+        $('#selectedGoodsTotalPrice').text(OSREC.CurrencyFormatter.format((data.selectedGoodsTotalPrice * 0.01).toFixed(2), {currency: 'CNY'}));
+    }
+
+    function submitOrder() {
+        var data = {};
+        MXF.ajaxing(true);
+        $.post('/order/submit', data, function (data) {
+            if (data.success) {
+                MXF.ajaxing(false);
+                MXF.ajaxFormDone(data);
+                if (data.success) {
+                    $('#cartGrid').datagrid('reload');
+                }
+            } else {
+                MXF.alert(data.message, data.success);
+            }
+        });
     }
 
 </script>

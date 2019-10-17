@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -187,6 +188,17 @@ public class BisProductController {
     public BisSku getSkuJson(@PathVariable(value = "id") Long id) {
         BisSku sku = this.bisProductService.getSku(id);
         return sku;
+    }
+
+    /**
+     * Excel批量导入
+     *
+     * @return
+     */
+    @RequestMapping("/batch")
+    @ResponseBody
+    public Ret batch(String excelUrl, HttpServletRequest request) {
+        return this.bisProductService.batch(excelUrl);
     }
 
 }

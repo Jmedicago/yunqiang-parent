@@ -10,4 +10,7 @@ public class JobTypeConsts {
     @ConstName("待确认订单任务")
     public final static byte WAIT_ORDER_CONFIRM_JOB = 1;
 
+    @ConstName("确认收货")
+    public static final byte WAIT_ORDER_CONFIRM_SHIP_JOB = 2;
+
 }

@@ -2,7 +2,8 @@ package com.vgit.yunqiang.common.consts;
 
 public interface GlobalSettingNames {
 
-    public static final String SYSTEM_PAY_TIME_LIMIT_HOURS = "SYSTEM_PAY_TIME_LIMIT_HOURS";
+    public static final String SYSTEM_TIME_LIMIT_HOURS = "SYSTEM_TIME_LIMIT_HOURS";
+    public static final String SYSTEM_CONFIRM_SHIP_DAYS = "SYSTEM_CONFIRM_SHIP_DAYS";
 
     /**
      * FTP

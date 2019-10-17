@@ -51,6 +51,11 @@ public class BisProductTypeServiceImpl extends TreeGridServiceImpl<BisProductTyp
         return Ret.me().setSuccess(true).setCode(ICodes.SUCCESS);
     }
 
+    @Override
+    public BisProductType getProductTypeByNameAndParentId(String name, Long parentId) {
+        return this.mapper.getProductTypeByNameAndParentId(name, parentId);
+    }
+
     /**
      * 存储修改分类前进行预处理数据
      *

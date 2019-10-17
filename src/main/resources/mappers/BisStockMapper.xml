@@ -153,5 +153,9 @@
           #{id}
         </foreach>
     </delete>
+
+    <select id="getStockByName" resultType="com.vgit.yunqiang.pojo.BisStock">
+        select * from t_bis_stock where name = #{name}
+    </select>
    
 </mapper>
