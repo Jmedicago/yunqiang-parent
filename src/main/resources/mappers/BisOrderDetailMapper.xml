@@ -3,7 +3,43 @@
 <mapper namespace="com.vgit.yunqiang.mapper.BisOrderDetailMapper">
 
     <sql id="Base_Column_List">
-
+		id, orderId, productId, name, skuId, skuMainPic, price, amount, totalMoney, totalVolume
     </sql>
-
+	
+	<select id="get" parameterType="com.vgit.yunqiang.pojo.BisOrderDetail" resultType="java.lang.long">
+		select 
+		<include refid="Base_Column_List" />
+		from t_bis_order_detail
+		where id=#{id,jdbcType=BIGINT}
+	</select>
+	
+	<delete id="delete" parameterType="java.lang.long">
+		delete from t_bis_order_detail
+		where id =#{id,jdbcType=BIGINT}
+	</delete>
+	
+	<insert id="save" parameterType="com.vgit.yunqiang.pojo.BisOrderDetail">
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.long">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into t_bit_order_detail(
+		orderId, productId, name, skuId, skuMainPic, price, amount, totalMoney, totalVolume
+		)
+		values(
+		#{orderId, jdbcType=BIGINT}, #{productId, jdbcType=BIGINT}, #{name, jdbcType=VARCHAR}, #{skuId, jdbcType=BIGINT}, #{skuMainPic, jdbcType=VARCHAR},
+		#{skuProperties, jdbcType=VARCHAR}, #{price, jdbcType=DOUBLE}, #{amount, jdbcType=INTEGER}, #{totalMoney, jdbcType=DOUBLE}, #{totalVolume, jdbcType=DOUBLE}
+		)
+	</insert>
+	
+	<insert id="savePart" parameterType="com.vgit.yunqiang.pojo.BisOrderDeatil">
+		<selectKey keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into t_bis_order_detail
+		<trim prefix="(" suffix= ")" suffixOverrides=",">
+			<if test=" !=null">
+				,
+			</if>
+		</trim>
+	</insert>
 </mapper>

@@ -3,7 +3,177 @@
 <mapper namespace="com.vgit.yunqiang.mapper.BisOrderMapper">
 
     <sql id="Base_Column_List">
-
+		id, userId, orderSn, stockId, status, totalMoney, confirmTime, commentStatus, commentTime, shipTime, finishedTime, digest, lastCancelTime
     </sql>
-
+	
+	<select id="get" parameterType="java.lang.long" resultType="com.vgit.yunqiang.pojo.BisOrder">
+		select
+		<include refid="Base_Column_List" />
+			from t_bis_order
+			where id= #{id,jdbcType=BIGINT}
+	</select>
+	
+	<delete id="delete" parameterType="java.lang.long">
+		delete from t_bis_order
+		where id= #{id,jdbcType=BIGINT}	
+	</delete>
+	
+	<insert id="save" parameterType="com.vgit.yunqiang.pojo.BisOrder">
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.long">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into t_bis_order(
+		userId, orderSn, stockId, status, totalMoney, confirmTime, commentStatus, commentTime, shipTime, finishedTime, digest, lastCancelTime
+		)
+		values(
+		#{userId, jdbcType=BIGINT}, #{orderSn, jdbcType=VARCHAR}, #{stockId, jdbcType=BIGINT}, #{status, jdbcType=INTEGER},
+		#{totalMoney, jdbcType=DOUBLE}, #{confirmTime, jdbcType=BIGINT}, #{commentStatus, jdbcType=TINYINT},
+		#{commentTime, jdbcType=BIGINT}, #{shipTime ,jdbcType=BIGINT}, #{finishedTime, jdbcType=BIGINT},
+		#{digest, jdbcType=VARCHAR}, #{lastCancelTime, jdbcType=BIGINT}
+		)
+	</insert>
+	
+	<insert id="savePart" parameterType="com.vgit.yunqiang.pojo.BisOrder">
+		<selectKey keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into t_bis_order
+		<trim prefix="(" suffix= ")" suffixOverrides=",">
+			<if test="userId != null">
+				userId,
+			</if>
+			<if test="orderSn != null">
+				orderSn,
+			</if>
+			<if test="stockId != null">
+				stockId,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="totalMoney != null">
+				totalMoney,
+			</if>
+			<if test="confirmTime != null">
+				confirmTime,
+			</if>
+			<if test="commentStatus != null">
+				commentStatus,
+			</if>
+			<if test="commentTime != null">
+				commentTime,
+			</if>
+			<if test="shipTime != null">
+				shipTime,
+			</if>
+			<if test="finishedTime != null">
+				finishedTime,
+			</if>
+			<if test="digest != null">
+				digest,
+			</if>
+			<if test="lastCancelTime != null">
+				lastCancelTime,
+			</if>
+		</trim>
+		
+		<trim prefix="values (" suffix= ")" suffixOverrides=",">
+			<if test="userId !=null">
+				#{userId,jdbcType=BIGINT},
+			</if>
+			<if test="orderSn !=null">
+				#{orderSn,jdbcType=VARCHAR},
+			</if>
+			<if test="stockId !=null">
+				#{stockId,jdbcType=BIGINT},
+			</if>
+			<if test="status !=null">
+				#{status,jdbcType=INTGER},
+			</if>
+			<if test="totalMoney !=null">
+				#{totalMoney,jdbcType=DOUBLE},
+			</if>
+			<if test="confirmTime !=null">
+				#{confirmTime,jdbcType=BIGINT},
+			</if>
+			<if test="commentStatus !=null">
+				#{commentStatus,jdbcType=TINYINT},
+			</if>
+			<if test="commentTime !=null">
+				#{commentTime,jdbcType=BIGINT},
+			</if>
+			<if test="shipTIime !=null">
+				#{shipTime,jdbcType=BIGINT},
+			</if>
+			<if test="finishedTime !=null">
+				#{finishedTime,jdbcType=BIGINT},
+			</if>
+			<if test="digest !=null">
+				#{digest,jdbcType=VARCHAR},
+			</if>
+			<if test="lastCancelTime !=null">
+				#{lastCancelTime,jdbcType=BIGINT},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="update" parameterType="com.vgit.yunqiang.pojo.BisOrder">
+		update t_bis_order
+		set userId=#{userId,jdbcType=BIGINT}, orderSn=#{orderSn,jdbcType=VARCHAR}, stockId=#{stockId,jdbcType=BIGINT}, status=#{status,jdbcType=INTEGER},
+		totalMoney=#{totalMoney,jdbcType=DOUBLE}, confirmTime=#{confirmTime,jdbcType=BIGINT}, commentStatus=#{commentStatus,jdbcType=TINYINT}, commentTime=#{commentTime,jdbcType=BIGINT},
+		shipTime=#{shipTime,jdbcType=BIGINT}, finishedTime=#{finishedTime,jdbcType=BIGINT}, digest=#{digest,jdbcType=VARCHAR}, lastCancelTime=#{lastCancelTime,jdbcType=BIGINT},
+		where id=#{id,jdbcType=BIGINT}
+	</update>
+	
+	<update id="updatePart" parameterType="com.vgit.yunqiang.pojo.BisOrder">
+		update t_bis_order
+		<set>
+			<if test="userId !=null">
+				userId=#{userId,jdbcType=BIGINT},
+			</if>
+			<if test="orderSn !=null">
+				orderSn=#{orderSn,jdbcType=VARCHAR},
+			</if>
+			<if test="stockId !=null">
+				stockId=#{stockId,jdbcType=BIGINT},
+			</if>
+			<if test="status !=null">
+				status=#{status,jdbcType=INTEGER},
+			</if>
+			<if test="totalMoney !=null">
+				totalMoney=#{totalMoney,jdbcType=DOUBLE},
+			</if>
+			<if test="confirmTime !=null">
+				confirmTime=#{confirmTime,jdbcType=BIGINT},
+			</if>
+			<if test="commentStatus !=null">
+				commentStatus=#{commentStatus,jdbcType=TINYINT},
+			</if>
+			<if test="commentTime !=null">
+				commentTime=#{commentTime,jdbcType=BIGINT},
+			</if>
+			<if test="shipTime !=null">
+				shipTime=#{shipTime,jdbcType=BIGINT},
+			</if>
+			<if test="finishedTime !=null">
+				finishedTime=#{finishedTime,jdbcType=BIGINT},
+			</if>
+			<if test="digest !=null">
+				digest=#{digest,jdbcType=VARCHAR},
+			</if>
+			<if test="lastCancelTime !=null">
+				lastCancelTime=#{lastCancelTime,jdbcType=BIGINT},
+			</if>
+		</set>
+		where id=#{id,jdbcType=BIGINT}
+	</update>
+	
+	<sql id="whereSql">
+		<where>
+			<if test="">
+			
+			</if>
+		</where>
+	</sql>
+	
 </mapper>
