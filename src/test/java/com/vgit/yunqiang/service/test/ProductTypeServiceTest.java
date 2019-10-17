@@ -30,7 +30,7 @@ public class ProductTypeServiceTest {
 	@Test
 	public void testDeleteProductType() throws Exception {
 		//this.bisProductTypeService.deleteById(11L);
-		this.bisProductService.test();
+		//this.bisProductService.test();
 	}
 	
 }
