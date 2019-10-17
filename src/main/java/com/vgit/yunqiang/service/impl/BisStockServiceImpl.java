@@ -67,4 +67,9 @@ public class BisStockServiceImpl extends TreeGridServiceImpl<BisStock> implement
         return Ret.me().setSuccess(true).setCode(ICodes.SUCCESS);
     }
 
+    @Override
+    public BisStock getStockByName(String name) {
+        return this.mapper.getStockByName(name);
+    }
+
 }

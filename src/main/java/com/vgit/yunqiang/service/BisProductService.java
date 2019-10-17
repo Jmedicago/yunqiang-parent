@@ -1,11 +1,13 @@
 package com.vgit.yunqiang.service;
 
 import com.vgit.yunqiang.common.service.BaseService;
+import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.pojo.BisProduct;
 import com.vgit.yunqiang.pojo.BisProductMedia;
 import com.vgit.yunqiang.pojo.BisProperty;
 import com.vgit.yunqiang.pojo.BisSku;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface BisProductService extends BaseService<BisProduct> {
@@ -71,4 +73,12 @@ public interface BisProductService extends BaseService<BisProduct> {
      * @return
      */
     BisSku getSku(Long id);
+
+    /**
+     * 批量导入商品
+     *
+     * @param excelUrl
+     * @return
+     */
+    Ret batch(String excelUrl);
 }

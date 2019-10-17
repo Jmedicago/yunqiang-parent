@@ -1,5 +1,6 @@
 package com.vgit.yunqiang.service.test;
 
+import com.vgit.yunqiang.service.BisProductService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class ProductTypeServiceTest {
 	@Autowired
 	private BisProductTypeService bisProductTypeService;
 
+	@Autowired
+	private BisProductService bisProductService;
+
 	
 	@Test
 	public void testGetProductType() throws Exception {
@@ -25,7 +29,8 @@ public class ProductTypeServiceTest {
 
 	@Test
 	public void testDeleteProductType() throws Exception {
-		this.bisProductTypeService.deleteById(11L);
+		//this.bisProductTypeService.deleteById(11L);
+		this.bisProductService.test();
 	}
 	
 }

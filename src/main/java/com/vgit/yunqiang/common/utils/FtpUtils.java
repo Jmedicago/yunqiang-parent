@@ -81,6 +81,23 @@ public class FtpUtils {
         return result;
     }
 
+    public static boolean defaultUploadFile(String url, String filePath, String filename) {
+        try {
+            FileInputStream in = new FileInputStream(new File(url));
+            boolean flag = uploadFile(
+                    GlobalSetting.get(GlobalSettingNames.FTP_ADDRESS),
+                    Integer.parseInt(GlobalSetting.get(GlobalSettingNames.FTP_PORT)),
+                    GlobalSetting.get(GlobalSettingNames.FTP_USERNAME),
+                    GlobalSetting.get(GlobalSettingNames.FTP_PASSWORD),
+                    GlobalSetting.get(GlobalSettingNames.FTP_BASE_PATH),
+                    filePath, filename, in);
+            return flag;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     /**
      * Description: 从FTP服务器下载文件
      *
@@ -134,16 +151,17 @@ public class FtpUtils {
         return result;
     }
 
+
     public static void main(String[] args) {
         try {
             FileInputStream in = new FileInputStream(new File("C:\\Users\\Admin\\Desktop\\1\\1.png"));
             boolean flag = uploadFile(
-            		GlobalSetting.get(GlobalSettingNames.FTP_ADDRESS), 
-            		Integer.parseInt(GlobalSetting.get(GlobalSettingNames.FTP_PORT)),
-            		GlobalSetting.get(GlobalSettingNames.FTP_USERNAME),
-            		GlobalSetting.get(GlobalSettingNames.FTP_PASSWORD), 
-            		GlobalSetting.get(GlobalSettingNames.FTP_BASE_PATH),
-            		"/2019/10/08", "test01.jpg", in);
+                    GlobalSetting.get(GlobalSettingNames.FTP_ADDRESS),
+                    Integer.parseInt(GlobalSetting.get(GlobalSettingNames.FTP_PORT)),
+                    GlobalSetting.get(GlobalSettingNames.FTP_USERNAME),
+                    GlobalSetting.get(GlobalSettingNames.FTP_PASSWORD),
+                    GlobalSetting.get(GlobalSettingNames.FTP_BASE_PATH),
+                    "/2019/10/08", "test01.jpg", in);
             System.out.println(flag);
         } catch (FileNotFoundException e) {
             e.printStackTrace();

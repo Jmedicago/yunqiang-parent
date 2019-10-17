@@ -12,7 +12,8 @@
                 <th data-options="field:'id',checkbox:true"></th>
                 <th data-options="field:'code',width:120"><spring:message code="product.code"/></th>
                 <th data-options="field:'name',width:200"><spring:message code="product.name"/></th>
-                <th data-options="field:'state',width:80, formatter:productStateFormatter"><spring:message code="product.state"/></th>
+                <th data-options="field:'state',width:80, formatter:productStateFormatter"><spring:message
+                        code="product.state"/></th>
             </tr>
             </thead>
         </table>
@@ -22,7 +23,8 @@
                    class="easyui-linkbutton" iconCls="icon-add" plain="true">
                     <spring:message code="common.add"/>
                 </a>
-                <a href="#" data-cmd="edit" height="620" title="<spring:message code="common.edit"/>" mustsel remote="false"
+                <a href="#" data-cmd="edit" height="620" title="<spring:message code="common.edit"/>" mustsel
+                   remote="false"
                    data-options="disabled:true"
                    class="easyui-linkbutton"
                    iconCls="icon-edit" plain="true">
@@ -33,6 +35,11 @@
                     <spring:message code="common.delete"/>
                 </a>
                 <span class="buttonSplit">&nbsp;</span>
+                <a href="#" data-cmd="batch" class="easyui-linkbutton"
+                   plain="true">
+                    <i class="iconfont">&#xe73f;</i>
+                    批量导入
+                </a>
                 <a href="#" data-cmd="showSku" mustsel data-options="disabled:true" class="easyui-linkbutton"
                    plain="true">
                     <i class="iconfont">&#xe6cb;</i>
@@ -89,6 +96,32 @@
             onClose: function () {
                 editWindow.window('destroy');
             }
+        });
+    }
+
+    function batch() {
+        // 编辑器参数
+        var kingEditorParams = {
+            //指定上传文件参数名称
+            filePostName: "uploadFile",
+            //指定上传文件请求的url。
+            uploadJson: '/resources/upload',
+            //上传类型，分别为image、flash、media、file
+            dir: "file"
+        };
+        KindEditor.editor(kingEditorParams).loadPlugin('image', function () {
+            this.plugin.imageDialog({
+                showRemote: false,
+                clickFn: function (url, title, width, height, border, align) {
+                    this.hideDialog();
+                    MXF.ajaxing(true);
+                    $.post('/product/batch', {excelUrl: url}, function (data) {
+                        MXF.ajaxing(false);
+                        MXF.alert("导入成功！");
+                        $('#productGrid').datagrid('reload');
+                    });
+                }
+            });
         });
     }
 

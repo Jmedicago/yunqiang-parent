@@ -127,5 +127,9 @@
           #{id}
         </foreach>
     </delete>
+
+    <select id="getProductTypeByNameAndParentId" resultType="com.vgit.yunqiang.pojo.BisProductType">
+        select * from t_bis_product_type where name = #{name} and parentId = #{parentId}
+    </select>
    
 </mapper>
