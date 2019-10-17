@@ -301,7 +301,7 @@
         // 总体积
         $('#selectedGoodsTotalVolume').text((data.selectedGoodsTotalVolume).toFixed(2));
         // 总计
-        $('#selectedGoodsTotalPrice').text(OSREC.CurrencyFormatter.format((data.selectedGoodsTotalPrice * 0.01).toFixed(2), {currency: 'CNY'}));
+        $('#selectedGoodsTotalPrice').text(MXF.priceFormatter(data.selectedGoodsTotalPrice)); // OSREC.CurrencyFormatter.format((data.selectedGoodsTotalPrice * 0.01).toFixed(2), {currency: 'MZN'})
     }
 
     function submitOrder() {

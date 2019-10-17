@@ -542,7 +542,7 @@ Date.prototype.format = function (format) {
 };
 
 MXF.priceFormatter = function(val) {
-    return OSREC.CurrencyFormatter.format(val * 0.01, { currency: 'JPY' });
+    return OSREC.CurrencyFormatter.format(val * 0.01, { currency: 'MZN' });
 }
 
 MXF.dateTimeFormatter = function (val, row) {

@@ -6,20 +6,20 @@
 		id, userId, orderSn, stockId, status, totalMoney, confirmTime, commentStatus, commentTime, shipTime, finishedTime, digest, lastCancelTime
     </sql>
 	
-	<select id="get" parameterType="java.lang.long" resultType="com.vgit.yunqiang.pojo.BisOrder">
+	<select id="get" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisOrder">
 		select
 		<include refid="Base_Column_List" />
 			from t_bis_order
 			where id= #{id,jdbcType=BIGINT}
 	</select>
 	
-	<delete id="delete" parameterType="java.lang.long">
+	<delete id="delete" parameterType="java.lang.Long">
 		delete from t_bis_order
 		where id= #{id,jdbcType=BIGINT}	
 	</delete>
 	
 	<insert id="save" parameterType="com.vgit.yunqiang.pojo.BisOrder">
-		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.long">
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 		insert into t_bis_order(

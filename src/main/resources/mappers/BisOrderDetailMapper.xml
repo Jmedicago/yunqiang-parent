@@ -6,20 +6,20 @@
 		id, orderId, productId, name, skuId, skuMainPic, price, amount, totalMoney, totalVolume
     </sql>
 	
-	<select id="get" parameterType="com.vgit.yunqiang.pojo.BisOrderDetail" resultType="java.lang.long">
+	<select id="get" parameterType="com.vgit.yunqiang.pojo.BisOrderDetail" resultType="java.lang.Long">
 		select 
 		<include refid="Base_Column_List" />
 		from t_bis_order_detail
 		where id=#{id,jdbcType=BIGINT}
 	</select>
 	
-	<delete id="delete" parameterType="java.lang.long">
+	<delete id="delete" parameterType="java.lang.Long">
 		delete from t_bis_order_detail
 		where id =#{id,jdbcType=BIGINT}
 	</delete>
 	
 	<insert id="save" parameterType="com.vgit.yunqiang.pojo.BisOrderDetail">
-		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.long">
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 		insert into t_bit_order_detail(
@@ -31,7 +31,7 @@
 		)
 	</insert>
 	
-	<insert id="savePart" parameterType="com.vgit.yunqiang.pojo.BisOrderDeatil">
+	<insert id="savePart" parameterType="com.vgit.yunqiang.pojo.BisOrderDetail">
 		<selectKey keyProperty="id" order="AFTER">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
@@ -42,4 +42,5 @@
 			</if>
 		</trim>
 	</insert>
+	
 </mapper>

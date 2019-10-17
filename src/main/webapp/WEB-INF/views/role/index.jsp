@@ -47,4 +47,3 @@
         MXF.getTabContentHeight();
     });
 </script>
-
