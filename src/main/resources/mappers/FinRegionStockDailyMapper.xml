@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vgit.yunqiang.mapper.FinRegionStockDailyMapper">
+
+    <sql id="Base_Column_List">
+        id, stockId, userId, safe, deposit, createTime, updateTime, remark
+    </sql>
+
+    <select id="get" resultType="com.vgit.yunqiang.pojo.FinRegionStockDaily" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from t_fin_region_stock_daily
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from t_fin_region_stock_daily
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.FinRegionStockDaily">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_fin_region_stock_daily (id, stockId, userId,
+        safe, deposit, createTime,
+        updateTime, remark)
+        values (#{id,jdbcType=BIGINT}, #{stockId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT},
+        #{safe,jdbcType=DOUBLE}, #{deposit,jdbcType=DOUBLE}, #{createTime,jdbcType=BIGINT},
+        #{updateTime,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.FinRegionStockDaily">
+        insert into t_fin_region_stock_daily
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="stockId != null">
+                stockId,
+            </if>
+            <if test="userId != null">
+                userId,
+            </if>
+            <if test="safe != null">
+                safe,
+            </if>
+            <if test="deposit != null">
+                deposit,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+            <if test="updateTime != null">
+                updateTime,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="stockId != null">
+                #{stockId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="safe != null">
+                #{safe,jdbcType=DOUBLE},
+            </if>
+            <if test="deposit != null">
+                #{deposit,jdbcType=DOUBLE},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.FinRegionStockDaily">
+        update t_fin_region_stock_daily
+        <set>
+            <if test="stockId != null">
+                stockId = #{stockId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                userId = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="safe != null">
+                safe = #{safe,jdbcType=DOUBLE},
+            </if>
+            <if test="deposit != null">
+                deposit = #{deposit,jdbcType=DOUBLE},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                updateTime = #{updateTime,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.FinRegionStockDaily">
+        update t_fin_region_stock_daily
+        set stockId = #{stockId,jdbcType=BIGINT},
+          userId = #{userId,jdbcType=BIGINT},
+          safe = #{safe,jdbcType=DOUBLE},
+          deposit = #{deposit,jdbcType=DOUBLE},
+          createTime = #{createTime,jdbcType=BIGINT},
+          updateTime = #{updateTime,jdbcType=BIGINT},
+          remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <sql id="whereSql">
+        <where>
+            <if test="key != null and key != ''">and tfrsd.remark like CONCAT('%',#{key},'%')</if>
+            <if test="stockId != null and stockId != ''">and tfrsd.stockId = #{stockId}</if>
+        </where>
+    </sql>
+
+    <select id="queryTotal" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery" resultType="int">
+        select count(0) from t_fin_region_stock_daily tfrsd
+        <include refid="whereSql"/>
+    </select>
+
+    <select id="query" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery"
+            resultType="com.vgit.yunqiang.pojo.FinRegionStockDaily">
+        select * from t_fin_region_stock_daily tfrsd
+        <include refid="whereSql"/>
+        limit #{start},#{rows}
+    </select>
+
+    <select id="getChildren" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.FinStockDaily">
+        SELECT * FROM t_fin_stock_daily WHERE stockId IN (SELECT tbs.id FROM t_bis_stock tbs WHERE parentId = #{stockId})
+    </select>
+
+</mapper>

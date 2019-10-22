@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vgit.yunqiang.mapper.FinExpendItemMapper">
+
+    <sql id="Base_Column_List">
+        id, category, article, state, createTime, updateTime, remark
+    </sql>
+
+    <select id="get" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.FinExpendItem">
+        select
+        <include refid="Base_Column_List"/>
+        from t_fin_expend_item
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from t_fin_expend_item
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.FinExpendItem">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_fin_expend_item (id, category, article, state, createTime,
+        updateTime, remark)
+        values (#{id,jdbcType=BIGINT}, #{category,jdbcType=VARCHAR}, #{article,jdbcType=VARCHAR},
+        #{state,jdbcType=INTEGER}, #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT},
+        #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.FinExpendItem">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_fin_expend_item
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="category != null" >
+                category,
+            </if>
+            <if test="article != null" >
+                article,
+            </if>
+            <if test="state != null" >
+                state,
+            </if>
+            <if test="createTime != null" >
+                createTime,
+            </if>
+            <if test="updateTime != null" >
+                updateTime,
+            </if>
+            <if test="remark != null" >
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="category != null" >
+                #{category,jdbcType=VARCHAR},
+            </if>
+            <if test="article != null" >
+                #{article,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null" >
+                #{state,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null" >
+                #{remark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.FinExpendItem">
+        update t_fin_expend_item
+        set category = #{category,jdbcType=VARCHAR},
+          article = #{article,jdbcType=VARCHAR},
+          state = #{state,jdbcType=INTEGER},
+          createTime = #{createTime,jdbcType=BIGINT},
+          updateTime = #{updateTime,jdbcType=BIGINT},
+          remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.FinExpendItem">
+        update t_fin_expend_item
+        <set >
+            <if test="category != null" >
+                category = #{category,jdbcType=VARCHAR},
+            </if>
+            <if test="article != null" >
+                article = #{article,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null" >
+                state = #{state,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null" >
+                createTime = #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null" >
+                updateTime = #{updateTime,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <sql id="whereSql">
+        <where>
+            <if test="key!=null and key!=''">and tfei.name like CONCAT('%',#{key},'%')</if>
+        </where>
+    </sql>
+
+    <select id="queryTotal" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery" resultType="int">
+        select count(0) from t_fin_expend_item tfei
+        <include refid="whereSql"/>
+    </select>
+
+    <select id="query" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery"
+            resultType="com.vgit.yunqiang.pojo.FinExpendItem">
+        select * from t_fin_expend_item tfei
+        <include refid="whereSql"/>
+        limit #{start},#{rows}
+    </select>
+
+</mapper>

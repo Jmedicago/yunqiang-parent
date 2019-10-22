@@ -367,6 +367,10 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                 LOGGER.info("Excel导入的商品信息:{}", bisProduct.toString());
                 String remark = "方式：Excel批量导入；\n时间：" + TimeUtils.dateFormat(new Date()) + "\n明细：" + bisProduct.toString();
                 bisProduct.setRemark(remark);
+                List<BisProductMedia> mediaList = bisProduct.getProductMediaList();
+                if (mediaList != null && mediaList.size() > 0) {
+                    bisSku.setSkuMainPic(mediaList.get(0).getResource());
+                }
                 this.saveOrUpdateProduct(bisProduct);
                 bisSku.setProductId(bisProduct.getId());
                 bisSku.setPushStockTime(System.currentTimeMillis());

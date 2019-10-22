@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vgit.yunqiang.mapper.FinStockDailyMapper">
+
+    <sql id="Base_Column_List">
+        id, stockId, userId, income, expendTotal, sales, purch, arrears, safe, deposit, type, createTime, updateTime,
+        remark
+    </sql>
+
+    <select id="get" resultType="com.vgit.yunqiang.pojo.FinStockDaily" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from t_fin_stock_daily
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from t_fin_stock_daily
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.FinStockDaily">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_fin_stock_daily (id, stockId, userId, income,
+          expendTotal, sales, purch,
+          arrears, safe, deposit, type, createTime, updateTime,
+          remark)
+        values (#{id,jdbcType=BIGINT}, #{stockId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT},
+          #{income,jdbcType=DOUBLE}, #{expendTotal,jdbcType=DOUBLE}, #{sales,jdbcType=DOUBLE},
+          #{purch,jdbcType=DOUBLE}, #{arrears,jdbcType=DOUBLE}, #{safe,jdbcType=DOUBLE},
+          #{deposit,jdbcType=DOUBLE}, #{type, jdbcType=INTEGER}, #{createTime,jdbcType=BIGINT},
+          #{updateTime,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.FinStockDaily">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_fin_stock_daily
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="stockId != null">
+                stockId,
+            </if>
+            <if test="userId != null">
+                userId,
+            </if>
+            <if test="income != null">
+                income,
+            </if>
+            <if test="expendTotal != null">
+                expendTotal,
+            </if>
+            <if test="sales != null">
+                sales,
+            </if>
+            <if test="purch != null">
+                purch,
+            </if>
+            <if test="arrears != null">
+                arrears,
+            </if>
+            <if test="safe != null">
+                safe,
+            </if>
+            <if test="deposit != null">
+                deposit,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+            <if test="updateTime != null">
+                updateTime,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="stockId != null">
+                #{stockId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="income != null">
+                #{income,jdbcType=DOUBLE},
+            </if>
+            <if test="expendTotal != null">
+                #{expendTotal,jdbcType=DOUBLE},
+            </if>
+            <if test="sales != null">
+                #{sales,jdbcType=DOUBLE},
+            </if>
+            <if test="purch != null">
+                #{purch,jdbcType=DOUBLE},
+            </if>
+            <if test="arrears != null">
+                #{arrears,jdbcType=DOUBLE},
+            </if>
+            <if test="safe != null">
+                #{safe,jdbcType=DOUBLE},
+            </if>
+            <if test="deposit != null">
+                #{deposit,jdbcType=DOUBLE},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.FinStockDaily">
+        update t_fin_stock_daily
+        set stockId = #{stockId,jdbcType=BIGINT},
+          userId = #{userId,jdbcType=BIGINT},
+          income = #{income,jdbcType=DOUBLE},
+          expendTotal = #{expendTotal,jdbcType=DOUBLE},
+          sales = #{sales,jdbcType=DOUBLE},
+          purch = #{purch,jdbcType=DOUBLE},
+          arrears = #{arrears,jdbcType=DOUBLE},
+          safe = #{safe,jdbcType=DOUBLE},
+          deposit = #{deposit,jdbcType=DOUBLE},
+          type = #{type, jdbcType=INTEGER},
+          createTime = #{createTime,jdbcType=BIGINT},
+          updateTime = #{updateTime,jdbcType=BIGINT},
+          remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.FinStockDaily">
+        update t_fin_stock_daily
+        <set>
+            <if test="stockId != null">
+                stockId = #{stockId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                userId = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="income != null">
+                income = #{income,jdbcType=DOUBLE},
+            </if>
+            <if test="expendTotal != null">
+                expendTotal = #{expendTotal,jdbcType=DOUBLE},
+            </if>
+            <if test="sales != null">
+                sales = #{sales,jdbcType=DOUBLE},
+            </if>
+            <if test="purch != null">
+                purch = #{purch,jdbcType=DOUBLE},
+            </if>
+            <if test="arrears != null">
+                arrears = #{arrears,jdbcType=DOUBLE},
+            </if>
+            <if test="safe != null">
+                safe = #{safe,jdbcType=DOUBLE},
+            </if>
+            <if test="deposit != null">
+                deposit = #{deposit,jdbcType=DOUBLE},
+            </if>
+            <if test="type">
+                type = #{type, jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                updateTime = #{updateTime,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <sql id="whereSql">
+        <where>
+            <if test="key != null and key != ''">and tfsd.remark like CONCAT('%',#{key},'%')</if>
+            <if test="stockId != null and stockId != ''">and tfsd.stockId = #{stockId}</if>
+            <if test="type != null and type != ''">and tfsd.type = #{type}</if>
+        </where>
+    </sql>
+
+    <select id="queryTotal" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery" resultType="int">
+        select count(0) from t_fin_stock_daily tfsd
+        <include refid="whereSql"/>
+    </select>
+
+    <select id="query" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery"
+            resultType="com.vgit.yunqiang.pojo.FinStockDaily">
+        select * from t_fin_stock_daily tfsd
+        <include refid="whereSql"/>
+        limit #{start},#{rows}
+    </select>
+
+    <select id="getChildren" resultType="com.vgit.yunqiang.pojo.FinStockDaily">
+        <![CDATA[
+        SELECT tfsd.* FROM t_fin_stock_daily tfsd WHERE stockId IN (SELECT tbs.id FROM t_bis_stock tbs WHERE parentId = #{stockId}) AND tfsd.createTime >= #{startTime} AND tfsd.createTime <= #{endTime}
+        ]]>
+    </select>
+
+</mapper>

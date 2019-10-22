@@ -541,8 +541,12 @@ Date.prototype.format = function (format) {
     return format;
 };
 
-MXF.priceFormatter = function(val) {
-    return OSREC.CurrencyFormatter.format(val * 0.01, { currency: 'MZN' });
+MXF.priceFormatter = function (val) {
+    return OSREC.CurrencyFormatter.format(val * 0.01, {currency: 'CNY'});
+}
+
+MXF.priceParse = function (val) {
+    return OSREC.CurrencyFormatter.parse(val, {decimal: '.'});
 }
 
 MXF.dateTimeFormatter = function (val, row) {

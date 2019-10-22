@@ -4,6 +4,7 @@ import com.vgit.yunqiang.common.query.base.BaseQuery;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public class Page<T> implements Serializable {
 
@@ -18,6 +19,8 @@ public class Page<T> implements Serializable {
 
     // 每页多少条数据，分页大小
     private int pageSize = 10;
+
+    private Map<String, Object> footer;
 
     public Page() {
     }
@@ -59,6 +62,14 @@ public class Page<T> implements Serializable {
 
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public Map<String, Object> getFooter() {
+        return footer;
+    }
+
+    public void setFooter(Map<String, Object> footer) {
+        this.footer = footer;
     }
 
     @Override

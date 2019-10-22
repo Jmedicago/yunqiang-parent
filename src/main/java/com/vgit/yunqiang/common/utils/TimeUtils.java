@@ -491,9 +491,6 @@ public class TimeUtils {
         return list;
     }
 
-
-    //=================================时间格式转换==========================
-
     /**
      * date类型进行格式化输出（返回类型：String）
      *
@@ -546,9 +543,6 @@ public class TimeUtils {
         return new Date(str * 1000);
     }
 
-
-    //====================================其他常见日期操作方法======================
-
     /**
      * 判断当前日期是否在[startDate, endDate]区间
      *
@@ -562,6 +556,25 @@ public class TimeUtils {
             return false;
         }
         long currentTime = new Date().getTime();
+        if (currentTime >= startDate.getTime()
+                && currentTime <= endDate.getTime()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 判断当前日期是否在[startDate, endDate]区间
+     *
+     * @param startDate 开始日期
+     * @param endDate   结束日期
+     * @return
+     * @author jqlin
+     */
+    public static boolean isEffectiveDate(Long currentTime, Date startDate, Date endDate) {
+        if (startDate == null || endDate == null) {
+            return false;
+        }
         if (currentTime >= startDate.getTime()
                 && currentTime <= endDate.getTime()) {
             return true;
@@ -908,6 +921,9 @@ public class TimeUtils {
 
 
     public static void main(String[] args) {
-        System.out.println(getNo(8));
+        Timestamp startTime = TimeUtils.getDayStartTime(new Date(1571732358690L));
+        Timestamp endTime = TimeUtils.getDayEndTime(new Date(1571732358690L));
+        boolean flag = TimeUtils.isEffectiveDate(new Date(startTime.getTime()), new Date(endTime.getTime()));
+        System.out.println(flag);
     }
 }
