@@ -22,7 +22,7 @@
 				    url: '/region-stock-daily/children?stockId=${finRegionStockDaily.stockId}&dateTime=${finRegionStockDaily.createTime}'">
                     <thead>
                     <tr>
-                        <th data-options="field:'stockId', width: 150, halign: 'center', align: 'center'">零售店</th>
+                        <th data-options="field:'stockId', width: 150, halign: 'center', align: 'center', formatter: stockFormatter">零售店</th>
                         <th data-options="field:'income', width: 167, halign: 'center', align: 'center', formatter: MXF.priceFormatter">日收入</th>
                     </tr>
                     </thead>
@@ -125,6 +125,20 @@
         });
         return category;
     }
+    
+    function stockFormatter(val, row) {
+       var stockName = null;
+       $.ajax({
+           type: "GET",
+           url: "/stock/info?id=" + val,
+           async: false,
+           success: function (data) {
+               stockName = data.name;
+               row.stockName = stockName;
+           }
+       })
+       return stockName;
+    }
 
     function selectExpendItem(index, row) {
         console.log(index, row);
@@ -141,7 +155,6 @@
 
     function loadExpendItemSuccess(data) {
         // 更新存
-
         if (data.footer) {
             // 支出总计
             $('#expendTotal').text(MXF.priceFormatter(data.footer.expendTotal));
