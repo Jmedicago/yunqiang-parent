@@ -1,6 +1,7 @@
 package com.vgit.yunqiang.controller;
 
 import com.vgit.yunqiang.common.consts.bis.StockDailyTypeConsts;
+import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.query.StockDailyQuery;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.controller.consts.ControllerConsts;
@@ -84,9 +85,13 @@ public class FinStockDailyController {
         if (finStockDaily.getSales() != null) {
             finStockDaily.setSales(finStockDaily.getSales() * 100);
         }
-        // 更新日报信息
-        this.finStockDailyService.saveOrUpdateDaily(finStockDaily);
-        return Ret.me().setData(finStockDaily);
+        try {
+            // 更新日报信息
+            this.finStockDailyService.saveOrUpdateDaily(finStockDaily);
+            return Ret.me().setData(finStockDaily);
+        } catch (BisException e) {
+            return Ret.me().setSuccess(false).setInfo("今日日报已存在，无法新增日报！");
+        }
     }
 
     @RequestMapping(ControllerConsts.URL_DELETE)

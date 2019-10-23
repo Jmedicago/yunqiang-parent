@@ -1,5 +1,6 @@
 package com.vgit.yunqiang.service;
 
+import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.service.BaseService;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.pojo.FinStockDaily;
@@ -14,7 +15,7 @@ public interface FinStockDailyService extends BaseService<FinStockDaily> {
      * @param finStockDaily
      * @return
      */
-    FinStockDaily saveOrUpdateDaily(FinStockDaily finStockDaily);
+    FinStockDaily saveOrUpdateDaily(FinStockDaily finStockDaily) throws BisException;
 
     /**
      * 删除日报信息
@@ -31,4 +32,14 @@ public interface FinStockDailyService extends BaseService<FinStockDaily> {
      * @return
      */
     List<FinStockDaily> getChildren(Long stockId, Long dateTime);
+
+    /**
+     * 是否存在
+     *
+     * @param dateTime
+     * @param type
+     * @return
+     */
+    boolean exist(Long dateTime, Integer type, Long stockId);
+
 }

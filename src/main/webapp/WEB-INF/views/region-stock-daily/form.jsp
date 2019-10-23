@@ -22,7 +22,7 @@
 				    url: '/region-stock-daily/children?stockId=${finRegionStockDaily.stockId}&dateTime=${finRegionStockDaily.createTime}'">
                     <thead>
                     <tr>
-                        <th data-options="field:'stockId', width: 150, halign: 'center', align: 'center'">仓库名</th>
+                        <th data-options="field:'stockId', width: 150, halign: 'center', align: 'center'">零售店</th>
                         <th data-options="field:'income', width: 167, halign: 'center', align: 'center', formatter: MXF.priceFormatter">日收入</th>
                     </tr>
                     </thead>
@@ -88,12 +88,13 @@
             <form id="outRegionStockDailyForm" style="width: 390px; margin-top: 30px;">
                 <div class="input-div">
                     <label class="label-top">保险柜现金</label>
-                    <input class="easyui-textbox theme-textbox-radius" name="safe" value="${finRegionStockDaily.safe * 0.01}"
-                           style="width: 250px">
+                    <input id="safe" class="easyui-textbox theme-textbox-radius" name="safe" value="${finRegionStockDaily.safe * 0.01}"
+                           style="width: 250px" data-options="
+                                onChange: safeChange">
                 </div>
                 <div class="input-div">
-                    <label class="label-top">零钱（家里现金）</label>
-                    <input class="easyui-textbox theme-textbox-radius" name="deposit" value="${finRegionStockDaily.deposit * 0.01}"
+                    <label class="label-top">存</label>
+                    <input id="deposit" class="easyui-textbox theme-textbox-radius" name="deposit" value="${finRegionStockDaily.deposit * 0.01}"
                            style="width: 250px">
                 </div>
             </form>
@@ -111,7 +112,7 @@
         MXF.getTabContentHeight();
     });
 
-    function formatterExpendItem(val) {
+    function formatterExpendItem(val, row, index) {
         var category = null;
         $.ajax({
             type: "GET",
@@ -119,6 +120,7 @@
             async: false,
             success: function (data) {
                 category = data.category;
+                row.categoryFormatter = category;
             }
         });
         return category;
@@ -138,11 +140,32 @@
     }
 
     function loadExpendItemSuccess(data) {
+        // 更新存
+
         if (data.footer) {
             // 支出总计
             $('#expendTotal').text(MXF.priceFormatter(data.footer.expendTotal));
         } else {
             $('#expendTotal').text(MXF.priceFormatter(0));
+        }
+    }
+
+    function safeChange(oldValue, newValue) {
+        var data = $('#stockDailyExpendItemGrid').datagrid('getData');
+        // 更新存
+        if (data.rows) {
+            var safe = parseFloat(oldValue);
+            if (safe) {
+                var expendTotal = 0;
+                $.each(data.rows, function (index, column) {
+                    if (column.categoryFormatter == 'C') {
+                        expendTotal += column.amount;
+                    }
+                });
+                var incomeTotal = parseFloat(MXF.priceParse($('#incomeTotal').text()));
+                var total = incomeTotal + safe - expendTotal * 0.01;
+                $('#deposit').textbox('setValue', total);
+            }
         }
     }
 

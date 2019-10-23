@@ -1,13 +1,13 @@
 package com.vgit.yunqiang.controller;
 
 import com.vgit.yunqiang.common.consts.bis.StockDailyTypeConsts;
+import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.query.StockDailyQuery;
 import com.vgit.yunqiang.common.utils.Page;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.controller.consts.ControllerConsts;
 import com.vgit.yunqiang.controller.utils.UserContext;
 import com.vgit.yunqiang.pojo.FinStockDaily;
-import com.vgit.yunqiang.pojo.FinStockDailyExpendItem;
 import com.vgit.yunqiang.pojo.SysUser;
 import com.vgit.yunqiang.service.FinStockDailyService;
 import org.apache.commons.lang3.StringUtils;
@@ -80,9 +80,13 @@ public class FinRegionStockDailyController {
         if (regionStockDaily.getDeposit() != null) {
             regionStockDaily.setDeposit(regionStockDaily.getDeposit() * 100);
         }
-        // 更新日报信息
-        this.finStockDailyService.saveOrUpdateDaily(regionStockDaily);
-        return Ret.me().setData(regionStockDaily);
+        try {
+            // 更新日报信息
+            this.finStockDailyService.saveOrUpdateDaily(regionStockDaily);
+            return Ret.me().setData(regionStockDaily);
+        } catch (BisException e) {
+            return Ret.me().setSuccess(false).setInfo("今日日报已存在，无法新增日报！");
+        }
     }
 
     @RequestMapping(ControllerConsts.URL_DELETE)
@@ -101,7 +105,9 @@ public class FinRegionStockDailyController {
 
         double incomeTotal = 0;
         for (FinStockDaily row : rows) {
-            incomeTotal += row.getIncome();
+            if (row.getIncome() != null) {
+                incomeTotal += row.getIncome();
+            }
         }
         Map<String, Object> footer = new HashMap<String, Object>();
         footer.put("incomeTotal", incomeTotal);

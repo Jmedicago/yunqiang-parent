@@ -17,4 +17,21 @@ public interface FinStockDailyMapper extends BaseMapper<FinStockDaily> {
      */
     List<FinStockDaily> getChildren(@Param("stockId") Long stockId, @Param("startTime") Long startTime, @Param("endTime") Long endTime);
 
+    /**
+     * 查询上一条记录
+     *
+     * @return
+     */
+    FinStockDaily getPrevious(@Param("id") Long id, @Param("type") Integer type, @Param("stockId")Long stockId);
+
+    /**
+     * 检查是否存在
+     *
+     * @param startTime
+     * @param endTime
+     * @param type
+     * @return
+     */
+    int exist(@Param("startTime") Long startTime, @Param("endTime") Long endTime, @Param("type") Integer type, @Param("stockId") Long stockId);
+
 }

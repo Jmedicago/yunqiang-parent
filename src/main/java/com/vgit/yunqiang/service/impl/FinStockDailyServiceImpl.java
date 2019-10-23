@@ -1,6 +1,8 @@
 package com.vgit.yunqiang.service.impl;
 
 import com.vgit.yunqiang.common.consts.ICodes;
+import com.vgit.yunqiang.common.consts.bis.StockDailyTypeConsts;
+import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
 import com.vgit.yunqiang.common.utils.Ret;
@@ -27,11 +29,20 @@ public class FinStockDailyServiceImpl extends BaseServiceImpl<FinStockDaily> imp
     }
 
     @Override
-    public FinStockDaily saveOrUpdateDaily(FinStockDaily finStockDaily) {
+    public FinStockDaily saveOrUpdateDaily(FinStockDaily finStockDaily) throws BisException {
         if (finStockDaily.getId() == null) {
-            finStockDaily.setCreateTime(System.currentTimeMillis());
-            this.mapper.savePart(finStockDaily);
+            if (this.exist(System.currentTimeMillis(), finStockDaily.getType(), finStockDaily.getStockId())) {
+                throw new BisException();
+            } else {
+                finStockDaily.setCreateTime(System.currentTimeMillis());
+                this.mapper.savePart(finStockDaily);
+                FinStockDaily prevStockDaily = this.getPrevStockDaily(finStockDaily.getId(), finStockDaily.getStockId());
+                // finStockDaily.setDeposit(prevStockDaily.getDeposit());
+                finStockDaily.setSafe(prevStockDaily.getSafe());
+                this.mapper.updatePart(finStockDaily);
+            }
         } else {
+            // finStockDaily.setSafe(finStockDaily.getDeposit());
             finStockDaily.setUpdateTime(System.currentTimeMillis());
             this.mapper.updatePart(finStockDaily);
         }
@@ -52,6 +63,33 @@ public class FinStockDailyServiceImpl extends BaseServiceImpl<FinStockDaily> imp
         Timestamp startTime = TimeUtils.getDayStartTime(new Date(dateTime));
         Timestamp endTime = TimeUtils.getDayEndTime(new Date(dateTime));
         return this.mapper.getChildren(stockId, startTime.getTime(), endTime.getTime());
+    }
+
+    @Override
+    public boolean exist(Long dateTime, Integer type, Long stockId) {
+        Timestamp startTime = TimeUtils.getDayStartTime(new Date(dateTime));
+        Timestamp endTime = TimeUtils.getDayEndTime(new Date(dateTime));
+        int i = this.mapper.exist(startTime.getTime(), endTime.getTime(), type, stockId);
+        if (i > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    private FinStockDaily getPrevStockDaily(Long id, Long stockId) {
+        FinStockDaily stockDaily = new FinStockDaily();
+        // 查询上一次的记录
+        FinStockDaily prevStockDaily = this.mapper.getPrevious(id, StockDailyTypeConsts.REGION_STOCK_DAILY, stockId);
+        double deposit = 0; // 存
+        double safe = 0; // 保险柜
+        if (prevStockDaily != null) { // 如果存在
+            // stockDaily.setDeposit(prevStockDaily.getSafe());
+            stockDaily.setSales(prevStockDaily.getSafe());
+        } else {
+            // stockDaily.setDeposit(deposit);
+            stockDaily.setSafe(safe);
+        }
+        return stockDaily;
     }
 
 }

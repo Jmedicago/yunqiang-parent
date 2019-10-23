@@ -24,14 +24,14 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
         insert into t_fin_stock_daily (id, stockId, userId, income,
-          expendTotal, sales, purch,
-          arrears, safe, deposit, type, createTime, updateTime,
-          remark)
+        expendTotal, sales, purch,
+        arrears, safe, deposit, type, createTime, updateTime,
+        remark)
         values (#{id,jdbcType=BIGINT}, #{stockId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT},
-          #{income,jdbcType=DOUBLE}, #{expendTotal,jdbcType=DOUBLE}, #{sales,jdbcType=DOUBLE},
-          #{purch,jdbcType=DOUBLE}, #{arrears,jdbcType=DOUBLE}, #{safe,jdbcType=DOUBLE},
-          #{deposit,jdbcType=DOUBLE}, #{type, jdbcType=INTEGER}, #{createTime,jdbcType=BIGINT},
-          #{updateTime,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR})
+        #{income,jdbcType=DOUBLE}, #{expendTotal,jdbcType=DOUBLE}, #{sales,jdbcType=DOUBLE},
+        #{purch,jdbcType=DOUBLE}, #{arrears,jdbcType=DOUBLE}, #{safe,jdbcType=DOUBLE},
+        #{deposit,jdbcType=DOUBLE}, #{type, jdbcType=INTEGER}, #{createTime,jdbcType=BIGINT},
+        #{updateTime,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR})
     </insert>
 
     <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.FinStockDaily">
@@ -216,6 +216,19 @@
     <select id="getChildren" resultType="com.vgit.yunqiang.pojo.FinStockDaily">
         <![CDATA[
         SELECT tfsd.* FROM t_fin_stock_daily tfsd WHERE stockId IN (SELECT tbs.id FROM t_bis_stock tbs WHERE parentId = #{stockId}) AND tfsd.createTime >= #{startTime} AND tfsd.createTime <= #{endTime}
+        ]]>
+    </select>
+
+    <select id="getPrevious" resultType="com.vgit.yunqiang.pojo.FinStockDaily">
+        <!--SELECT * FROM t_fin_stock_daily WHERE id = (SELECT MAX(id) FROM t_fin_stock_daily WHERE id < #{id} AND TYPE = #{type}) AND TYPE = #{type};-->
+        <![CDATA[
+        SELECT * FROM t_fin_stock_daily WHERE id = (SELECT MAX(id) FROM t_fin_stock_daily WHERE id < #{id} AND TYPE = #{type} AND stockId = #{stockId})
+        ]]>
+    </select>
+
+    <select id="exist" resultType="int">
+        <![CDATA[
+        SELECT count(1) FROM t_fin_stock_daily tfsd WHERE tfsd.createTime >= #{startTime} AND tfsd.createTime <= #{endTime} AND tfsd.type = #{type} and tfsd.stockId = #{stockId}
         ]]>
     </select>
 

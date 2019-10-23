@@ -84,6 +84,7 @@
                         }
                     });
                 } else {
+                    MXF.ajaxing(false);
                     MXF.alert(res.info, false);
                 }
             });
