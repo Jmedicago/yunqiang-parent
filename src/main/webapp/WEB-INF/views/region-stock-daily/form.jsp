@@ -106,6 +106,7 @@
                     <input id="deposit" class="easyui-textbox theme-textbox-radius" name="deposit"
                            value="${finRegionStockDaily.deposit * 0.01}"
                            style="width: 250px">
+                    <a class="easyui-linkbutton" onclick="calSafe()" style="position: absolute; margin-left: 3px;">计算</a>
                 </div>
             </form>
         </div>
@@ -170,8 +171,11 @@
         } else {
             $('#expendTotal').text(MXF.priceFormatter(0));
         }
-
+    }
+    
+    function calSafe() {
         // 更新存
+        var data = $('#stockDailyExpendItemGrid').datagrid('getData');
         if (data.rows) {
             var expendTotal = 0;
             $.each(data.rows, function (index, column) {

@@ -54,6 +54,8 @@ public class FinStockDailyServiceImpl extends BaseServiceImpl<FinStockDaily> imp
             }
         } else {
             finStockDaily.setUpdateTime(System.currentTimeMillis());
+            // 保险柜的钱等于存的钱
+            finStockDaily.setSafe(finStockDaily.getDeposit());
             this.mapper.updatePart(finStockDaily);
         }
         return finStockDaily;
