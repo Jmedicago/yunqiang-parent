@@ -220,7 +220,6 @@
     </select>
 
     <select id="getPrevious" resultType="com.vgit.yunqiang.pojo.FinStockDaily">
-        <!--SELECT * FROM t_fin_stock_daily WHERE id = (SELECT MAX(id) FROM t_fin_stock_daily WHERE id < #{id} AND TYPE = #{type}) AND TYPE = #{type};-->
         <![CDATA[
         SELECT * FROM t_fin_stock_daily WHERE id = (SELECT MAX(id) FROM t_fin_stock_daily WHERE id < #{id} AND TYPE = #{type} AND stockId = #{stockId})
         ]]>
@@ -228,7 +227,7 @@
 
     <select id="exist" resultType="int">
         <![CDATA[
-        SELECT count(1) FROM t_fin_stock_daily tfsd WHERE tfsd.createTime >= #{startTime} AND tfsd.createTime <= #{endTime} AND tfsd.type = #{type} and tfsd.stockId = #{stockId}
+        SELECT COUNT(1) FROM t_fin_stock_daily tfsd WHERE tfsd.createTime >= #{startTime} AND tfsd.createTime <= #{endTime} AND tfsd.type = #{type} and tfsd.stockId = #{stockId}
         ]]>
     </select>
 
