@@ -60,4 +60,76 @@ public interface FinStockQuarterlyMapper extends BaseMapper<FinStockQuarterly> {
      * @return
      */
     Double getArrears(@Param("stockId") Long stockId, @Param("startTime") long startTime, @Param("endTime") long endTime, @Param("type") Integer type);
+
+    /**
+     * 获取最后一次日报保险柜现金
+     *
+     * @param stockId
+     * @param type
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    Double getSafe(@Param("stockId") Long stockId, @Param("type") Integer type, @Param("startTime") long startTime, @Param("endTime") long endTime);
+
+    /**
+     * 查询当前季度欠款总计
+     *
+     * @param stockId
+     * @param year
+     * @param quarter
+     * @return
+     */
+    Double getArrearsTotal(@Param("stockId") Long stockId, @Param("year") String year, @Param("quarter") String quarter);
+
+    /**
+     * 查询当前季度零钱总计
+     *
+     * @param stockId
+     * @param year
+     * @param quarter
+     * @return
+     */
+    Double getChangesTotal(@Param("stockId") Long stockId, @Param("year") String year, @Param("quarter") String quarter);
+
+    /**
+     * 查询当前季度库存货值总计
+     *
+     * @param stockId
+     * @param year
+     * @param quarter
+     * @return
+     */
+    Double getInventoryTotal(@Param("stockId") Long stockId, @Param("year") String year, @Param("quarter") String quarter);
+
+    /**
+     * 查询当前季度进货总值
+     *
+     * @param stockId
+     * @param year
+     * @param quarter
+     * @return
+     */
+    Double getPurchTotalAll(@Param("stockId") Long stockId, @Param("year") String year, @Param("quarter") String quarter);
+
+    /**
+     * 当前季度支出总计
+     *
+     * @param stockId
+     * @param type
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    Double getExpendTotal(@Param("stockId") Long stockId, @Param("type") Integer type, @Param("startTime") long startTime, @Param("endTime") long endTime);
+
+    /**
+     * 当前季度存银行总计
+     *
+     * @param stockId
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    Double getDepositTotal(@Param("stockId") Long stockId, @Param("startTime") long startTime, @Param("endTime") long endTime);
 }

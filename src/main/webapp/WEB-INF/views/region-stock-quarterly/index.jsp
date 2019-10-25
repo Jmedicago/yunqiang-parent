@@ -19,11 +19,13 @@
                 <th data-options="field: 'year',width: 100, halign: 'center', align: 'center'">年份</th>
                 <th data-options="field: 'quarterly', width: 100, halign: 'center', align: 'center', formatter: quarterFormatter">季度</th>
                 <th data-options="field: 'stockId', width: 180, halign: 'center', align: 'center', formatter: stockFormatter">零售店名</th>
+                <th data-options="field: 'beforeSafe', width: 180, halign: 'center', align: 'center', formatter: MXF.priceFormatter">上季度保险柜现金</th>
                 <th data-options="field: 'purchTotal', width: 180, halign: 'center', align: 'center', formatter: MXF.priceFormatter">当前季度进货总值</th>
                 <th data-options="field: 'beforeArrears', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">上季度欠款</th>
                 <th data-options="field: 'beforeInventory', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">上季度库存货值</th>
                 <th data-options="field: 'beforeChange', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">上季度零钱</th>
-                <th data-options="field: 'salesTotal', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">销售额</th>
+                <th data-options="field: 'expendTotal', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">总支出</th>
+                <th data-options="field: 'depositTotal', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">总存银行</th>
                 <th data-options="field: 'arrears', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">当前季度欠款</th>
                 <th data-options="field: 'changes', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">当前季度零钱</th>
                 <th data-options="field: 'inventory', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">当前库存货值</th>
@@ -31,13 +33,13 @@
             </tr>
             </thead>
         </table>
-        <div id="stockQuarterlyTB">
+        <div id="regionStockQuarterlyTB">
             <div>
-                <a href="#" data-cmd="addStockQuarterly" remote="false"
+                <a href="#" data-cmd="addRegionStockQuarterly" remote="false"
                    class="easyui-linkbutton" iconCls="icon-add" plain="true">
                     <spring:message code="common.add"/>
                 </a>
-                <a href="#" data-cmd="editStockQuarterly" title="<spring:message code="common.edit"/>" mustsel
+                <a href="#" data-cmd="editRegionStockQuarterly" title="<spring:message code="common.edit"/>" mustsel
                    remote="false"
                    data-options="disabled:true" class="easyui-linkbutton"
                    iconCls="icon-edit" plain="true">
@@ -81,20 +83,21 @@
         return stockName;
     }
 
-    function addStockQuarterly() {
+    function addRegionStockQuarterly() {
         MXF.confirm('是否新建当前季度出账明细？', function (res) {
             // 创建当前季度资金出账明细
-            $.post('/stock-quarterly/store', function (res) {
+            $.post('/region-stock-quarterly/store', function (res) {
                 if (res.success) { // 新建成功
-                    $('#stockQuarterlyGrid').datagrid('reload');
+                    $('#regionStockQuarterlyGrid').datagrid('reload');
+                    var title = res.data.stockName + " " + "Q" + res.data.quarterly + "收支平衡表";
                     // 打开编辑页面
-                    var editWindow = $('<div id="addStockQuarterlyWindow"></div>');
+                    var editWindow = $('<div id="addRegionStockQuarterlyWindow"></div>');
                     editWindow.appendTo('body');
                     $(editWindow).window({
-                        title: '当前季度出账明细',
+                        title: title,
                         modal: true,
                         maximized: true,
-                        href: '/stock-quarterly/edit?id=' + res.data.id,
+                        href: '/region-stock-quarterly/edit?id=' + res.data.id,
                         onLoad: function () {
                             /*var formData = {
                                 id: res.data.id,
@@ -112,21 +115,21 @@
         })
     }
 
-    function editStockQuarterly() {
-        var row = $('#stockQuarterlyGrid').datagrid('getSelected');
+    function editRegionStockQuarterly() {
+        var row = $('#regionStockQuarterlyGrid').datagrid('getSelected');
         if (row == null) {
             MXF.error("请选择一个您要编辑的季度表报！");
             return;
         }
         var title = row.stockName + " " + "Q" + row.quarterly + "收支平衡表";
         // 打开编辑页面
-        var editWindow = $('<div id="editStockQuarterlyWindow"></div>');
+        var editWindow = $('<div id="editRegionStockQuarterlyWindow"></div>');
         editWindow.appendTo('body');
         $(editWindow).window({
             title: title,
             modal: true,
             maximized: true,
-            href: '/stock-quarterly/edit?id=' + row.id,
+            href: '/region-stock-quarterly/edit?id=' + row.id,
             onLoad: function () {
                 //var $form = editWindow.find('form');
                 //$form.data('window',editWindow);

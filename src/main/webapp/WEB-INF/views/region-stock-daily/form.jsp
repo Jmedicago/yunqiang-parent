@@ -262,7 +262,8 @@
         var data = {
             id: $('#regionStockDailyForm').find('[name=id]').val(),
             safe: $('#outRegionStockDailyForm').find('[name=safe]').val(),
-            deposit: $('#outRegionStockDailyForm').find('[name=deposit]').val()
+            deposit: $('#outRegionStockDailyForm').find('[name=deposit]').val(),
+            expendTotal: MXF.priceParse($('#expendTotal').text()),
         };
         if (data) {
             $.post('/region-stock-daily/store', data, function (res) {

@@ -1,5 +1,6 @@
 package com.vgit.yunqiang.service.impl;
 
+import com.vgit.yunqiang.common.consts.bis.StockDailyTypeConsts;
 import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
@@ -35,7 +36,13 @@ public class FinStockQuarterlyServiceImpl extends BaseServiceImpl<FinStockQuarte
             if (this.exist(System.currentTimeMillis(), stockQuarterly.getType(), stockQuarterly.getStockId())) {
                 throw new BisException();
             } else {
-                this.init(stockQuarterly);
+                if (StockDailyTypeConsts.CHILD_STOCK_DAILY == stockQuarterly.getType()) {
+                    this.init(stockQuarterly);
+                } else if (StockDailyTypeConsts.REGION_STOCK_DAILY == stockQuarterly.getType()) {
+                    this.initRegion(stockQuarterly);
+                } else if (StockDailyTypeConsts.WMS_STOCK_DAILY == stockQuarterly.getType()) {
+                    this.initWms(stockQuarterly);
+                }
                 this.savePart(stockQuarterly);
             }
         } else {
@@ -43,6 +50,124 @@ public class FinStockQuarterlyServiceImpl extends BaseServiceImpl<FinStockQuarte
             this.updatePart(stockQuarterly);
         }
         return stockQuarterly;
+    }
+
+    private void initWms(FinStockQuarterly stockQuarterly) {
+
+    }
+
+    private void initRegion(FinStockQuarterly stockQuarterly) {
+        String year = String.valueOf(TimeUtils.getNowYear());
+        String quarter = String.valueOf(TimeUtils.getNowSeason());
+
+        stockQuarterly.setYear(year); // 当前年份
+        stockQuarterly.setQuarterly(quarter); // 当前季度
+
+        // 当前季度
+        stockQuarterly.setSafe(this.getSafe(stockQuarterly.getStockId(), quarter, year, stockQuarterly.getType())); // 保险柜现金
+        stockQuarterly.setArrears(this.getArrearsTotal(stockQuarterly.getStockId(), quarter, year)); // 欠款
+        stockQuarterly.setChanges(this.getChangesTotal(stockQuarterly.getStockId(), quarter, year)); // 零钱
+        stockQuarterly.setInventory(this.getInventoryTotal(stockQuarterly.getStockId(), quarter, year)); // 库存货值
+        stockQuarterly.setPurchTotal(this.getPurchTotalAll(stockQuarterly.getStockId(), quarter, year)); // 进货总值
+
+        // 上季度
+        FinStockQuarterly prevStockQuarter = this.getPrevQuarter(year, quarter, stockQuarterly.getType(), stockQuarterly.getStockId());
+        if (prevStockQuarter != null) {
+            stockQuarterly.setBeforeSafe(prevStockQuarter.getSafe()); // 上季度保险柜现金
+            stockQuarterly.setBeforeArrears(prevStockQuarter.getArrears()); // 上季度欠款
+            stockQuarterly.setBeforeChange(prevStockQuarter.getChanges()); // 上季度零钱
+            stockQuarterly.setBeforeInventory(prevStockQuarter.getBeforeInventory()); // 上季度库存货值
+        } else {
+            stockQuarterly.setBeforeSafe(DEFAULT_VALUES);
+            stockQuarterly.setBeforeArrears(DEFAULT_VALUES);
+            stockQuarterly.setBeforeChange(DEFAULT_VALUES);
+            stockQuarterly.setBeforeInventory(DEFAULT_VALUES);
+        }
+
+        // 出
+        stockQuarterly.setExpendTotal(this.getExpendTotal(stockQuarterly.getStockId(), stockQuarterly.getType(), quarter, year));
+        stockQuarterly.setDepositTotal(this.getDepositTotal(stockQuarterly.getStockId(), quarter, year));
+
+        // 盈亏
+        double pl = 0;
+        double out = 0;
+        double in =0;
+        double save = 0;
+
+        out = stockQuarterly.getExpendTotal() + stockQuarterly.getDepositTotal();
+        LOGGER.info("出：{}", out);
+        save = stockQuarterly.getSafe() + stockQuarterly.getArrears() + stockQuarterly.getChanges() + stockQuarterly.getInventory();
+        LOGGER.info("存：{}", save);
+        in = stockQuarterly.getBeforeSafe() + stockQuarterly.getPurchTotal() + stockQuarterly.getBeforeArrears() + stockQuarterly.getBeforeChange() + stockQuarterly.getBeforeInventory();
+        LOGGER.info("进：{}", in);
+
+        pl = out + save - in;
+        stockQuarterly.setPl(pl);
+    }
+
+    private double getDepositTotal(Long stockId, String quarter, String year) {
+        Long[] times = TimeUtils.getQuarterStartAndEndTime(Integer.valueOf(quarter), Integer.valueOf(year));
+        long startTime = times[0];
+        long endTime = times[1];
+        Double depositTotal = this.mapper.getDepositTotal(stockId, startTime, endTime);
+        if (depositTotal != null) {
+            return depositTotal;
+        }
+        return 0;
+    }
+
+    private double getExpendTotal(Long stockId, Integer type, String quarter, String year) {
+        Long[] times = TimeUtils.getQuarterStartAndEndTime(Integer.valueOf(quarter), Integer.valueOf(year));
+        long startTime = times[0];
+        long endTime = times[1];
+        Double expendTotal = this.mapper.getExpendTotal(stockId, type, startTime, endTime);
+        if (expendTotal != null) {
+            return expendTotal;
+        }
+        return 0;
+    }
+
+    private double getPurchTotalAll(Long stockId, String quarter, String year) {
+        Double purchTotalAll = this.mapper.getPurchTotalAll(stockId, year, quarter);
+        if (purchTotalAll != null) {
+            return purchTotalAll;
+        }
+        return 0;
+    }
+
+    private double getInventoryTotal(Long stockId, String quarter, String year) {
+        Double inventoryTotal = this.mapper.getInventoryTotal(stockId, year, quarter);
+        if (inventoryTotal != null) {
+            return inventoryTotal;
+        }
+        return 0;
+    }
+
+    private double getChangesTotal(Long stockId, String quarter, String year) {
+        Double changesTotal = this.mapper.getChangesTotal(stockId, year, quarter);
+        if (changesTotal != null) {
+            return changesTotal;
+        }
+        return 0;
+    }
+
+    private double getArrearsTotal(Long stockId, String quarter, String year) {
+        Double arrearsTotal = this.mapper.getArrearsTotal(stockId, year, quarter);
+        if (arrearsTotal != null) {
+            return arrearsTotal;
+        }
+        return 0;
+    }
+
+    private double getSafe(Long stockId, String quarter, String year, Integer type) {
+        Long[] times = TimeUtils.getQuarterStartAndEndTime(Integer.valueOf(quarter), Integer.valueOf(year));
+        long startTime = times[0];
+        long endTime = times[1];
+        Double safe = this.mapper.getSafe(stockId, type, startTime, endTime);
+        if (safe != null) {
+            return safe;
+        }
+        return 0;
     }
 
     private void init(FinStockQuarterly stockQuarterly) {

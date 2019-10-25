@@ -8,7 +8,7 @@
     </form>
     <div class="easyui-layout" data-options="fit:true">
         <div data-options="region: 'west', title: '进', split: true, border: true" style="width:400px;">
-            <form id="intStockQuarterlyForm" style="width: 390px; margin-top: 30px;">
+            <form id="inStockQuarterlyForm" style="width: 390px; margin-top: 30px;">
                 <div class="input-div">
                     <label class="label-top">进货总值</label>
                     <input class="easyui-textbox theme-textbox-radius" id="purchTotal" name="purchTotal"

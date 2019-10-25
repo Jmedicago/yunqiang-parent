@@ -80,6 +80,9 @@ public class FinRegionStockDailyController {
         if (regionStockDaily.getDeposit() != null) {
             regionStockDaily.setDeposit(regionStockDaily.getDeposit() * 100);
         }
+        if (regionStockDaily.getExpendTotal() != null) {
+            regionStockDaily.setExpendTotal(regionStockDaily.getExpendTotal() * 100);
+        }
         try {
             // 更新日报信息
             this.finStockDailyService.saveOrUpdateDaily(regionStockDaily);

@@ -10,4 +10,6 @@ public class StockDailyTypeConsts {
     @ConstName("区域门店")
     public static int REGION_STOCK_DAILY = 2;
 
+    @ConstName("仓库")
+    public static int WMS_STOCK_DAILY = 3;
 }

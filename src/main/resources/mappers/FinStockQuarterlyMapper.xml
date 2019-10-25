@@ -361,4 +361,46 @@
         ]]>
     </select>
 
+    <select id="getSafe" resultType="double">
+        <![CDATA[
+        SELECT safe FROM t_fin_stock_daily WHERE id = (SELECT MAX(fsd.id) FROM t_fin_stock_daily fsd WHERE fsd.stockId = #{stockId} AND fsd.type = #{type} AND fsd.createTime >= #{startTime} AND fsd.createTime <= #{endTime})
+        ]]>
+    </select>
+
+    <select id="getArrearsTotal" resultType="double">
+        <![CDATA[
+        SELECT SUM(fsq.arrears) FROM t_fin_stock_quarterly fsq WHERE fsq.stockId IN (SELECT bs.id FROM t_bis_stock bs WHERE bs.parentId = #{stockId}) AND fsq.quarterly = #{quarter} AND fsq.year = #{year} AND fsq.type = 1
+        ]]>
+    </select>
+
+    <select id="getChangesTotal" resultType="double">
+        <![CDATA[
+        SELECT SUM(fsq.changes) FROM t_fin_stock_quarterly fsq WHERE fsq.stockId IN (SELECT bs.id FROM t_bis_stock bs WHERE bs.parentId = #{stockId}) AND fsq.quarterly = #{quarter} AND fsq.year = #{year} AND fsq.type = 1
+        ]]>
+    </select>
+
+    <select id="getInventoryTotal" resultType="double">
+        <![CDATA[
+        SELECT SUM(fsq.inventory) FROM t_fin_stock_quarterly fsq WHERE fsq.stockId IN (SELECT bs.id FROM t_bis_stock bs WHERE bs.parentId = #{stockId}) AND fsq.quarterly = #{quarter} AND fsq.year = #{year} AND fsq.type = 1
+        ]]>
+    </select>
+
+    <select id="getPurchTotalAll" resultType="double">
+        <![CDATA[
+        SELECT SUM(fsq.purchTotal) FROM t_fin_stock_quarterly fsq WHERE fsq.stockId IN (SELECT bs.id FROM t_bis_stock bs WHERE bs.parentId = #{stockId}) AND fsq.quarterly = #{quarter} AND fsq.year = #{year} AND fsq.type = 1
+        ]]>
+    </select>
+
+    <select id="getExpendTotal" resultType="double">
+        <![CDATA[
+        SELECT SUM(fsd.expendTotal) FROM t_fin_stock_daily fsd WHERE fsd.stockId = #{stockId} AND fsd.createTime >= #{startTime} AND fsd.createTime <= #{endTime} AND fsd.type = #{type}
+        ]]>
+    </select>
+
+    <select id="getDepositTotal" resultType="double">
+        <![CDATA[
+        SELECT SUM(fsdei.amount) FROM t_fin_stock_daily_expend_item fsdei LEFT JOIN t_fin_stock_daily fsd ON fsd.id = fsdei.dailyId WHERE fsd.stockId = #{stockId} AND fsdei.expendItemId = 3 AND fsd.createTime >= #{startTime} AND fsd.createTime <= #{endTime} AND fsd.type = 2
+        ]]>
+    </select>
+
 </mapper>

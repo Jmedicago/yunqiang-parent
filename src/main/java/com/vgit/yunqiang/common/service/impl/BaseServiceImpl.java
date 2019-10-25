@@ -4,6 +4,7 @@ import com.vgit.yunqiang.common.query.base.BaseQuery;
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.common.service.BaseService;
 import com.vgit.yunqiang.common.utils.Page;
+import com.vgit.yunqiang.pojo.FinStockQuarterly;
 
 import java.util.List;
 
