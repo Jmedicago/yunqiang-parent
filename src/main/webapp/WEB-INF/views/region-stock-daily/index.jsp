@@ -19,7 +19,7 @@
                 <th data-options="field: 'createTime',width: 200, halign: 'center', align: 'center', formatter: MXF.dateTimeFormatter">
                     日期
                 </th>
-                <th data-options="field:'stockId', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">仓库名</th>
+                <th data-options="field:'stockId', width: 100, halign: 'center', align: 'center', formatter: stockFormatter">仓库名</th>
                 <th data-options="field:'safe', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">保险柜</th>
                 <th data-options="field:'deposit', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">存银行</th>
             </tr>
@@ -56,6 +56,20 @@
     $(function () {
         MXF.getTabContentHeight();
     });
+
+    function stockFormatter(val, row) {
+        var stockName = "";
+        $.ajax({
+            type: "GET",
+            url: "/stock/info?id=" + val,
+            async: false,
+            success: function (data) {
+                stockName = data.name;
+                row.stockName = data.name;
+            }
+        })
+        return stockName;
+    }
 
     function addRegionStockDaily() {
         MXF.confirm('是否新建区域当日资金出账明细？', function (res) {

@@ -12,7 +12,11 @@
         <result column="beforeArrears" property="beforeArrears" jdbcType="DOUBLE"/>
         <result column="beforeInventory" property="beforeInventory" jdbcType="DOUBLE"/>
         <result column="beforeChange" property="beforeChange" jdbcType="DOUBLE"/>
+        <result column="beforeSafe" property="beforeSafe" jdbcType="DOUBLE"/>
         <result column="salesTotal" property="salesTotal" jdbcType="DOUBLE"/>
+        <result column="expendTotal" property="expendTotal" jdbcType="DOUBLE"/>
+        <result column="depositTotal" property="depositTotal" jdbcType="DOUBLE"/>
+        <result column="safe" property="safe" jdbcType="DOUBLE"/>
         <result column="arrears" property="arrears" jdbcType="DOUBLE"/>
         <result column="changes" property="changes" jdbcType="DOUBLE"/>
         <result column="inventory" property="inventory" jdbcType="DOUBLE"/>
@@ -25,7 +29,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, userId, stockId, year, quarterly, purchTotal, beforeArrears, beforeInventory, beforeChange, salesTotal,
+        id, userId, stockId, year, quarterly, purchTotal, beforeArrears, beforeInventory, beforeChange, beforeSafe, salesTotal, expendTotal, depositTotal, safe,
         arrears, changes, inventory, pl, state, type, createTime, updateTime, remark
     </sql>
 
@@ -47,14 +51,14 @@
         </selectKey>
         insert into t_fin_stock_quarterly (id, userId, stockId, year, quarterly,
         purchTotal, beforeArrears, beforeInventory,
-        beforeChange, salesTotal, arrears,
+        beforeChange, beforeSafe, salesTotal, expendTotal, depositTotal, safe, arrears,
         changes, inventory, pl,
         state, type, createTime, updateTime,
         remark)
         values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{stockId,jdbcType=BIGINT}, #{year,jdbcType=VARCHAR},
         #{quarterly,jdbcType=VARCHAR},
         #{purchTotal,jdbcType=DOUBLE}, #{beforeArrears,jdbcType=DOUBLE}, #{beforeInventory,jdbcType=DOUBLE},
-        #{beforeChange,jdbcType=DOUBLE}, #{salesTotal,jdbcType=DOUBLE}, #{arrears,jdbcType=DOUBLE},
+        #{beforeChange,jdbcType=DOUBLE}, #{beforeSafe,jdbcType=DOUBLE}, #{salesTotal,jdbcType=DOUBLE}, #{expendTotal,jdbcType=DOUBLE}, #{depositTotal,jdbcType=DOUBLE}, #{safe,jdbcType=DOUBLE}, #{arrears,jdbcType=DOUBLE},
         #{changes,jdbcType=DOUBLE}, #{inventory,jdbcType=DOUBLE}, #{pl,jdbcType=DOUBLE},
         #{state,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{createTime,jdbcType=BIGINT},
         #{updateTime,jdbcType=BIGINT},
@@ -94,8 +98,20 @@
             <if test="beforeChange != null">
                 beforeChange,
             </if>
+            <if test="beforeSafe != null">
+                beforeSafe,
+            </if>
             <if test="salesTotal != null">
                 salesTotal,
+            </if>
+            <if test="expendTotal != null">
+                expendTotal,
+            </if>
+            <if test="depositTotal != null">
+                depositTotal,
+            </if>
+            <if test="safe != null">
+                safe,
             </if>
             <if test="arrears != null">
                 arrears,
@@ -153,8 +169,20 @@
             <if test="beforeChange != null">
                 #{beforeChange,jdbcType=DOUBLE},
             </if>
+            <if test="beforeSafe != null">
+                #{beforeSafe,jdbcType=DOUBLE},
+            </if>
             <if test="salesTotal != null">
                 #{salesTotal,jdbcType=DOUBLE},
+            </if>
+            <if test="expendTotal != null">
+                #{expendTotal,jdbcType=DOUBLE},
+            </if>
+            <if test="depositTotal != null">
+                #{depositTotal,jdbcType=DOUBLE},
+            </if>
+            <if test="safe != null">
+                #{safe,jdbcType=DOUBLE},
             </if>
             <if test="arrears != null">
                 #{arrears,jdbcType=DOUBLE},
@@ -213,8 +241,20 @@
             <if test="beforeChange != null">
                 beforeChange = #{beforeChange,jdbcType=DOUBLE},
             </if>
+            <if test="beforeSafe != null">
+                beforeSafe = #{beforeSafe,jdbcType=DOUBLE},
+            </if>
             <if test="salesTotal != null">
                 salesTotal = #{salesTotal,jdbcType=DOUBLE},
+            </if>
+            <if test="expendTotal != null">
+                expendTotal = #{expendTotal,jdbcType=DOUBLE},
+            </if>
+            <if test="depositTotal != null">
+                depositTotal = #{depositTotal,jdbcType=DOUBLE},
+            </if>
+            <if test="safe != null">
+                safe = #{safe,jdbcType=DOUBLE},
             </if>
             <if test="arrears != null">
                 arrears = #{arrears,jdbcType=DOUBLE},
@@ -257,7 +297,11 @@
           beforeArrears = #{beforeArrears,jdbcType=DOUBLE},
           beforeInventory = #{beforeInventory,jdbcType=DOUBLE},
           beforeChange = #{beforeChange,jdbcType=DOUBLE},
+          beforeSafe = #{beforeSafe,jdbcType=DOUBLE},
           salesTotal = #{salesTotal,jdbcType=DOUBLE},
+          expendTotal = #{expendTotal,jdbcType=DOUBLE},
+          depositTotal = #{depositTotal,jdbcType=DOUBLE},
+          safe = #{safe,jdbcType=DOUBLE},
           arrears = #{arrears,jdbcType=DOUBLE},
           changes = #{changes,jdbcType=DOUBLE},
           inventory = #{inventory,jdbcType=DOUBLE},

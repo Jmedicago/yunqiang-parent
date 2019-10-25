@@ -14,25 +14,43 @@ public class FinStockQuarterly extends BasePojo {
 
     private String quarterly;
 
+    // 进：进货总值
     private Double purchTotal;
 
-    // 上季度欠款
+    // 进：上季度欠款
     private Double beforeArrears;
 
-    // 上季度库存货值
+    // 进：上季度库存货值
     private Double beforeInventory;
 
-    // 上季度零钱
+    // 进：上季度零钱
     private Double beforeChange;
 
+    // 进：上季度保险柜现金
+    private Double beforeSafe;
+
+    // 出：销售额
     private Double salesTotal;
 
+    // 出：总支出
+    private Double expendTotal;
+
+    // 出：总存银行
+    private Double depositTotal;
+
+    // 存：保险柜现金
+    private Double safe;
+
+    // 存：欠款
     private Double arrears;
 
+    // 存：零钱
     private Double changes;
 
+    // 存：库存货值
     private Double inventory;
 
+    // 盈亏
     private Double pl;
 
     private Integer state;
@@ -173,6 +191,38 @@ public class FinStockQuarterly extends BasePojo {
 
     public boolean isNotEmpty() {
         return !isEmpty();
+    }
+
+    public Double getBeforeSafe() {
+        return beforeSafe;
+    }
+
+    public void setBeforeSafe(Double beforeSafe) {
+        this.beforeSafe = beforeSafe;
+    }
+
+    public Double getExpendTotal() {
+        return expendTotal;
+    }
+
+    public void setExpendTotal(Double expendTotal) {
+        this.expendTotal = expendTotal;
+    }
+
+    public Double getDepositTotal() {
+        return depositTotal;
+    }
+
+    public void setDepositTotal(Double depositTotal) {
+        this.depositTotal = depositTotal;
+    }
+
+    public Double getSafe() {
+        return safe;
+    }
+
+    public void setSafe(Double safe) {
+        this.safe = safe;
     }
 
     @Override

@@ -19,7 +19,7 @@
                 <th data-options="field: 'createTime',width: 200, halign: 'center', align: 'center', formatter: MXF.dateTimeFormatter">
                     日期
                 </th>
-                <th data-options="field:'stockId', width: 100, halign: 'center', align: 'center'">仓库名</th>
+                <th data-options="field:'stockId', width: 100, halign: 'center', align: 'center', formatter: stockFormatter">仓库名</th>
                 <th data-options="field:'income', width: 180, halign: 'center', align: 'center', formatter: MXF.priceFormatter">日收入</th>
                 <th data-options="field: 'expendTotal', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">日支出总计</th>
                 <th data-options="field: 'sales', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">销售额</th>
@@ -59,6 +59,20 @@
     $(function () {
         MXF.getTabContentHeight();
     });
+
+    function stockFormatter(val, row) {
+        var stockName = "";
+        $.ajax({
+            type: "GET",
+            url: "/stock/info?id=" + val,
+            async: false,
+            success: function (data) {
+                stockName = data.name;
+                row.stockName = data.name;
+            }
+        })
+        return stockName;
+    }
 
     function addStockDaily() {
         MXF.confirm('是否新建当日资金出账明细？', function (res) {
