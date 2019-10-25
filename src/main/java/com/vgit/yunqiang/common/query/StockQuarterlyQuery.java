@@ -10,6 +10,10 @@ public class StockQuarterlyQuery extends BaseQuery {
 
     private Date dateTime;
 
+    private Long stockId;
+
+    private Integer type;
+
     public String getKey() {
         return key;
     }
@@ -26,4 +30,19 @@ public class StockQuarterlyQuery extends BaseQuery {
         this.dateTime = dateTime;
     }
 
+    public Long getStockId() {
+        return stockId;
+    }
+
+    public void setStockId(Long stockId) {
+        this.stockId = stockId;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
 }

@@ -18,6 +18,7 @@
                 <th data-options="field: 'id', checkbox: true"></th>
                 <th data-options="field: 'year',width: 100, halign: 'center', align: 'center'">年份</th>
                 <th data-options="field: 'quarterly', width: 100, halign: 'center', align: 'center', formatter: quarterFormatter">季度</th>
+                <th data-options="field: 'stockId', width: 180, halign: 'center', align: 'center', formatter: stockFormatter">零售店名</th>
                 <th data-options="field: 'purchTotal', width: 180, halign: 'center', align: 'center', formatter: MXF.priceFormatter">当前季度进货总值</th>
                 <th data-options="field: 'beforeArrears', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">上季度欠款</th>
                 <th data-options="field: 'beforeInventory', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">上季度库存货值</th>
@@ -66,7 +67,7 @@
         return "Q" + val;
     }
 
-    function stockFormatter(val) {
+    function stockFormatter(val, row) {
         var stockName = "";
         $.ajax({
             type: "GET",
@@ -74,6 +75,7 @@
             async: false,
             success: function (data) {
                 stockName = data.name;
+                row.stockName = data.name;
             }
         })
         return stockName;
@@ -116,7 +118,7 @@
             MXF.error("请选择一个您要编辑的季度表报！");
             return;
         }
-        var title = stockFormatter(row.stockId) + " " + "Q" + row.quarterly + "收支平衡表";
+        var title = row.stockName + " " + "Q" + row.quarterly + "收支平衡表";
         // 打开编辑页面
         var editWindow = $('<div id="editStockQuarterlyWindow"></div>');
         editWindow.appendTo('body');

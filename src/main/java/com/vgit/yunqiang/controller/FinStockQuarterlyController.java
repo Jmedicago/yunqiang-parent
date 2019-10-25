@@ -39,6 +39,9 @@ public class FinStockQuarterlyController {
     @RequestMapping(ControllerConsts.URL_JSON)
     @ResponseBody
     public List<FinStockQuarterly> json(StockQuarterlyQuery query) {
+        Long stockId = Long.valueOf(UserContext.getUser().getStockIds());
+        query.setStockId(stockId);
+        query.setType(StockDailyTypeConsts.CHILD_STOCK_DAILY);
         return this.finStockQuarterlyService.query(query);
     }
 

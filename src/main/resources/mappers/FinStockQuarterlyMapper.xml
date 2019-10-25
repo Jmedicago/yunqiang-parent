@@ -274,6 +274,8 @@
         <where>
             <if test="key != null and key != ''">and tfsq.remark like CONCAT('%',#{key},'%')</if>
             <if test="dateTime != null and dateTime != ''">and tfsq.dateTime = #{dateTime}</if>
+            <if test="stockId != null and stockId != ''">and tfsq.stockId = #{stockId}</if>
+            <if test="type != null and type != ''">and tfsq.type = #{type}</if>
         </where>
     </sql>
 

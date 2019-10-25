@@ -37,7 +37,7 @@ public interface FinStockQuarterlyMapper extends BaseMapper<FinStockQuarterly> {
      * @param type
      * @return
      */
-    double getPurchTotal(@Param("stockId") Long stockId, @Param("startTime") Long startTime, @Param("endTime") Long endTime, @Param("type") Integer type);
+    Double getPurchTotal(@Param("stockId") Long stockId, @Param("startTime") Long startTime, @Param("endTime") Long endTime, @Param("type") Integer type);
 
     /**
      * 获取总销售额
@@ -48,7 +48,7 @@ public interface FinStockQuarterlyMapper extends BaseMapper<FinStockQuarterly> {
      * @param type
      * @return
      */
-    double getSalesTotal(@Param("stockId") Long stockId, @Param("startTime") Long startTime, @Param("endTime") Long endTime, @Param("type") Integer type);
+    Double getSalesTotal(@Param("stockId") Long stockId, @Param("startTime") Long startTime, @Param("endTime") Long endTime, @Param("type") Integer type);
 
     /**
      * 获取最后一次日报欠款
@@ -59,5 +59,5 @@ public interface FinStockQuarterlyMapper extends BaseMapper<FinStockQuarterly> {
      * @param type
      * @return
      */
-    double getArrears(@Param("stockId") Long stockId, @Param("startTime") long startTime, @Param("endTime") long endTime, @Param("type") Integer type);
+    Double getArrears(@Param("stockId") Long stockId, @Param("startTime") long startTime, @Param("endTime") long endTime, @Param("type") Integer type);
 }

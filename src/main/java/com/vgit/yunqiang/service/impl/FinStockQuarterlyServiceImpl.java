@@ -87,42 +87,39 @@ public class FinStockQuarterlyServiceImpl extends BaseServiceImpl<FinStockQuarte
     }
 
     private double getArrears(Long stockId, String quarter, String year, Integer type) {
-        double arrears = 0;
-        long startTime = 0;
-        long endTime = 0;
-
         Long[] times = TimeUtils.getQuarterStartAndEndTime(Integer.valueOf(quarter), Integer.valueOf(year));
-        startTime = times[0];
-        endTime = times[1];
+        long startTime = times[0];
+        long endTime = times[1];
 
-        arrears = this.mapper.getArrears(stockId, startTime, endTime, type);
-        return arrears;
+        Double arrears = this.mapper.getArrears(stockId, startTime, endTime, type);
+        if (arrears != null) {
+            return arrears;
+        }
+        return 0;
     }
 
     private double getPurchTotal(Long stockId, String quarter, String year, Integer type) {
-        double purchTotal = 0;
-        long startTime = 0;
-        long endTime = 0;
-
         Long[] times = TimeUtils.getQuarterStartAndEndTime(Integer.valueOf(quarter), Integer.valueOf(year));
-        startTime = times[0];
-        endTime = times[1];
+        long startTime = times[0];
+        long endTime = times[1];
 
-        purchTotal = this.mapper.getPurchTotal(stockId, startTime, endTime, type);
-        return purchTotal;
+        Double purchTotal = this.mapper.getPurchTotal(stockId, startTime, endTime, type);
+        if (purchTotal != null) {
+            return purchTotal;
+        }
+        return 0;
     }
 
     private double getSalesTotal(Long stockId, String quarter, String year, Integer type) {
-        double salesTotal = 0;
-        long startTime = 0;
-        long endTime = 0;
-
         Long[] times = TimeUtils.getQuarterStartAndEndTime(Integer.valueOf(quarter), Integer.valueOf(year));
-        startTime = times[0];
-        endTime = times[1];
+        long startTime = times[0];
+        long endTime = times[1];
 
-        salesTotal = this.mapper.getSalesTotal(stockId, startTime, endTime, type);
-        return salesTotal;
+        Double salesTotal = this.mapper.getSalesTotal(stockId, startTime, endTime, type);
+        if (salesTotal != null) {
+            return salesTotal;
+        }
+        return 0;
     }
 
     private FinStockQuarterly getPrevQuarter(String curYear, String curQuarter, Integer type, Long stockId) {
