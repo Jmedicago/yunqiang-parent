@@ -1,23 +1,17 @@
 package com.vgit.yunqiang.common.utils;
 
+import com.alibaba.fastjson.JSON;
+
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
+import java.util.*;
 
 /**
  * 超详细的时间工具类
  */
 public class TimeUtils {
-
-    //============================借助Calendar类获取今天、昨天、本周、上周、本年及特定时间的开始时间和结束时间（返回类型为date类型）========================
 
     /**
      * 获取当天开始时间
@@ -220,13 +214,23 @@ public class TimeUtils {
         return Integer.valueOf(gc.get(1));
     }
 
+    /**
+     * 获取日期的所在年份
+     *
+     * @return
+     */
+    public static Integer getYear(Date date) {
+        GregorianCalendar gc = (GregorianCalendar) Calendar.getInstance();
+        gc.setTime(date);
+        return Integer.valueOf(gc.get(1));
+    }
 
     /**
      * 获取本月是哪一月
      *
      * @return
      */
-    public static int getNowMonth() {
+    public static Integer getNowMonth() {
         Date date = new Date();
         GregorianCalendar gc = (GregorianCalendar) Calendar.getInstance();
         gc.setTime(date);
@@ -402,6 +406,188 @@ public class TimeUtils {
         return cal.getTime();
     }
 
+    /**
+     * 获取日期的所属季度
+     *
+     * @param date
+     * @return
+     */
+    public static Integer getSeason(Date date) {
+        final int[] SEASON = {1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4};
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int sean = SEASON[cal.get(Calendar.MONTH)];
+        return sean;
+    }
+
+    /**
+     * 获取当前时间季度
+     *
+     * @return
+     */
+    public static Integer getNowSeason() {
+        Date date = new Date();
+        final int[] SEASON = {1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4};
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int sean = SEASON[cal.get(Calendar.MONTH)];
+        return sean;
+    }
+
+    public static Long[] getQuarterStartAndEndTime(int quarter, int year) {
+        Long[] results = new Long[2];
+        Calendar cal = Calendar.getInstance();
+        switch (quarter) {
+            case 1:
+                //起始时间
+                cal.set(year, 0, 1, 0, 0, 0);
+                results[0] = cal.getTimeInMillis();
+                //结束时间
+                cal.set(year, 2, 31, 23, 59, 59);
+                results[1] = cal.getTimeInMillis();
+                break;
+            case 2:
+                //起始时间
+                cal.set(year, 3, 1, 0, 0, 0);
+                results[0] = cal.getTimeInMillis();
+                //结束时间
+                cal.set(year, 5, 31, 23, 59, 59);
+                results[1] = cal.getTimeInMillis();
+                break;
+            case 3:
+                //起始时间
+                cal.set(year, 6, 1, 0, 0, 0);
+                results[0] = cal.getTimeInMillis();
+                //结束时间
+                cal.set(year, 8, 31, 23, 59, 59);
+                results[1] = cal.getTimeInMillis();
+                break;
+            case 4:
+                //起始时间
+                cal.set(year, 9, 1, 0, 0, 0);
+                results[0] = cal.getTimeInMillis();
+                //结束时间
+                cal.set(year, 11, 31, 23, 59, 59);
+                results[1] = cal.getTimeInMillis();
+                break;
+            default:
+                break;
+
+        }
+        return results;
+
+    }
+
+    public static Long[] getQuarterStartAndEndTime() {
+        Long[] results = new Long[2];
+        Calendar cal = Calendar.getInstance();
+        int quarter = getNowSeason();
+        int year = cal.get(Calendar.YEAR);
+        switch (quarter) {
+            case 1:
+                //起始时间
+                cal.set(year, 0, 1, 0, 0, 0);
+                results[0] = cal.getTimeInMillis();
+                //结束时间
+                cal.set(year, 2, 31, 23, 59, 59);
+                results[1] = cal.getTimeInMillis();
+                break;
+            case 2:
+                //起始时间
+                cal.set(year, 3, 1, 0, 0, 0);
+                results[0] = cal.getTimeInMillis();
+                //结束时间
+                cal.set(year, 5, 31, 23, 59, 59);
+                results[1] = cal.getTimeInMillis();
+                break;
+            case 3:
+                //起始时间
+                cal.set(year, 6, 1, 0, 0, 0);
+                results[0] = cal.getTimeInMillis();
+                //结束时间
+                cal.set(year, 8, 31, 23, 59, 59);
+                results[1] = cal.getTimeInMillis();
+                break;
+            case 4:
+                //起始时间
+                cal.set(year, 9, 1, 0, 0, 0);
+                results[0] = cal.getTimeInMillis();
+                //结束时间
+                cal.set(year, 11, 31, 23, 59, 59);
+                results[1] = cal.getTimeInMillis();
+                break;
+            default:
+                break;
+
+        }
+        return results;
+
+    }
+
+    public static String[] getEveryQuarterStartAndEndTime() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar calendar = Calendar.getInstance();
+        Map<String, Object> params = new HashMap<String, Object>();
+        String currentTime = formatter.format(calendar.getTime());
+        int year = calendar.get(Calendar.YEAR);
+        int currentMonth = calendar.get(Calendar.MONTH);
+        String startTime = "";
+        String endTime = "";
+
+        int season = (currentMonth) / 3 + 1;
+        String[] startAndEndSeason = new String[season];
+
+        for (int i = 0; i < season; i++) {
+            params.clear();
+            switch (i) {
+                case 0:
+                    //起始时间
+                    calendar.set(year, 0, 1, 0, 0, 0);
+                    startTime = formatter.format(calendar.getTime());
+                    //结束时间
+                    calendar.set(year, 2, 31, 23, 59, 59);
+                    endTime = formatter.format(calendar.getTime());
+                    params.put(startTime, endTime);
+                    startAndEndSeason[i] = JSON.toJSONString(params);
+                    break;
+                case 1:
+                    //起始时间
+                    calendar.set(year, 3, 1, 0, 0, 0);
+                    startTime = formatter.format(calendar.getTime());
+                    //结束时间
+                    calendar.set(year, 5, 30, 23, 59, 59);
+                    endTime = formatter.format(calendar.getTime());
+                    params.put(startTime, endTime);
+                    startAndEndSeason[i] = JSON.toJSONString(params);
+                    break;
+                case 2:
+                    //起始时间
+                    calendar.set(year, 6, 1, 0, 0, 0);
+                    startTime = formatter.format(calendar.getTime());
+                    params.put(startTime, currentTime);
+                    //结束时间
+                    calendar.set(year, 8, 30, 23, 59, 59);
+                    endTime = formatter.format(calendar.getTime());
+                    params.put(startTime, endTime);
+                    startAndEndSeason[i] = JSON.toJSONString(params);
+                    break;
+                case 3:
+                    //起始时间
+                    calendar.set(year, 9, 1, 0, 0, 0);
+                    startTime = formatter.format(calendar.getTime());
+                    params.put(startTime, currentTime);
+                    //结束时间
+                    calendar.set(year, 11, 31, 23, 59, 59);
+                    endTime = formatter.format(calendar.getTime());
+                    params.put(startTime, endTime);
+                    startAndEndSeason[i] = JSON.toJSONString(params);
+                    break;
+                default:
+                    break;
+            }
+        }
+        return startAndEndSeason;
+    }
 
     /**
      * 返回某个日期下几天的日期
@@ -491,9 +677,6 @@ public class TimeUtils {
         return list;
     }
 
-
-    //=================================时间格式转换==========================
-
     /**
      * date类型进行格式化输出（返回类型：String）
      *
@@ -546,9 +729,6 @@ public class TimeUtils {
         return new Date(str * 1000);
     }
 
-
-    //====================================其他常见日期操作方法======================
-
     /**
      * 判断当前日期是否在[startDate, endDate]区间
      *
@@ -562,6 +742,25 @@ public class TimeUtils {
             return false;
         }
         long currentTime = new Date().getTime();
+        if (currentTime >= startDate.getTime()
+                && currentTime <= endDate.getTime()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 判断当前日期是否在[startDate, endDate]区间
+     *
+     * @param startDate 开始日期
+     * @param endDate   结束日期
+     * @return
+     * @author jqlin
+     */
+    public static boolean isEffectiveDate(Long currentTime, Date startDate, Date endDate) {
+        if (startDate == null || endDate == null) {
+            return false;
+        }
         if (currentTime >= startDate.getTime()
                 && currentTime <= endDate.getTime()) {
             return true;
@@ -908,6 +1107,20 @@ public class TimeUtils {
 
 
     public static void main(String[] args) {
-        System.out.println(getNo(8));
+        /*Timestamp startTime = TimeUtils.getDayStartTime(new Date(1571732358690L));
+        Timestamp endTime = TimeUtils.getDayEndTime(new Date(1571732358690L));
+        boolean flag = TimeUtils.isEffectiveDate(new Date(startTime.getTime()), new Date(endTime.getTime()));
+        System.out.println(flag);
+
+        String rl = TimeUtils.getNowMonth("2019-10-24");
+        System.out.print(rl);*/
+
+        /*int sean = getSeason(new Date(1524554282000L));
+        int year = getNowYear();
+        System.out.println(sean + ", " + year);*/
+        /*System.out.println(getEveryQuarterStartAndEndTime()[0]);*/
+
+        Long[] result = getQuarterStartAndEndTime(4, 2018);
+        System.out.print(result[0] + " , " + result[1]);
     }
 }

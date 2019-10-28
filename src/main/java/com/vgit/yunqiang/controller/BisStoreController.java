@@ -84,4 +84,10 @@ public class BisStoreController {
         return this.bisStockService.deleteById(id);
     }
 
+    @RequestMapping("/info")
+    @ResponseBody
+    public BisStock info(Long id) {
+        return this.bisStockService.get(id);
+    }
+
 }

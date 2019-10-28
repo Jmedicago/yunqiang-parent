@@ -37,9 +37,10 @@ public interface BisStockService extends TreeGridService<BisStock> {
     Ret deleteById(Long id);
 
     /**
-     *  根据name获取仓库信息
+     * 根据name获取仓库信息
      *
      * @param name
      */
     BisStock getStockByName(String name);
+
 }

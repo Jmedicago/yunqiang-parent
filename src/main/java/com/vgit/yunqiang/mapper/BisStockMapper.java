@@ -1,6 +1,7 @@
 package com.vgit.yunqiang.mapper;
 
 import com.vgit.yunqiang.common.service.BaseMapper;
+import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.pojo.BisStock;
 import org.apache.ibatis.annotations.Param;
 

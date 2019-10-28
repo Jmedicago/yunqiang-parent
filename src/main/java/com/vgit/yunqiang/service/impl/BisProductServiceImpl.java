@@ -1,6 +1,5 @@
 package com.vgit.yunqiang.service.impl;
 
-import com.vgit.yunqiang.common.consts.ICodes;
 import com.vgit.yunqiang.common.consts.bis.MediaTypeConsts;
 import com.vgit.yunqiang.common.consts.bis.ProductStateConsts;
 import com.vgit.yunqiang.common.consts.bis.PropertyInputModeConsts;
@@ -12,7 +11,6 @@ import com.vgit.yunqiang.mapper.BisProductMapper;
 import com.vgit.yunqiang.mapper.BisSkuMapper;
 import com.vgit.yunqiang.pojo.*;
 import com.vgit.yunqiang.service.*;
-import javafx.beans.property.Property;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.PictureData;
@@ -21,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.*;
 
@@ -370,6 +367,10 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                 LOGGER.info("Excel导入的商品信息:{}", bisProduct.toString());
                 String remark = "方式：Excel批量导入；\n时间：" + TimeUtils.dateFormat(new Date()) + "\n明细：" + bisProduct.toString();
                 bisProduct.setRemark(remark);
+                List<BisProductMedia> mediaList = bisProduct.getProductMediaList();
+                if (mediaList != null && mediaList.size() > 0) {
+                    bisSku.setSkuMainPic(mediaList.get(0).getResource());
+                }
                 this.saveOrUpdateProduct(bisProduct);
                 bisSku.setProductId(bisProduct.getId());
                 bisSku.setPushStockTime(System.currentTimeMillis());
