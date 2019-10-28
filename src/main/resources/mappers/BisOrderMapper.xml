@@ -102,7 +102,7 @@
 			<if test="commentTime !=null">
 				#{commentTime,jdbcType=BIGINT},
 			</if>
-			<if test="shipTIime !=null">
+			<if test="shipTime !=null">
 				#{shipTime,jdbcType=BIGINT},
 			</if>
 			<if test="finishedTime !=null">

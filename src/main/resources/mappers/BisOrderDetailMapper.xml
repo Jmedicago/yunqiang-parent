@@ -37,10 +37,113 @@
 		</selectKey>
 		insert into t_bis_order_detail
 		<trim prefix="(" suffix= ")" suffixOverrides=",">
-			<if test=" !=null">
-				,
+			<if test="orderId !=null">
+				orderId,
+			</if>
+			<if test="productId !=null">
+				productId,
+			</if>
+			<if test="name !=null">
+				name,
+			</if>
+			<if test="skuId !=null">
+				skuId,
+			</if>
+			<if test="skuMainPic !=null">
+				skuMainPic,
+			</if>
+			<if test="price !=null">
+				price,
+			</if>
+			<if test="amount !=null">
+				amount,
+			</if>
+			<if test="totalMoney !=null">
+				totalMoney,
+			</if>
+			<if test="totalVolume !=null">
+				totalVolume,
+			</if>
+		</trim>
+		
+		
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="orderId !=null">
+				#{orderId,jdbcType=BIGINT},
+			</if>
+			<if test="productId !=null">
+				#{productId,jdbcType=BIGINT},
+			</if>
+			<if test="name !=null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="skuId !=null">
+				#{skuId,jdbcType=BIGINT},
+			</if>
+			<if test="skuMainPic !=null">
+				#{skuMainPic,jdbcType=VARCHAR},
+			</if>
+			<if test="skuProperties !=null">
+				#{skuProperties,jdbcType=VARCHAR},
+			</if>
+			<if test="price !=null">
+				#{price,jdbcType=DOUBLE},
+			</if>
+			<if test="amount !=null">
+				#{amount,jdbcType=INTEGER},
+			</if>
+			<if test="totalMoney !=null">
+				#{totalMoney, jdbcType=DOUBLE},
+			</if>
+			<if test="totalVolume !=null">
+				#{totalVolume, jdbcType=DOUBLE},
 			</if>
 		</trim>
 	</insert>
 	
+	
+	<update id="update" parameterType="com.vgit.yunqiang.pojo.BisOrderDetail">
+		update t_bis_order_detail
+        set orderId =#{orderId, jdbcType=BIGINT}, productId =#{productId, jdbcType=BIGINT}, name =#{name, jdbcType=VARCHAR}, 
+        skuId =#{skuId, jdbcType=BIGINT}, skuMainPic =#{skuMainPic, jdbcType=VARCHAR}, skuProperties =#{skuProperties, jdbcType=VARCHAR}, 
+        price =#{price, jdbcType=DOUBLE}, amount =#{amount, jdbcType=INTEGER}, totalMoney =#{totalMoney, jdbcType=DOUBLE}, totalVolume =#{totalVolume, jdbcType=DOUBLE},
+        where id = #{id,jdbcType=BIGINT}
+	</update>
+	
+	<update id="updatePart" parameterType="com.vgit.yunqiang.pojo.BisOrderDetail">
+		update t_bis_oeder_detail
+		<set>
+			<if test="orderId !=null">
+				orderId =#{orderId, jdbcType=BIGINT},
+			</if>
+			<if test="productId !=null">
+				productId =#{productId, jdbcType=BIGINT},
+			</if>
+			<if test="name !=null">
+				name =#{name, jdbcType=VARCHAR},
+			</if>
+			<if test="skuId !=null">
+				skuId =#{skuId, jdbcType=BIGINT},
+			</if>
+			<if test="skuMainPic !=null">
+				skuMainPic =#{skuMainPic, jdbcType=VARCHAR},
+			</if>
+			<if test="skuProperties !=null">
+				skuProperties =#{skuProperties, jdbcType=VARCHAR},
+			</if>
+			<if test="price !=null">
+				price =#{price, jdbcType=DOUBLE},
+			</if>
+			<if test="amount !=null">
+				amount =#{amount, jdbcType=INTEGER},
+			</if>
+			<if test="totalMoney !=null">
+				totalMoney =#{totalMoney, jdbcType=DOUBLE},
+			</if>
+			<if test="totalVolume !=null">
+				totalVolume =#{totalVolume, jdbcType=DOUBLE}
+			</if>
+		</set>
+		where id=#{id,jdbcType=BIGINT}
+	</update>
 </mapper>
