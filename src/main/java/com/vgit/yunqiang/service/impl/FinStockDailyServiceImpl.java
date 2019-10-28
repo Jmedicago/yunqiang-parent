@@ -15,6 +15,8 @@ import com.vgit.yunqiang.pojo.FinStockDailyExpendItem;
 import com.vgit.yunqiang.service.FinExpendItemService;
 import com.vgit.yunqiang.service.FinStockDailyExpendItemService;
 import com.vgit.yunqiang.service.FinStockDailyService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,8 @@ import java.util.List;
 
 @Service
 public class FinStockDailyServiceImpl extends BaseServiceImpl<FinStockDaily> implements FinStockDailyService {
+
+    public static final Logger LOGGER = LoggerFactory.getLogger(FinStockDailyServiceImpl.class);
 
     @Autowired
     private FinStockDailyMapper mapper;
@@ -43,7 +47,8 @@ public class FinStockDailyServiceImpl extends BaseServiceImpl<FinStockDaily> imp
     public FinStockDaily saveOrUpdateDaily(FinStockDaily finStockDaily) throws BisException {
         if (finStockDaily.getId() == null) {
             if (this.exist(System.currentTimeMillis(), finStockDaily.getType(), finStockDaily.getStockId())) {
-                throw new BisException();
+                LOGGER.info("今日日报已存在，无法新增日报！");
+                throw new BisException().setInfo("今日日报已存在，无法新增日报！");
             } else {
                 finStockDaily.setCreateTime(System.currentTimeMillis());
                 this.mapper.savePart(finStockDaily);
@@ -53,12 +58,29 @@ public class FinStockDailyServiceImpl extends BaseServiceImpl<FinStockDaily> imp
                 this.mapper.updatePart(finStockDaily);
             }
         } else {
-            finStockDaily.setUpdateTime(System.currentTimeMillis());
-            // 保险柜的钱等于存的钱
-            finStockDaily.setSafe(finStockDaily.getDeposit());
-            this.mapper.updatePart(finStockDaily);
+            // TODO.检查是否超过当天填报时间
+            if (this.validateTime(finStockDaily.getId())) {
+                finStockDaily.setUpdateTime(System.currentTimeMillis());
+                // 保险柜的钱等于存的钱
+                finStockDaily.setSafe(finStockDaily.getDeposit());
+                this.mapper.updatePart(finStockDaily);
+            } else {
+                LOGGER.info("已超过当天填报时间！");
+                throw new BisException().setInfo("已超过当天填报时间！");
+            }
         }
         return finStockDaily;
+    }
+
+    @Override
+    public boolean validateTime(Long dailyId) {
+        FinStockDaily stockDaily = this.get(dailyId);
+        Timestamp startTime = TimeUtils.getDayStartTime(new Date());
+        Timestamp endTime = TimeUtils.getDayEndTime(new Date());
+        if (stockDaily.getCreateTime() >= startTime.getTime() && stockDaily.getCreateTime() <= endTime.getTime()) {
+            return true;
+        }
+        return false;
     }
 
     @Override

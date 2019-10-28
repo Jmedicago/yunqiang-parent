@@ -10,6 +10,8 @@ import com.vgit.yunqiang.pojo.FinStockDaily;
 import com.vgit.yunqiang.pojo.SysUser;
 import com.vgit.yunqiang.service.FinStockDailyService;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +24,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/" + FinStockDailyController.DOMAIN)
 public class FinStockDailyController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(FinStockDailyController.class);
 
     public static final String DOMAIN = "stock-daily";
 
@@ -67,7 +71,7 @@ public class FinStockDailyController {
             return Ret.me().setSuccess(false).setInfo("该用户没有门店管理权，无法新建门店日报！");
         }
         finStockDaily.setStockId(Long.valueOf(existUser.getStockIds()));
-        finStockDaily.setCreateTime(System.currentTimeMillis());
+        finStockDaily.setUserId(existUser.getId());
         finStockDaily.setType(StockDailyTypeConsts.CHILD_STOCK_DAILY);
         // 格式化
         if (finStockDaily.getExpendTotal() != null) {
@@ -90,7 +94,8 @@ public class FinStockDailyController {
             this.finStockDailyService.saveOrUpdateDaily(finStockDaily);
             return Ret.me().setData(finStockDaily);
         } catch (BisException e) {
-            return Ret.me().setSuccess(false).setInfo("今日日报已存在，无法新增日报！");
+            LOGGER.error("保存日报异常：{}", e.getInfo());
+            return Ret.me().setSuccess(false).setInfo(e.getInfo());
         }
     }
 

@@ -1,5 +1,6 @@
 package com.vgit.yunqiang.service;
 
+import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.service.BaseService;
 import com.vgit.yunqiang.common.utils.Page;
 import com.vgit.yunqiang.pojo.FinStockDailyExpendItem;
@@ -11,7 +12,7 @@ public interface FinStockDailyExpendItemService extends BaseService<FinStockDail
      *
      * @param stockDailyExpendItem
      */
-    FinStockDailyExpendItem saveOrUpdateStockDailyExpendItem(FinStockDailyExpendItem stockDailyExpendItem);
+    FinStockDailyExpendItem saveOrUpdateStockDailyExpendItem(FinStockDailyExpendItem stockDailyExpendItem) throws BisException;
 
     /**
      * 区域支出明细

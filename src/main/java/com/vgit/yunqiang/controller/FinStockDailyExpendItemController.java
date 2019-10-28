@@ -1,5 +1,6 @@
 package com.vgit.yunqiang.controller;
 
+import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.query.StockDailyExpendItemQuery;
 import com.vgit.yunqiang.common.query.base.BaseQuery;
 import com.vgit.yunqiang.common.utils.Page;
@@ -64,8 +65,12 @@ public class FinStockDailyExpendItemController {
     @ResponseBody
     public Ret store(FinStockDailyExpendItem stockDailyExpendItem) throws UnsupportedEncodingException {
         stockDailyExpendItem.setAmount(stockDailyExpendItem.getAmount() * 100);
-        // 更新支付项明细信息
-        this.finStockDailyExpendItemService.saveOrUpdateStockDailyExpendItem(stockDailyExpendItem);
+        try {
+            // 更新支付项明细信息
+            this.finStockDailyExpendItemService.saveOrUpdateStockDailyExpendItem(stockDailyExpendItem);
+        } catch (BisException e) {
+            return Ret.me().setSuccess(false).setInfo(e.getInfo());
+        }
         return Ret.me();
     }
 

@@ -268,10 +268,10 @@
         if (data) {
             $.post('/region-stock-daily/store', data, function (res) {
                 if (res.success) {
-                    MXF.alert('提交成功！', true);
+                    MXF.alert('成功！', true);
                     $('#regionStockDailyGrid').datagrid('reload');
                 } else {
-                    MXF.alert('提交失败！', false);
+                    MXF.alert('失败，' + res.info, false);
                 }
             });
         }

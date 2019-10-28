@@ -478,6 +478,52 @@ public class TimeUtils {
 
     }
 
+    public static Long[] getQuarterStartAndEndTime() {
+        Long[] results = new Long[2];
+        Calendar cal = Calendar.getInstance();
+        int quarter = getNowSeason();
+        int year = cal.get(Calendar.YEAR);
+        switch (quarter) {
+            case 1:
+                //起始时间
+                cal.set(year, 0, 1, 0, 0, 0);
+                results[0] = cal.getTimeInMillis();
+                //结束时间
+                cal.set(year, 2, 31, 23, 59, 59);
+                results[1] = cal.getTimeInMillis();
+                break;
+            case 2:
+                //起始时间
+                cal.set(year, 3, 1, 0, 0, 0);
+                results[0] = cal.getTimeInMillis();
+                //结束时间
+                cal.set(year, 5, 31, 23, 59, 59);
+                results[1] = cal.getTimeInMillis();
+                break;
+            case 3:
+                //起始时间
+                cal.set(year, 6, 1, 0, 0, 0);
+                results[0] = cal.getTimeInMillis();
+                //结束时间
+                cal.set(year, 8, 31, 23, 59, 59);
+                results[1] = cal.getTimeInMillis();
+                break;
+            case 4:
+                //起始时间
+                cal.set(year, 9, 1, 0, 0, 0);
+                results[0] = cal.getTimeInMillis();
+                //结束时间
+                cal.set(year, 11, 31, 23, 59, 59);
+                results[1] = cal.getTimeInMillis();
+                break;
+            default:
+                break;
+
+        }
+        return results;
+
+    }
+
     public static String[] getEveryQuarterStartAndEndTime() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Calendar calendar = Calendar.getInstance();

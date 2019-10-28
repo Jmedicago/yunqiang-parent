@@ -88,7 +88,7 @@ public class FinStockQuarterlyController {
             this.finStockQuarterlyService.saveOrUpdateQuarterly(stockQuarterly);
             return Ret.me().setData(stockQuarterly);
         } catch (BisException e) {
-            return Ret.me().setSuccess(false).setInfo("当前季度报表已存在，无法创建新报表！");
+            return Ret.me().setSuccess(false).setInfo(e.getInfo());
         }
     }
 

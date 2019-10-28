@@ -74,7 +74,7 @@ public class SysUserRealm extends AuthorizingRealm {
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo( 
                 user, // 用户登录信息
                 user.getPassword(), //密码
-                ByteSource.Util.bytes(user.getCredentialsSalt()), //salt=username+salt
+                ByteSource.Util.bytes(user.getSalt()), //salt=username+salt
                 getName() //realm name
         );
         return authenticationInfo;

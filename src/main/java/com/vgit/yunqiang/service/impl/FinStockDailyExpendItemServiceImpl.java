@@ -1,5 +1,6 @@
 package com.vgit.yunqiang.service.impl;
 
+import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
 import com.vgit.yunqiang.common.utils.Page;
@@ -9,6 +10,7 @@ import com.vgit.yunqiang.mapper.FinStockDailyExpendItemMapper;
 import com.vgit.yunqiang.pojo.FinExpendItem;
 import com.vgit.yunqiang.pojo.FinStockDailyExpendItem;
 import com.vgit.yunqiang.service.FinStockDailyExpendItemService;
+import com.vgit.yunqiang.service.FinStockDailyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,19 +29,26 @@ public class FinStockDailyExpendItemServiceImpl extends BaseServiceImpl<FinStock
     @Autowired
     private FinExpendItemMapper finExpendItemMapper;
 
+    @Autowired
+    private FinStockDailyService finStockDailyService;
+
     @Override
     protected BaseMapper<FinStockDailyExpendItem> getMapper() {
         return this.mapper;
     }
 
     @Override
-    public FinStockDailyExpendItem saveOrUpdateStockDailyExpendItem(FinStockDailyExpendItem stockDailyExpendItem) {
-        if (stockDailyExpendItem.getId() == null) {
-            stockDailyExpendItem.setCreateTime(System.currentTimeMillis());
-            this.mapper.savePart(stockDailyExpendItem);
+    public FinStockDailyExpendItem saveOrUpdateStockDailyExpendItem(FinStockDailyExpendItem stockDailyExpendItem) throws BisException {
+        if (this.finStockDailyService.validateTime(stockDailyExpendItem.getDailyId())) {
+            if (stockDailyExpendItem.getId() == null) {
+                stockDailyExpendItem.setCreateTime(System.currentTimeMillis());
+                this.mapper.savePart(stockDailyExpendItem);
+            } else {
+                stockDailyExpendItem.setUpdateTime(System.currentTimeMillis());
+                this.mapper.updatePart(stockDailyExpendItem);
+            }
         } else {
-            stockDailyExpendItem.setUpdateTime(System.currentTimeMillis());
-            this.mapper.updatePart(stockDailyExpendItem);
+            throw new BisException().setInfo("已经超过当天填报时间！");
         }
         return stockDailyExpendItem;
     }

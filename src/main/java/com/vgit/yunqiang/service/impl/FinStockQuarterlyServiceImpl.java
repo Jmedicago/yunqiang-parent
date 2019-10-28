@@ -34,7 +34,7 @@ public class FinStockQuarterlyServiceImpl extends BaseServiceImpl<FinStockQuarte
     public FinStockQuarterly saveOrUpdateQuarterly(FinStockQuarterly stockQuarterly) {
         if (stockQuarterly.getId() == null) {
             if (this.exist(System.currentTimeMillis(), stockQuarterly.getType(), stockQuarterly.getStockId())) {
-                throw new BisException();
+                throw new BisException().setInfo("当前季度表报已存在！");
             } else {
                 if (StockDailyTypeConsts.CHILD_STOCK_DAILY == stockQuarterly.getType()) {
                     this.init(stockQuarterly);
@@ -43,13 +43,28 @@ public class FinStockQuarterlyServiceImpl extends BaseServiceImpl<FinStockQuarte
                 } else if (StockDailyTypeConsts.WMS_STOCK_DAILY == stockQuarterly.getType()) {
                     this.initWms(stockQuarterly);
                 }
+                stockQuarterly.setCreateTime(System.currentTimeMillis());
                 this.savePart(stockQuarterly);
             }
         } else {
-            stockQuarterly.setUpdateTime(System.currentTimeMillis());
-            this.updatePart(stockQuarterly);
+            if (this.validateQuarter(stockQuarterly)) {
+                stockQuarterly.setUpdateTime(System.currentTimeMillis());
+                this.updatePart(stockQuarterly);
+            } else {
+                throw new BisException().setInfo("已经超过当前季度填报时间");
+            }
         }
         return stockQuarterly;
+    }
+
+    private boolean validateQuarter(FinStockQuarterly stockQuarterly) {
+        Long[] times = TimeUtils.getQuarterStartAndEndTime();
+        long startTime = times[0];
+        long endTime = times[1];
+        if (stockQuarterly.getCreateTime() >= startTime && stockQuarterly.getCreateTime() <= endTime) {
+            return true;
+        }
+        return false;
     }
 
     private void initWms(FinStockQuarterly stockQuarterly) {

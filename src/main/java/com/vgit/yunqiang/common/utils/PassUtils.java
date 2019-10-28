@@ -54,7 +54,7 @@ public class PassUtils {
             String newPassword = new SimpleHash(
                     algorithmName,
                     user.getPassword(),
-                    ByteSource.Util.bytes(user.getCredentialsSalt()),
+                    ByteSource.Util.bytes(user.getSalt()),
                     hashIterations).toHex();
 
             user.setPassword(newPassword);
@@ -63,7 +63,7 @@ public class PassUtils {
             String newPassword = new SimpleHash(
                     algorithmName,
                     DEFAULT_PASS,
-                    ByteSource.Util.bytes(user.getCredentialsSalt()),
+                    ByteSource.Util.bytes(user.getSalt()),
                     hashIterations).toHex();
 
             user.setPassword(newPassword);

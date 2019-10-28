@@ -72,7 +72,6 @@ public class FinRegionStockDailyController {
         regionStockDaily.setStockId(Long.valueOf(existUser.getStockIds()));
         regionStockDaily.setUserId(existUser.getId());
         regionStockDaily.setType(StockDailyTypeConsts.REGION_STOCK_DAILY);
-        regionStockDaily.setCreateTime(System.currentTimeMillis());
         // 格式化
         if (regionStockDaily.getSafe() != null) {
             regionStockDaily.setSafe(regionStockDaily.getSafe() * 100);
@@ -88,7 +87,7 @@ public class FinRegionStockDailyController {
             this.finStockDailyService.saveOrUpdateDaily(regionStockDaily);
             return Ret.me().setData(regionStockDaily);
         } catch (BisException e) {
-            return Ret.me().setSuccess(false).setInfo("今日日报已存在，无法新增日报！");
+            return Ret.me().setSuccess(false).setInfo(e.getInfo());
         }
     }
 

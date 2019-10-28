@@ -335,7 +335,7 @@ MXF.ajaxForm = function (obj, callbackFn, beforeSubmit) {
                     callbackFn($form, data);
                 }
             } else {
-                MXF.error(data.message + data.info);
+                MXF.error(data.message + '，' + data.info);
             }
         }
     });

@@ -42,4 +42,12 @@ public interface FinStockDailyService extends BaseService<FinStockDaily> {
      */
     boolean exist(Long dateTime, Integer type, Long stockId);
 
+    /**
+     * 校验是否在当天填报时间内
+     *
+     * @param dailyId
+     * @return
+     */
+    boolean validateTime(Long dailyId);
+
 }
