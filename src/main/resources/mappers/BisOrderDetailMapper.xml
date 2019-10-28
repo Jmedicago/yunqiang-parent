@@ -3,7 +3,7 @@
 <mapper namespace="com.vgit.yunqiang.mapper.BisOrderDetailMapper">
 
     <sql id="Base_Column_List">
-		id, orderId, productId, name, skuId, skuMainPic, price, amount, totalMoney, totalVolume
+		id, orderId, productId, name, skuId, skuMainPic, skuProperties, price, amount, totalMoney, totalVolume
     </sql>
 	
 	<select id="get" parameterType="com.vgit.yunqiang.pojo.BisOrderDetail" resultType="java.lang.Long">
@@ -23,7 +23,7 @@
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 		insert into t_bit_order_detail(
-		orderId, productId, name, skuId, skuMainPic, price, amount, totalMoney, totalVolume
+		orderId, productId, name, skuId, skuMainPic, skuProperties, price, amount, totalMoney, totalVolume
 		)
 		values(
 		#{orderId, jdbcType=BIGINT}, #{productId, jdbcType=BIGINT}, #{name, jdbcType=VARCHAR}, #{skuId, jdbcType=BIGINT}, #{skuMainPic, jdbcType=VARCHAR},
@@ -32,7 +32,7 @@
 	</insert>
 	
 	<insert id="savePart" parameterType="com.vgit.yunqiang.pojo.BisOrderDetail">
-		<selectKey keyProperty="id" order="AFTER">
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 		insert into t_bis_order_detail
@@ -52,6 +52,9 @@
 			<if test="skuMainPic !=null">
 				skuMainPic,
 			</if>
+			<if test="skuProperties !=null">
+				skuProperties,
+			</if>
 			<if test="price !=null">
 				price,
 			</if>
@@ -65,8 +68,6 @@
 				totalVolume,
 			</if>
 		</trim>
-		
-		
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="orderId !=null">
 				#{orderId,jdbcType=BIGINT},
@@ -146,4 +147,8 @@
 		</set>
 		where id=#{id,jdbcType=BIGINT}
 	</update>
+	
+	<select id="getOrderDetail" resultType="com.vgit.yunqiang.pojo.BisOrderDetail">
+		select * from t_bis_oeder_detail where orderId = #{sn}
+	</select>
 </mapper>

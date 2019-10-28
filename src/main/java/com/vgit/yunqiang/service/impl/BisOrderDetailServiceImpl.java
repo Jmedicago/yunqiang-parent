@@ -5,6 +5,9 @@ import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
 import com.vgit.yunqiang.mapper.BisOrderDetailMapper;
 import com.vgit.yunqiang.pojo.BisOrderDetail;
 import com.vgit.yunqiang.service.BisOrderDetailService;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,5 +21,10 @@ public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> i
     protected BaseMapper<BisOrderDetail> getMapper() {
         return this.mapper;
     }
+
+	@Override
+	public List<BisOrderDetail> getOrderDetail(String sn) {
+		return this.mapper.getOrderDetail(sn);
+	}
 
 }

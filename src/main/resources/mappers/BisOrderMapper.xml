@@ -34,7 +34,7 @@
 	</insert>
 	
 	<insert id="savePart" parameterType="com.vgit.yunqiang.pojo.BisOrder">
-		<selectKey keyProperty="id" order="AFTER">
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 		insert into t_bis_order
@@ -88,7 +88,7 @@
 				#{stockId,jdbcType=BIGINT},
 			</if>
 			<if test="status !=null">
-				#{status,jdbcType=INTGER},
+				#{status,jdbcType=INTEGER},
 			</if>
 			<if test="totalMoney !=null">
 				#{totalMoney,jdbcType=DOUBLE},
@@ -169,11 +169,21 @@
 	</update>
 	
 	<sql id="whereSql">
-		<where>
-			<if test="">
-			
-			</if>
-		</where>
-	</sql>
+        <where>
+            <if test="key !=null and key != ''">and bo.orderSn = #{key}</if>
+        </where>
+    </sql>
+
+    <select id="queryTotal" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery" resultType="int">
+        select count(0) from t_bis_order bo 
+        <include refid="whereSql"/>
+    </select>
+
+    <select id="query" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery"
+            resultType="com.vgit.yunqiang.pojo.BisOrder">
+        select * from t_bis_order bo 
+        <include refid="whereSql"/>
+        limit #{start}, #{rows}
+    </select>
 	
 </mapper>

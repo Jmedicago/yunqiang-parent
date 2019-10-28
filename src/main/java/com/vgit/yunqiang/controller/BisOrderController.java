@@ -10,6 +10,7 @@ import com.vgit.yunqiang.pojo.SysUser;
 import com.vgit.yunqiang.service.BisOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -31,6 +32,16 @@ public class BisOrderController {
     @ResponseBody
     public Page<BisOrder> json(OrderQuery query) {
         return this.bisOrderService.queryPage(query);
+    }
+    
+    @RequestMapping(ControllerConsts.URL_EDIT)
+    public String edit(Long id, Model model) {
+        if (id != null) {
+            // 订单信息
+            BisOrder bisOrder = this.bisOrderService.get(id);
+            model.addAttribute("bisOrder", bisOrder);
+        }
+        return DOMAIN + ControllerConsts.VIEW_EDIT;
     }
 
     /**
