@@ -3,6 +3,7 @@ package com.vgit.yunqiang.service;
 import java.util.List;
 
 import com.vgit.yunqiang.common.service.BaseService;
+import com.vgit.yunqiang.common.utils.Page;
 import com.vgit.yunqiang.pojo.BisOrderDetail;
 
 public interface BisOrderDetailService extends BaseService<BisOrderDetail> {
@@ -13,5 +14,5 @@ public interface BisOrderDetailService extends BaseService<BisOrderDetail> {
 	 * @param sn
 	 * @return
 	 */
-	List<BisOrderDetail> getOrderDetail(String sn);
+	Page<BisOrderDetail> getOrderDetail(String sn);
 }

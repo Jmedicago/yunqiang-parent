@@ -112,7 +112,7 @@
 	</update>
 	
 	<update id="updatePart" parameterType="com.vgit.yunqiang.pojo.BisOrderDetail">
-		update t_bis_oeder_detail
+		update t_bis_order_detail
 		<set>
 			<if test="orderId !=null">
 				orderId =#{orderId, jdbcType=BIGINT},
@@ -149,6 +149,6 @@
 	</update>
 	
 	<select id="getOrderDetail" resultType="com.vgit.yunqiang.pojo.BisOrderDetail">
-		select * from t_bis_oeder_detail where orderId = #{sn}
+		select * from t_bis_order_detail where orderId = #{sn}
 	</select>
 </mapper>
