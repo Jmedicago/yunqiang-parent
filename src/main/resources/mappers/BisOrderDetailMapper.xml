@@ -149,6 +149,10 @@
 	</update>
 	
 	<select id="getOrderDetail" resultType="com.vgit.yunqiang.pojo.BisOrderDetail">
-		select * from t_bis_order_detail where orderId = #{sn}
+		select * from t_bis_order_detail where orderId = #{orderId}
 	</select>
+
+	<update id="changeNumber">
+		update t_bis_order_detail set amount =#{number, jdbcType=INTEGER} where orderId = #{orderId, jdbcType=BIGINT}
+	</update>
 </mapper>

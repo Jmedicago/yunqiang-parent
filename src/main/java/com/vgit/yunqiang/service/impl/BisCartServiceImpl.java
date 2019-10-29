@@ -1,6 +1,7 @@
 package com.vgit.yunqiang.service.impl;
 
 import com.vgit.yunqiang.common.consts.bis.BooleanConsts;
+import com.vgit.yunqiang.common.consts.bis.CartStatusConsts;
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
 import com.vgit.yunqiang.common.utils.StrUtils;
@@ -75,6 +76,7 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
         cart.setSelected(BooleanConsts.YES);
         cart.setSkuId(skuId);
         cart.setUserId(userId);
+        cart.setStatus(CartStatusConsts.UN_LOCKED);
         this.mapper.save(cart);
     }
 
@@ -86,22 +88,6 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
         for (Long skuId : skuIds) {
             this.add(userId, skuId, 1);
         }
-        
-        // 计算移除购物车截止时间
-        /*BigDecimal hours = new BigDecimal(GlobalSetting.get(GlobalSettingNames.SYSTEM_TIME_LIMIT_HOURS));
-        BigDecimal millsExpires = hours.multiply(new BigDecimal(3600000));
-        long lastPayTime = (millsExpires.add(new BigDecimal(System.currentTimeMillis()))).longValue();*/
-
-        
-        // 定时移除购物车
-       /* Map<String, Object> jobParams = new HashMap<>();
-        jobParams.put("userId", userId);
-        QuartzJobInfo info = new QuartzJobInfo();
-        info.setFireDate(new Date(lastPayTime));
-        info.setParams(jobParams);
-        info.setJobName("CANCEL_ORDER_TASK_" + UUID.randomUUID());
-        info.setType(JobTypeConsts.WAIT_ORDER_CANCEL_JOB);
-        this.quartzService.addJob(info);*/
     }
 
     @Override

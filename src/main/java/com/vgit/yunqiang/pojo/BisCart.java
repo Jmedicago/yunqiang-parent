@@ -22,6 +22,8 @@ public class BisCart extends BasePojo {
 
     private Byte selected;
 
+    private Integer status;
+
     private BisSku sku;
 
     public Long getId() {
@@ -94,6 +96,14 @@ public class BisCart extends BasePojo {
 
     public void setSelected(Byte selected) {
         this.selected = selected;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public BisSku getSku() {

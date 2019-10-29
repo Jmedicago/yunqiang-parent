@@ -1,8 +1,17 @@
 package com.vgit.yunqiang.controller;
 
 import java.util.List;
+import java.util.Map;
 
+import com.vgit.yunqiang.common.consts.bis.OrderStateConsts;
 import com.vgit.yunqiang.common.utils.Page;
+import com.vgit.yunqiang.common.utils.Ret;
+import com.vgit.yunqiang.controller.utils.UserContext;
+import com.vgit.yunqiang.pojo.BisCart;
+import com.vgit.yunqiang.pojo.BisOrder;
+import com.vgit.yunqiang.pojo.BisSku;
+import com.vgit.yunqiang.service.BisOrderService;
+import com.vgit.yunqiang.service.BisSkuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +32,8 @@ public class BisOrderDetailController {
 	
 	@RequestMapping(ControllerConsts.URL_JSON)
 	@ResponseBody
-	public Page<BisOrderDetail> json(String sn) {
-		return this.bisOrderDetailService.getOrderDetail(sn);
+	public Page<BisOrderDetail> json(Long orderId) {
+		return this.bisOrderDetailService.getOrderDetail(orderId);
 	}
 
 }

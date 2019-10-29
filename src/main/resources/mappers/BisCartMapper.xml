@@ -3,7 +3,7 @@
 <mapper namespace="com.vgit.yunqiang.mapper.BisCartMapper">
 
     <sql id="Base_Column_List">
-        id, userId, productId, skuId, skuMainPic, name, skuProperties, amount, selected
+        id, userId, productId, skuId, skuMainPic, name, skuProperties, amount, selected, status
     </sql>
 
     <select id="get" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisCart">
@@ -23,12 +23,12 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
         insert into t_bis_cart (
-        userId, productId, skuId, skuMainPic, name, skuProperties, amount, selected
+        userId, productId, skuId, skuMainPic, name, skuProperties, amount, selected, status
         )
         values (
         #{userId, jdbcType=BIGINT}, #{productId, jdbcType=BIGINT}, #{skuId, jdbcType=BIGINT}, #{skuMainPic, jdbcType=VARCHAR},
         #{name, jdbcType=VARCHAR}, #{skuProperties, jdbcType=VARCHAR}, #{amount, jdbcType=INTEGER},
-        #{selected, jdbcType=TINYINT}
+        #{selected, jdbcType=TINYINT}, #{status, jdbcType=INTEGER}
         )
     </insert>
 
@@ -62,7 +62,9 @@
             <if test="selected != null">
                 selected,
             </if>
-
+            <if test="status != null">
+                status,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="userId != null">
@@ -89,6 +91,9 @@
             <if test="selected != null">
                 #{selected, jdbcType=TINYINT},
             </if>
+            <if test="status != null">
+                #{status, jdbcType=INTEGER},
+            </if>
         </trim>
     </insert>
 
@@ -96,7 +101,7 @@
         update t_bis_cart
         set userId =#{userId, jdbcType=BIGINT}, productId =#{productId, jdbcType=BIGINT}, skuId =#{skuId, jdbcType=BIGINT}, skuMainPic = #{skuMainPic, jdbcType=VARCHAR},
         name =#{name, jdbcType=VARCHAR}, skuProperties =#{skuProperties, jdbcType=VARCHAR}, amount =#{amount, jdbcType=INTEGER},
-        selected = #{selected, jdbcType=TINYINT},
+        selected = #{selected, jdbcType=TINYINT}, status = #{status, jdbcType=INTEGER}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
@@ -126,6 +131,9 @@
             </if>
             <if test="selected != null">
                 selected = #{selected, jdbcType=TINYINT},
+            </if>
+            <if test="status != null">
+                status = #{status, jdbcType=INTEGER},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}

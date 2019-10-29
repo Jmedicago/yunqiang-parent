@@ -12,8 +12,16 @@ public interface BisOrderDetailMapper extends BaseMapper<BisOrderDetail> {
 	/**
 	 * 查询订单明细
 	 * 
-	 * @param sn
+	 * @param orderId
 	 * @return
 	 */
-	List<BisOrderDetail> getOrderDetail(@Param("sn") String sn);
+	List<BisOrderDetail> getOrderDetail(@Param("orderId") Long orderId);
+
+	/**
+	 * 修改订单数量
+	 *
+	 * @param orderId
+	 * @param number
+	 */
+    void changeNumber(@Param("orderId") Long orderId, @Param("number") Integer number);
 }

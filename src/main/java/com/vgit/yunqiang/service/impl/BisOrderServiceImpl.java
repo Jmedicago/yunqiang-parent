@@ -125,7 +125,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
                 orderDetail.setSkuId(bisCart.getSkuId());
                 orderDetail.setSkuMainPic(bisCart.getSkuMainPic());
                 orderDetail.setSkuProperties(bisCart.getSkuProperties());
-                orderDetail.setTotalMoney(bisCart.getAmount() * sku.getMarketPrice());
+                orderDetail.setTotalMoney(bisCart.getAmount() * sku.getCostPrice());
                 orderDetail.setTotalVolume(bisCart.getAmount() * sku.getVolume());
                 this.bisOrderDetailService.savePart(orderDetail);
             }

@@ -14,16 +14,15 @@
 				singleSelect: false,
 				toolbar: '#orderDetailTB',
 				 onLoadSuccess: loadOrderDetailSuccess,
-				url: '/order-detail/json?sn=${bisOrder.id}'">
+				url: '/order-detail/json?orderId=${bisOrder.id}'">
             <thead>
             <tr>
-                <th data-options="field: 'id',checkbox:true"></th>
                 <th data-options="field: 'skuMainPic', width:50, halign: 'center', align: 'center', formatter: skuMainPicFormatter">
                     图片
                 </th>
-                <th data-options="field: 'name', width:100, halign: 'center', align: 'center'">商品名</th>
-                <th data-options="field: 'skuProperties', width:192, halign: 'center', align: 'left'">属性</th>
-                <th data-options="field: 'amount', width:100, halign: 'center', align: 'center', formatter: cartAmountFormatter">
+                <th data-options="field: 'name', width: 120, halign: 'center', align: 'center'">商品名</th>
+                <th data-options="field: 'skuProperties', width: 200, halign: 'center', align: 'left'">属性</th>
+                <th data-options="field: 'amount', width: 100, halign: 'center', align: 'center'">
                     数量
                 </th>
             </tr>
@@ -48,15 +47,6 @@
             return '<img style="display: block" height="38" width="38" src="' + value + '"/>';
         }
         return '';
-    }
-
-    function cartAmountFormatter(value, row, index) {
-        row.index = index;
-        var obj = JSON.stringify(row);
-        var add = "<a class='btn-d default' onclick='addCartAmount(" + obj + ")'><i style='border: 1px solid #ccc;' class='icon iconfont icon-cart-add'></i></a>";
-        var remove = "<a class='btn-d default' onclick='removeCartAmount(" + obj + ")'><i style='border: 1px solid #ccc;' class='icon iconfont icon-cart-remove'></i></a>";
-        var input = "<span style='display: inline-block; width: 30px;'>" + value + "</span>";
-        return remove + input + add;
     }
 
     function loadOrderDetailSuccess(data) {
