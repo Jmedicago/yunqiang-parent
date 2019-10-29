@@ -1,5 +1,6 @@
 package com.vgit.yunqiang.service;
 
+import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.service.BaseService;
 import com.vgit.yunqiang.pojo.BisCart;
 import com.vgit.yunqiang.pojo.BisSku;
@@ -16,7 +17,7 @@ public interface BisCartService extends BaseService<BisCart> {
      * @param skuId
      * @param number
      */
-    void add(Long userId, Long skuId, Integer number);
+    void add(Long userId, Long skuId, Integer number) throws BisException;
 
     /**
      * 批量加入购物车
@@ -24,7 +25,7 @@ public interface BisCartService extends BaseService<BisCart> {
      * @param userId
      * @param skuIds
      */
-    void add(Long userId, Long... skuIds);
+    void add(Long userId, Long... skuIds) throws BisException;
 
     /**
      * 用户删除购物车

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.vgit.yunqiang.common.consts.ICodes;
 import com.vgit.yunqiang.common.consts.bis.OrderStateConsts;
+import com.vgit.yunqiang.common.consts.msg.BisProductMsgConsts;
 import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.utils.Page;
 import com.vgit.yunqiang.common.utils.Ret;
@@ -31,6 +32,9 @@ public class BisOrderDetailController {
 	
 	@Autowired
 	private BisOrderDetailService bisOrderDetailService;
+
+	@Autowired
+	private BisSkuService bisSkuService;
 	
 	@RequestMapping(ControllerConsts.URL_JSON)
 	@ResponseBody
@@ -42,6 +46,11 @@ public class BisOrderDetailController {
 	@ResponseBody
 	public Ret addAmount(BisOrderDetail orderDetail) {
 		try {
+			// 获取商品总库存
+			BisSku sku = this.bisSkuService.get(orderDetail.getSkuId());
+			if (orderDetail.getAmount() > sku.getAvailableStock()) {
+				return Ret.me().setSuccess(false).setCode(BisProductMsgConsts.IN_A_SHORT_INVENTORY);
+			}
 			BisOrder order = this.bisOrderDetailService.updateOrderDetail(orderDetail);
 			return Ret.me().setCode(ICodes.SUCCESS).setData(order);
 		} catch (BisException e) {
@@ -53,6 +62,9 @@ public class BisOrderDetailController {
 	@ResponseBody
 	public Ret removeAmount(BisOrderDetail orderDetail) {
 		try {
+			if (orderDetail.getAmount() < 1) {
+				return Ret.me().setSuccess(false).setCode(BisProductMsgConsts.AT_A_SHORT_INVENTORY);
+			}
 			BisOrder order = this.bisOrderDetailService.updateOrderDetail(orderDetail);
 			return Ret.me().setCode(ICodes.SUCCESS).setData(order);
 		} catch (BisException e) {

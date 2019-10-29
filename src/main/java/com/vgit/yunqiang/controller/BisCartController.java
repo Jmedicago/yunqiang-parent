@@ -1,5 +1,6 @@
 package com.vgit.yunqiang.controller;
 
+import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.common.utils.StrUtils;
 import com.vgit.yunqiang.controller.consts.ControllerConsts;
@@ -50,8 +51,12 @@ public class BisCartController {
     @RequestMapping("/add")
     @ResponseBody
     public Ret cartAdd(String skuIds) {
-        this.bisCartService.add(UserContext.getUserId(), StrUtils.splitToLong(skuIds, ","));
-        return Ret.me();
+        try {
+            this.bisCartService.add(UserContext.getUserId(), StrUtils.splitToLong(skuIds, ","));
+            return Ret.me();
+        } catch (BisException e) {
+            return Ret.me().setSuccess(false).setCode(e.getCode()).setInfo(e.getInfo());
+        }
     }
 
     @RequestMapping("/addAmount")

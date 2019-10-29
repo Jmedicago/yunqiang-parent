@@ -44,4 +44,11 @@ public interface BisOrderService extends BaseService<BisOrder> {
      */
     void confirmFinish(Long orderId);
 
+    /**
+     * 确认发货
+     *
+     * @param orderId
+     * @return
+     */
+    Ret sendShip(Long orderId);
 }

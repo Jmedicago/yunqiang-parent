@@ -12,6 +12,7 @@ import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
 import com.vgit.yunqiang.common.utils.GlobalSetting;
 import com.vgit.yunqiang.common.utils.IDUtils;
+import com.vgit.yunqiang.common.utils.Page;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.mapper.BisOrderMapper;
 import com.vgit.yunqiang.pojo.BisCart;
@@ -75,9 +76,9 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
                     return Ret.me().setSuccess(false).setCode(SysUserMsgConsts.ORDER_STOCK_NOT_ENOUGH);
                 }
                 // 库存充足，扣除库存
-                sku.setAvailableStock(sku.getAvailableStock() - amount);
+                /*sku.setAvailableStock(sku.getAvailableStock() - amount);
                 sku.setFrozenStock(sku.getFrozenStock() + amount);
-                this.bisSkuService.updatePart(sku);
+                this.bisSkuService.updatePart(sku);*/
                 // TODO .增加商品的销量
                 // 获取商品订单总价
                 totalMoney += bisCart.getAmount() * bisCart.getSku().getCostPrice();
@@ -164,13 +165,13 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
         order.setStatus((int) OrderStateConsts.CLOSED);
         this.updatePart(order);
         //TODO .（通知库存系统）恢复商品库存
-        List<BisOrderDetail> detailList = order.getDetailList();
+        /*List<BisOrderDetail> detailList = order.getDetailList();
         for (BisOrderDetail orderDetail : detailList) {
             Long skuId = orderDetail.getSkuId();
             Integer amount = orderDetail.getAmount();
             // 恢复库存
             this.bisSkuService.recoverStock(skuId, amount);
-        }
+        }*/
     }
 
     @Override
@@ -218,6 +219,31 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
     public void confirmFinish(Long orderId) {
         BisOrder order = mapper.get(orderId);
         this.confirmFinishOrder(order);
+    }
+
+    @Override
+    public Ret sendShip(Long orderId) {
+        BisOrder bisOrder = this.mapper.get(orderId);
+        if (bisOrder.getStatus() == 0) {
+            Page<BisOrderDetail> page = this.bisOrderDetailService.getOrderDetail(orderId);
+            if (page != null) {
+                for (BisOrderDetail orderDetail : page.getRows()) {
+                    BisSku bisSku = this.bisSkuService.get(orderDetail.getSkuId());
+                    // 库存不足
+                    if (orderDetail.getAmount() > bisSku.getAvailableStock()) {
+                        return Ret.me().setSuccess(false).setCode(SysUserMsgConsts.ORDER_STOCK_NOT_ENOUGH);
+                    }
+                    // 库存充足，扣除库存
+                    bisSku.setAvailableStock(bisSku.getAvailableStock() - orderDetail.getAmount());
+                    bisSku.setFrozenStock(bisSku.getFrozenStock() + orderDetail.getAmount());
+                    this.bisSkuService.updatePart(bisSku);
+                }
+            }
+            bisOrder.setStatus((int) OrderStateConsts.WAIT_SHIP_SEND);
+            this.mapper.updatePart(bisOrder);
+            return Ret.me().setCode(ICodes.SUCCESS);
+        }
+        return Ret.me();
     }
 
     /**

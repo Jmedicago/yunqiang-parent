@@ -180,6 +180,7 @@
 	<sql id="whereSql">
         <where>
             <if test="key !=null and key != ''">and bo.orderSn = #{key}</if>
+			<if test="stockId != null and stockId != ''"> and bo.stockId = #{stockId}</if>
         </where>
     </sql>
 

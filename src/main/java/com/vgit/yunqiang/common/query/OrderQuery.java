@@ -6,6 +6,8 @@ public class OrderQuery extends BaseQuery {
 	
 	private String key;
 
+	private Long stockId;
+
 	public String getKey() {
 		return key;
 	}
@@ -14,4 +16,11 @@ public class OrderQuery extends BaseQuery {
 		this.key = key;
 	}
 
+	public Long getStockId() {
+		return stockId;
+	}
+
+	public void setStockId(Long stockId) {
+		this.stockId = stockId;
+	}
 }

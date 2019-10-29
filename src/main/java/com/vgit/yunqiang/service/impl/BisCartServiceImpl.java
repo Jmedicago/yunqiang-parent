@@ -2,6 +2,8 @@ package com.vgit.yunqiang.service.impl;
 
 import com.vgit.yunqiang.common.consts.bis.BooleanConsts;
 import com.vgit.yunqiang.common.consts.bis.CartStatusConsts;
+import com.vgit.yunqiang.common.consts.msg.BisProductMsgConsts;
+import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
 import com.vgit.yunqiang.common.utils.StrUtils;
@@ -12,6 +14,7 @@ import com.vgit.yunqiang.pojo.BisProductMedia;
 import com.vgit.yunqiang.pojo.BisSku;
 import com.vgit.yunqiang.service.BisCartService;
 import com.vgit.yunqiang.service.BisProductService;
+import com.vgit.yunqiang.service.BisSkuService;
 import com.vgit.yunqiang.service.QuartzService;
 
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +34,9 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
 
     @Autowired
     private BisProductService bisProductService;
+
+    @Autowired
+    private BisSkuService bisSkuService;
     
     @Autowired
     private QuartzService quartzService;
@@ -41,9 +47,14 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
     }
 
     @Override
-    public void add(Long userId, Long skuId, Integer number) {
+    public void add(Long userId, Long skuId, Integer number) throws BisException {
         // 查询购物车是否存在
         BisCart existBisCart = this.mapper.getByUserSku(userId, skuId);
+        // 检查商品库存数量
+        BisSku curSku = this.bisSkuService.get(skuId);
+        if (curSku.getAvailableStock() == 0) { // 库存不足
+            throw new BisException().setCode(BisProductMsgConsts.IN_A_SHORT_INVENTORY).setInfo(curSku.getSkuCode() + " " + curSku.getSkuName());
+        }
         // 存在则增加数量
         if (null != existBisCart) {
             existBisCart.setAmount(existBisCart.getAmount() + number);
@@ -81,7 +92,7 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
     }
 
     @Override
-    public void add(Long userId, Long... skuIds) {
+    public void add(Long userId, Long... skuIds) throws BisException {
         if (skuIds == null || skuIds.length == 0) {
             return;
         }

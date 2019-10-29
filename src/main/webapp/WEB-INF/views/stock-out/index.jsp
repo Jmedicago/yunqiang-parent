@@ -290,6 +290,8 @@
                 MXF.ajaxFormDone(data);
                 if (data.success) {
                     $('#cartGrid').datagrid('reload');
+                } else {
+                    MXF.alert(data.info + "，" + data.message, data.success);
                 }
             });
         }

@@ -8,6 +8,7 @@ import com.vgit.yunqiang.controller.utils.UserContext;
 import com.vgit.yunqiang.pojo.BisOrder;
 import com.vgit.yunqiang.pojo.SysUser;
 import com.vgit.yunqiang.service.BisOrderService;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +32,7 @@ public class BisOrderController {
     @RequestMapping(ControllerConsts.URL_JSON)
     @ResponseBody
     public Page<BisOrder> json(OrderQuery query) {
+        query.setStockId(Long.valueOf(UserContext.getUser().getStockIds()));
         return this.bisOrderService.queryPage(query);
     }
     

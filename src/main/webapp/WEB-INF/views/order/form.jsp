@@ -72,7 +72,7 @@
                     }
                 });
                 // 更新统计
-                // statistics(res.data);
+                orderDetailStatistics(res.data);
             } else {
                 MXF.alert(res.message, res.success);
             }
@@ -91,11 +91,15 @@
                     }
                 });
                 // 更新统计
-                // statistics(res.data);
+                orderDetailStatistics(res.data);
             } else {
-                MXF.alert(res.info, res.success);
+                MXF.alert(res.message, res.success);
             }
         });
+    }
+    
+    function orderDetailStatistics(data) {
+        $('#volumeTotal').text(data.totalVolume);
     }
 
 </script>
