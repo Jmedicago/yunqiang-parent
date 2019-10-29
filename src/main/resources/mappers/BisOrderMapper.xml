@@ -3,7 +3,7 @@
 <mapper namespace="com.vgit.yunqiang.mapper.BisOrderMapper">
 
     <sql id="Base_Column_List">
-		id, userId, orderSn, stockId, status, totalMoney, confirmTime, commentStatus, commentTime, shipTime, finishedTime, digest, lastCancelTime
+		id, userId, orderSn, stockId, status, totalVolume, totalMoney, confirmTime, commentStatus, commentTime, shipTime, finishedTime, digest, lastCancelTime
     </sql>
 	
 	<select id="get" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisOrder">
@@ -23,11 +23,11 @@
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 		insert into t_bis_order(
-		userId, orderSn, stockId, status, totalMoney, confirmTime, commentStatus, commentTime, shipTime, finishedTime, digest, lastCancelTime
+		userId, orderSn, stockId, status, totalVolume, totalMoney, confirmTime, commentStatus, commentTime, shipTime, finishedTime, digest, lastCancelTime
 		)
 		values(
 		#{userId, jdbcType=BIGINT}, #{orderSn, jdbcType=VARCHAR}, #{stockId, jdbcType=BIGINT}, #{status, jdbcType=INTEGER},
-		#{totalMoney, jdbcType=DOUBLE}, #{confirmTime, jdbcType=BIGINT}, #{commentStatus, jdbcType=TINYINT},
+		#{totalVolume, jdbcType=DOUBLE}, #{totalMoney, jdbcType=DOUBLE}, #{confirmTime, jdbcType=BIGINT}, #{commentStatus, jdbcType=TINYINT},
 		#{commentTime, jdbcType=BIGINT}, #{shipTime ,jdbcType=BIGINT}, #{finishedTime, jdbcType=BIGINT},
 		#{digest, jdbcType=VARCHAR}, #{lastCancelTime, jdbcType=BIGINT}
 		)
@@ -50,6 +50,9 @@
 			</if>
 			<if test="status != null">
 				status,
+			</if>
+			<if test="totalVolume != null">
+				totalVolume,
 			</if>
 			<if test="totalMoney != null">
 				totalMoney,
@@ -90,6 +93,9 @@
 			<if test="status !=null">
 				#{status,jdbcType=INTEGER},
 			</if>
+			<if test="totalVolume != null">
+				#{totalVolume,jdbcType=DOUBLE},
+			</if>
 			<if test="totalMoney !=null">
 				#{totalMoney,jdbcType=DOUBLE},
 			</if>
@@ -120,7 +126,7 @@
 	<update id="update" parameterType="com.vgit.yunqiang.pojo.BisOrder">
 		update t_bis_order
 		set userId=#{userId,jdbcType=BIGINT}, orderSn=#{orderSn,jdbcType=VARCHAR}, stockId=#{stockId,jdbcType=BIGINT}, status=#{status,jdbcType=INTEGER},
-		totalMoney=#{totalMoney,jdbcType=DOUBLE}, confirmTime=#{confirmTime,jdbcType=BIGINT}, commentStatus=#{commentStatus,jdbcType=TINYINT}, commentTime=#{commentTime,jdbcType=BIGINT},
+		totalVolume = #{totalVolume,jdbcType=DOUBLE}, totalMoney=#{totalMoney,jdbcType=DOUBLE}, confirmTime=#{confirmTime,jdbcType=BIGINT}, commentStatus=#{commentStatus,jdbcType=TINYINT}, commentTime=#{commentTime,jdbcType=BIGINT},
 		shipTime=#{shipTime,jdbcType=BIGINT}, finishedTime=#{finishedTime,jdbcType=BIGINT}, digest=#{digest,jdbcType=VARCHAR}, lastCancelTime=#{lastCancelTime,jdbcType=BIGINT},
 		where id=#{id,jdbcType=BIGINT}
 	</update>
@@ -139,6 +145,9 @@
 			</if>
 			<if test="status !=null">
 				status=#{status,jdbcType=INTEGER},
+			</if>
+			<if test="totalVolume !=null">
+				totalVolume = #{totalVolume,jdbcType=DOUBLE},
 			</if>
 			<if test="totalMoney !=null">
 				totalMoney=#{totalMoney,jdbcType=DOUBLE},

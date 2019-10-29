@@ -57,6 +57,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
     @Override
     public Ret create(BisOrder formOrder, Long billId) {
         Double totalMoney = 0.0d; // 订单所有商品的总价
+        Double totalVolume = 0.0d; // 总体积
         StringBuilder digest = new StringBuilder(); // 订单摘要
 
         // 获取用户购物车情况:处理库存、销量、计算订单总价及摘要
@@ -80,6 +81,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
                 // TODO .增加商品的销量
                 // 获取商品订单总价
                 totalMoney += bisCart.getAmount() * bisCart.getSku().getCostPrice();
+                totalVolume += bisCart.getAmount() * bisCart.getSku().getVolume();
                 // 获取摘要
                 digest.append(bisCart.getName());
                 String skuProperties = bisCart.getSkuProperties();
@@ -103,6 +105,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
         formOrder.setOrderSn(orderSn);
         formOrder.setStatus((int) OrderStateConsts.WAIT_SHIP_AUDITING);
         formOrder.setTotalMoney(totalMoney);
+        formOrder.setTotalVolume(totalVolume);
         formOrder.setCommentStatus(BooleanConsts.NO);
         formOrder.setDigest(digest.toString());
         formOrder.setCreateTime(System.currentTimeMillis());
@@ -123,6 +126,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
                 orderDetail.setPrice(sku.getCostPrice());
                 orderDetail.setProductId(bisCart.getProductId());
                 orderDetail.setSkuId(bisCart.getSkuId());
+                orderDetail.setVolume(sku.getVolume());
                 orderDetail.setSkuMainPic(bisCart.getSkuMainPic());
                 orderDetail.setSkuProperties(bisCart.getSkuProperties());
                 orderDetail.setTotalMoney(bisCart.getAmount() * sku.getCostPrice());
@@ -150,7 +154,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
 
     @Override
     public BisOrder getById(Long id) {
-        return this.mapper.getById(id);
+        return this.mapper.get(id);
     }
 
     @Override

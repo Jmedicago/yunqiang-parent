@@ -3,7 +3,9 @@ package com.vgit.yunqiang.controller;
 import java.util.List;
 import java.util.Map;
 
+import com.vgit.yunqiang.common.consts.ICodes;
 import com.vgit.yunqiang.common.consts.bis.OrderStateConsts;
+import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.utils.Page;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.controller.utils.UserContext;
@@ -34,6 +36,28 @@ public class BisOrderDetailController {
 	@ResponseBody
 	public Page<BisOrderDetail> json(Long orderId) {
 		return this.bisOrderDetailService.getOrderDetail(orderId);
+	}
+
+	@RequestMapping("/addAmount")
+	@ResponseBody
+	public Ret addAmount(BisOrderDetail orderDetail) {
+		try {
+			BisOrder order = this.bisOrderDetailService.updateOrderDetail(orderDetail);
+			return Ret.me().setCode(ICodes.SUCCESS).setData(order);
+		} catch (BisException e) {
+			return Ret.me().setSuccess(false).setCode(e.getCode());
+		}
+	}
+
+	@RequestMapping("/removeAmount")
+	@ResponseBody
+	public Ret removeAmount(BisOrderDetail orderDetail) {
+		try {
+			BisOrder order = this.bisOrderDetailService.updateOrderDetail(orderDetail);
+			return Ret.me().setCode(ICodes.SUCCESS).setData(order);
+		} catch (BisException e) {
+			return Ret.me().setSuccess(false).setCode(e.getCode());
+		}
 	}
 
 }

@@ -21,6 +21,8 @@ public class BisOrder extends BasePojo {
 
     private Double totalMoney;
 
+    private Double totalVolume;
+
     private Long confirmTime;
 
     private Byte commentStatus;
@@ -86,6 +88,14 @@ public class BisOrder extends BasePojo {
 
     public void setTotalMoney(Double totalMoney) {
         this.totalMoney = totalMoney;
+    }
+
+    public Double getTotalVolume() {
+        return totalVolume;
+    }
+
+    public void setTotalVolume(Double totalVolume) {
+        this.totalVolume = totalVolume;
     }
 
     public Long getConfirmTime() {

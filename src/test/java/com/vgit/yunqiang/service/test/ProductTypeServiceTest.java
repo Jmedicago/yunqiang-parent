@@ -31,6 +31,18 @@ public class ProductTypeServiceTest {
 	public void testDeleteProductType() throws Exception {
 		//this.bisProductTypeService.deleteById(11L);
 		//this.bisProductService.test();
+		StringBuilder digest = new StringBuilder(); // 订单摘要
+
+		String skuProperties = "5:颜色:8:黑色_6:尺码:10:38";
+		String[] propArr = skuProperties.split("_");
+		for (String props : propArr) {
+			String[] propValueArr = props.split(":");
+			digest.append("-").append(propValueArr[3]);
+		}
+		digest.append("×").append(3).append(",");
+		System.out.println("____________________ SYSTEM OUT _____________________");
+		System.out.println(digest.toString());
+		System.out.println("_____________________________________________________");
 	}
 	
 }

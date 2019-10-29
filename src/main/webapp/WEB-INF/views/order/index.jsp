@@ -17,8 +17,8 @@
             <tr>
                 <th data-options="field: 'id', checkbox: true"></th>
                 <th data-options="field: 'orderSn', width: 80">订单号</th>
-                <th data-options="field: 'status', width: 50, formatter: orderStateFormatter">订单状态</th>
-                <th data-options="field: 'totalMoney', width: 60, formatter: MXF.priceFormatter">金额总计</th>
+                <th data-options="field: 'status', width: 80, formatter: orderStateFormatter">订单状态</th>
+                <th data-options="field: 'totalMoney', width: 100, formatter: MXF.priceFormatter">金额总计</th>
                 <th data-options="field: 'confirmTime', width: 130, formatter: MXF.dateTimeFormatter">下单时间</th>
                 <th data-options="field: 'digest', width:200">明细</th>
             </tr>

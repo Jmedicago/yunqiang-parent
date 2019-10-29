@@ -23,6 +23,8 @@ public class BisOrderDetail {
 
     private Integer amount;
 
+    private Double volume;
+
     private Double totalMoney;
 
     private Double totalVolume;
@@ -97,6 +99,14 @@ public class BisOrderDetail {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    public Double getVolume() {
+        return volume;
+    }
+
+    public void setVolume(Double volume) {
+        this.volume = volume;
     }
 
     public Double getTotalMoney() {

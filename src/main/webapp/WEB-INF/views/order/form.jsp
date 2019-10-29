@@ -22,9 +22,7 @@
                 </th>
                 <th data-options="field: 'name', width: 120, halign: 'center', align: 'center'">商品名</th>
                 <th data-options="field: 'skuProperties', width: 200, halign: 'center', align: 'left'">属性</th>
-                <th data-options="field: 'amount', width: 100, halign: 'center', align: 'center'">
-                    数量
-                </th>
+                <th data-options="field: 'amount', width:100, halign: 'center', align: 'center', formatter: cartAmountFormatter">数量</th>
             </tr>
             </thead>
         </table>
@@ -52,4 +50,52 @@
     function loadOrderDetailSuccess(data) {
         $('#volumeTotal').text(data.footer.volumeTotal.toFixed(2));
     }
+
+    function cartAmountFormatter(value, row, index) {
+        row.index = index;
+        var obj = JSON.stringify(row);
+        var add = "<a class='btn-d default' onclick='addOrderDetailAmount(" + obj + ")'><i style='border: 1px solid #ccc;' class='icon iconfont icon-cart-add'></i></a>";
+        var remove = "<a class='btn-d default' onclick='removeOrderDetailAmount(" + obj + ")'><i style='border: 1px solid #ccc;' class='icon iconfont icon-cart-remove'></i></a>";
+        var input = "<span style='display: inline-block; width: 30px;'>" + value + "</span>";
+        return remove + input + add;
+    }
+    
+    function addOrderDetailAmount(obj) {
+        obj.amount ++;
+        $.post('/order-detail/addAmount', obj, function (res) {
+            if (res.success) {
+                // 更新字段
+                $("#orderDetailGrid").datagrid("updateRow", {
+                    index: obj.index, //行索引
+                    row: {
+                        amount: obj.amount //行中的某个字段
+                    }
+                });
+                // 更新统计
+                // statistics(res.data);
+            } else {
+                MXF.alert(res.message, res.success);
+            }
+        });
+    }
+    
+    function removeOrderDetailAmount(obj) {
+        obj.amount --;
+        $.post('/order-detail/removeAmount', obj, function (res) {
+            if (res.success) {
+                // 更新字段
+                $("#orderDetailGrid").datagrid("updateRow", {
+                    index: obj.index, //行索引
+                    row: {
+                        amount: obj.amount //行中的某个字段
+                    }
+                });
+                // 更新统计
+                // statistics(res.data);
+            } else {
+                MXF.alert(res.info, res.success);
+            }
+        });
+    }
+
 </script>

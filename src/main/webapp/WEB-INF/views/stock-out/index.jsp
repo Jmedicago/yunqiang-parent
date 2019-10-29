@@ -113,9 +113,7 @@
                         </th>
                         <th data-options="field: 'name', width:100, halign: 'center', align: 'center'">商品名</th>
                         <th data-options="field: 'skuProperties', width:150, halign: 'center', align: 'left'">属性</th>
-                        <th data-options="field: 'amount', width:100, halign: 'center', align: 'center', formatter: cartAmountFormatter">
-                            数量
-                        </th>
+                        <th data-options="field: 'amount', width:100, halign: 'center', align: 'center', formatter: cartAmountFormatter">数量</th>
                     </tr>
                     </thead>
                 </table>
