@@ -67,7 +67,7 @@
 	}
 	
 	function prTrade() {
-        MXF.openDialog('plTradeWindow', '外贸请购单', 'trade-stock/pr-trade', function () {}, 600, 200);
+        MXF.openDialog('plTradeWindow', '外贸请购单', 'trade-stock/pr-trade', function () {}, 600, 250);
     }
     
     function poTrade() {

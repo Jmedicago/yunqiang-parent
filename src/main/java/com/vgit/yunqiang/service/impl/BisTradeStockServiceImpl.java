@@ -7,6 +7,7 @@ import com.vgit.yunqiang.common.utils.FtpUtils;
 import com.vgit.yunqiang.common.utils.GlobalSetting;
 import com.vgit.yunqiang.common.utils.IDUtils;
 import com.vgit.yunqiang.common.utils.Ret;
+import com.vgit.yunqiang.service.BisProductService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,9 @@ public class BisTradeStockServiceImpl extends BaseServiceImpl<BisTradeStock> imp
 
     @Autowired
     private BisTradeStockMapper mapper;
+
+    @Autowired
+    private BisProductService bisProductService;
 
     @Override
     protected BaseMapper<BisTradeStock> getMapper() {
@@ -102,7 +106,11 @@ public class BisTradeStockServiceImpl extends BaseServiceImpl<BisTradeStock> imp
         BisTradeStock bisTradeStock = this.mapper.get(id);
         bisTradeStock.setStatus((int) TradeStockStateConsts.SHIP_FINISH_TAKE);
         this.mapper.updatePart(bisTradeStock);
-        return Ret.me();
+        if (bisTradeStock.getType() == 0) {// 导入商品
+            return this.bisProductService.batch(bisTradeStock.getAfterResource());
+        } else {
+            return Ret.me();
+        }
     }
 
 }

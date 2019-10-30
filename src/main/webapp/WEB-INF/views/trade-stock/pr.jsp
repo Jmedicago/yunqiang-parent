@@ -3,6 +3,13 @@
          pageEncoding="UTF-8"%>
 <form id="prTradeStockForm" action="/trade-stock/upload-pr-trade" method="post" enctype="multipart/form-data">
     <div class="input-div">
+        <label class="label-top">类型</label>
+        <select class="easyui-combobox" name="dept" style="width: 420px;">
+            <option value="0">外贸/百货类</option>
+            <option value="1">零件</option>
+        </select>
+    </div>
+    <div class="input-div">
         <label class="label-top">上传请购单</label>
         <input class="easyui-filebox theme-textbox-radius" name="uploadFile" data-options="
             required: true,

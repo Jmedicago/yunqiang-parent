@@ -16,6 +16,8 @@ public class BisTradeStock extends BasePojo {
 
     private Integer status;
 
+    private Integer type;
+
     public Long getId() {
         return id;
     }
@@ -64,7 +66,15 @@ public class BisTradeStock extends BasePojo {
         this.status = status;
     }
 
-	@Override
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    @Override
 	public String toString() {
 		return "BisTradeStock [id=" + id + ", fileName=" + fileName + ", beforeResource=" + beforeResource
 				+ ", afterResource=" + afterResource + ", confirmTime=" + confirmTime + ", status=" + status + "]";
