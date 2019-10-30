@@ -161,6 +161,12 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
     @Override
     public void cancel(Long orderId) {
         BisOrder order = this.getById(orderId);
+
+        // 检查订单状态（是否可被取消），当订单状态为待审核状态可取消
+        if (OrderStateConsts.WAIT_SHIP_AUDITING != order.getStatus()) {
+            throw BisException.me().setCode(SysUserMsgConsts.ORDER_CANCEL_FORBIDDEN);
+        }
+
         //修改订单状态
         order.setStatus((int) OrderStateConsts.CLOSED);
         this.updatePart(order);
@@ -241,6 +247,9 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
             }
             bisOrder.setStatus((int) OrderStateConsts.WAIT_SHIP_SEND);
             this.mapper.updatePart(bisOrder);
+
+            //删除待支付订单自动取消定时任务
+            this.quartzService.delJob("CANCEL_ORDER_TASK_" + orderId);
             return Ret.me().setCode(ICodes.SUCCESS);
         }
         return Ret.me();
