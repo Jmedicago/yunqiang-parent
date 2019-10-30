@@ -35,7 +35,7 @@ public class BisTradeStockServiceImpl extends BaseServiceImpl<BisTradeStock> imp
     }
 
     @Override
-    public Ret uploadPrTrade(MultipartFile uploadFile) {
+    public Ret uploadPrTrade(Integer type, MultipartFile uploadFile) {
         try {
             String oldName = uploadFile.getOriginalFilename();
             //生成新文件名
@@ -59,6 +59,7 @@ public class BisTradeStockServiceImpl extends BaseServiceImpl<BisTradeStock> imp
             tradeStock.setBeforeResource(GlobalSetting.get(GlobalSettingNames.IMAGE_BASE_URL) + "/" + newName);
             tradeStock.setFileName(oldName);
             tradeStock.setCreateTime(System.currentTimeMillis());
+            tradeStock.setType(type);
             tradeStock.setStatus((int) TradeStockStateConsts.WAIT_SHIP_AUDITING);
             this.mapper.save(tradeStock);
 
@@ -93,6 +94,7 @@ public class BisTradeStockServiceImpl extends BaseServiceImpl<BisTradeStock> imp
             tradeStock.setId(id);
             tradeStock.setAfterResource(GlobalSetting.get(GlobalSettingNames.IMAGE_BASE_URL) + "/" + newName);
             tradeStock.setConfirmTime(System.currentTimeMillis());
+            tradeStock.setStatus((int) TradeStockStateConsts.WAIT_SHIP_SEND);
             this.mapper.updatePart(tradeStock);
 
             return Ret.me().setSuccess(true).setCode(SysFileUploadMsgConsts.FILE_UPLOAD_SUCCESS);

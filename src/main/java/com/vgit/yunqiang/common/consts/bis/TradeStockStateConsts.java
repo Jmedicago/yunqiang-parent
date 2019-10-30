@@ -10,10 +10,7 @@ public class TradeStockStateConsts {
     @ConstName("待发货")
     public static byte WAIT_SHIP_SEND = 1;
 
-    @ConstName("待收货")
-    public static byte WAIT_SHIP_TAKE = 2;
-
-    @ConstName("完成")
-    public static byte SHIP_FINISH_TAKE = 3;
+    @ConstName("已到货")
+    public static byte SHIP_FINISH_TAKE = 2;
 
 }

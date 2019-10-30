@@ -10,10 +10,11 @@ public interface BisTradeStockService extends BaseService<BisTradeStock> {
     /**
      * 上传贸易型请购单
      *
+     * @param type
      * @param uploadFile
      * @return
      */
-    Ret uploadPrTrade(MultipartFile uploadFile);
+    Ret uploadPrTrade(Integer type, MultipartFile uploadFile);
 
     /**
      * 上传贸易型采购单

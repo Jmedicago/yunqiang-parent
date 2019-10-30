@@ -42,8 +42,8 @@ public class BisTradeStockController {
 
     @RequestMapping("/upload-pr-trade")
     @ResponseBody
-    public Ret uploadPrTrade(MultipartFile uploadFile) {
-	    return this.bisTradeStockService.uploadPrTrade(uploadFile);
+    public Ret uploadPrTrade(Integer type, MultipartFile uploadFile) {
+	    return this.bisTradeStockService.uploadPrTrade(type, uploadFile);
     }
 
     @RequestMapping("/po-trade")

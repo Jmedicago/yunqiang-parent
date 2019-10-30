@@ -41,8 +41,9 @@
     });
 
     function treadeStateFormatter(v) {
-        if (v == 0) return '<red>否</red>';
-        if (v > 0) return '<green>是</green>';
+        if (v == 0) return '<red>待审核</red>';
+        if (v == 1) return '<orange>待发货</orange>';
+        if (v == 2) return '<blue>已到货</blue>';
     }
     
     function beforeTradeOrderFormatter(v, row) {
@@ -87,7 +88,12 @@
         }
         MXF.confirm('是否到货？', function () {
             $.get('trade-stock/finish-trade?id=' + row.id, function (res) {
-                $('#tradeStockGrid').datagrid('reload');
+            	if (res.success) {
+            		MXF.alert('商品导入成功！', true);
+                    $('#tradeStockGrid').datagrid('reload');
+            	} else {
+            		MXF.alert('商品导入失败！', false);
+            	}
             });
         })
     }
