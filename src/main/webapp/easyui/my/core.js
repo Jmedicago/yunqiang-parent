@@ -550,8 +550,11 @@ MXF.priceParse = function (val) {
 }
 
 MXF.dateTimeFormatter = function (val, row) {
-    var now = new Date(val);
-    return now.format("yyyy-MM-dd hh:mm:ss");
+    if (val) {
+        var now = new Date(val);
+        return now.format("yyyy-MM-dd hh:mm:ss");
+    }
+    return '';
 };
 
 MXF.openDialog = function (el, title, url, callback, width, height) {

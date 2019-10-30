@@ -7,7 +7,7 @@
     <result column="fileName" property="fileName" jdbcType="VARCHAR" />
     <result column="beforeResource" property="beforeResource" jdbcType="VARCHAR" />
     <result column="afterResource" property="afterResource" jdbcType="VARCHAR" />
-    <result column="confirmTime" property="confirmTime" jdbcType="VARCHAR" />
+    <result column="confirmTime" property="confirmTime" jdbcType="BIGINT" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="createTime" property="createTime" jdbcType="BIGINT" />
     <result column="updateTime" property="updateTime" jdbcType="BIGINT" />
@@ -37,7 +37,7 @@
       createTime, updateTime, remark
       )
     values (#{id,jdbcType=BIGINT}, #{fileName,jdbcType=VARCHAR}, #{beforeResource,jdbcType=VARCHAR}, 
-      #{afterResource,jdbcType=VARCHAR}, #{confirmTime,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{afterResource,jdbcType=VARCHAR}, #{confirmTime,jdbcType=BIGINT}, #{status,jdbcType=INTEGER},
       #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}
       )
   </insert>
@@ -90,7 +90,7 @@
         #{afterResource,jdbcType=VARCHAR},
       </if>
       <if test="confirmTime != null" >
-        #{confirmTime,jdbcType=VARCHAR},
+        #{confirmTime,jdbcType=BIGINT},
       </if>
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
@@ -120,7 +120,7 @@
         afterResource = #{afterResource,jdbcType=VARCHAR},
       </if>
       <if test="confirmTime != null" >
-        confirmTime = #{confirmTime,jdbcType=VARCHAR},
+        confirmTime = #{confirmTime,jdbcType=BIGINT},
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=INTEGER},
@@ -143,7 +143,7 @@
     set fileName = #{fileName,jdbcType=VARCHAR},
       beforeResource = #{beforeResource,jdbcType=VARCHAR},
       afterResource = #{afterResource,jdbcType=VARCHAR},
-      confirmTime = #{confirmTime,jdbcType=VARCHAR},
+      confirmTime = #{confirmTime,jdbcType=BIGINT},
       status = #{status,jdbcType=INTEGER},
       createTime = #{createTime,jdbcType=BIGINT},
       updateTime = #{updateTime,jdbcType=BIGINT},

@@ -1,7 +1,10 @@
 package com.vgit.yunqiang.controller;
 
+import com.vgit.yunqiang.common.consts.msg.BisTradeStockMsgConsts;
+import com.vgit.yunqiang.common.utils.Ret;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -10,6 +13,7 @@ import com.vgit.yunqiang.common.utils.Page;
 import com.vgit.yunqiang.controller.consts.ControllerConsts;
 import com.vgit.yunqiang.pojo.BisTradeStock;
 import com.vgit.yunqiang.service.BisTradeStockService;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/" + BisTradeStockController.DOMAIN)
@@ -29,6 +33,39 @@ public class BisTradeStockController {
     @ResponseBody
     public Page<BisTradeStock> json(TradeStockQuery query) {
         return this.bisTradeStockService.queryPage(query);
+    }
+
+    @RequestMapping("/pr-trade")
+    public String prTrade() {
+        return DOMAIN + "/pr";
+    }
+
+    @RequestMapping("/upload-pr-trade")
+    @ResponseBody
+    public Ret uploadPrTrade(MultipartFile uploadFile) {
+	    return this.bisTradeStockService.uploadPrTrade(uploadFile);
+    }
+
+    @RequestMapping("/po-trade")
+    public String poTrade(Long id, Model model) {
+        BisTradeStock bisTradeStock = this.bisTradeStockService.get(id);
+        model.addAttribute("bisTradeStock", bisTradeStock);
+	    return DOMAIN + "/po";
+    }
+
+    @RequestMapping("/upload-po-trade")
+    @ResponseBody
+    public Ret uploadPoTrade(Long id, MultipartFile uploadFile) {
+	    if (id == null) {
+	        return Ret.me().setSuccess(false).setCode(BisTradeStockMsgConsts.TRADE_NULL);
+        }
+        return this.bisTradeStockService.uploadPoTrade(id, uploadFile);
+    }
+
+    @RequestMapping("/finish-trade")
+    @ResponseBody
+    public Ret finishTrade(Long id) {
+        return this.bisTradeStockService.finishTrade(id);
     }
 
 }

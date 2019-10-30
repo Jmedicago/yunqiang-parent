@@ -10,21 +10,25 @@
             <thead>
             <tr>
                 <th data-options="field:'createTime',width:150,halign:'center',align:'center',formatter:MXF.dateTimeFormatter">请购时间 <br>（上传请购单的时间）</th>
-                <th data-options="field:'beforeResource',width:150,halign:'center',align:'center',formatter:beforeTradeOrderFormatter">国外请购</th>
-                <th data-options="field:'afterResource',width:150,halign:'center',align:'center',formatter:afterTradeOrderFormatter">国内采购确认发货单</th>
+                <th data-options="field:'beforeResource',width:200,halign:'center',align:'center',formatter:beforeTradeOrderFormatter">国外请购</th>
+                <th data-options="field:'afterResource',width:200,halign:'center',align:'center',formatter:afterTradeOrderFormatter">国内采购确认发货单</th>
                 <th data-options="field:'confirmTime',width:150,halign:'center',align:'center',formatter:MXF.dateTimeFormatter">确认时间 <br>（确认请购单时间）</th>
                 <th data-options="field:'status',width:80,halign:'center',align:'center',formatter:treadeStateFormatter">是否到货</th>
             </tr>
             </thead>
         </table>
-        <div id="#tradeStockTB">
+        <div id="tradeStockTB">
             <div>
-                <a href="#" data-cmd="add" title="请购" remote="false" class="easyui-linkbutton" iconCls="icon-add" plain="true">
+                <a href="#" data-cmd="prTrade" title="请购" remote="false" class="easyui-linkbutton" iconCls="icon-add" plain="true">
                        	请购
                 </a>
-                <a href="#" data-cmd="edit" title="采购" mustsel remote="false" data-options="disabled:true" class="easyui-linkbutton"
+                <a href="#" data-cmd="poTrade" title="采购" mustsel remote="false" data-options="disabled:true" class="easyui-linkbutton"
                    iconCls="icon-edit" plain="true">
                     	采购
+                </a>
+                <a href="#" data-cmd="finishTrade" mustsel remote="false" data-options="disabled:true" class="easyui-linkbutton"
+                   iconCls="icon-ok" plain="true">
+                    完成
                 </a>
             </div>
         </div>
@@ -38,18 +42,54 @@
 
     function treadeStateFormatter(v) {
         if (v == 0) return '<red>否</red>';
-        if (v == 1) return '<green>是</green>';
+        if (v > 0) return '<green>是</green>';
     }
     
     function beforeTradeOrderFormatter(v, row) {
-    	var name = row.fileName;
-    	name += '(请购单).xlsx'; 
-    	var a = "<a href='" + row.beforeResource + "'>"+ name +"</a>";
-    	return a;
+    	if (row.beforeResource) {
+            var name = '(请购单)';
+            name += row.fileName;
+            var a = "<a style='text-decoration: underline; color: #0c80d7;' href='" + row.beforeResource + "'>"+ name +"</a>";
+            return a;
+        }
+        return '';
     }
     
     function afterTradeOrderFormatter(v, row) {
-		
+        if (row.afterResource) {
+            var name = '(采购单)';
+            name += row.fileName;
+            var a = "<a style='text-decoration: underline; color: #0c80d7;' href='" + row.afterResource + "'>"+ name +"</a>";
+            return a;
+        } else {
+            return '';
+        }
 	}
+	
+	function prTrade() {
+        MXF.openDialog('plTradeWindow', '外贸请购单', 'trade-stock/pr-trade', function () {}, 600, 200);
+    }
+    
+    function poTrade() {
+        var row = $('#tradeStockGrid').datagrid('getSelected');
+        if (row == null) {
+            MXF.error('请至少选中一条数据');
+            return;
+        }
+        MXF.openDialog('plTradeWindow', '外贸采购单', 'trade-stock/po-trade?id=' + row.id, function () {}, 600, 200);
+    }
+
+    function finishTrade() {
+        var row = $('#tradeStockGrid').datagrid('getSelected');
+        if (row == null) {
+            MXF.error('请至少选中一条数据');
+            return;
+        }
+        MXF.confirm('是否到货？', function () {
+            $.get('trade-stock/finish-trade?id=' + row.id, function (res) {
+                $('#tradeStockGrid').datagrid('reload');
+            });
+        })
+    }
 </script>
 

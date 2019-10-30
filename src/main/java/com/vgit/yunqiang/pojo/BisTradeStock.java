@@ -12,7 +12,7 @@ public class BisTradeStock extends BasePojo {
 
     private String afterResource;
 
-    private String confirmTime;
+    private Long confirmTime;
 
     private Integer status;
 
@@ -48,12 +48,12 @@ public class BisTradeStock extends BasePojo {
         this.afterResource = afterResource == null ? null : afterResource.trim();
     }
 
-    public String getConfirmTime() {
+    public Long getConfirmTime() {
         return confirmTime;
     }
 
-    public void setConfirmTime(String confirmTime) {
-        this.confirmTime = confirmTime == null ? null : confirmTime.trim();
+    public void setConfirmTime(Long confirmTime) {
+        this.confirmTime = confirmTime;
     }
 
     public Integer getStatus() {
