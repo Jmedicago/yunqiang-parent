@@ -44,6 +44,7 @@ public class ResourcesServiceImpl implements ResourcesService {
             }
             resultMap.put("error", 0);
             resultMap.put("url", GlobalSetting.get(GlobalSettingNames.IMAGE_BASE_URL) + "/" + newName);
+            resultMap.put("oldFileName", oldName);
             return resultMap;
 
         } catch (Exception e) {
