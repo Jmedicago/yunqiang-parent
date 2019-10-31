@@ -12,7 +12,7 @@
     <title><spring:message code="common.title"/></title>
 </head>
 <body>
-<div class="tab-wrap" id="printContent" style="width: 600px">
+<div class="tab-wrap" id="printContent" style="width: 620px">
     <div class="print-head">
         <style type="text/css">
             .print-head {
@@ -116,6 +116,7 @@
 <script type="text/javascript" src="/easyui/jquery.min.js"></script>
 <!-- Jquery Print -->
 <script type="text/javascript" src="/easyui/plugin/jquery.print/jquery.print.js"></script>
+<script type="text/javascript" src="/easyui/plugin/currencyFormatter-master/dist/currencyFormatter.js"></script>
 <!--第三方插件加载结束-->
 <script type="text/javascript">
     $(function () {
