@@ -10,47 +10,63 @@
     <meta http-equiv="X-UA-Compatible" content="edge"/>
     <link rel="shortcut icon" href="favicon.ico"/>
     <title><spring:message code="common.title"/></title>
-    <link href="/easyui/themes/insdep/easyui.css" rel="stylesheet" type="text/css">
-    <link href="/easyui/themes/insdep/easyui_animation.css" rel="stylesheet" type="text/css">
-    <link href="/easyui/themes/insdep/easyui_plus.css" rel="stylesheet" type="text/css">
-    <link href="/easyui/themes/insdep/insdep_theme_default.css" rel="stylesheet" type="text/css">
-    <link href="/easyui/themes/insdep/icon.css" rel="stylesheet" type="text/css">
-    <link href="/easyui/themes/insdep/iconfont/iconfont.css" rel="stylesheet" type="text/css">
-    <link href="/easyui/plugin/kindeditor-4.1.10/themes/default/default.css" rel="stylesheet" type="text/css">
-    <link href="/easyui/plugin/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="/easyui/my/core.css" rel="stylesheet" type="text/css">
-
-    <script type="text/javascript" src="/easyui/jquery.min.js"></script>
-    <script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="/easyui/themes/insdep/jquery.insdep-extend.min.js"></script>
-    <script type="text/javascript" src="/easyui/plugin/currencyFormatter-master/dist/currencyFormatter.js"></script>
-
-    <!-- 后台首页js -->
-    <script type="text/javascript" src="/easyui/app.js"></script>
-    <script type="text/javascript" src="/easyui/my/core.js"></script>
-
-    <!--第三方插件加载-->
-    <script src="/easyui/plugin/justgage-1.2.2/raphael-2.1.4.min.js"></script>
-    <script src="/easyui/plugin/justgage-1.2.2/justgage.js"></script>
-    
-    <style type="text/css">
-    .print-head {
-        height: 80px;
-    }
-    .print-head li {
-        display: inline-block;
-        margin: 0 10px;
-    }
-    .print-head li > span {
-        line-height: 40px;
-        font-size: 14px;
-    }
-</style>
 </head>
-
-<body id="printContent">
-<div class="tab-wrap">
+<body>
+<div class="tab-wrap" id="printContent" style="width: 600px">
     <div class="print-head">
+        <style type="text/css">
+            .print-head {
+                height: 80px;
+            }
+
+            .print-head li {
+                list-style-type: none;
+                display: inline-block;
+                margin: 0 10px;
+            }
+
+            .print-head li > span {
+                line-height: 40px;
+                font-size: 14px;
+            }
+
+            .print-head .button-default {
+                background: #0c80d7;
+                border-radius: 3px;
+                padding: 5px 5px;
+                color: #fff;
+            }
+
+            table {
+                width: 100%;
+            }
+
+            table.gridtable {
+                font-family: verdana, arial, sans-serif;
+                font-size: 11px;
+                color: #333333;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+            }
+
+            table.gridtable th {
+                border-width: 1px;
+                padding: 5px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #dedede;
+            }
+
+            table.gridtable td {
+                border-width: 1px;
+                padding: 5px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #ffffff;
+                text-align: center;
+            }
+        </style>
         <ul>
             <li>
                 <span>订单编号：${printOrder.orderSn}</span><br>
@@ -71,44 +87,33 @@
         </ul>
     </div>
     <div class="tableGroup">
-        <table id="orderPrintGrid" class="easyui-datagrid" title="订单明细">
+        <table id="orderPrintGrid" class="gridtable" title="订单明细">
             <thead>
             <tr>
                 <th data-options="field: 'id'">ID</th>
-                <th data-options="field: 'skuMainPic', width:50, halign: 'center', align: 'center', formatter: skuMainPicFormatter">图片</th>
+                <th data-options="field: 'skuMainPic', width:50, halign: 'center', align: 'center', formatter: skuMainPicFormatter">
+                    图片
+                </th>
                 <th data-options="field: 'name', width: 120, halign: 'center', align: 'center'">商品名</th>
                 <th data-options="field: 'skuProperties', width: 200, halign: 'center', align: 'left'">属性</th>
                 <th data-options="field: 'amount', width:100, halign: 'center', align: 'center'">数量</th>
             </tr>
             </thead>
             <tbody>
-                <c:forEach var="item" items="${printOrder.detailList}">
-                    <tr>
-                        <td>${item.id}</td>
-                        <td>${item.skuMainPic}</td>
-                        <td>${item.name}</td>
-                        <td>${item.skuProperties}</td>
-                        <td>x ${item.amount}</td>
-                    </tr>
-                </c:forEach>
+            <c:forEach var="item" items="${printOrder.detailList}">
+                <tr>
+                    <td>${item.id}</td>
+                    <td><img width="50px" height="50px" src="${item.skuMainPic}"></td>
+                    <td>${item.name}</td>
+                    <td>${item.skuProperties}</td>
+                    <td>x ${item.amount}</td>
+                </tr>
+            </c:forEach>
             </tbody>
         </table>
     </div>
 </div>
-<script src="/easyui/plugin/Highcharts-5.0.0/js/highcharts.js"></script>
-<script type="text/javascript" src="/easyui/plugin/ueditor/ueditor.config.js"></script>
-<script type="text/javascript" src="/easyui/plugin/ueditor/ueditor.all.min.js"></script>
-<link href="/easyui/plugin/cropper-2.3.4/dist/cropper.min.css" rel="stylesheet" type="text/css">
-<script src="/easyui/plugin/cropper-2.3.4/dist/cropper.min.js"></script>
-<!-- 七牛云上传 -->
-<script type="text/javascript" src="http://cdn.staticfile.org/plupload/2.1.1/plupload.full.min.js"></script>
-<script type="text/javascript" src="http://cdn.staticfile.org/plupload/2.1.1/i18n/zh_CN.js"></script>
-<script type="text/javascript" src="/easyui/plugin/qiniu/qiniu.js"></script>
-<script type="text/javascript" src="/easyui/plugin/qiniu/qiniu.uploader.js"></script>
-<link rel="stylesheet" href="/easyui/plugin/qiniu/qiniu.uploader.css" type="text/css"/>
-<!-- Kindeditor -->
-<script type="text/javascript" charset="utf-8" src="/easyui/plugin/kindeditor-4.1.10/kindeditor-all-min.js"></script>
-<script type="text/javascript" charset="utf-8" src="/easyui/plugin/kindeditor-4.1.10/lang/zh_CN.js"></script>
+<script type="text/javascript" src="/easyui/jquery.min.js"></script>
 <!-- Jquery Print -->
 <script type="text/javascript" src="/easyui/plugin/jquery.print/jquery.print.js"></script>
 <!--第三方插件加载结束-->
@@ -124,7 +129,7 @@
         }
         return '';
     }
-    
+
     function print() {
         $("#printContent").printArea();
     }

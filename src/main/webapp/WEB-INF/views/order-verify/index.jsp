@@ -31,7 +31,8 @@
                    iconCls="icon-remove" plain="true">
                     <spring:message code="common.delete"/>
                 </a>
-                <a href="#" data-cmd="editOrderDetail" title="<spring:message code="common.edit"/>" height="747" width="590" mustsel data-options="disabled:true" class="easyui-linkbutton"
+                <a href="#" data-cmd="editOrderDetail" title="<spring:message code="common.edit"/>" height="747"
+                   width="590" mustsel data-options="disabled:true" class="easyui-linkbutton"
                    iconCls="icon-edit" plain="true">
                     <spring:message code="common.edit"/>
                 </a>
@@ -87,7 +88,7 @@
         })
         return stockName;
     }
-    
+
     function editOrderDetail() {
         var row = $('#orderVerifyGrid').datagrid('getSelected');
         if (row == null) {
@@ -98,7 +99,7 @@
 
         }, 590, 747);
     }
-    
+
     function sendShip() {
         var row = $('#orderVerifyGrid').datagrid('getSelected');
         if (row == null) {
@@ -116,7 +117,7 @@
             MXF.alert('取消发货', true);
         })
     }
-    
+
     function printOrder() {
         var row = $('#orderVerifyGrid').datagrid('getSelected');
         if (row == null) {
@@ -127,7 +128,7 @@
         $.get('/order-verify/check-print?id=' + row.id, function (res) {
             MXF.ajaxing(false);
             if (res.success) {
-            	window.open('/order-verify/print?id=' + row.id);
+                window.open('/order-verify/print?id=' + row.id);
                 /* MXF.openDialog('#editOrderVerifyWindow', '打印出库单', '/order-verify/print?id=' + row.id, function () {
                 }, 606, 2000); */
             } else {
