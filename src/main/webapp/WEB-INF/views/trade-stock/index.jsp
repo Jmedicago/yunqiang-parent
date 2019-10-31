@@ -5,7 +5,7 @@
     <div class="tableGroup">
         <table id="tradeStockGrid" class="easyui-datagrid" title="贸易采购"
                data-options="rownumbers:true,fit:true,method:'get',
-				pagination:true,pageSize:10,striped:true,singleSelect:false,
+				pagination:true,pageSize:10,striped:true,singleSelect:true,
 				toolbar:'#tradeStockTB',url:'/trade-stock/json'">
             <thead>
             <tr>
@@ -87,11 +87,14 @@
             return;
         }
         MXF.confirm('是否到货？', function () {
+        	MXF.ajaxing(true);
             $.get('trade-stock/finish-trade?id=' + row.id, function (res) {
             	if (res.success) {
+            		MXF.ajaxing(false);
             		MXF.alert('商品导入成功！', true);
                     $('#tradeStockGrid').datagrid('reload');
             	} else {
+            		MXF.ajaxing(false);
             		MXF.alert('商品导入失败！', false);
             	}
             });

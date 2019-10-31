@@ -71,4 +71,19 @@ public interface BisProductMapper extends BaseMapper<BisProduct> {
      */
     List<BisProductMedia> getMedias(Long id);
 
+    /**
+     * 根据商品编码查询商品
+     * 
+     * @param code
+     * @return
+     */
+	BisProduct getProducByCode(String code);
+	
+	/**
+	 * 删除商品根据商品名称
+	 * 
+	 * @param name
+	 */
+	void delProductByName(String name);
+
 }

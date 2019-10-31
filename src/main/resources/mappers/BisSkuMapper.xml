@@ -246,6 +246,10 @@
         <include refid="whereSql"/>
         limit #{start}, #{rows}
     </select>
+    
+    <select id="getSkuByCode" parameterType="java.lang.String" resultType="com.vgit.yunqiang.pojo.BisSku">
+    	select * from t_bis_sku where skuCode = #{code}
+    </select>
 
     <insert id="saveProperties" parameterType="list">
         INSERT INTO t_bis_sku_property(skuId, propId, propName, optionId, value) VALUES

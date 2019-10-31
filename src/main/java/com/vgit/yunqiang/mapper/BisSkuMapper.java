@@ -46,4 +46,12 @@ public interface BisSkuMapper extends BaseMapper<BisSku> {
      * @param amount
      */
     void outbound(@Param("skuId") Long skuId, @Param("amount") Integer amount);
+
+    /**
+     * 根据code查询商品SKU
+     * 
+     * @param code
+     * @return
+     */
+	BisSku getSkuByCode(String code);
 }

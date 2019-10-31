@@ -175,6 +175,15 @@
         <include refid="whereSql"/>
         limit #{start}, #{rows}
     </select>
+    
+    <delete id="delProductByName" parameterType="java.lang.String">
+    	delete from t_bis_product
+        where name = #{name, jdbcType=VARCHAR}
+    </delete>
+    
+    <select id="getProducByCode" parameterType="java.lang.String" resultType="com.vgit.yunqiang.pojo.BisProduct">
+    	select * from t_bis_product where code = #{code}
+    </select>
 
     <select id="getProperties" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisProperty">
         select tp.* from t_bis_property tp, t_bis_product p, t_bis_product_property tpp where tp.id = tpp.propertyId and p.id = tpp.productId and p.id = #{productId}

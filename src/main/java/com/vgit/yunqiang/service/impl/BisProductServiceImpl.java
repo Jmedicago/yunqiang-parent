@@ -171,7 +171,8 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                 sku.setSkuName(product.getName());
             }
             if (null != product) {
-                sku.setSkuCode(product.getCode() + seq);
+                //sku.setSkuCode(product.getCode() + seq);
+            	sku.setSkuCode(product.getCode());
             }
             if (null == (sku.getAvailableStock())) {
                 sku.setAvailableStock(0);
@@ -217,7 +218,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
             for (int curr = 0; curr < list.size(); curr++) {
                 BisProduct bisProduct = new BisProduct();
                 BisSku bisSku = new BisSku();
-                bisProduct.setName("new node");
+                bisProduct.setName("newNode");
                 initProduct(bisProduct);
                 this.savePart(bisProduct);
                 for (Map.Entry<String, String> entry : list.get(curr).entrySet()) {
@@ -371,10 +372,23 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                 if (mediaList != null && mediaList.size() > 0) {
                     bisSku.setSkuMainPic(mediaList.get(0).getResource());
                 }
-                this.saveOrUpdateProduct(bisProduct);
-                bisSku.setProductId(bisProduct.getId());
-                bisSku.setPushStockTime(System.currentTimeMillis());
-                this.saveSku(bisSku);
+                
+                // 检查商品是否存在
+                if (this.hasProduct(bisProduct.getCode())) { // 存在，增加库存
+                	BisSku sku = this.skuMapper.getSkuByCode(bisProduct.getCode());
+                	if (sku != null) { 
+                		BisSku newSkul = new BisSku();
+                		newSkul.setId(sku.getId());
+                		newSkul.setAvailableStock(sku.getAvailableStock() + bisSku.getAvailableStock());
+                		this.skuMapper.updatePart(newSkul);
+                		this.mapper.delProductByName("newNode");
+                	}
+                } else { // 不存在，新增商品
+                	this.saveOrUpdateProduct(bisProduct);
+                    bisSku.setProductId(bisProduct.getId());
+                    bisSku.setPushStockTime(System.currentTimeMillis());
+                    this.saveSku(bisSku);
+                }
             }
         } catch (InvalidFormatException e) {
             e.printStackTrace();
@@ -384,7 +398,15 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
         return Ret.me();
     }
 
-    private List<Map<String, String>> getPropertyMapByStr(String value) { // 颜色：红色V，码段：37-41#
+    private boolean hasProduct(String code) {
+    	BisProduct product = this.mapper.getProducByCode(code);
+    	if (product != null) {
+    		return true;
+    	}
+		return false;
+	}
+
+	private List<Map<String, String>> getPropertyMapByStr(String value) { // 颜色：红色V，码段：37-41#
         if (StringUtils.isNotBlank(value)) {
             List<Map<String, String>> list = new ArrayList<Map<String, String>>();
             // 格式化
