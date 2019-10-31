@@ -1,8 +1,11 @@
 package com.vgit.yunqiang.service;
 
+import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.service.BaseService;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.pojo.BisOrder;
+
+import java.util.Map;
 
 public interface BisOrderService extends BaseService<BisOrder> {
 
@@ -51,4 +54,20 @@ public interface BisOrderService extends BaseService<BisOrder> {
      * @return
      */
     Ret sendShip(Long orderId);
+
+    /**
+     * 打印出库单
+     *
+     * @param orderId
+     * @return
+     */
+    BisOrder print(Long orderId) throws BisException;
+
+    /**
+     * 打印前检查
+     *
+     * @param id
+     * @return
+     */
+    Ret checkPrint(Long id);
 }

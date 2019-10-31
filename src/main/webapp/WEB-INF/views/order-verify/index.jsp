@@ -40,6 +40,10 @@
                    iconCls="icon-ok" plain="true">
                     发货
                 </a>
+                <a href="#" data-cmd="printOrder" mustsel data-options="disabled:true" class="easyui-linkbutton"
+                   iconCls="icon-print" plain="true">
+                    打印
+                </a>
             </div>
             <div class="searchForm">
                 <form>
@@ -110,6 +114,24 @@
             });
         }, function () {
             MXF.alert('取消发货', true);
+        })
+    }
+    
+    function printOrder() {
+        var row = $('#orderVerifyGrid').datagrid('getSelected');
+        if (row == null) {
+            MXF.error("请至少选择一条记录，再继续操作！");
+            return;
+        }
+        MXF.ajaxing(true);
+        $.get('/order-verify/check-print?id=' + row.id, function (res) {
+            MXF.ajaxing(false);
+            if (res.success) {
+                MXF.openDialog('#editOrderVerifyWindow', '打印出库单', '/order-verify/print?id=' + row.id, function () {
+                }, 606, 747);
+            } else {
+                MXF.alert(res.message, false);
+            }
         })
     }
 </script>

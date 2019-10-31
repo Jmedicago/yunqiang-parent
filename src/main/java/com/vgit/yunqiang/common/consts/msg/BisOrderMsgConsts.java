@@ -10,5 +10,7 @@ public interface BisOrderMsgConsts extends ICodes {
     @ConstName("订单已锁定")
     public static final int ORDER_LOCKED = 0 + BASE_CODE;
 
+    @ConstName("订单当前状态不能打印")
+    public static final int ORDER_UN_PRINT = 1 + BASE_CODE;
 
 }

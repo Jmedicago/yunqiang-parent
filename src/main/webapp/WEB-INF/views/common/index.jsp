@@ -149,6 +149,8 @@
 <!-- Kindeditor -->
 <script type="text/javascript" charset="utf-8" src="/easyui/plugin/kindeditor-4.1.10/kindeditor-all-min.js"></script>
 <script type="text/javascript" charset="utf-8" src="/easyui/plugin/kindeditor-4.1.10/lang/zh_CN.js"></script>
+<!-- Jquery Print -->
+<script type="text/javascript" src="/easyui/plugin/jquery.print/jquery.print.js"></script>
 <!--第三方插件加载结束-->
 </body>
 </html>

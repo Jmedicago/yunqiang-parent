@@ -13,7 +13,7 @@
 				striped: true,
 				singleSelect: false,
 				toolbar: '#orderDetailTB',
-				 onLoadSuccess: loadOrderDetailSuccess,
+				onLoadSuccess: loadOrderDetailSuccess,
 				url: '/order-detail/json?orderId=${bisOrder.id}'">
             <thead>
             <tr>

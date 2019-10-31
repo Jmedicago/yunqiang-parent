@@ -5,6 +5,7 @@ import com.vgit.yunqiang.common.consts.ICodes;
 import com.vgit.yunqiang.common.consts.bis.BooleanConsts;
 import com.vgit.yunqiang.common.consts.bis.JobTypeConsts;
 import com.vgit.yunqiang.common.consts.bis.OrderStateConsts;
+import com.vgit.yunqiang.common.consts.msg.BisOrderMsgConsts;
 import com.vgit.yunqiang.common.consts.msg.SysUserMsgConsts;
 import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.query.QuartzJobInfo;
@@ -253,6 +254,27 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
             return Ret.me().setCode(ICodes.SUCCESS);
         }
         return Ret.me();
+    }
+
+    @Override
+    public BisOrder print(Long orderId) throws BisException {
+        BisOrder bisOrder = this.mapper.get(orderId);
+        Page<BisOrderDetail> page = this.bisOrderDetailService.getOrderDetail(orderId);
+        if (page != null) {
+            bisOrder.setDetailList(page.getRows());
+        }
+        return bisOrder;
+
+    }
+
+    @Override
+    public Ret checkPrint(Long id) {
+        BisOrder bisOrder = this.mapper.get(id);
+        if (bisOrder.getStatus() == OrderStateConsts.WAIT_SHIP_SEND) {
+            return Ret.me();
+        } else {
+            return Ret.me().setSuccess(false).setCode(BisOrderMsgConsts.ORDER_UN_PRINT);
+        }
     }
 
     /**

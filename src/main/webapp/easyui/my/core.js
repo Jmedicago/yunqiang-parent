@@ -272,6 +272,7 @@ var commonCmd = {
 
 //自定义工具方法
 var MXF = {};
+MXF.CURRENCY = 'CNY';
 MXF.getPrefix = function (grid) {
     var gridOptions = grid.datagrid('options');
     var url = gridOptions.url;
