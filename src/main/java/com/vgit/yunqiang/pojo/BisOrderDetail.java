@@ -29,6 +29,8 @@ public class BisOrderDetail {
 
     private Double totalVolume;
 
+    private Integer isComment;
+
     public Long getId() {
         return id;
     }
@@ -125,4 +127,11 @@ public class BisOrderDetail {
         this.totalVolume = totalVolume;
     }
 
+    public Integer getIsComment() {
+        return isComment;
+    }
+
+    public void setIsComment(Integer isComment) {
+        this.isComment = isComment;
+    }
 }

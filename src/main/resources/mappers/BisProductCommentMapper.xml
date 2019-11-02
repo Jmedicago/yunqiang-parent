@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vgit.yunqiang.mapper.BisProductCommentMapper" >
+
+    <resultMap id="BaseResultMap" type="com.vgit.yunqiang.pojo.BisProductComment" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="createTime" property="createTime" jdbcType="BIGINT" />
+        <result column="updateTime" property="updateTime" jdbcType="BIGINT" />
+        <result column="productId" property="productId" jdbcType="BIGINT" />
+        <result column="orderId" property="orderId" jdbcType="BIGINT" />
+        <result column="score" property="score" jdbcType="INTEGER" />
+        <result column="comment" property="comment" jdbcType="VARCHAR" />
+        <result column="level" property="level" jdbcType="TINYINT" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, createTime, updateTime, productId, orderId, score, comment, level
+    </sql>
+
+    <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from t_bis_product_comment
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long" >
+        delete from t_bis_product_comment
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.BisProductComment" >
+        insert into t_bis_product_comment (id, createTime, updateTime,
+          productId, orderId, score,
+          comment, level)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT},
+          #{productId,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{score,jdbcType=INTEGER},
+          #{comment,jdbcType=VARCHAR}, #{level,jdbcType=TINYINT})
+    </insert>
+
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.BisProductComment" >
+        insert into t_bis_product_comment
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="createTime != null" >
+                createTime,
+            </if>
+            <if test="updateTime != null" >
+                updateTime,
+            </if>
+            <if test="productId != null" >
+                productId,
+            </if>
+            <if test="orderId != null" >
+                orderId,
+            </if>
+            <if test="score != null" >
+                score,
+            </if>
+            <if test="comment != null" >
+                comment,
+            </if>
+            <if test="level != null" >
+                level,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=BIGINT},
+            </if>
+            <if test="productId != null" >
+                #{productId,jdbcType=BIGINT},
+            </if>
+            <if test="orderId != null" >
+                #{orderId,jdbcType=BIGINT},
+            </if>
+            <if test="score != null" >
+                #{score,jdbcType=INTEGER},
+            </if>
+            <if test="comment != null" >
+                #{comment,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null" >
+                #{level,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.BisProductComment" >
+        update t_bis_product_comment
+        <set >
+            <if test="createTime != null" >
+                createTime = #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null" >
+                updateTime = #{updateTime,jdbcType=BIGINT},
+            </if>
+            <if test="productId != null" >
+                productId = #{productId,jdbcType=BIGINT},
+            </if>
+            <if test="orderId != null" >
+                orderId = #{orderId,jdbcType=BIGINT},
+            </if>
+            <if test="score != null" >
+                score = #{score,jdbcType=INTEGER},
+            </if>
+            <if test="comment != null" >
+                comment = #{comment,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null" >
+                level = #{level,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.BisProductComment" >
+        update t_bis_product_comment
+        set createTime = #{createTime,jdbcType=BIGINT},
+          updateTime = #{updateTime,jdbcType=BIGINT},
+          productId = #{productId,jdbcType=BIGINT},
+          orderId = #{orderId,jdbcType=BIGINT},
+          score = #{score,jdbcType=INTEGER},
+          comment = #{comment,jdbcType=VARCHAR},
+          level = #{level,jdbcType=TINYINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+</mapper>

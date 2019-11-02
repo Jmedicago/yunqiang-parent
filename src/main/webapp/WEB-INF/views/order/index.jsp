@@ -16,11 +16,12 @@
             <thead>
             <tr>
                 <th data-options="field: 'id', checkbox: true"></th>
-                <th data-options="field: 'orderSn', width: 80">订单号</th>
-                <th data-options="field: 'stockId', width: 80, formatter: stockFormatter">零售店</th>
-                <th data-options="field: 'status', width: 80, formatter: orderStateFormatter">订单状态</th>
-                <th data-options="field: 'totalMoney', width: 100, formatter: MXF.priceFormatter">金额总计</th>
-                <th data-options="field: 'confirmTime', width: 130, formatter: MXF.dateTimeFormatter">下单时间</th>
+                <th data-options="field: 'orderSn', width: 80, halign: 'center', align: 'center'">订单号</th>
+                <th data-options="field: 'stockId', width: 80, halign: 'center', align: 'center', formatter: stockFormatter">零售店</th>
+                <th data-options="field: 'status', width: 80, halign: 'center', align: 'center', formatter: orderStateFormatter">订单状态</th>
+                <th data-options="field: 'totalMoney', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">金额总计</th>
+                <th data-options="field: 'confirmTime', width: 130, halign: 'center', align: 'center', formatter: MXF.dateTimeFormatter">下单时间</th>
+                <%--<th data-options="field: 'commentStatus', width: 80, halign: 'center', align: 'center', formatter: commentStateFormatter">评价状态</th>--%>
                 <th data-options="field: 'digest', width:200">明细</th>
             </tr>
             </thead>
@@ -34,6 +35,16 @@
                 <a href="#" data-cmd="edit" title="<spring:message code="common.edit"/>" height="747" width="590" mustsel data-options="disabled:true" class="easyui-linkbutton"
                    iconCls="icon-edit" plain="true">
                     <spring:message code="common.edit"/>
+                </a>
+                <span class="buttonSplit">&nbsp;</span>
+                <a href="#" data-cmd="confirmShip" mustsel data-options="disabled:true" class="easyui-linkbutton"
+                   iconCls="icon-ok" plain="true">
+                    确认收货
+                </a>
+                <a href="#" data-cmd="productComment" mustsel data-options="disabled:true" class="easyui-linkbutton"
+                   plain="true">
+                    <i class="iconfont" style="font-size: 14px;">&#xe69b;</i>
+                    评价
                 </a>
             </div>
             <div class="searchForm">
@@ -77,6 +88,34 @@
             }
         })
         return stockName;
+    }
+    
+    function confirmShip() {
+        var row = $('#orderGrid').datagrid('getSelected');
+        if (row == null) {
+            MXF.error("请至少选择一条记录，再继续操作！");
+            return;
+        }
+        MXF.ajaxing(true);
+        $.get('/order/confirm-finish?orderId=' + row.id, function (res) {
+            MXF.ajaxing(false);
+            MXF.alert(res.message + ' ' + res.info, res.success);
+            $('#orderGrid').datagrid('reload');
+        })
+    }
+    
+    function commentStateFormatter(val) {
+        if (val == 0) { return '<red>待评价</red>'}
+        if (val == 1) { return '<green>已评价</green>'}
+    }
+    
+    function productComment() {
+        var row = $('#orderGrid').datagrid('getSelected');
+        if (row == null) {
+            MXF.error("请至少选择一条记录，再继续操作！");
+            return;
+        }
+        MXF.openDialog('#productCommentWindow', '订单评价', '/product-comment/index?orderId=' + row.id, function () {}, 590, 800);
     }
 
 </script>

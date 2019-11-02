@@ -133,6 +133,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
                 orderDetail.setSkuProperties(bisCart.getSkuProperties());
                 orderDetail.setTotalMoney(bisCart.getAmount() * sku.getCostPrice());
                 orderDetail.setTotalVolume(bisCart.getAmount() * sku.getVolume());
+                orderDetail.setIsComment(0);
                 this.bisOrderDetailService.savePart(orderDetail);
             }
         }
@@ -283,7 +284,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
      * @param order
      */
     private void confirmFinishOrder(BisOrder order) {
-        if (order.getStatus() != OrderStateConsts.WAIT_SHIP_TAKE) {
+        if (order.getStatus() != OrderStateConsts.WAIT_SHIP_SEND) {
             throw BisException.me().setCode(ICodes.ILLEGAL_ACCESS);
         }
 

@@ -1,5 +1,6 @@
 package com.vgit.yunqiang.controller;
 
+import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.query.OrderQuery;
 import com.vgit.yunqiang.common.utils.Page;
 import com.vgit.yunqiang.common.utils.Ret;
@@ -8,7 +9,6 @@ import com.vgit.yunqiang.controller.utils.UserContext;
 import com.vgit.yunqiang.pojo.BisOrder;
 import com.vgit.yunqiang.pojo.SysUser;
 import com.vgit.yunqiang.service.BisOrderService;
-import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -62,6 +62,17 @@ public class BisOrderController {
         // TODO.订单发票
         // 创建订单
         return this.bisOrderService.create(formOrder, billId);
+    }
+
+    @RequestMapping("/confirm-finish")
+    @ResponseBody
+    public Ret confirmFinish(Long orderId) {
+        try {
+            this.bisOrderService.confirmFinish(orderId);
+        } catch (BisException e) {
+            return Ret.me().setSuccess(false).setCode(e.getCode());
+        }
+        return Ret.me();
     }
 
 }
