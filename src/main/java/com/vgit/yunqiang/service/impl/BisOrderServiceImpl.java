@@ -278,6 +278,20 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
         }
     }
 
+    @Override
+    public boolean hasNotComment(Long orderId) {
+        int count = this.mapper.hasNotComment(orderId);
+        if (count > 0) {
+            return true;
+        }
+        // 修改订单评价状态
+        BisOrder bisOrder = new BisOrder();
+        bisOrder.setId(orderId);
+        bisOrder.setCommentStatus((byte) 1);
+        this.mapper.updatePart(bisOrder);
+        return false;
+    }
+
     /**
      * 统一确认订单收货逻辑
      *

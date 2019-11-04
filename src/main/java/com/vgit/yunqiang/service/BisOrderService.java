@@ -70,4 +70,12 @@ public interface BisOrderService extends BaseService<BisOrder> {
      * @return
      */
     Ret checkPrint(Long id);
+
+    /**
+     * 是否存在未评价订单
+     *
+     * @param orderId
+     * @return
+     */
+    boolean hasNotComment(Long orderId);
 }

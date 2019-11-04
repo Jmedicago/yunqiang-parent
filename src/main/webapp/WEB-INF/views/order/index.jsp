@@ -21,7 +21,7 @@
                 <th data-options="field: 'status', width: 80, halign: 'center', align: 'center', formatter: orderStateFormatter">订单状态</th>
                 <th data-options="field: 'totalMoney', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">金额总计</th>
                 <th data-options="field: 'confirmTime', width: 130, halign: 'center', align: 'center', formatter: MXF.dateTimeFormatter">下单时间</th>
-                <%--<th data-options="field: 'commentStatus', width: 80, halign: 'center', align: 'center', formatter: commentStateFormatter">评价状态</th>--%>
+                <th data-options="field: 'commentStatus', width: 80, halign: 'center', align: 'center', formatter: commentStateFormatter">评价状态</th>
                 <th data-options="field: 'digest', width:200">明细</th>
             </tr>
             </thead>

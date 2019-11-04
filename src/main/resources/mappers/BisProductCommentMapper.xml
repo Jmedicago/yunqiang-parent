@@ -134,4 +134,8 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
+    <select id="getByProductId" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisProductComment">
+        select * from t_bis_product_comment where productId = #{productId}
+    </select>
+
 </mapper>

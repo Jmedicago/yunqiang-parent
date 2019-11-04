@@ -5,6 +5,7 @@ import com.vgit.yunqiang.controller.consts.ControllerConsts;
 import com.vgit.yunqiang.pojo.BisOrderDetail;
 import com.vgit.yunqiang.pojo.BisProductComment;
 import com.vgit.yunqiang.service.BisOrderDetailService;
+import com.vgit.yunqiang.service.BisOrderService;
 import com.vgit.yunqiang.service.BisProductCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/" + BisProductCommentController.DOMAIN)
@@ -24,6 +26,9 @@ public class BisProductCommentController {
 
     @Autowired
     private BisOrderDetailService bisOrderDetailService;
+
+    @Autowired
+    private BisOrderService bisOrderService;
 
     @RequestMapping("/index")
     public String index(Long orderId, Model model) {
@@ -58,7 +63,16 @@ public class BisProductCommentController {
         bisOrderDetail.setId(detailId);
         bisOrderDetail.setIsComment(1);
         this.bisOrderDetailService.updatePart(bisOrderDetail);
+        // 检查订单评价状态
+        this.bisOrderService.hasNotComment(productComment.getOrderId());
         return Ret.me();
+    }
+
+    @RequestMapping(ControllerConsts.URL_SHOW)
+    public String view(Long productId, Model model) {
+        List<BisProductComment> productComments = this.bisProductCommentService.getByProductId(productId);
+        model.addAttribute("productComments", productComments);
+        return DOMAIN + ControllerConsts.VIEW_SHOW;
     }
 
 }

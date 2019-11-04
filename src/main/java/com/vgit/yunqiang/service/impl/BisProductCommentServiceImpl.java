@@ -8,6 +8,8 @@ import com.vgit.yunqiang.service.BisProductCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BisProductCommentServiceImpl extends BaseServiceImpl<BisProductComment> implements BisProductCommentService {
     @Autowired
@@ -16,5 +18,10 @@ public class BisProductCommentServiceImpl extends BaseServiceImpl<BisProductComm
     @Override
     protected BaseMapper<BisProductComment> getMapper() {
         return this.mapper;
+    }
+
+    @Override
+    public List<BisProductComment> getByProductId(Long productId) {
+        return this.mapper.getByProductId(productId);
     }
 }

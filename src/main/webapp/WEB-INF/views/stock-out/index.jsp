@@ -50,6 +50,11 @@
                            class="easyui-linkbutton" iconCls="icon-add" plain="true">
                             加入购物车
                         </a>
+                        <a href="#" data-cmd="viewComment" remote="false"
+                           class="easyui-linkbutton" plain="true">
+                            <i class="iconfont" style="font-size: 14px;">&#xe69b;</i>
+                            查看评价
+                        </a>
                     </div>
                     <div class="searchForm">
                         <form>
@@ -318,6 +323,16 @@
                 MXF.alert(data.message, data.success);
             }
         });
+    }
+    
+    function viewComment(val, row) {
+        var row = $('#stockOutGrid').datagrid('getSelected');
+        if (row == null) {
+            MXF.error("请至少选择一条记录，再继续操作！");
+            return;
+        }
+        MXF.openDialog('#viewCommentWindow', '查看评价', '/product-comment/show?productId=' + row.productId, function () {
+        }, 480, 600);
     }
 
 </script>

@@ -26,6 +26,7 @@
     <div class="input-div" style="text-align: center; margin-top: 35px">
         <a class="easyui-linkbutton button-lg button-default" onclick="MXF.ajaxForm(this, function() {
           $('#productCommentGrid').datagrid('reload');
+          $('#orderGrid').datagrid('reload');
         })"><spring:message
                 code="common.submit"/></a>
         <a class="easyui-linkbutton button-lg" onclick="MXF.clearForm(this)"><spring:message code="common.reset"/></a>

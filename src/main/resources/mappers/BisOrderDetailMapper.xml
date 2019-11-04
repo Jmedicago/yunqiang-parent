@@ -173,4 +173,5 @@
 	<update id="changeNumber">
 		update t_bis_order_detail set amount =#{number, jdbcType=INTEGER} where orderId = #{orderId, jdbcType=BIGINT}
 	</update>
+
 </mapper>
