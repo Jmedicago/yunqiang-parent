@@ -38,7 +38,7 @@
         height: 100px;
         line-height: 20px;
         font-size: 14px;
-        text-indent: 15px;
+        /*text-indent: 15px;*/
     }
     .comment-item {
         border-bottom: 1px solid #eee;

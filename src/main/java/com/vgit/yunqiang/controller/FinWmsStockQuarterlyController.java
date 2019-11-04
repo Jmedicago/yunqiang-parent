@@ -1,16 +1,24 @@
 package com.vgit.yunqiang.controller;
 
 import com.vgit.yunqiang.common.consts.bis.StockDailyTypeConsts;
+import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.query.StockDailyQuery;
+import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.controller.consts.ControllerConsts;
 import com.vgit.yunqiang.controller.utils.UserContext;
 import com.vgit.yunqiang.pojo.FinStockDaily;
+import com.vgit.yunqiang.pojo.FinStockQuarterly;
+import com.vgit.yunqiang.pojo.SysUser;
 import com.vgit.yunqiang.service.FinStockDailyService;
+import com.vgit.yunqiang.service.FinStockQuarterlyService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Controller
@@ -20,7 +28,7 @@ public class FinWmsStockQuarterlyController {
     public static final String DOMAIN = "wms-stock-quarterly";
 
     @Autowired
-    private FinStockDailyService finStockDailyService;
+    private FinStockQuarterlyService finStockQuarterlyService;
 
     @RequestMapping(ControllerConsts.URL_INDEX)
     public String index() {
@@ -29,11 +37,58 @@ public class FinWmsStockQuarterlyController {
 
     @RequestMapping(ControllerConsts.URL_JSON)
     @ResponseBody
-    public List<FinStockDaily> json(StockDailyQuery query) {
+    public List<FinStockQuarterly> json(StockDailyQuery query) {
         Long stockId = Long.valueOf(UserContext.getUser().getStockIds());
         query.setStockId(stockId);
-        query.setType(StockDailyTypeConsts.REGION_STOCK_DAILY);
-        return this.finStockDailyService.query(query);
+        query.setType(StockDailyTypeConsts.WMS_STOCK_DAILY);
+        return this.finStockQuarterlyService.query(query);
+    }
+
+    @RequestMapping(ControllerConsts.URL_EDIT)
+    public String edit(Long id, Model model) {
+        if (id != null) {
+            // 季度表报明细
+            FinStockQuarterly finWmsStockQuarterly = this.finStockQuarterlyService.get(id);
+            model.addAttribute("finWmsStockQuarterly", finWmsStockQuarterly);
+        }
+        return DOMAIN + ControllerConsts.VIEW_EDIT;
+    }
+
+    /**
+     * 创建当前仓库季度报表
+     *
+     * @param stockQuarterly
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    @RequestMapping(ControllerConsts.URL_STORE)
+    @ResponseBody
+    public Ret store(FinStockQuarterly stockQuarterly) throws UnsupportedEncodingException {
+        SysUser existUser = UserContext.getUser();
+        if (StringUtils.isBlank(existUser.getStockIds())) {
+            return Ret.me().setSuccess(false).setInfo("该用户没有门店管理权，无法新建仓库门店季度表报！");
+        }
+        stockQuarterly.setStockId(Long.valueOf(existUser.getStockIds()));
+        stockQuarterly.setUserId(existUser.getId());
+        stockQuarterly.setType(StockDailyTypeConsts.WMS_STOCK_DAILY);
+        stockQuarterly.setCreateTime(System.currentTimeMillis());
+        // 格式化
+        if (stockQuarterly.getChanges() != null) {
+            stockQuarterly.setChanges(stockQuarterly.getChanges() * 100);
+        }
+        if (stockQuarterly.getInventory() != null) {
+            stockQuarterly.setInventory(stockQuarterly.getInventory() * 100);
+        }
+        if (stockQuarterly.getPl() != null) {
+            stockQuarterly.setPl(stockQuarterly.getPl() * 100);
+        }
+        try {
+            // 更新日报信息
+            this.finStockQuarterlyService.saveOrUpdateQuarterly(stockQuarterly);
+            return Ret.me().setData(stockQuarterly);
+        } catch (BisException e) {
+            return Ret.me().setSuccess(false).setInfo(e.getInfo());
+        }
     }
 
 }

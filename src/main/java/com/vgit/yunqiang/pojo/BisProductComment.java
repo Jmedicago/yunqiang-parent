@@ -1,7 +1,5 @@
 package com.vgit.yunqiang.pojo;
 
-import com.vgit.yunqiang.pojo.base.BasePojo;
-
 import java.io.Serializable;
 
 public class BisProductComment implements Serializable {

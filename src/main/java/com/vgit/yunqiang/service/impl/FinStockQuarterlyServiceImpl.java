@@ -68,7 +68,51 @@ public class FinStockQuarterlyServiceImpl extends BaseServiceImpl<FinStockQuarte
     }
 
     private void initWms(FinStockQuarterly stockQuarterly) {
+        String year = String.valueOf(TimeUtils.getNowYear());
+        String quarter = String.valueOf(TimeUtils.getNowSeason());
 
+        stockQuarterly.setYear(year); // 当前年份
+        stockQuarterly.setQuarterly(quarter); // 当前季度
+
+        // 当前季度
+        stockQuarterly.setPurchTotal(this.getWmsPurchTotal(stockQuarterly.getStockId(), quarter, year, stockQuarterly.getType()));
+        stockQuarterly.setSalesTotal(this.getSalesTotal(stockQuarterly.getStockId(), quarter, year, stockQuarterly.getType()));
+        stockQuarterly.setArrears(this.getArrears(stockQuarterly.getStockId(), quarter, year, stockQuarterly.getType()));
+
+        // 上季度
+        FinStockQuarterly prevStockQuarter = this.getPrevQuarter(year, quarter, stockQuarterly.getType(), stockQuarterly.getStockId());
+        if (prevStockQuarter != null) {
+            stockQuarterly.setBeforeArrears(prevStockQuarter.getArrears());
+            stockQuarterly.setBeforeChange(prevStockQuarter.getChanges());
+            stockQuarterly.setBeforeInventory(prevStockQuarter.getInventory());
+        } else {
+            stockQuarterly.setBeforeArrears(DEFAULT_VALUES);
+            stockQuarterly.setBeforeChange(DEFAULT_VALUES);
+            stockQuarterly.setBeforeInventory(DEFAULT_VALUES);
+        }
+
+        // 盈亏
+        double pl = 0;
+        double out = 0;
+        double in =0;
+        double save = 0;
+
+        out = stockQuarterly.getSalesTotal();
+        LOGGER.info("出：{}", out);
+        save = stockQuarterly.getArrears();
+        LOGGER.info("存：{}", save);
+        in = stockQuarterly.getPurchTotal() + stockQuarterly.getBeforeArrears() + stockQuarterly.getBeforeChange() + stockQuarterly.getBeforeInventory();
+        LOGGER.info("进：{}", in);
+
+        pl = out + save - in;
+        stockQuarterly.setPl(pl);
+    }
+
+    private double getWmsPurchTotal(Long stockId, String quarter, String year, Integer type) {
+        double wmsPurchTotal = 0;
+        // 查询店长季度进货总值
+        
+        return wmsPurchTotal;
     }
 
     private void initRegion(FinStockQuarterly stockQuarterly) {
