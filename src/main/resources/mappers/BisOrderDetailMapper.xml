@@ -70,7 +70,7 @@
 			<if test="totalVolume != null">
 				totalVolume,
 			</if>
-			<if test="isComment ! = null">
+			<if test="isComment != null">
 				isComment,
 			</if>
 		</trim>

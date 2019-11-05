@@ -127,8 +127,8 @@
     $(function () {
         MXF.getTabContentHeight();
 
-        // 金额格式化
-        OSREC.CurrencyFormatter.formatAll({selector: '.money', currency: 'CNY'});
+        // 金额格式化 {currency: 'MZN', decimal: '.', group: ','}
+        OSREC.CurrencyFormatter.formatAll({selector: '.money', currency: 'MZN', decimal: '.', group: ','});
     });
 
     function saveStockQuarterly() {

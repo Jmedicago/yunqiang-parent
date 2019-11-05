@@ -4,6 +4,7 @@ import com.vgit.yunqiang.common.consts.bis.SysUserStateConsts;
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
 import com.vgit.yunqiang.common.utils.PassUtils;
+import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.mapper.SysUserMapper;
 import com.vgit.yunqiang.pojo.SysPermission;
 import com.vgit.yunqiang.pojo.SysRole;
@@ -117,6 +118,20 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
                 this.mapper.correlationStocks(userId, stockId);
             }
         }
+	}
+
+	@Override
+	public Ret modifyPsw(Long id, String newPsw, String onceNewPsw) {
+		if (newPsw.equals(onceNewPsw)) {
+			return Ret.me().setSuccess(false).setInfo("密码不一致，请重新输入");
+		}
+		SysUser sysUser = new SysUser();
+		sysUser.setId(id);
+		sysUser.setPassword(newPsw);
+		new PassUtils().encryptPassword(sysUser);
+		
+		this.mapper.updatePart(sysUser);
+		return Ret.me();
 	}
 
 }

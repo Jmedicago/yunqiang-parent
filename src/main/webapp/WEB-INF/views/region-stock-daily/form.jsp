@@ -84,7 +84,7 @@
                         </a>
                     </div>
                 </div>
-                <div style="position: absolute; top: 0; right: 0; width: 200px; height: 40px;">
+                <div style="position: absolute; top: 0; right: 0; width: 240px; height: 40px;">
                     <div style="height: 40px; line-height: 40px; font-size: 14px; text-align: center; padding: 0 20px;">
                         <span style="font-weight: 600;">支出总计：</span>
                         <span id="expendTotal"></span>

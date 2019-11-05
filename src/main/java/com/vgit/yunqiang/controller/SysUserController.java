@@ -140,5 +140,19 @@ public class SysUserController {
         List<SysRole> roles = this.sysUserService.findRoles(username);
         return Ret.me().setData(roles);
     }
+    
+    @RequestMapping("/modify-psw")
+    public String modifyPsw(Long id, Model model) {
+    	SysUser sysUser = this.sysUserService.get(id);
+    	model.addAttribute("sysUser", sysUser);
+    	return DOMAIN + "/modify-psw";
+    }
+    
+    
+    @RequestMapping("/store-psw")
+    @ResponseBody
+    public Ret storePsw(Long id, String newPsw, String onceNewPsw) {
+    	return this.sysUserService.modifyPsw(id, newPsw, onceNewPsw);
+    }
 
 }

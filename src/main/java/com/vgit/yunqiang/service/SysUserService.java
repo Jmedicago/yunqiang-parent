@@ -1,6 +1,7 @@
 package com.vgit.yunqiang.service;
 
 import com.vgit.yunqiang.common.service.BaseService;
+import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.pojo.SysPermission;
 import com.vgit.yunqiang.pojo.SysRole;
 import com.vgit.yunqiang.pojo.SysUser;
@@ -85,4 +86,14 @@ public interface SysUserService extends BaseService<SysUser> {
      * @param stockIds
      */
 	void correlationStocks(Long userId, Long... stockIds);
+
+	/**
+	 * 更新密码
+	 * 
+	 * @param id
+	 * @param newPsw
+	 * @param onceNewPsw
+	 * @return
+	 */
+	Ret modifyPsw(Long id, String newPsw, String onceNewPsw);
 }

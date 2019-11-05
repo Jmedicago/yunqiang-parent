@@ -543,7 +543,7 @@ Date.prototype.format = function (format) {
 };
 
 MXF.priceFormatter = function (val) {
-    return OSREC.CurrencyFormatter.format(val * 0.01, {currency: 'CNY'});
+    return OSREC.CurrencyFormatter.format(val * 0.01, {currency: 'MZN', decimal: '.', group: ','});
 }
 
 MXF.priceParse = function (val) {

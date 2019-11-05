@@ -27,6 +27,11 @@
                    iconCls="icon-edit" plain="true">
                     <spring:message code="common.edit"/>
                 </a>
+                <span class="buttonSplit">&nbsp;</span>
+                <a href="#" data-cmd="modifyPsw" class="easyui-linkbutton" title="修改密码" mustsel remote="false"
+                   iconCls="icon-lock-password" plain="true">
+                    修改密码
+                </a>
             </div>
             <div class="searchForm">
                 <form>
@@ -49,6 +54,16 @@
         if (v == 0) return '<green><spring:message code="status.normal"/></green>';
         if (v == 1) return '<red><spring:message code="status.disable"/></red>';
         if (v == 2) return '<orange><spring:message code="status.lock"/></orange>';
+    }
+    
+    function modifyPsw() {
+    	var row = $('#userGrid').datagrid('getSelected');
+    	if (!row) {
+    		MXF.alert('请选择一条记录，在继续操作！', false);
+    	}
+    	MXF.openDialog('modifyPswWindow', '修改密码', '/user/modify-psw?id=' + row.id, function() {
+    		
+    	}, 600, 350);
     }
 </script>
 

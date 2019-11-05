@@ -3,7 +3,8 @@
 <mapper namespace="com.vgit.yunqiang.mapper.BisOrderMapper">
 
     <sql id="Base_Column_List">
-		id, userId, orderSn, stockId, status, totalVolume, totalMoney, confirmTime, commentStatus, commentTime, shipTime, finishedTime, digest, lastCancelTime
+		id, userId, orderSn, stockId, status, totalVolume, totalMoney, confirmTime, commentStatus, commentTime, shipTime, finishedTime, digest, lastCancelTime, createTime,
+        updateTime, remark
     </sql>
 	
 	<select id="get" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisOrder">
@@ -23,13 +24,15 @@
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 		insert into t_bis_order(
-		userId, orderSn, stockId, status, totalVolume, totalMoney, confirmTime, commentStatus, commentTime, shipTime, finishedTime, digest, lastCancelTime
+		userId, orderSn, stockId, status, totalVolume, totalMoney, confirmTime, commentStatus, commentTime, shipTime, finishedTime, digest, lastCancelTime, createTime,
+        updateTime, remark
 		)
 		values(
 		#{userId, jdbcType=BIGINT}, #{orderSn, jdbcType=VARCHAR}, #{stockId, jdbcType=BIGINT}, #{status, jdbcType=INTEGER},
 		#{totalVolume, jdbcType=DOUBLE}, #{totalMoney, jdbcType=DOUBLE}, #{confirmTime, jdbcType=BIGINT}, #{commentStatus, jdbcType=TINYINT},
 		#{commentTime, jdbcType=BIGINT}, #{shipTime ,jdbcType=BIGINT}, #{finishedTime, jdbcType=BIGINT},
-		#{digest, jdbcType=VARCHAR}, #{lastCancelTime, jdbcType=BIGINT}
+		#{digest, jdbcType=VARCHAR}, #{lastCancelTime, jdbcType=BIGINT}, #{createTime, jdbcType=BIGINT},
+        #{updateTime, jdbcType=BIGINT}, #{remark, jdbcType=BIGINT}
 		)
 	</insert>
 	
@@ -78,6 +81,15 @@
 			<if test="lastCancelTime != null">
 				lastCancelTime,
 			</if>
+			<if test="createTime != null">
+                createTime,
+            </if>
+            <if test="updateTime != null">
+                updateTime,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
 		</trim>
 		
 		<trim prefix="values (" suffix= ")" suffixOverrides=",">
@@ -120,6 +132,15 @@
 			<if test="lastCancelTime !=null">
 				#{lastCancelTime,jdbcType=BIGINT},
 			</if>
+			<if test="createTime != null">
+                #{createTime, jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime, jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                #{remark, jdbcType=BIGINT},
+            </if>
 		</trim>
 	</insert>
 	
@@ -127,7 +148,8 @@
 		update t_bis_order
 		set userId=#{userId,jdbcType=BIGINT}, orderSn=#{orderSn,jdbcType=VARCHAR}, stockId=#{stockId,jdbcType=BIGINT}, status=#{status,jdbcType=INTEGER},
 		totalVolume = #{totalVolume,jdbcType=DOUBLE}, totalMoney=#{totalMoney,jdbcType=DOUBLE}, confirmTime=#{confirmTime,jdbcType=BIGINT}, commentStatus=#{commentStatus,jdbcType=TINYINT}, commentTime=#{commentTime,jdbcType=BIGINT},
-		shipTime=#{shipTime,jdbcType=BIGINT}, finishedTime=#{finishedTime,jdbcType=BIGINT}, digest=#{digest,jdbcType=VARCHAR}, lastCancelTime=#{lastCancelTime,jdbcType=BIGINT},
+		shipTime=#{shipTime,jdbcType=BIGINT}, finishedTime=#{finishedTime,jdbcType=BIGINT}, digest=#{digest,jdbcType=VARCHAR}, lastCancelTime=#{lastCancelTime,jdbcType=BIGINT}, createTime = #{createTime, jdbcType=BIGINT},
+        updateTime = #{updateTime, jdbcType=BIGINT}, remark = #{remark, jdbcType=BIGINT}
 		where id=#{id,jdbcType=BIGINT}
 	</update>
 	
@@ -173,6 +195,15 @@
 			<if test="lastCancelTime !=null">
 				lastCancelTime=#{lastCancelTime,jdbcType=BIGINT},
 			</if>
+			<if test="createTime != null">
+                createTime = #{createTime, jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                updateTime = #{updateTime, jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark, jdbcType=BIGINT},
+            </if>
 		</set>
 		where id=#{id,jdbcType=BIGINT}
 	</update>
@@ -193,6 +224,7 @@
             resultType="com.vgit.yunqiang.pojo.BisOrder">
         select * from t_bis_order bo 
         <include refid="whereSql"/>
+        order by bo.createTime asc
         limit #{start}, #{rows}
     </select>
 

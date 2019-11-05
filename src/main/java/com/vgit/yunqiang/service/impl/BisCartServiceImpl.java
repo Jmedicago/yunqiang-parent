@@ -12,10 +12,12 @@ import com.vgit.yunqiang.pojo.BisCart;
 import com.vgit.yunqiang.pojo.BisProduct;
 import com.vgit.yunqiang.pojo.BisProductMedia;
 import com.vgit.yunqiang.pojo.BisSku;
+import com.vgit.yunqiang.pojo.SysUser;
 import com.vgit.yunqiang.service.BisCartService;
 import com.vgit.yunqiang.service.BisProductService;
 import com.vgit.yunqiang.service.BisSkuService;
 import com.vgit.yunqiang.service.QuartzService;
+import com.vgit.yunqiang.service.SysUserService;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,9 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
     
     @Autowired
     private QuartzService quartzService;
+    
+    @Autowired
+    private SysUserService sysUserService;
 
     @Override
     protected BaseMapper<BisCart> getMapper() {
@@ -52,6 +57,17 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
         BisCart existBisCart = this.mapper.getByUserSku(userId, skuId);
         // 检查商品库存数量
         BisSku curSku = this.bisSkuService.get(skuId);
+        // 检查权属
+    	SysUser sysUser = this.sysUserService.get(userId);
+    	if (sysUser != null) {
+    		String stockId =  sysUser.getStockIds();
+    		BisProduct bisProduct = bisProductService.get(curSku.getProductId());
+    		if (bisProduct.getStock() != null && !stockId.equals(String.valueOf(bisProduct.getStock()))) {
+    			throw new BisException().setInfo("您没有加入该 " + curSku.getSkuCode() + " " + curSku.getSkuName() + "的权限！");
+    		}
+    	}
+        
+        
         if (curSku.getAvailableStock() == 0) { // 库存不足
             throw new BisException().setCode(BisProductMsgConsts.IN_A_SHORT_INVENTORY).setInfo(curSku.getSkuCode() + " " + curSku.getSkuName());
         }
