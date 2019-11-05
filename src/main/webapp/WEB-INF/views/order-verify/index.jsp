@@ -27,10 +27,10 @@
         </table>
         <div id="orderVerifyTB">
             <div>
-                <a href="#" data-cmd="del" mustsel data-options="disabled:true" class="easyui-linkbutton"
+                <%--<a href="#" data-cmd="del" mustsel data-options="disabled:true" class="easyui-linkbutton"
                    iconCls="icon-remove" plain="true">
                     <spring:message code="common.delete"/>
-                </a>
+                </a>--%>
                 <a href="#" data-cmd="editOrderDetail" title="<spring:message code="common.edit"/>" height="747"
                    width="590" mustsel data-options="disabled:true" class="easyui-linkbutton"
                    iconCls="icon-edit" plain="true">

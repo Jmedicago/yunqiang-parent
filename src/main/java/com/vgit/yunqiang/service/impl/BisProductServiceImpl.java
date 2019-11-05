@@ -377,11 +377,10 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                 if (this.hasProduct(bisProduct.getCode())) { // 存在，增加库存
                 	BisSku sku = this.skuMapper.getSkuByCode(bisProduct.getCode());
                 	if (sku != null) { 
-                		BisSku newSkul = new BisSku();
-                		newSkul.setId(sku.getId());
-                		newSkul.setAvailableStock(sku.getAvailableStock() + bisSku.getAvailableStock());
-                		this.skuMapper.updatePart(newSkul);
-                		this.mapper.delProductByName("newNode");
+                		BisSku newSku = new BisSku();
+                		newSku.setId(sku.getId());
+                		newSku.setAvailableStock(sku.getAvailableStock() + bisSku.getAvailableStock());
+                		this.skuMapper.updatePart(newSku);
                 	}
                 } else { // 不存在，新增商品
                 	this.saveOrUpdateProduct(bisProduct);
@@ -389,6 +388,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                     bisSku.setPushStockTime(System.currentTimeMillis());
                     this.saveSku(bisSku);
                 }
+                this.mapper.delProductByName("newNode");
             }
         } catch (InvalidFormatException e) {
             e.printStackTrace();
