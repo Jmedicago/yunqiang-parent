@@ -9,4 +9,7 @@ public class BisTradeStockMsgConsts {
     @ConstName("请选择要采购的请购单")
     public static final int TRADE_NULL = 0 + BASE_CODE;
 
+    @ConstName("采购已完成")
+    public static final int TRADE_FINISHED = 1 + BASE_CODE;
+
 }

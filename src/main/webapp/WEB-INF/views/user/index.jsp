@@ -27,6 +27,10 @@
                    iconCls="icon-edit" plain="true">
                     <spring:message code="common.edit"/>
                 </a>
+                <a href="#" data-cmd="del" title="<spring:message code="common.delete"/>" msg="<spring:message code="message.delete"/>" mustsel remote="false" data-options="disabled:true" class="easyui-linkbutton"
+                   iconCls="icon-no" plain="true">
+                    <spring:message code="common.delete"/>
+                </a>
                 <span class="buttonSplit">&nbsp;</span>
                 <a href="#" data-cmd="modifyPsw" class="easyui-linkbutton" title="修改密码" mustsel remote="false"
                    iconCls="icon-lock-password" plain="true">

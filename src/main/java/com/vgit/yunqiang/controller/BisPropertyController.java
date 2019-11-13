@@ -1,5 +1,6 @@
 package com.vgit.yunqiang.controller;
 
+import com.vgit.yunqiang.common.consts.ICodes;
 import com.vgit.yunqiang.common.query.PropertyQuery;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.controller.consts.ControllerConsts;
@@ -56,6 +57,13 @@ public class BisPropertyController {
     @ResponseBody
     public List<BisPropertyOption> getOptions(Long id){
         return this.bisPropertyService.getOptions(id);
+    }
+
+    @RequestMapping(ControllerConsts.URL_DELETE)
+    @ResponseBody
+    public Ret delete(Long id) {
+        this.bisPropertyService.delete(id);
+        return Ret.me().setSuccess(true).setCode(ICodes.SUCCESS);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.vgit.yunqiang.controller;
 
+import com.vgit.yunqiang.common.consts.bis.TradeStockStateConsts;
 import com.vgit.yunqiang.common.consts.msg.BisTradeStockMsgConsts;
 import com.vgit.yunqiang.common.utils.Ret;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,12 @@ public class BisTradeStockController {
     @RequestMapping("/upload-po-trade")
     @ResponseBody
     public Ret uploadPoTrade(Long id, MultipartFile uploadFile) {
+	    // 检查采购状态
+        BisTradeStock tradeStock = this.bisTradeStockService.get(id);
+        if (tradeStock.getStatus() == TradeStockStateConsts.SHIP_FINISH_TAKE) {
+            return Ret.me().setSuccess(false).setCode(BisTradeStockMsgConsts.TRADE_FINISHED);
+        }
+
 	    if (id == null) {
 	        return Ret.me().setSuccess(false).setCode(BisTradeStockMsgConsts.TRADE_NULL);
         }

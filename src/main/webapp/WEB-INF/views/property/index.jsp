@@ -45,6 +45,12 @@
                            class="easyui-linkbutton" iconCls="icon-edit" plain="true">
                             <spring:message code="common.edit"/>
                         </a>
+                        <a href="#" data-cmd="del" title="<spring:message code="common.delete"/>" mustsel
+                           msg="<spring:message code="message.delete"/>"
+                           data-options="disabled:true" class="easyui-linkbutton"
+                           iconCls="icon-remove" plain="true">
+                            <spring:message code="common.delete"/>
+                        </a>
                     </div>
                 </div>
             </div>
