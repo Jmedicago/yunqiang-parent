@@ -3,17 +3,17 @@
          pageEncoding="UTF-8"%>
 <form id="prTradeStockForm" action="/trade-stock/upload-pr-trade" method="post" enctype="multipart/form-data">
     <div class="input-div">
-        <label class="label-top">类型</label>
+        <label class="label-top"><spring:message code="trade.stock.type"/></label>
         <select class="easyui-combobox" name="type" style="width: 420px;">
-            <option value="0">外贸/百货类</option>
-            <option value="1">零件</option>
+            <option value="0"><spring:message code="trade.stock.type1"/></option>
+            <option value="1"><spring:message code="trade.stock.type2"/></option>
         </select>
     </div>
     <div class="input-div">
-        <label class="label-top">上传请购单</label>
+        <label class="label-top"><spring:message code="trade.stpck.uplaod.upload.cgorder"/></label>
         <input class="easyui-filebox theme-textbox-radius" name="uploadFile" data-options="
             required: true,
-            buttonText: '选择文件',
+            buttonText: '<spring:message code="message.select.file"/>',
             accept: '.xlsx,.xls',
             multiple: false" style="width: 420px">
     </div>

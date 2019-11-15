@@ -3,7 +3,7 @@
          pageEncoding="UTF-8" %>
 <div class="tab-wrap">
     <div class="easyui-layout" data-options="fit:true">
-        <div data-options="region:'center',border:true,title:'商品出库'">
+        <div data-options="region:'center',border:true,title:'<spring:message code="mu.st.out"/>'">
             <div class="tableGroup">
                 <table id="stockOutGrid" class="easyui-datagrid" data-options="
                            rownumbers: true,
@@ -18,10 +18,10 @@
                     <thead>
                     <tr>
                         <th data-options="field: 'id', checkbox:true"></th>
-                        <th data-options="field: 'skuName', width:100, halign: 'center', align: 'center'">商品名</th>
+                        <th data-options="field: 'skuName', width:100, halign: 'center', align: 'center'"><spring:message code="st.out.product"/></th>
                         <th data-options="field: 'skuMainPic', width: 50, halign: 'center', align: 'center', formatter: skuMainPicFormatter">
                             <spring:message code="sku.skuMainPic"/></th>
-                        <th data-options="field: 'skuProperties', width:150, halign: 'center', align: 'left'">属性</th>
+                        <th data-options="field: 'skuProperties', width:150, halign: 'center', align: 'left'"><spring:message code="st.out.property"/></th>
                         <th data-options="field: 'pack', width:100, halign: 'center', align: 'center'"><spring:message
                                 code="sku.pack"/></th>
                         <th data-options="field: 'volume', width:80, halign: 'center', align: 'center'"><spring:message
@@ -40,7 +40,7 @@
                             <spring:message code="sku.availableStock"/></th>
                         <th data-options="field: 'container', width:80, halign: 'center', align: 'center'">
                             <spring:message code="sku.container"/></th>
-                        <th data-options="field: 'remark', width:100, halign: 'center', align: 'center'">备注</th>
+                        <th data-options="field: 'remark', width:100, halign: 'center', align: 'center'"><spring:message code="st.out.remark"/></th>
                     </tr>
                     </thead>
                 </table>
@@ -48,12 +48,12 @@
                     <div>
                         <a href="#" data-cmd="addCart" remote="false"
                            class="easyui-linkbutton" iconCls="icon-add" plain="true">
-                            加入购物车
+                            <spring:message code="st.out.add.cart"/>
                         </a>
                         <a href="#" data-cmd="viewComment" remote="false"
                            class="easyui-linkbutton" plain="true">
                             <i class="iconfont" style="font-size: 14px;">&#xe69b;</i>
-                            查看评价
+                            <spring:message code="st.out.view.assess"/>
                         </a>
                     </div>
                     <div class="searchForm">
@@ -74,7 +74,7 @@
                 </div>
             </div>
         </div>
-        <div data-options="region:'east',border:true,title:'购物车'" style="width: 520px;">
+        <div data-options="region:'east',border:true,title:'<spring:message code="st.out.cart"/>'" style="width: 520px;">
             <div class="tableGroup cart-table">
                 <table id="cartGrid" class="easyui-datagrid" data-options="
                             singleSelect: false,
@@ -114,11 +114,11 @@
                     <tr>
                         <th data-options="field: 'id',checkbox:true"></th>
                         <th data-options="field: 'skuMainPic', width:50, halign: 'center', align: 'center', formatter: skuMainPicFormatter">
-                            图片
+                            <spring:message code="st.out.image"/>
                         </th>
-                        <th data-options="field: 'name', width:100, halign: 'center', align: 'center'">商品名</th>
-                        <th data-options="field: 'skuProperties', width:150, halign: 'center', align: 'left'">属性</th>
-                        <th data-options="field: 'amount', width:100, halign: 'center', align: 'center', formatter: cartAmountFormatter">数量</th>
+                        <th data-options="field: 'name', width:100, halign: 'center', align: 'center'"><spring:message code="st.out.product"/></th>
+                        <th data-options="field: 'skuProperties', width:150, halign: 'center', align: 'left'"><spring:message code="st.out.property"/></th>
+                        <th data-options="field: 'amount', width:100, halign: 'center', align: 'center', formatter: cartAmountFormatter"><spring:message code="st.out.amount"/></th>
                     </tr>
                     </thead>
                 </table>
@@ -131,7 +131,7 @@
                         <a href="#" data-cmd="submitOrder" mustsel data-options="disabled:true"
                            class="easyui-linkbutton"
                            iconCls="icon-tip" plain="true">
-                            提交订单
+                            <spring:message code="st.out.confirm.order"/>
                         </a>
                     </div>
                 </div>
@@ -140,11 +140,11 @@
             <div class="cart statistics">
                 <div class="statistics-box">
                     <div class="statistics-group">
-                        <label for="selectedGoodsTotalVolume">总体积：</label>
+                        <label for="selectedGoodsTotalVolume"><spring:message code="st.out.volume.total"/>：</label>
                         <span id="selectedGoodsTotalVolume">N/A</span>
                     </div>
                     <div class="statistics-group">
-                        <label for="selectedGoodsTotalPrice">总计：</label>
+                        <label for="selectedGoodsTotalPrice"><spring:message code="st.out.total"/>：</label>
                         <span id="selectedGoodsTotalPrice">N/A</span>
                     </div>
                 </div>
@@ -259,14 +259,13 @@
 
     function removeCart() {
         var rows = $('#cartGrid').datagrid('getSelections');
-        console.log('移除购物车', rows);
         var ids = '';
         for (var i = 0; i < rows.length; i++) {
             ids += ',' + rows[i].id;
         }
         if (ids.length > 1) ids = ids.substring(1);
         if ('' != ids) {
-            MXF.confirm('是否从购物车中移除所勾选的商品？', function () {
+            MXF.confirm('<spring:message code="message.remove.cart"/>？', function () {
                 MXF.ajaxing(true);
                 $.post('/cart/remove', {cartIds: ids}, function (data) {
                     MXF.ajaxing(false);
@@ -277,7 +276,7 @@
                 });
             });
         } else {
-            MXF.error('请至少勾选一款商品！');
+            MXF.error('<spring:message code="message.remove.cart"/>！');
         }
     }
 
@@ -328,10 +327,10 @@
     function viewComment(val, row) {
         var row = $('#stockOutGrid').datagrid('getSelected');
         if (row == null) {
-            MXF.error("请至少选择一条记录，再继续操作！");
+            MXF.error("<spring:message code="message.select"/>");
             return;
         }
-        MXF.openDialog('#viewCommentWindow', '查看评价', '/product-comment/show?productId=' + row.productId, function () {
+        MXF.openDialog('#viewCommentWindow', '<spring:message code="st.out.view.assess"/>', '/product-comment/show?productId=' + row.productId, function () {
         }, 480, 600);
     }
 

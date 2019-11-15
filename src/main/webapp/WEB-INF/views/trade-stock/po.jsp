@@ -4,10 +4,10 @@
 <form id="prTradeStockForm" action="/trade-stock/upload-po-trade" method="post" enctype="multipart/form-data">
     <input type="hidden" name="id" value="${bisTradeStock.id}"/>
     <div class="input-div">
-        <label class="label-top">上传采购单</label>
+        <label class="label-top"><spring:message code="trade.stock.upload.cgorder"/></label>
         <input class="easyui-filebox theme-textbox-radius" name="uploadFile" data-options="
             required: true,
-            buttonText: '选择文件',
+            buttonText: '<spring:message code="message.select.file"/>',
             accept: '.xlsx,.xls',
             multiple: false" style="width: 420px">
     </div>
