@@ -7,7 +7,7 @@
     <input type="hidden" name="productId" value="${productComment.productId}"/>
     <input type="hidden" id="score"  name="score" value="${productComment.score}"/>
     <div class="input-div">
-        <label class="label-top">评分</label>
+        <label class="label-top"><spring:message code="commit.entity.score"/></label>
         <div id="starScore">
             <ul>
                 <li id="1">☆</li>
@@ -19,7 +19,7 @@
         </div>
     </div>
     <div class="input-div">
-        <label class="label-top">评论</label>
+        <label class="label-top"><spring:message code="commit.entity.commit"/></label>
         <input class="easyui-textbox theme-textbox-radius" data-options="multiline:true" style="height:100px;"
                name="comment" value="${productComment.comment}">
     </div>

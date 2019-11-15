@@ -38,7 +38,7 @@
                 <a href="#" data-cmd="batch" class="easyui-linkbutton"
                    plain="true">
                     <i class="iconfont">&#xe73f;</i>
-                    批量导入
+                    <spring:message code="product.btn.import"/>
                 </a>
                 <a href="#" data-cmd="showSku" mustsel data-options="disabled:true" class="easyui-linkbutton"
                    plain="true">

@@ -32,9 +32,9 @@
                     <spring:message code="common.delete"/>
                 </a>
                 <span class="buttonSplit">&nbsp;</span>
-                <a href="#" data-cmd="modifyPsw" class="easyui-linkbutton" title="修改密码" mustsel remote="false"
+                <a href="#" data-cmd="modifyPsw" class="easyui-linkbutton" title="<spring:message code="user.btn.mpass"/>" mustsel remote="false"
                    iconCls="icon-lock-password" plain="true">
-                    修改密码
+                    <spring:message code="user.btn.mpass"/>
                 </a>
             </div>
             <div class="searchForm">

@@ -3,7 +3,7 @@
          pageEncoding="UTF-8" %>
 <div class="tab-wrap" style="height: 706px;">
     <div class="tableGroup">
-        <table id="orderDetailGrid" class="easyui-datagrid" title="订单明细"
+        <table id="orderDetailGrid" class="easyui-datagrid" title="<spring:message code="order.detail.list"/>"
                data-options="
 				rownumbers: true,
 				fit: true,
@@ -18,11 +18,11 @@
             <thead>
             <tr>
                 <th data-options="field: 'skuMainPic', width:50, halign: 'center', align: 'center', formatter: skuMainPicFormatter">
-                    图片
+                    <spring:message code="order.detail.image"/>
                 </th>
-                <th data-options="field: 'name', width: 120, halign: 'center', align: 'center'">商品名</th>
-                <th data-options="field: 'skuProperties', width: 200, halign: 'center', align: 'left'">属性</th>
-                <th data-options="field: 'amount', width:100, halign: 'center', align: 'center', formatter: cartAmountFormatter">数量</th>
+                <th data-options="field: 'name', width: 120, halign: 'center', align: 'center'"><spring:message code="order.detail.ptname"/></th>
+                <th data-options="field: 'skuProperties', width: 200, halign: 'center', align: 'left'"><spring:message code="order.detail.property"/></th>
+                <th data-options="field: 'amount', width:100, halign: 'center', align: 'center', formatter: cartAmountFormatter"><spring:message code="order.detail.amount"/></th>
             </tr>
             </thead>
         </table>
@@ -31,7 +31,7 @@
             </div>
             <div style="position: absolute; top: 0; left: 0; width: 200px; height: 40px;">
                 <div style="height: 40px; line-height: 40px; font-size: 14px; text-align: left; padding: 0 20px;">
-                    <span style="font-weight: 600;">总体积：</span>
+                    <span style="font-weight: 600;"><spring:message code="order.detail.volume.total"/>：</span>
                     <span id="volumeTotal"></span>
                 </div>
             </div>

@@ -1,8 +1,9 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <div class="tab-wrap" style="height: 759px">
     <div class="tableGroup">
-        <table id="productCommentGrid" class="easyui-datagrid" title="订单评价"
+        <table id="productCommentGrid" class="easyui-datagrid" title="<spring:message code="commit.dialog.name"/>"
                data-options="
 				rownumbers: true,
 				fit: true,
@@ -17,9 +18,9 @@
                 <th data-options="field: 'skuMainPic', width:50, halign: 'center', align: 'center', formatter: skuMainPicFormatter">
                     图片
                 </th>
-                <th data-options="field: 'name', width: 120, halign: 'center', align: 'center'">商品名</th>
-                <th data-options="field: 'skuProperties', width: 200, halign: 'center', align: 'left'">属性</th>
-                <th data-options="field: 'options', width:100, halign: 'center', align: 'center', formatter: optionsFormatter">操作</th>
+                <th data-options="field: 'name', width: 120, halign: 'center', align: 'center'"><spring:message code="product.name"/></th>
+                <th data-options="field: 'skuProperties', width: 200, halign: 'center', align: 'left'"><spring:message code="product.prop.name"/></th>
+                <th data-options="field: 'options', width:100, halign: 'center', align: 'center', formatter: optionsFormatter"><spring:message code="common.option"/></th>
             </tr>
             </thead>
         </table>
@@ -36,13 +37,13 @@
     
     function optionsFormatter(val, row) {
         if (row.isComment) {
-            return "<a style='color: green'>评价完成</a>";
+            return "<a style='color: green'><spring:message code="commit.finishcommit"/></a>";
         } else {
-            return "<a style='color: red' onclick='comment(" + JSON.stringify(row) + ")'>立即评价</a>";
+            return "<a style='color: red' onclick='comment(" + JSON.stringify(row) + ")'><spring:message code="commit.waitcommit"/></a>";
         }
     }
     
     function comment(obj) {
-        MXF.openDialog('productCommentFormWindow', '编辑', '/product-comment/edit?orderId=' + obj.orderId + '&productId=' + obj.productId + '&detailId=' + obj.id, function () {}, 600, 350);
+        MXF.openDialog('productCommentFormWindow', '<spring:message code="common.edit"/>', '/product-comment/edit?orderId=' + obj.orderId + '&productId=' + obj.productId + '&detailId=' + obj.id, function () {}, 600, 350);
     }
 </script>
