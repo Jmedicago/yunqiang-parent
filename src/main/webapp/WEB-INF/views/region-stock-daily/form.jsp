@@ -7,7 +7,7 @@
         <input type="hidden" name="stockId" value="${finRegionStockDaily.stockId}"/>
     </form>
     <div class="easyui-layout" data-options="fit:true">
-        <div data-options="region: 'west', title: '进', split: true, border: true" style="width:400px;">
+        <div data-options="region: 'west', title: '<spring:message code="region.stock.daily.in"/>', split: true, border: true" style="width:400px;">
             <div class="tableGroup">
                 <table id="inRegionStockDailyGrid" class="easyui-datagrid" data-options="
                     rownumbers: true,
@@ -23,10 +23,10 @@
                     <thead>
                     <tr>
                         <th data-options="field:'stockId', width: 150, halign: 'center', align: 'center', formatter: stockFormatter">
-                            零售店
+                            <spring:message code="region.stock.daily.store"/>
                         </th>
                         <th data-options="field:'income', width: 167, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
-                            日收入
+                            <spring:message code="region.stock.daily.income"/>
                         </th>
                     </tr>
                     </thead>
@@ -34,14 +34,14 @@
                 <div id="inRegionStockDailyTB">
                     <div>
                         <div style="height: 30px; text-align: right; line-height: 30px; padding: 0 10px;">
-                            <span style="font-weight: 600;">累计总额：</span>
+                            <span style="font-weight: 600;"><spring:message code="region.stock.daily.income.total"/>：</span>
                             <span id="incomeTotal"></span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div data-options="region: 'center', title: '支出', border: true">
+        <div data-options="region: 'center', title: '<spring:message code="region.stock.daily.out"/>', border: true">
             <div class="tableGroup" style="position: relative">
                 <table id="stockDailyExpendItemGrid" class="easyui-datagrid"
                        data-options="
@@ -57,11 +57,11 @@
                     <thead>
                     <tr>
                         <th data-options="field: 'expendItemId', width: 120, halign: 'center', align: 'center', formatter: formatterExpendItem">
-                            类别
+                            <spring:message code="region.stock.daily.type"/>
                         </th>
-                        <th data-options="field: 'detail', width: 250, halign: 'center', align: 'left'">项目</th>
+                        <th data-options="field: 'detail', width: 250, halign: 'center', align: 'left'"><spring:message code="region.stock.daily.project"/></th>
                         <th data-options="field: 'amount', width: 167, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
-                            金额
+                            <spring:message code="region.stock.daily.project"/>
                         </th>
                     </tr>
                     </thead>
@@ -86,27 +86,27 @@
                 </div>
                 <div style="position: absolute; top: 0; right: 0; width: 240px; height: 40px;">
                     <div style="height: 40px; line-height: 40px; font-size: 14px; text-align: center; padding: 0 20px;">
-                        <span style="font-weight: 600;">支出总计：</span>
+                        <span style="font-weight: 600;"><spring:message code="region.stock.daily.exprice.total"/>：</span>
                         <span id="expendTotal"></span>
                     </div>
                 </div>
             </div>
         </div>
-        <div data-options="region: 'east', title: '存', border: true" style="width:400px;">
+        <div data-options="region: 'east', title: '<spring:message code="region.stock.daily.deposit"/>', border: true" style="width:400px;">
             <form id="outRegionStockDailyForm" style="width: 390px; margin-top: 30px;">
                 <div class="input-div">
-                    <label class="label-top">保险柜现金</label>
+                    <label class="label-top"><spring:message code="region.stock.daily.safe"/></label>
                     <input id="safe" class="easyui-textbox theme-textbox-radius" name="safe"
                            value="${finRegionStockDaily.safe * 0.01}"
                            style="width: 250px" data-options="
                                 onChange: safeChange">
                 </div>
                 <div class="input-div">
-                    <label class="label-top">存</label>
+                    <label class="label-top"><spring:message code="region.stock.daily.deposit"/></label>
                     <input id="deposit" class="easyui-textbox theme-textbox-radius" name="deposit"
                            value="${finRegionStockDaily.deposit * 0.01}"
                            style="width: 250px">
-                    <a class="easyui-linkbutton" onclick="calSafe()" style="position: absolute; margin-left: 3px;">计算</a>
+                    <a class="easyui-linkbutton" onclick="calSafe()" style="position: absolute; margin-left: 3px;"><spring:message code="region.stock.daily.cal"/></a>
                 </div>
             </form>
         </div>
@@ -213,7 +213,7 @@
         var editWindow = $('<div id="addStockDailyExpendItemWindow"></div>');
         editWindow.appendTo('body');
         $(editWindow).window({
-            title: '新增支出明细',
+            title: '<spring:message code="region.stock.daily.zcmx"/>',
             modal: true,
             height: 350,
             width: 600,
@@ -235,14 +235,14 @@
     function editStockDailyExpendItem() {
         var row = $('#stockDailyExpendItemGrid').datagrid('getSelected');
         if (row == null) {
-            MXF.error("请选择一个您要编辑的支出明细！");
+            MXF.error("<spring:message code="message.select"/>！");
             return;
         }
 
         var editWindow = $('<div id="editStockDailyExpendItemWindow"></div>');
         editWindow.appendTo('body');
         $(editWindow).window({
-            title: '编辑支出明细',
+            title: '<spring:message code="region.stock.daily.bjzcmx"/>',
             modal: true,
             height: 350,
             width: 600,
@@ -268,10 +268,10 @@
         if (data) {
             $.post('/region-stock-daily/store', data, function (res) {
                 if (res.success) {
-                    MXF.alert('成功！', true);
+                    MXF.alert('<spring:message code="message.success"/>！', true);
                     $('#regionStockDailyGrid').datagrid('reload');
                 } else {
-                    MXF.alert('失败，' + res.info, false);
+                    MXF.alert('<spring:message code="message.fail"/>，' + res.info, false);
                 }
             });
         }

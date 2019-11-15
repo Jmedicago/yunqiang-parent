@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <div class="tab-wrap">
     <div class="tableGroup">
-        <table id="regionStockDailyGrid" class="easyui-datagrid" title="区域每日资金进出账明细" data-options="
+        <table id="regionStockDailyGrid" class="easyui-datagrid" title="<spring:message code="mu.region.stock.daily"/>" data-options="
                     rownumbers: true,
                     fit: true,
                     method:'post',
@@ -17,11 +17,17 @@
             <tr>
                 <th data-options="field: 'id', checkbox: true"></th>
                 <th data-options="field: 'createTime',width: 200, halign: 'center', align: 'center', formatter: MXF.dateTimeFormatter">
-                    日期
+                    <spring:message code="region.stock.daily.datatime"/>
                 </th>
-                <th data-options="field:'stockId', width: 100, halign: 'center', align: 'center', formatter: stockFormatter">仓库名</th>
-                <th data-options="field:'safe', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">保险柜</th>
-                <th data-options="field:'deposit', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">存银行</th>
+                <th data-options="field:'stockId', width: 100, halign: 'center', align: 'center', formatter: stockFormatter">
+                    <spring:message code="region.stock.daily.store"/>
+                </th>
+                <th data-options="field:'safe', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                    <spring:message code="region.stock.daily.safe"/>
+                </th>
+                <th data-options="field:'deposit', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                    <spring:message code="region.stock.daily.bank"/>
+                </th>
             </tr>
             </thead>
         </table>
@@ -40,7 +46,7 @@
             </div>
             <div class="searchForm">
                 <form>
-                    日期:
+                    <spring:message code="region.stock.daily.datatime"/>:
                     <input class="easyui-textbox theme-textbox-radius" name="dataTime" style="width:100px;">
                     <a href="javascript:;" data-cmd="search" class="easyui-linkbutton button-default"><spring:message
                             code="common.search"/></a>
@@ -72,7 +78,7 @@
     }
 
     function addRegionStockDaily() {
-        MXF.confirm('是否新建区域当日资金出账明细？', function (res) {
+        MXF.confirm('<spring:message code="message.daily.make.detail"/>？', function (res) {
             MXF.ajaxing(true);
             // 创建区域当日资金出账明细
             $.post('/region-stock-daily/store', function (res) {
@@ -83,7 +89,7 @@
                     var editWindow = $('<div id="addRegionStockDailyWindow"></div>');
                     editWindow.appendTo('body');
                     $(editWindow).window({
-                        title: '区域当日资金出账明细',
+                        title: '<spring:message code="region.stock.daily.title"/>',
                         modal: true,
                         maximized: true,
                         href: '/region-stock-daily/edit?id=' + res.data.id,
@@ -108,14 +114,14 @@
     function editRegionStockDaily() {
         var row = $('#regionStockDailyGrid').datagrid('getSelected');
         if (row == null) {
-            MXF.error("请选择一个您要编辑的当日资金出账明细！");
+            MXF.error("<spring:message code="message.select"/>！");
             return;
         }
         // 打开编辑页面
         var editWindow = $('<div id="editRegionStockDailyWindow"></div>');
         editWindow.appendTo('body');
         $(editWindow).window({
-            title: '区域当日资金出账明细',
+            title: '<spring:message code="region.stock.daily.title"/>',
             modal: true,
             maximized: true,
             href: '/region-stock-daily/edit?id=' + row.id,
