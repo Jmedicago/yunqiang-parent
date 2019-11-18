@@ -25,7 +25,7 @@
         </select>
     </div>
     <div class="input-div">
-        <label class="label-top">归属区域</label>
+        <label class="label-top"><spring:message code="user.region"/></label>
         <select id="stocksCombotree" class="easyui-combotree" style="width:420px;" name="stockIds"
                 data-options="url: '/stock/combo', cascadeCheck: false, multiple: false, onLoadSuccess: initStocksValue"></select>
     </div>
