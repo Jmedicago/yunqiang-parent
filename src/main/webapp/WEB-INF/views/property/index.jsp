@@ -28,7 +28,7 @@
                     <thead>
                     <tr>
                         <th data-options="field:'name',width:120"><spring:message code="product.prop.name"/></th>
-                        <th data-options="field:'type',width:120,formatter:formatterPropertyType"><spring:message code="product.prop.type"/></th>
+                        <%--<th data-options="field:'type',width:120,formatter:formatterPropertyType"><spring:message code="product.prop.type"/></th>--%>
                         <th data-options="field:'inputMode',width:120,formatter:formatterInputMode"><spring:message code="product.prop.mode"/></th>
                     </tr>
                     </thead>

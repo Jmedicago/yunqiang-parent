@@ -8,11 +8,11 @@
         <label class="label-top"><spring:message code="product.prop.name"/></label>
         <input class="easyui-textbox theme-textbox-radius" name="name" data-options="required:true">
     </div>
-    <div class="input-div">
+    <%--<div class="input-div">
         <label class="label-top"><spring:message code="product.prop.type"/></label>
         <input name="type" type="radio" checked="checked" value="0"> <spring:message code="common.accord"/>
         <input name="type"  type="radio"  value="1"> <spring:message code="common.sales"/>
-    </div>
+    </div>--%>
     <div class="input-div">
         <label class="label-top"><spring:message code="product.prop.mode"/></label>
         <select class="easyui-combobox theme-textbox-radius" style="width:420px;" name="inputMode"

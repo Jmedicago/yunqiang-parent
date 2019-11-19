@@ -154,7 +154,7 @@ public class FtpUtils {
 
     public static void main(String[] args) {
         try {
-            FileInputStream in = new FileInputStream(new File("C:\\Users\\Admin\\Desktop\\1\\1.png"));
+            FileInputStream in = new FileInputStream(new File("C:\\Users\\Administrator\\Desktop\\微信图片_20191119104326.png"));
             boolean flag = uploadFile(
                     GlobalSetting.get(GlobalSettingNames.FTP_ADDRESS),
                     Integer.parseInt(GlobalSetting.get(GlobalSettingNames.FTP_PORT)),
