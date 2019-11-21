@@ -57,6 +57,9 @@
 
     function clickStockTreeNode(node) {
         //$(this).tree('beginEdit',node.target);
+        if (node.parentId == null) {
+            node.parentId = node.pid;
+        }
         MXF.clearForm($('#stockForm'));
         $('#stockForm').form('load', node);
     }

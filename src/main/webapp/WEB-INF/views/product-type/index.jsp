@@ -57,6 +57,10 @@
 
     function clickProductTypeTreeNode(node) {
         //$(this).tree('beginEdit',node.target);
+        if (node.parentId == null) {
+            node.parentId = node.pid;
+            node.sort = 100;
+        }
         MXF.clearForm($('#productTypeForm'));
         $('#productTypeForm').form('load', node);
     }

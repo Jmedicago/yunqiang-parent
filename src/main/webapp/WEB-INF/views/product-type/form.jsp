@@ -33,7 +33,6 @@
 
 <script type="text/javascript">
     function productTypeStoreCallBack($form, data) {
-        console.log(data);
         if (data.success) {
             //MXF.clearForm($form);
             $('#productTypeTreeCombo').combotree('reload');

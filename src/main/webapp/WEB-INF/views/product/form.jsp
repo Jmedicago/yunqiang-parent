@@ -3,10 +3,10 @@
          pageEncoding="UTF-8" %>
 <form method="post" action="/product/store">
     <input type="hidden" name="id"/>
-    <div class="input-div">
+    <%--<div class="input-div">
         <label class="label-top"><spring:message code="product.name"/></label>
         <input class="easyui-textbox theme-textbox-radius" name="name" data-options="required:true">
-    </div>
+    </div>--%>
     <div class="input-div">
         <label class="label-top"><spring:message code="product.productType"/></label>
         <input class="easyui-combotree theme-textbox-radius" name="productType"
@@ -25,7 +25,9 @@
     <div class="input-div">
         <label class="label-top"><spring:message code="product.resources"/></label>
         <div style="margin-left: 114px; margin-top: -30px;">
-            <a href="javascript:void(0)" class="easyui-linkbutton picFileUpload" style="background-color: #0c80d7; color: #fff;"><spring:message code="common.uploadImage"/></a>
+           <%-- <a href="javascript:void(0)" class="easyui-linkbutton picFileUpload" style="background-color: #0c80d7; color: #fff;"><spring:message code="common.uploadImage"/></a>
+            <input type="hidden" name="resources" value="${resources}"/>--%>
+            <a href="javascript:void(0)" class="easyui-linkbutton onePicUpload" style="background-color: #0c80d7; color: #fff;"><spring:message code="common.uploadImage"/></a>
             <input type="hidden" name="resources" value="${resources}"/>
         </div>
     </div>
@@ -59,6 +61,8 @@
         $('#propertiesCombobox').combobox('reload', '/property/json?productType=' + newValue);
     }
 
-    MXF.initPicFileUploader('${resources}');
+    var resources = '${resources}';
+    console.log(resources);
+    MXF.initOnePicUploader(resources);
 
 </script>

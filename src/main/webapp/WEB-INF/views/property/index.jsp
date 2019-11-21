@@ -123,6 +123,7 @@
     }
 
     function clickTreeNode(node) {
+        console.log(node);
         if (null == node.children || 0 == node.children.length) { //叶子节点
             $('#propertyGrid').datagrid('load', {productType: node.id});
             $('#propertyTB').find('a[data-cmd]').linkbutton('disable');

@@ -31,4 +31,13 @@ public interface BisSkuService extends BaseService<BisSku> {
      */
     void outbound(Long skuId, Integer amount);
 
+    /**
+     * SKU入库
+     *
+     * @param id
+     * @param amount
+     * @return
+     */
+    void inbound(Long id, Integer amount);
+
 }

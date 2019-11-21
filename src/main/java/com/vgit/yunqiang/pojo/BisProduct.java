@@ -4,8 +4,16 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.vgit.yunqiang.pojo.base.BasePojo;
+import com.vgit.yunqiang.service.BisProductService;
+import com.vgit.yunqiang.service.format.ProductMediaFormat;
+import com.vgit.yunqiang.service.format.ProductTypeFormat;
+import com.vgit.yunqiang.service.format.StockFormat;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class BisProduct extends BasePojo implements Serializable {
+
+	@Autowired
+	private BisProductService bisProductService;
 
 	private static final long serialVersionUID = 1L;
 
@@ -37,6 +45,10 @@ public class BisProduct extends BasePojo implements Serializable {
 	 * 商品媒体列表
 	 */
 	private List<BisProductMedia> productMediaList;
+
+	private String productMedia;
+
+	private String typeName;
 
 	public Long getId() {
 		return id;
@@ -116,6 +128,18 @@ public class BisProduct extends BasePojo implements Serializable {
 
 	public void setProductMediaList(List<BisProductMedia> productMediaList) {
 		this.productMediaList = productMediaList;
+	}
+
+	public String getTypeName() {
+		return ProductTypeFormat.getProductTypeName(productType);
+	}
+
+	public String getStockName() {
+		return StockFormat.getStockName(stock);
+	}
+
+	public String getProductMedia() {
+		return ProductMediaFormat.getProductImage(id);
 	}
 
 	@Override

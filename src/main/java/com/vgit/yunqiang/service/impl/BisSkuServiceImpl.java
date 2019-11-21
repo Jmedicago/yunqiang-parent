@@ -45,4 +45,9 @@ public class BisSkuServiceImpl extends BaseServiceImpl<BisSku> implements BisSku
         this.mapper.outbound(skuId,amount);
     }
 
+    @Override
+    public void inbound(Long id, Integer amount) {
+        this.mapper.changeNumber(id, amount);
+    }
+
 }

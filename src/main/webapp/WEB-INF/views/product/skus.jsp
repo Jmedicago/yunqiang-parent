@@ -6,12 +6,12 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <div style="padding:10px">
     <a href="#" onclick="addSku()" class="easyui-linkbutton" iconCls="icon-add"><spring:message code="sku.add"/></a>
-    <div id="editSkuDiv"
-         style="display:none;border:solid 1px #ccc;border-radius:4px;padding:10px;margin-top:10px;overflow:hidden;background:#f9f9f9;">
+    <div id="editSkuDiv" style="display:none;border:solid 1px #ccc;border-radius:4px;padding:10px;margin-top:10px;overflow:hidden;background:#f9f9f9;">
         <form id="skuForm" action="/product/storeSku" method="post">
             <input type="hidden" name="id"/>
             <input type="hidden" name="productId" value="${product.id}"/>
-            <div style="width:250px;float:left;">
+            <div style="width:250px; float:left; border: 1px solid #ddd; padding: 10px 15px; border-radius: 5px;">
+                <h5 style="padding: 0; border: 0;">商品属性信息</h5>
                 <table class="table table-very table-basic">
                     <c:forEach items="${skuProperties}" var="p" varStatus="psta">
                         <c:if test="${p.inputMode == 0}">
@@ -43,39 +43,40 @@
                     </c:forEach>
                 </table>
             </div>
-            <div style="width:1000px;float:right;">
+            <div style="width:1000px;float:right;border: 1px solid #ddd; padding: 10px 15px; border-radius: 5px;">
+                <h5 style="padding: 0; border: 0;">商品基本信息</h5>
                 <table class="table table-very table-basic">
                     <tr>
                         <td><spring:message code="sku.pack"/></td>
                         <td>
-                            <input class="easyui-textbox" data-options="required:true" name="pack"
+                            <input class="easyui-textbox" name="pack"
                                    style="width:200px;"/>
                         </td>
                         <td><spring:message code="sku.volume"/>（m<sup>3</sup>）</td>
                         <td>
-                            <input class="easyui-textbox" data-options="required:true" name="volume"
+                            <input class="easyui-textbox" name="volume"
                                    style="width:200px;"/>
                         </td>
                         <td><spring:message code="sku.container"/></td>
                         <td>
-                            <input class="easyui-textbox" data-options="required:true" name="container"
+                            <input class="easyui-textbox" name="container"
                                    style="width:200px;"/>
                         </td>
                     </tr>
                     <tr>
                         <td><spring:message code="sku.costPrice"/></td>
                         <td>
-                            <input class="easyui-textbox" data-options="required:true" name="costPrice"
+                            <input class="easyui-textbox" name="costPrice"
                                    style="width:200px;"/>
                         </td>
                         <td><spring:message code="sku.marketPrice"/></td>
                         <td>
-                            <input class="easyui-textbox" data-options="required:true" name="marketPrice"
+                            <input class="easyui-textbox" name="marketPrice"
                                    style="width:200px;"/>
                         </td>
                         <td><spring:message code="sku.profit"/>（%）</td>
                         <td>
-                            <input class="easyui-textbox" data-options="required:true" name="profit"
+                            <input class="easyui-textbox" name="profit"
                                    style="width:200px;"/>
                         </td>
                     </tr>
@@ -87,13 +88,13 @@
                         </td>
                         <td><spring:message code="sku.availableStock"/></td>
                         <td>
-                            <input class="easyui-textbox" data-options="required:true" name="availableStock"
+                            <input class="easyui-textbox" name="availableStock"
                                    style="width:200px;"/>
                         </td>
-                        <td><spring:message code="sku.frozenStock"/></td>
+                        <td><%--<spring:message code="sku.frozenStock"/>--%></td>
                         <td>
-                            <input class="easyui-textbox" data-options="required:true" name="frozenStock"
-                                   style="width:200px;"/>
+                            <%--<input class="easyui-textbox" name="frozenStock"
+                                   style="width:200px;"/>--%>
                         </td>
                     </tr>
                     <tr>

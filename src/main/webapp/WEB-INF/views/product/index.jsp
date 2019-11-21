@@ -10,10 +10,20 @@
             <thead>
             <tr>
                 <th data-options="field:'id',checkbox:true"></th>
-                <th data-options="field:'code',width:120"><spring:message code="product.code"/></th>
-                <th data-options="field:'name',width:200"><spring:message code="product.name"/></th>
-                <th data-options="field:'state',width:80, formatter:productStateFormatter"><spring:message
-                        code="product.state"/></th>
+                <th data-options="field:'code',width:120,halign:'center',align:'center'"><spring:message code="product.code"/></th>
+                <%--<th data-options="field:'name',width:200"><spring:message code="product.name"/></th>--%>
+                <%--<th data-options="field:'state',width:80, formatter:productStateFormatter"><spring:message
+                        code="product.state"/></th>--%>
+                <th data-options="field:'productMedia',width:80,halign:'center',align:'center',formatter:productMediaFormatter"><spring:message
+                        code="product.resources"/></th>
+                <th data-options="field:'stockName',width:80,halign:'center',align:'center',formatter:productStockFormatter"><spring:message
+                        code="product.stock"/></th>
+                <th data-options="field:'typeName',width:80,halign:'center',align:'center'"><spring:message
+                        code="product.type.name"/></th>
+                <th data-options="field:'createTime',width:150,halign:'center',align:'center',formatter:MXF.dateTimeFormatter"><spring:message
+                        code="common.createTime"/></th>
+                <th data-options="field:'option',width:150,halign:'center',align:'center',formatter:optionFormatter"><spring:message
+                        code="common.option"/></th>
             </tr>
             </thead>
         </table>
@@ -30,7 +40,7 @@
                    iconCls="icon-edit" plain="true">
                     <spring:message code="common.edit"/>
                 </a>
-                <a href="#" data-cmd="del" mustsel data-options="disabled:true" class="easyui-linkbutton"
+                <a href="#" data-cmd="del" mustsel msg="<spring:message code="message.delete"/>" data-options="disabled:true" class="easyui-linkbutton"
                    iconCls="icon-remove" plain="true">
                     <spring:message code="common.delete"/>
                 </a>
@@ -40,10 +50,15 @@
                     <i class="iconfont">&#xe73f;</i>
                     <spring:message code="product.btn.import"/>
                 </a>
-                <a href="#" data-cmd="showSku" mustsel data-options="disabled:true" class="easyui-linkbutton"
+                <%--<a href="#" data-cmd="showSku" mustsel data-options="disabled:true" class="easyui-linkbutton"
                    plain="true">
                     <i class="iconfont">&#xe6cb;</i>
                     <spring:message code="product.info.tools.sku"/>
+                </a>--%>
+                <a href="#" data-cmd="toPage" class="easyui-linkbutton"
+                   plain="true">
+                    <i class="iconfont">&#xe699;</i>
+                    <spring:message code="mu.pt.view"/>
                 </a>
             </div>
             <div class="searchForm">
@@ -69,6 +84,10 @@
     $(function () {
         MXF.getTabContentHeight();
     });
+    
+    function productMediaFormatter(value) {
+        return "<img height='35' width='35' src='" + value +"'/>";
+    }
 
     function productStateFormatter(value) {
         if (0 == value) {
@@ -78,17 +97,46 @@
         }
         return '';
     }
+    
+    function productStockFormatter(val, row) {
+        console.log(row);
+        return val;
+    }
+    
+    function optionFormatter(val, row) {
+        var a = "<a href='#' onClick='showSku("+ row.id +")'><i class='iconfont'>&#xe6cb;</i><span style='margin-left: 5px;'><spring:message code='product.info.tools.sku'/></span></a>";
+        return a;
+    }
 
-    function showSku(clickTarget) {
+    /*function showSku(clickTarget) {
         if ($(clickTarget).hasClass('l-btn-disabled')) return;
         var row = $('#productGrid').datagrid('getSelected');
+        var name = row.name || 'SKU管理';
         var editWindow = $('<div id="skuWindow"></div>');
         editWindow.appendTo('body');
         $(editWindow).window({
-            title: row.name,
+            title: name,
             modal: true,
             maximized: true,
             href: '/product/skus?id=' + row.id,
+            onLoad: function () {
+                //var $form = editWindow.find('form');
+                //$form.data('window',editWindow);
+            },
+            onClose: function () {
+                editWindow.window('destroy');
+            }
+        });
+    }*/
+
+    function showSku(id) {
+        var editWindow = $('<div id="skuWindow"></div>');
+        editWindow.appendTo('body');
+        $(editWindow).window({
+            title: 'SKU管理',
+            modal: true,
+            maximized: true,
+            href: '/product/skus?id=' + id,
             onLoad: function () {
                 //var $form = editWindow.find('form');
                 //$form.data('window',editWindow);
@@ -123,6 +171,23 @@
                 }
             });
         });
+    }
+    
+    function toPage() {
+        var tabs = $("#tabs");
+        var uri = '/product-view';
+        var title = '<spring:message code="mu.pt.view"/>';
+        var tab = tabs.tabs("getTab", title);
+        if (tab) {
+            tabs.tabs("select", title);
+        } else {
+            tabs.tabs('add', {
+                title: title,
+                href: uri,
+                closable: true,
+                bodyCls: "content"
+            });
+        }
     }
 
 </script>

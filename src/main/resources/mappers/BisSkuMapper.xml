@@ -309,4 +309,8 @@
         update t_bis_sku set frozenStock = frozenStock - #{amount} where id = #{skuId}
     </update>
 
+    <update id="changeNumber">
+        update t_bis_sku set availableStock = #{number} where id = #{id}
+    </update>
+
 </mapper>
