@@ -16,6 +16,10 @@ public class StockFormat {
     }
 
     public static String getStockName(Long id) {
+        if (id == null) {
+            return "unknown";
+        }
+
         BisStock bisStock = bisStockService.get(id);
         if (bisStock != null) {
             return bisStock.getName();

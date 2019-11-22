@@ -313,4 +313,12 @@
         update t_bis_sku set availableStock = #{number} where id = #{id}
     </update>
 
+    <select id="getSkuListByCode" parameterType="java.lang.String" resultType="com.vgit.yunqiang.pojo.BisSku">
+        select * from t_bis_sku where skuCode = #{code}
+    </select>
+
+    <select id="selectByProperties" parameterType="java.lang.String" resultType="com.vgit.yunqiang.pojo.BisSku">
+        select * from t_bis_sku where skuCode = #{skuCode} and skuProperties = #{skuProperties}
+    </select>
+
 </mapper>

@@ -18,6 +18,10 @@ public class ProductMediaFormat {
     }
 
     public static String getProductImage(Long id) {
+        if (id == null) {
+            return "unknown";
+        }
+
         List<BisProductMedia> productMediaList = bisProductService.getProductMedias(id);
         if (productMediaList != null && productMediaList.size() > 0) {
             return productMediaList.get(0).getResource();

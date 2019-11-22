@@ -16,6 +16,10 @@ public class ProductTypeFormat {
     }
 
     public static String getProductTypeName(Long id) {
+        if (id == null) {
+            return "unknown";
+        }
+
         BisProductType bisProductType = bisProductTypeService.get(id);
         if (bisProductType != null) {
             return bisProductType.getName();
