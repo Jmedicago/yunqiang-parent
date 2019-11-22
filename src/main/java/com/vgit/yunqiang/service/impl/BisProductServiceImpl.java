@@ -378,43 +378,9 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                 // 检查商品是否存在
                 if (this.hasProduct(bisProduct.getCode())) { // 存在，增加库存
                     // TODO.一商品对应多SKU商品问题
-                	/*BisSku sku = this.skuMapper.getSkuByCode(bisProduct.getCode());
-                	if (sku != null) { 
-                		BisSku newSku = new BisSku();
-                		newSku.setId(sku.getId());
-                		newSku.setAvailableStock(sku.getAvailableStock() + bisSku.getAvailableStock());
-                		this.skuMapper.updatePart(newSku);
-                	}*/
                     List<BisSku> skuList = this.skuMapper.getSkuListByCode(bisProduct.getCode());
                     if (skuList != null && skuList.size() > 0) {
                         // 根据SKU属性定位商品
-                        /*for (BisSku sku : skuList) {
-                            if (exist(bisSku.getSkuPropertyList(), sku.getSkuProperties())) { // 判断是否是通用SKU商品
-                                BisSku newSku = new BisSku();
-                                newSku.setId(sku.getId());
-                                newSku.setAvailableStock(sku.getAvailableStock() + bisSku.getAvailableStock());
-                                this.skuMapper.updatePart(newSku);
-                            } else {
-                                bisSku.setProductId(sku.getProductId());
-                                bisSku.setSkuCode(sku.getSkuCode());
-                                // bisSku.setSkuName(sku.getSkuName());
-                                bisSku.setPushStockTime(System.currentTimeMillis());
-                                this.saveSku(bisSku);
-                            }
-                        }*/
-
-                        /*if (exist(bisSku.getSkuPropertyList(), skuList)) { // 判断是否是通用SKU商品
-                            BisSku newSku = new BisSku();
-                            //newSku.setId(sku.getId());
-                            //newSku.setAvailableStock(sku.getAvailableStock() + bisSku.getAvailableStock());
-                            this.skuMapper.updatePart(newSku);
-                        } else {
-                            //bisSku.setProductId(sku.getProductId());
-                            //bisSku.setSkuCode(sku.getSkuCode());
-                            // bisSku.setSkuName(sku.getSkuName());
-                            bisSku.setPushStockTime(System.currentTimeMillis());
-                            this.saveSku(bisSku);
-                        }*/
                         bisSku.setSkuCode(bisProduct.getCode());
                         setProperties(bisSku); // 设置属性字符串
                         if (!exist(bisSku)) {
@@ -442,25 +408,6 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
         }
         return Ret.me();
     }
-
-    /*private boolean exist(BisSku bisSku, List<BisSku> skuList) {
-        for (BisSku sku : skuList) {
-            if (bisSku.getSkuProperties().equals(sku.getSkuProperties())) { // 是同一商品
-                // 增加库存
-                BisSku newSku = new BisSku();
-                newSku.setId(sku.getId());
-                newSku.setAvailableStock(sku.getAvailableStock() + bisSku.getAvailableStock());
-                this.skuMapper.updatePart(newSku);
-            } else { // 新增SKU
-                bisSku.setProductId(sku.getProductId());
-                bisSku.setSkuCode(sku.getSkuCode());
-                bisSku.setSkuName(sku.getSkuName());
-                bisSku.setPushStockTime(System.currentTimeMillis());
-                this.saveSku(bisSku);
-            }
-        }
-        return false;
-    }*/
 
     private boolean exist(BisSku bisSku) {
         BisSku sku = this.skuMapper.selectByProperties(bisSku.getSkuCode(), bisSku.getSkuProperties());
@@ -504,56 +451,6 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
             sku.setSkuProperties(skuProperties);
         }
     }
-
-   /* private boolean exist(List<BisSkuProperty> skuPropertyList, List<BisSku> skuList) {
-        boolean flag = false;
-        for (BisSkuProperty bisSkuProperty : skuPropertyList) {
-            String propName = bisSkuProperty.getPropName();
-            String propValue = bisSkuProperty.getValue();
-
-            // 检查是否存在skuList中
-            outer:
-            for (BisSku sku : skuList) {
-                String[] propArr = sku.getSkuProperties().split("_");
-                for (String props : propArr) {
-                    String[] valueArr = props.split(":");
-                    String cPropName = valueArr[1];
-                    String cPropValue = valueArr[3];
-                    if (propName.equals(cPropName) && cPropValue.equals(propValue)) {
-                        flag = true;
-                        break outer;
-                    } else {
-                        flag = false;
-                    }
-                }
-            }
-        }
-
-        return flag;
-    }*/
-
-    /*private boolean exist(List<BisSkuProperty> skuPropertyList, String properties) {
-        boolean flag = false;
-        String[] propArr = properties.split("_");
-        for (String props : propArr) {
-            String[] valueArr = props.split(":");
-            String propName = valueArr[1];
-            String propValue = valueArr[3];
-
-            for (BisSkuProperty skuProperty : skuPropertyList) {
-                if (propName.equals(skuProperty.getPropName())) { // 含有相同属性名称
-                    if (propValue.equals(skuProperty.getValue())) { // 属性值是否一致
-                        flag = true;
-                    } else { // 不一致
-                        flag = false;
-                        break;
-                    }
-                }
-            }
-        }
-
-        return flag;
-    }*/
 
     private boolean hasProduct(String code) {
         BisProduct product = this.mapper.getProducByCode(code);
