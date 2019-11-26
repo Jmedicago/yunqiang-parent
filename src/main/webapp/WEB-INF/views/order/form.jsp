@@ -42,7 +42,7 @@
 <script type="text/javascript">
     function skuMainPicFormatter(value) {
         if (value) {
-            return '<img style="display: block" height="38" width="38" src="' + value + '"/>';
+            return '<img onclick="MXF.showImageDialog(this.src)" style="display: block" height="38" width="38" src="' + value + '"/>';
         }
         return '';
     }

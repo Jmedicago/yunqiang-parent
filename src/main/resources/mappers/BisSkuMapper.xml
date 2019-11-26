@@ -4,7 +4,7 @@
 
     <sql id="Base_Column_List">
         id, productId, skuCode, skuName, pack, volume, costPrice, marketPrice, profit, supplier, container, availableStock, frozenStock, pushStockTime, skuProperties,
-        skuMainPic, createTime, updateTime, remark
+        skuMainPic, keyword, createTime, updateTime, remark
     </sql>
 
     <delete id="delete" parameterType="java.lang.Long">
@@ -19,7 +19,7 @@
         insert into t_bis_sku (
         productId, skuCode, skuName, pack, volume, costPrice, marketPrice, profit, supplier, container, availableStock,
         frozenStock, pushStockTime, skuProperties,
-        skuMainPic, createTime, updateTime, remark
+        skuMainPic, keyword, createTime, updateTime, remark
         )
         values (
         #{productId, jdbcType=BIGINT}, #{skuCode, jdbcType=VARCHAR}, #{skuName, jdbcType=VARCHAR},
@@ -27,7 +27,7 @@
         #{costPrice, jdbcType=DOUBLE}, #{marketPrice, jdbcType=DOUBLE}, #{profit, jdbcType=DOUBLE},
         #{supplier, jdbcType=VARCHAR}, #{container, jdbcType=VARCHAR},
         #{availableStock, jdbcType=INTEGER}, #{frozenStock, jdbcType=INTEGER}, #{pushStockTime, jdbcType=BIGINT},
-        #{skuProperties, jdbcType=VARCHAR}, #{skuMainPic, jdbcType=VARCHAR},
+        #{skuProperties, jdbcType=VARCHAR}, #{skuMainPic, jdbcType=VARCHAR}, #{keyword, jdbcType=VARCHAR},
         #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, #{remark, jdbcType=VARCHAR}
         )
     </insert>
@@ -82,6 +82,9 @@
             </if>
             <if test="skuMainPic != null">
                 skuMainPic,
+            </if>
+            <if test="keyword != null">
+                keyword,
             </if>
             <if test="createTime != null">
                 createTime,
@@ -138,6 +141,9 @@
             </if>
             <if test="skuMainPic != null">
                 #{skuMainPic, jdbcType=VARCHAR},
+            </if>
+            <if test="keyword != null">
+                #{keyword, jdbcType=VARCHAR},
             </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=BIGINT},
@@ -199,6 +205,9 @@
             <if test="skuMainPic != null">
                 skuMainPic = #{skuMainPic, jdbcType=VARCHAR},
             </if>
+            <if test="keyword != null">
+                keyword = #{keyword, jdbcType=VARCHAR},
+            </if>
             <if test="createTime != null">
                 createTime = #{createTime,jdbcType=BIGINT},
             </if>
@@ -219,15 +228,17 @@
             costPrice = #{costPrice, jdbcType=DOUBLE}, marketPrice = #{marketPrice, jdbcType=DOUBLE}, profit = #{profit, jdbcType=DOUBLE},
             supplier = #{supplier, jdbcType=VARCHAR}, container = #{container, jdbcType=VARCHAR},
             availableStock = #{availableStock, jdbcType=INTEGER}, frozenStock = #{frozenStock, jdbcType=INTEGER}, pushStockTime = #{pushStockTime, jdbcType=BIGINT},
-            skuProperties = #{skuProperties, jdbcType=VARCHAR}, skuMainPic = #{skuMainPic, jdbcType=VARCHAR},
+            skuProperties = #{skuProperties, jdbcType=VARCHAR}, skuMainPic = #{skuMainPic, jdbcType=VARCHAR}, keyword = #{keyword, jdbcType=VARCHAR},
             createTime = #{createTime,jdbcType=BIGINT}, updateTime = #{updateTime,jdbcType=BIGINT}, remark = #{remark, jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
     <sql id="whereSql">
         <where>
+            <if test="keyword != null and keyword != ''">and tbs.keyword like CONCAT('%', #{keyword}, '%')</if>
+            <if test="code != null and code != ''">and tbp.code like CONCAT('%', #{code}, '%')</if>
             <if test="name != null and name != ''">and tbp.name like CONCAT('%', #{name}, '%')</if>
-            <if test="productType != null">and tbpt.path like CONCAT('%', #{productType}, '%')</if>
+            <if test="productType != null and productType != ''">and tbpt.path like CONCAT('%', #{productType}, '%')</if>
         </where>
     </sql>
 
@@ -320,5 +331,32 @@
     <select id="selectByProperties" parameterType="java.lang.String" resultType="com.vgit.yunqiang.pojo.BisSku">
         select * from t_bis_sku where skuCode = #{skuCode} and skuProperties = #{skuProperties}
     </select>
+
+    <sql id="esWhereSql">
+        <where>
+            <if test="keyword != null and keyword != ''">and s.keyword like CONCAT('%', #{keyword}, '%')</if>
+        </where>
+    </sql>
+
+    <select id="esTotal" parameterType="java.lang.String" resultType="int">
+        select count(0) FROM t_bis_sku s
+        LEFT JOIN t_bis_product p ON s.productId = p.id
+        LEFT JOIN t_bis_product_type pt ON pt.id = p.productType
+        <include refid="esWhereSql"/>
+    </select>
+
+    <select id="es" parameterType="java.lang.String" resultType="com.vgit.yunqiang.model.ProductModel">
+        SELECT s.id, p.name, p.productType, pt.path, p.code, s.pack, s.volume, s.costPrice, s.marketPrice, s.profit, s.supplier, s.container, s.availableStock, s.frozenStock, s.pushStockTime, s.skuProperties,
+        s.skuMainPic FROM t_bis_sku s
+        LEFT JOIN t_bis_product p ON s.productId = p.id
+        LEFT JOIN t_bis_product_type pt ON pt.id = p.productType
+        <include refid="esWhereSql"/>
+        limit #{start}, #{rows}
+    </select>
+
+    <delete id="delByProductIds" parameterType="java.lang.Long">
+        delete from t_bis_sku
+        where productId = #{productId, jdbcType=BIGINT}
+    </delete>
 
 </mapper>

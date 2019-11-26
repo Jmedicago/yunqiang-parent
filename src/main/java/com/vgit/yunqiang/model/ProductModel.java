@@ -1,21 +1,19 @@
-package com.vgit.yunqiang.pojo;
+package com.vgit.yunqiang.model;
 
-import com.vgit.yunqiang.pojo.base.BasePojo;
+import com.vgit.yunqiang.service.format.ProductTypeFormat;
+import com.vgit.yunqiang.service.format.PropertyFormat;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class BisSku extends BasePojo {
+public class ProductModel {
 
     private Long id;
 
-    private Long productId;
+    private String name;
 
-    // SKU编码
-    private String skuCode;
+    private Long productType;
 
-    // SKU规格名称
-    private String skuName;
+    private String path;
+
+    private String code;
 
     // 包装形态 （双/件）
     private Integer pack;
@@ -53,14 +51,6 @@ public class BisSku extends BasePojo {
     // 预览图
     private String skuMainPic;
 
-    // 关键字
-    private String keyword;
-
-    /**
-     * Sku的属性值列表
-     */
-    private List<BisSkuProperty> skuPropertyList = new ArrayList<>();
-
     public Long getId() {
         return id;
     }
@@ -69,28 +59,36 @@ public class BisSku extends BasePojo {
         this.id = id;
     }
 
-    public Long getProductId() {
-        return productId;
+    public String getName() {
+        return name;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getSkuCode() {
-        return skuCode;
+    public Long getProductType() {
+        return productType;
     }
 
-    public void setSkuCode(String skuCode) {
-        this.skuCode = skuCode;
+    public void setProductType(Long productType) {
+        this.productType = productType;
     }
 
-    public String getSkuName() {
-        return skuName;
+    public String getPath() {
+        return ProductTypeFormat.getProductTypePath(productType);
     }
 
-    public void setSkuName(String skuName) {
-        this.skuName = skuName;
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public Integer getPack() {
@@ -174,7 +172,7 @@ public class BisSku extends BasePojo {
     }
 
     public String getSkuProperties() {
-        return skuProperties;
+        return PropertyFormat.formatterProperties(skuProperties);
     }
 
     public void setSkuProperties(String skuProperties) {
@@ -189,29 +187,13 @@ public class BisSku extends BasePojo {
         this.skuMainPic = skuMainPic;
     }
 
-    public String getKeyword() {
-        return keyword;
-    }
-
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
-
-    public List<BisSkuProperty> getSkuPropertyList() {
-        return skuPropertyList;
-    }
-
-    public void setSkuPropertyList(List<BisSkuProperty> skuPropertyList) {
-        this.skuPropertyList = skuPropertyList;
-    }
-
     @Override
     public String toString() {
-        return "BisSku{" +
-                "id=" + id +
-                ", productId=" + productId +
-                ", skuCode='" + skuCode + '\'' +
-                ", skuName='" + skuName + '\'' +
+        return "ProductModel{" +
+                "name='" + name + '\'' +
+                ", productType=" + productType +
+                ", path='" + path + '\'' +
+                ", code='" + code + '\'' +
                 ", pack=" + pack +
                 ", volume=" + volume +
                 ", costPrice=" + costPrice +

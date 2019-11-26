@@ -11,6 +11,7 @@ import com.vgit.yunqiang.mapper.BisProductMapper;
 import com.vgit.yunqiang.mapper.BisSkuMapper;
 import com.vgit.yunqiang.pojo.*;
 import com.vgit.yunqiang.service.*;
+import com.vgit.yunqiang.service.format.ProductTypeFormat;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.PictureData;
@@ -105,6 +106,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
         for (int i = 0; i < idArr.length; i++) {
             Long id = Long.valueOf(idArr[i]);
             this.mapper.delete(id);
+            this.skuMapper.delByProductIds(id);
             idLongs[i] = id;
         }
     }
@@ -151,7 +153,11 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
         }
 
         if (null != sku.getId()) {
+            double profit = (sku.getMarketPrice() - sku.getCostPrice()) / sku.getMarketPrice();
+            sku.setProfit(profit * 100);
             sku.setUpdateTime(System.currentTimeMillis());
+            // 生成SEO关键字
+            this.setKeyword(sku);
             this.skuMapper.updatePart(sku);
         } else {
             // 新增
@@ -181,9 +187,16 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
             if (null == sku.getFrozenStock()) {
                 sku.setFrozenStock(0);
             }
+            // 计算利润
+            double profit = (sku.getMarketPrice() - sku.getCostPrice()) / sku.getMarketPrice();
+            sku.setProfit(profit * 100);
+
             sku.setPushStockTime(System.currentTimeMillis());
             sku.setCreateTime(System.currentTimeMillis());
             sku.setUpdateTime(System.currentTimeMillis());
+
+            // 生成SEO关键字
+            this.setKeyword(sku);
             this.skuMapper.save(sku);
         }
 
@@ -192,13 +205,29 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
             skuProperty.setSkuId(sku.getId());
         }
 
-        this.skuMapper.deleteProperties(sku.getId());
-        this.skuMapper.saveProperties(skuPropertyList);
+        if (skuPropertyList != null && skuPropertyList.size() > 0) {
+            this.skuMapper.deleteProperties(sku.getId());
+            this.skuMapper.saveProperties(skuPropertyList);
+        }
+
     }
 
     @Override
     public BisSku getSku(Long id) {
         return this.skuMapper.get(id);
+    }
+
+    private BisSku setKeyword(BisSku sku) {
+        StringBuffer sb = new StringBuffer();
+        sb.append(sku.toString());
+
+        BisProduct product = this.mapper.get(sku.getProductId());
+        sb.append(product.toString());
+
+        sb.append(ProductTypeFormat.getProductTypePath(product.getProductType()));
+
+        sku.setKeyword(sb.toString());
+        return sku;
     }
 
     @Override
@@ -390,6 +419,11 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                             bisSku.setSkuCode(product.getCode());
                             bisSku.setSkuName(product.getName());
                             bisSku.setPushStockTime(System.currentTimeMillis());
+                            // 计算利润
+                            double profit = (bisSku.getMarketPrice() - bisSku.getCostPrice()) / bisSku.getMarketPrice();
+                            bisSku.setProfit(profit * 100);
+                            // 生成SEO关键字
+                            this.setKeyword(bisSku);
                             this.saveSku(bisSku);
                         }
                     }
@@ -397,6 +431,11 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                     this.saveOrUpdateProduct(bisProduct);
                     bisSku.setProductId(bisProduct.getId());
                     bisSku.setPushStockTime(System.currentTimeMillis());
+                    // 计算利润
+                    double profit = (bisSku.getMarketPrice() - bisSku.getCostPrice()) / bisSku.getMarketPrice();
+                    bisSku.setProfit(profit * 100);
+                    // 生成SEO关键字
+                    this.setKeyword(bisSku);
                     this.saveSku(bisSku);
                 }
                 this.mapper.delProductByName("newNode");
@@ -414,6 +453,8 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
         if (sku != null) { // 是同一商品
             sku.setAvailableStock(sku.getAvailableStock() + bisSku.getAvailableStock());
             sku.setUpdateTime(System.currentTimeMillis());
+            // 生成SEO关键字
+            this.setKeyword(bisSku);
             this.skuMapper.updatePart(sku);
             return true;
         } else {

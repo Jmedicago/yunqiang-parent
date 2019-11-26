@@ -3,22 +3,22 @@
          pageEncoding="UTF-8" %>
 <div class="tab-wrap">
     <div class="tableGroup">
-        <table id="productGrid" class="easyui-datagrid" title="<spring:message code="mu.pt.info"/>"
-               data-options="rownumbers:true,fit:true,method:'get',
+        <table id="product2Grid" class="easyui-datagrid" title="<spring:message code="mu.pt.info"/>"
+               data-options="view:detailview,detailFormatter:detailFormatter,onExpandRow:onExpandRow,rownumbers:true,fit:true,method:'get',
 				pagination:true,pageSize:10,striped:true,singleSelect:false,
-				toolbar:'#productTB',url:'/product/json'">
+				toolbar:'#product2TB',url:'/product2/json'">
             <thead>
             <tr>
-                <th data-options="field:'id',checkbox:true"></th>
+                <%--<th data-options="field:'id',checkbox:true"></th>--%>
                 <th data-options="field:'code',width:120,halign:'center',align:'center'"><spring:message code="product.code"/></th>
-                <th data-options="field:'name',halign:'center',align:'center',width:150"><spring:message code="product.name"/></th>
+                <%--<th data-options="field:'name',width:200"><spring:message code="product.name"/></th>--%>
                 <%--<th data-options="field:'state',width:80, formatter:productStateFormatter"><spring:message
                         code="product.state"/></th>--%>
-               <%-- <th data-options="field:'productMedia',width:80,halign:'center',align:'center',formatter:productMediaFormatter"><spring:message
-                        code="product.resources"/></th>--%>
-                <%--<th data-options="field:'stockName',width:80,halign:'center',align:'center',formatter:productStockFormatter"><spring:message
-                        code="product.stock"/></th>--%>
-                <th data-options="field:'typeName',width:150,halign:'center',align:'center'"><spring:message
+                <th data-options="field:'productMedia',width:80,halign:'center',align:'center',formatter:productMediaFormatter"><spring:message
+                        code="product.resources"/></th>
+                <th data-options="field:'stockName',width:80,halign:'center',align:'center',formatter:productStockFormatter"><spring:message
+                        code="product.stock"/></th>
+                <th data-options="field:'typeName',width:80,halign:'center',align:'center'"><spring:message
                         code="product.type.name"/></th>
                 <th data-options="field:'createTime',width:150,halign:'center',align:'center',formatter:MXF.dateTimeFormatter"><spring:message
                         code="common.createTime"/></th>
@@ -27,7 +27,7 @@
             </tr>
             </thead>
         </table>
-        <div id="productTB">
+        <div id="product2TB">
             <div>
                 <a href="#" data-cmd="add" height="620" title="<spring:message code="common.add"/>" remote="false"
                    class="easyui-linkbutton" iconCls="icon-add" plain="true">
@@ -63,13 +63,11 @@
             </div>
             <div class="searchForm">
                 <form>
-                    <spring:message code="product.code"/>：
-                    <input class="easyui-textbox theme-textbox-radius" name="code" style="width:200px;">&nbsp;
                     <spring:message code="product.info.name"/>：
                     <input class="easyui-textbox theme-textbox-radius" name="name" style="width:200px;">&nbsp;
                     <spring:message code="product.info.type"/>：
                     <input class="easyui-combotree theme-textbox-radius" name="productType"
-                           data-options="url:'/product-type/json',method:'get',onChange:onProductTypeChange" style="width:200px;">
+                           data-options="url:'/product-type/json',method:'get'" style="width:200px;">
                     <a href="javascript:;" data-cmd="search" class="easyui-linkbutton button-default">
                         <spring:message code="common.search"/>
                     </a>
@@ -82,13 +80,14 @@
     </div>
 </div>
 
+<script type="text/javascript" src="/easyui/datagrid-detailview.js"></script>
 <script>
     $(function () {
         MXF.getTabContentHeight();
     });
-    
+
     function productMediaFormatter(value) {
-        return "<img onclick='MXF.showImageDialog(this.src)' height='35' width='35' src='" + value +"'/>";
+        return "<img height='35' width='35' src='" + value +"'/>";
     }
 
     function productStateFormatter(value) {
@@ -99,37 +98,33 @@
         }
         return '';
     }
-    
+
     function productStockFormatter(val, row) {
         console.log(row);
         return val;
     }
-    
+
     function optionFormatter(val, row) {
         var a = "<a href='#' onClick='showSku("+ row.id +")'><i class='iconfont'>&#xe6cb;</i><span style='margin-left: 5px;'><spring:message code='product.info.tools.sku'/></span></a>";
         return a;
     }
-
-    /*function showSku(clickTarget) {
-        if ($(clickTarget).hasClass('l-btn-disabled')) return;
-        var row = $('#productGrid').datagrid('getSelected');
-        var name = row.name || 'SKU管理';
-        var editWindow = $('<div id="skuWindow"></div>');
-        editWindow.appendTo('body');
-        $(editWindow).window({
-            title: name,
-            modal: true,
-            maximized: true,
-            href: '/product/skus?id=' + row.id,
-            onLoad: function () {
-                //var $form = editWindow.find('form');
-                //$form.data('window',editWindow);
-            },
-            onClose: function () {
-                editWindow.window('destroy');
+    
+    function detailFormatter(index, row) {
+        return '<div class="ddv" style="padding:10px 0"></div>';
+    }
+    
+    function onExpandRow(index,row) {
+        var ddv = $(this).datagrid('getRowDetail',index).find('div.ddv');
+        ddv.panel({
+            border:false,
+            cache:false,
+            href:'datagrid21_getdetail.php?itemid='+row.itemid,
+            onLoad:function(){
+                $('#dg').datagrid('fixDetailRowHeight',index);
             }
         });
-    }*/
+        $('#dg').datagrid('fixDetailRowHeight',index);
+    }
 
     function showSku(id) {
         var editWindow = $('<div id="skuWindow"></div>');
@@ -168,13 +163,13 @@
                     $.post('/product/batch', {excelUrl: url}, function (data) {
                         MXF.ajaxing(false);
                         MXF.alert("导入成功！");
-                        $('#productGrid').datagrid('reload');
+                        $('#product2Grid').datagrid('reload');
                     });
                 }
             });
         });
     }
-    
+
     function toPage() {
         var tabs = $("#tabs");
         var uri = '/product-view';
@@ -190,10 +185,6 @@
                 bodyCls: "content"
             });
         }
-    }
-    
-    function onProductTypeChange() {
-        commonCmd.search($("#productGrid"));
     }
 
 </script>

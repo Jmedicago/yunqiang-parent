@@ -489,6 +489,15 @@ MXF.getParamObj = function ($form) {
     return params;
 }
 
+MXF.showImageDialog = function (e) {
+    var large = '<img width="596px" height="453px" src=' + e + '></img>';
+    $("#imageLarge").html(large).animate({
+        height: '30%',
+        width: '30%'
+    }, 1);
+    $("#globalImageDialog").dialog("open").dialog("setTitle", "图片展示");
+}
+
 MXF.commonFormatter = function (value, row, index) {
     if (null == value) {
         return '';

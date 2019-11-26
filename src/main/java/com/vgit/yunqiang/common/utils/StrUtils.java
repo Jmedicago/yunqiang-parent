@@ -1,6 +1,7 @@
 package com.vgit.yunqiang.common.utils;
 
 import com.vgit.yunqiang.common.utils.encrypt.MD5;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Random;
 
@@ -45,6 +46,9 @@ public class StrUtils {
     }
 
     public static String convertPropertiesToHtml(String properties) {
+        if (StringUtils.isBlank(properties)) {
+            return "";
+        }
         StringBuilder sBuilder = new StringBuilder();
         String[] propArr = properties.split("_");
         for (String props : propArr) {

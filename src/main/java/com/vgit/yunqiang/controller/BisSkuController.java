@@ -1,8 +1,12 @@
 package com.vgit.yunqiang.controller;
 
-import com.vgit.yunqiang.common.query.ProductQuery;
+import com.vgit.yunqiang.common.query.ProductModelQuery;
+import com.vgit.yunqiang.common.query.SkuQuery;
 import com.vgit.yunqiang.common.utils.Page;
+import com.vgit.yunqiang.common.utils.Ret;
+import com.vgit.yunqiang.common.utils.StrUtils;
 import com.vgit.yunqiang.controller.consts.ControllerConsts;
+import com.vgit.yunqiang.model.ProductModel;
 import com.vgit.yunqiang.pojo.BisSku;
 import com.vgit.yunqiang.service.BisSkuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +25,24 @@ public class BisSkuController {
 
     @RequestMapping(ControllerConsts.URL_JSON)
     @ResponseBody
-    public Page<BisSku> json(ProductQuery query) {
+    public Page<BisSku> json(SkuQuery query) {
         return this.bisSkuService.queryPage(query);
+    }
+
+    @RequestMapping("/es")
+    @ResponseBody
+    public Page<ProductModel> es(ProductModelQuery query) {
+        return this.bisSkuService.es(query);
+    }
+
+    @RequestMapping(ControllerConsts.URL_DELETE)
+    @ResponseBody
+    public Ret delete(String id) {
+        Long[] ids = StrUtils.splitToLong(id);
+        for (Long cid : ids) {
+            this.bisSkuService.delete(cid);
+        }
+        return Ret.me();
     }
 
 }

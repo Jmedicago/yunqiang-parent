@@ -4,6 +4,7 @@ import com.vgit.yunqiang.common.consts.ICodes;
 import com.vgit.yunqiang.common.service.TreeGridService;
 import com.vgit.yunqiang.common.service.impl.TreeGridServiceImpl;
 import com.vgit.yunqiang.common.utils.Ret;
+import com.vgit.yunqiang.pojo.BisProductType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,11 +51,32 @@ public class BisStockServiceImpl extends TreeGridServiceImpl<BisStock> implement
         if (stock.getId() == null) {
             stock.setCreateTime(System.currentTimeMillis());
             this.mapper.savePart(stock);
+            this.handleSave(stock);
+            this.mapper.updatePart(stock);
         } else {
             stock.setUpdateTime(System.currentTimeMillis());
+            this.handleSave(stock);
             this.mapper.updatePart(stock);
         }
         return stock;
+    }
+
+    /**
+     * 存储修改分类前进行预处理数据
+     *
+     * @param o
+     */
+    private void handleSave(BisStock o) {
+        Long id = o.getId();
+        Long pid = o.getParentId();
+        String path = "";
+        if (pid == null || 0 == pid) { // 一级分类
+            path = "." + id + ".";
+        } else { // 子类
+            BisStock stock = this.get(pid);
+            path = stock.getPath() + id + ".";
+        }
+        o.setPath(path);
     }
 
     @Override

@@ -13,5 +13,11 @@
             </ul>
         </div>
     </c:forEach>
+
+    <%--<div title="测试菜单"/>--%>
+        <%--<ul class="easyui-datalist" data-options="border:false,fit:true">--%>
+            <%--<li><a href="javascript:" uri="/product2">测试商品列表</a></li>--%>
+        <%--</ul>--%>
+    <%--</div>--%>
 </div>
 <!--end easyui-accordion-->

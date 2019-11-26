@@ -16,11 +16,9 @@ import com.vgit.yunqiang.common.utils.IDUtils;
 import com.vgit.yunqiang.common.utils.Page;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.mapper.BisOrderMapper;
-import com.vgit.yunqiang.pojo.BisCart;
-import com.vgit.yunqiang.pojo.BisOrder;
-import com.vgit.yunqiang.pojo.BisOrderDetail;
-import com.vgit.yunqiang.pojo.BisSku;
+import com.vgit.yunqiang.pojo.*;
 import com.vgit.yunqiang.service.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +39,9 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
 
     @Autowired
     private BisProductService bisProductService;
+
+    @Autowired
+    private SysUserService sysUserService;
 
     @Autowired
     private BisSkuService bisSkuService;
@@ -68,14 +69,29 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
             if (bisCart.getSelected() == BooleanConsts.YES) {
                 // 当前SKU
                 BisSku sku = bisCart.getSku();
-                // 当前可用库存
+
+                // 检查权属
+                Long userId = formOrder.getUserId();
+                SysUser sysUser = this.sysUserService.get(userId);
+                if (sysUser != null) {
+                    String stockIds = sysUser.getStockIds();
+                    // 购买数量
+                    Integer amount = bisCart.getAmount();
+                    try {
+                        this.bisSkuService.checkStock(stockIds, sku, amount);
+                    } catch (BisException e) {
+                        return Ret.me().setSuccess(false).setCode(e.getCode()).setInfo(e.getInfo());
+                    }
+                }
+
+                /*// 当前可用库存
                 Integer availableStock = sku.getAvailableStock();
                 // 购买数量
                 Integer amount = bisCart.getAmount();
                 // 库存不足
                 if (amount > availableStock) {
-                    return Ret.me().setSuccess(false).setCode(SysUserMsgConsts.ORDER_STOCK_NOT_ENOUGH);
-                }
+
+                }*/
                 // 库存充足，扣除库存
                 /*sku.setAvailableStock(sku.getAvailableStock() - amount);
                 sku.setFrozenStock(sku.getFrozenStock() + amount);
@@ -87,10 +103,12 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
                 // 获取摘要
                 digest.append(bisCart.getName());
                 String skuProperties = bisCart.getSkuProperties();
-                String[] propArr = skuProperties.split("_");
-                for (String props : propArr) {
-                    String[] propValueArr = props.split(":");
-                    digest.append("-").append(propValueArr[3]);
+                if (StringUtils.isNotBlank(skuProperties)) {
+                    String[] propArr = skuProperties.split("_");
+                    for (String props : propArr) {
+                        String[] propValueArr = props.split(":");
+                        digest.append("-").append(propValueArr[3]);
+                    }
                 }
                 digest.append("×").append(bisCart.getAmount()).append(",");
             }
@@ -237,14 +255,21 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
             if (page != null) {
                 for (BisOrderDetail orderDetail : page.getRows()) {
                     BisSku bisSku = this.bisSkuService.get(orderDetail.getSkuId());
-                    // 库存不足
+
+                    String stockId = String.valueOf(bisOrder.getStockId());
+                    try {
+                        this.bisSkuService.reduceStock(stockId, bisSku, orderDetail.getAmount());
+                    } catch (BisException e) {
+                        return Ret.me().setSuccess(false).setCode(e.getCode()).setInfo(e.getInfo());
+                    }
+                    /*// 库存不足
                     if (orderDetail.getAmount() > bisSku.getAvailableStock()) {
                         return Ret.me().setSuccess(false).setCode(SysUserMsgConsts.ORDER_STOCK_NOT_ENOUGH);
                     }
                     // 库存充足，扣除库存
                     bisSku.setAvailableStock(bisSku.getAvailableStock() - orderDetail.getAmount());
                     bisSku.setFrozenStock(bisSku.getFrozenStock() + orderDetail.getAmount());
-                    this.bisSkuService.updatePart(bisSku);
+                    this.bisSkuService.updatePart(bisSku);*/
                 }
             }
             bisOrder.setStatus((int) OrderStateConsts.WAIT_SHIP_SEND);

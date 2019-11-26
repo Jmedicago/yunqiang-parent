@@ -14,13 +14,19 @@
                            striped: true,
                            singleSelect: false,
                            toolbar: '#stockOutTB',
-                           url: '/sku/json'">
+                           url: '/sku/es'"> <!-- /sku/json -->
                     <thead>
                     <tr>
                         <th data-options="field: 'id', checkbox:true"></th>
-                        <th data-options="field: 'skuName', width:100, halign: 'center', align: 'center'"><spring:message code="st.out.product"/></th>
+                        <th data-options="field:'path',width:150,halign:'center',align:'center'"><spring:message
+                                code="product.type.name"/></th>
+                        <%--<th data-options="field: 'skuName', width:100, halign: 'center', align: 'center'"><spring:message code="st.out.product"/></th>--%>
                         <th data-options="field: 'skuMainPic', width: 50, halign: 'center', align: 'center', formatter: skuMainPicFormatter">
                             <spring:message code="sku.skuMainPic"/></th>
+                        <th data-options="field:'name',width:150,halign:'center',align:'center'"><spring:message
+                                code="product.name"/></th>
+                        <th data-options="field:'code',width:150,halign:'center',align:'center'"><spring:message
+                                code="product.code"/></th>
                         <th data-options="field: 'skuProperties', width:150, halign: 'center', align: 'left'"><spring:message code="st.out.property"/></th>
                         <th data-options="field: 'pack', width:100, halign: 'center', align: 'center'"><spring:message
                                 code="sku.pack"/></th>
@@ -58,11 +64,13 @@
                     </div>
                     <div class="searchForm">
                         <form>
-                            <spring:message code="product.info.name"/>：
+                            关键字：
+                            <input class="easyui-textbox theme-textbox-radius" name="keyword" style="width:200px;">&nbsp;
+                            <%--<spring:message code="product.info.name"/>：
                             <input class="easyui-textbox theme-textbox-radius" name="name" style="width:200px;">&nbsp;
                             <spring:message code="product.info.type"/>：
                             <input class="easyui-combotree theme-textbox-radius" name="productType"
-                                   data-options="url:'/product-type/json',method:'get'" style="width:200px;">
+                                   data-options="url:'/product-type/json',method:'get'" style="width:200px;">--%>
                             <a href="javascript:;" data-cmd="search" class="easyui-linkbutton button-default">
                                 <spring:message code="common.search"/>
                             </a>
@@ -205,7 +213,7 @@
 
     function skuMainPicFormatter(value) {
         if (value) {
-            return '<img style="display: block" height="38" width="38" src="' + value + '"/>';
+            return '<img onclick="MXF.showImageDialog(this.src)" style="display: block" height="38" width="38" src="' + value + '"/>';
         }
         return '';
     }

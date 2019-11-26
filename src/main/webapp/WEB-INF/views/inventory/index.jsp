@@ -12,13 +12,19 @@
                            striped: true,
                            singleSelect: false,
                            toolbar: '#inventoryTB',
-                           url: '/sku/json'">
+                           url: '/sku/es'"> <!-- /sku/json -->
             <thead>
             <tr>
                 <th data-options="field: 'id', checkbox:true"></th>
-                <th data-options="field: 'skuName', width:100, halign: 'center', align: 'center'"><spring:message code="st.out.product"/></th>
+                <th data-options="field:'path',width:150,halign:'center',align:'center'"><spring:message
+                        code="product.type.name"/></th>
+                <%--<th data-options="field: 'skuName', width:100, halign: 'center', align: 'center'"><spring:message code="st.out.product"/></th>--%>
                 <th data-options="field: 'skuMainPic', width: 50, halign: 'center', align: 'center', formatter: skuMainPicFormatter">
                     <spring:message code="sku.skuMainPic"/></th>
+                <th data-options="field:'name',width:150,halign:'center',align:'center'"><spring:message
+                        code="product.name"/></th>
+                <th data-options="field:'code',width:150,halign:'center',align:'center'"><spring:message
+                        code="product.code"/></th>
                 <th data-options="field: 'skuProperties', width:150, halign: 'center', align: 'left'"><spring:message code="st.out.property"/></th>
                 <th data-options="field: 'pack', width:100, halign: 'center', align: 'center'"><spring:message
                         code="sku.pack"/></th>
@@ -54,13 +60,21 @@
                     <spring:message code="st.out.view.assess"/>
                 </a>
             </div>--%>
-            <div class="searchForm" style="border: unset; margin: 0; padding: 5px 5px">
+            <div>
+                <a href="#" data-cmd="del" mustsel msg="<spring:message code="message.delete"/>" data-options="disabled:true" class="easyui-linkbutton"
+                   iconCls="icon-remove" plain="true">
+                    <spring:message code="common.delete"/>
+                </a>
+            </div>
+            <div class="searchForm"> <!-- style="border: unset; margin: 0; padding: 5px 5px" -->
                 <form>
-                    <spring:message code="product.info.name"/>：
+                    <%--<spring:message code="product.info.name"/>：
                     <input class="easyui-textbox theme-textbox-radius" name="name" style="width:200px;">&nbsp;
                     <spring:message code="product.info.type"/>：
                     <input class="easyui-combotree theme-textbox-radius" name="productType"
-                           data-options="url:'/product-type/json',method:'get'" style="width:200px;">
+                           data-options="url:'/product-type/json',method:'get'" style="width:200px;">--%>
+                    关键字：
+                    <input class="easyui-textbox theme-textbox-radius" name="keyword" style="width:200px;">&nbsp;
                     <a href="javascript:;" data-cmd="search" class="easyui-linkbutton button-default">
                         <spring:message code="common.search"/>
                     </a>
@@ -96,6 +110,7 @@
     
     function availableStockFormatter(value, row, index) {
         row.index = index;
+        row.keyword = null;
         var obj = JSON.stringify(row);
         var a = "<a class='btn-d default' onclick='addInventoryAmount(" + obj + ")'><i style='border: 1px solid #ccc;' class='icon iconfont icon-cart-add'></i></a>";
         var i = "<input onchange='changeInventoryAmount(this, " + obj + ")' type='number' value='"+ value +"' style='width: 50px; text-align: center; height: 16px; margin-top: -5px; border-top: 1px solid #ccc; border-bottom: 1px solid #eee'>";

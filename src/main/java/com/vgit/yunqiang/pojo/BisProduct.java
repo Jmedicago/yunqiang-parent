@@ -12,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class BisProduct extends BasePojo implements Serializable {
 
-	@Autowired
-	private BisProductService bisProductService;
-
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
@@ -131,7 +128,7 @@ public class BisProduct extends BasePojo implements Serializable {
 	}
 
 	public String getTypeName() {
-		return ProductTypeFormat.getProductTypeName(productType);
+		return ProductTypeFormat.getProductTypePath(productType);
 	}
 
 	public String getStockName() {

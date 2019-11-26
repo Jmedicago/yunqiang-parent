@@ -161,16 +161,21 @@ public class BisProductController {
     @ResponseBody
     public Ret storeSku(BisSku sku, Long[] propId, String[] propName, Long[] optionId,
                         String[] optionValue) {
-        List<BisSkuProperty> skuPropertyList = new ArrayList<>();
-        for (int i = 0; i < propId.length; i++) {
-            BisSkuProperty skuProperty = new BisSkuProperty();
-            skuProperty.setPropId(propId[i]);
-            skuProperty.setPropName(propName[i]);
-            skuProperty.setOptionId(optionId[i]);
-            skuProperty.setValue(optionValue[i]);
-            skuPropertyList.add(skuProperty);
+
+        if (propId != null) {
+            List<BisSkuProperty> skuPropertyList = new ArrayList<>();
+            for (int i = 0; i < propId.length; i++) {
+                BisSkuProperty skuProperty = new BisSkuProperty();
+                skuProperty.setPropId(propId[i]);
+                skuProperty.setPropName(propName[i]);
+                skuProperty.setOptionId(optionId[i]);
+                skuProperty.setValue(optionValue[i]);
+                skuPropertyList.add(skuProperty);
+            }
+            sku.setSkuPropertyList(skuPropertyList);
         }
-        sku.setSkuPropertyList(skuPropertyList);
+
+
         sku.setMarketPrice(sku.getMarketPrice() * 100);
         sku.setCostPrice(sku.getCostPrice() * 100);
         this.bisProductService.saveSku(sku);

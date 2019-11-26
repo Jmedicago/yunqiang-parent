@@ -131,6 +131,13 @@
         </a>
     </div>
 </div>
+<!-- image Modal -->
+<div id="globalImageDialog" class="easyui-dialog"
+     style="width: 650px; height: 550px; padding: 10px 20px" closed="true"
+     buttons="#dialogImage-buttons">
+    <div id="imageLarge"></div>
+</div>
+
 <div id="globalAjaxing" class="globalPane">
     <div class="globalContent"><spring:message code="common.loading"/></div>
 </div>

@@ -3,40 +3,40 @@
          pageEncoding="UTF-8" %>
 <form method="post" action="/product/store">
     <input type="hidden" name="id"/>
-    <%--<div class="input-div">
+    <div class="input-div">
         <label class="label-top"><spring:message code="product.name"/></label>
         <input class="easyui-textbox theme-textbox-radius" name="name" data-options="required:true">
-    </div>--%>
+    </div>
     <div class="input-div">
         <label class="label-top"><spring:message code="product.productType"/></label>
         <input class="easyui-combotree theme-textbox-radius" name="productType"
                data-options="required: true, url: '/product-type/json', method: 'get', onChange: changeProductType">
     </div>
-    <div class="input-div">
+    <%--<div class="input-div">
         <label class="label-top"><spring:message code="product.stock"/></label>
         <input class="easyui-combotree theme-textbox-radius" name="stock"
                data-options="url: '/stock/json', editable: true, method: 'get'">
-    </div>
+    </div>--%>
     <div class="input-div">
         <label class="label-top"><spring:message code="product.code"/></label>
         <input id="code" class="easyui-textbox theme-textbox-radius" name="code" data-options="required:true"
                value="${bisProduct.code}">
     </div>
-    <div class="input-div">
+    <%--<div class="input-div">
         <label class="label-top"><spring:message code="product.resources"/></label>
         <div style="margin-left: 114px; margin-top: -30px;">
-           <%-- <a href="javascript:void(0)" class="easyui-linkbutton picFileUpload" style="background-color: #0c80d7; color: #fff;"><spring:message code="common.uploadImage"/></a>
-            <input type="hidden" name="resources" value="${resources}"/>--%>
+           &lt;%&ndash; <a href="javascript:void(0)" class="easyui-linkbutton picFileUpload" style="background-color: #0c80d7; color: #fff;"><spring:message code="common.uploadImage"/></a>
+            <input type="hidden" name="resources" value="${resources}"/>&ndash;%&gt;
             <a href="javascript:void(0)" class="easyui-linkbutton onePicUpload" style="background-color: #0c80d7; color: #fff;"><spring:message code="common.uploadImage"/></a>
             <input type="hidden" name="resources" value="${resources}"/>
         </div>
-    </div>
+    </div>--%>
     <div class="input-div">
         <label class="label-top"><spring:message code="product.properties"/></label>
         <select id="propertiesCombobox" class="easyui-combobox" name="properties"
-                data-options="required: true, valueField: 'id', textField: 'name', onLoadSuccess: initPropertiesValue,
+                data-options="editable: false,valueField: 'id', textField: 'name', onLoadSuccess: initPropertiesValue,
 			multiple: true, url: '/property/json?productType=${productType}'"
-                style="width:420px;">
+                style="width:420px;"><!--required: true,-->
         </select>
     </div>
     <div class="input-div">

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.vgit.yunqiang.service.BisOrderService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -90,10 +91,12 @@ public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> i
             // 获取摘要
             digest.append(detail.getName());
             String skuProperties = detail.getSkuProperties();
-            String[] propArr = skuProperties.split("_");
-            for (String props : propArr) {
-                String[] propValueArr = props.split(":");
-                digest.append("-").append(propValueArr[3]);
+            if (StringUtils.isNotBlank(skuProperties)) {
+                String[] propArr = skuProperties.split("_");
+                for (String props : propArr) {
+                    String[] propValueArr = props.split(":");
+                    digest.append("-").append(propValueArr[3]);
+                }
             }
             digest.append("×").append(detail.getAmount()).append(",");
         }

@@ -1,6 +1,8 @@
 package com.vgit.yunqiang.mapper;
 
+import com.vgit.yunqiang.common.query.base.BaseQuery;
 import com.vgit.yunqiang.common.service.BaseMapper;
+import com.vgit.yunqiang.model.ProductModel;
 import com.vgit.yunqiang.pojo.BisSku;
 import com.vgit.yunqiang.pojo.BisSkuProperty;
 import org.apache.ibatis.annotations.Param;
@@ -49,11 +51,11 @@ public interface BisSkuMapper extends BaseMapper<BisSku> {
 
     /**
      * 根据code查询商品SKU
-     * 
+     *
      * @param code
      * @return
      */
-	BisSku getSkuByCode(String code);
+    BisSku getSkuByCode(String code);
 
     /**
      * 根据商品ID查询SKU列表
@@ -61,7 +63,7 @@ public interface BisSkuMapper extends BaseMapper<BisSku> {
      * @param code
      * @return
      */
-	List<BisSku> getSkuListByCode(String code);
+    List<BisSku> getSkuListByCode(String code);
 
     /**
      * 修改SKU库存数量
@@ -80,4 +82,27 @@ public interface BisSkuMapper extends BaseMapper<BisSku> {
      * @return
      */
     BisSku selectByProperties(@Param("skuCode") String skuCode, @Param("skuProperties") String skuProperties);
+
+    /**
+     * ES 搜索
+     *
+     * @param query
+     * @return
+     */
+    List<ProductModel> es(BaseQuery query);
+
+    /**
+     * ES 搜索记录数
+     *
+     * @param query
+     * @return
+     */
+    int esTotal(BaseQuery query);
+
+    /**
+     * 根据商品ID删除
+     *
+     * @param productId
+     */
+    void delByProductIds(Long productId);
 }

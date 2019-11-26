@@ -74,10 +74,10 @@
                             <input class="easyui-textbox" name="marketPrice"
                                    style="width:200px;"/>
                         </td>
-                        <td><spring:message code="sku.profit"/>（%）</td>
+                        <td><%--<spring:message code="sku.profit"/>（%）--%></td>
                         <td>
-                            <input class="easyui-textbox" name="profit"
-                                   style="width:200px;"/>
+                            <%--<input class="easyui-textbox" name="profit"
+                                   style="width:200px;"/>--%>
                         </td>
                     </tr>
                     <tr>

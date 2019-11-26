@@ -58,19 +58,25 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
         // 检查商品库存数量
         BisSku curSku = this.bisSkuService.get(skuId);
         // 检查权属
-    	SysUser sysUser = this.sysUserService.get(userId);
+    	/*SysUser sysUser = this.sysUserService.get(userId);
     	if (sysUser != null) {
     		String stockId =  sysUser.getStockIds();
     		BisProduct bisProduct = bisProductService.get(curSku.getProductId());
     		if (bisProduct.getStock() != null && !stockId.equals(String.valueOf(bisProduct.getStock()))) {
     			throw new BisException().setInfo("您没有加入该 " + curSku.getSkuCode() + " " + curSku.getSkuName() + "的权限！");
     		}
-    	}
-        
-        
-        if (curSku.getAvailableStock() == 0) { // 库存不足
-            throw new BisException().setCode(BisProductMsgConsts.IN_A_SHORT_INVENTORY).setInfo(curSku.getSkuCode() + " " + curSku.getSkuName());
+    	}*/
+
+        SysUser sysUser = this.sysUserService.get(userId);
+        if (sysUser != null) {
+            String stockIds = sysUser.getStockIds();
+            this.bisSkuService.checkStock(stockIds, curSku);
         }
+        
+        /*if (curSku.getAvailableStock() == 0) { // 库存不足
+            throw new BisException().setCode(BisProductMsgConsts.IN_A_SHORT_INVENTORY).setInfo(curSku.getSkuCode() + " " + curSku.getSkuName());
+        }*/
+
         // 存在则增加数量
         if (null != existBisCart) {
             existBisCart.setAmount(existBisCart.getAmount() + number);
@@ -212,7 +218,9 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
         List<BisCart> cartList = this.getCarts(userId);
         for (BisCart bisCart : cartList) {
             String skuProperties = bisCart.getSkuProperties();
-            bisCart.setSkuProperties(StrUtils.convertPropertiesToHtml(skuProperties));
+            if (StringUtils.isNotBlank(skuProperties)) {
+                bisCart.setSkuProperties(StrUtils.convertPropertiesToHtml(skuProperties));
+            }
         }
         result.put("rows", cartList);
 

@@ -19,6 +19,10 @@ public class BisStock extends BasePojo implements Serializable {
 	
 	private Long parentId;
 
+	private String path;
+
+	private Integer type;
+
 	private String description;
 
 	private Integer status;
@@ -49,6 +53,22 @@ public class BisStock extends BasePojo implements Serializable {
 
 	public void setParentId(Long parentId) {
 		this.parentId = parentId;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
 	}
 
 	public String getDescription() {
