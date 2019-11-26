@@ -80,10 +80,17 @@ public interface BisCartMapper extends BaseMapper<BisCart> {
      * @param selected
      */
     void changeSelected(@Param("userId") Long userId, @Param("cartId") Long cartId, @Param("selected") Integer selected);
-    
+
     /**
      * 清空购物车
-     * 
      */
     void deleteAll(@Param("userId") Long userId);
+
+    /**
+     * 根据类目查询购物车数量
+     *
+     * @param productType
+     * @return
+     */
+    int getTotalByProductType(Long productType);
 }

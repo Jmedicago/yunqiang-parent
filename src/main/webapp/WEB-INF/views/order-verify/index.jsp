@@ -22,6 +22,7 @@
                 <th data-options="field: 'totalMoney', width: 100, formatter: MXF.priceFormatter"><spring:message code="order.price.total"/></th>
                 <th data-options="field: 'confirmTime', width: 130, formatter: MXF.dateTimeFormatter"><spring:message code="order.submit.time"/></th>
                 <th data-options="field: 'digest', width:200"><spring:message code="order.detail"/></th>
+                <th data-options="field: 'remark', width:200">备注</th>
             </tr>
             </thead>
         </table>

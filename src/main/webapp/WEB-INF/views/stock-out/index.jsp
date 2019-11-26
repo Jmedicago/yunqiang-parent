@@ -66,6 +66,9 @@
                         <form>
                             关键字：
                             <input class="easyui-textbox theme-textbox-radius" name="keyword" style="width:200px;">&nbsp;
+                            <spring:message code="product.info.type"/>：
+                            <input class="easyui-combotree theme-textbox-radius" name="productType"
+                                   data-options="url:'/product-type/json',method:'get'" style="width:200px;">
                             <%--<spring:message code="product.info.name"/>：
                             <input class="easyui-textbox theme-textbox-radius" name="name" style="width:200px;">&nbsp;
                             <spring:message code="product.info.type"/>：
@@ -145,8 +148,12 @@
                 </div>
             </div>
             <!-- 购物车统计 -->
-            <div class="cart statistics">
+            <div id="cartStatistics" class="cart statistics">
                 <div class="statistics-box">
+                    <div class="remark-box">
+                        <input class="easyui-textbox theme-textbox-radius" data-options="multiline:true, prompt: '备注：'" style="height:60px; width: 100%;"
+                               name="remark" value="${bisCart.remark}">
+                    </div>
                     <div class="statistics-group">
                         <label for="selectedGoodsTotalVolume"><spring:message code="st.out.volume.total"/>：</label>
                         <span id="selectedGoodsTotalVolume">N/A</span>
@@ -154,6 +161,22 @@
                     <div class="statistics-group">
                         <label for="selectedGoodsTotalPrice"><spring:message code="st.out.total"/>：</label>
                         <span id="selectedGoodsTotalPrice">N/A</span>
+                    </div>
+                    <div class="statistics-group">
+                        <label for="selectedGoodsTotalCount">总件数：</label>
+                        <span id="selectedGoodsTotalCount">N/A</span>件
+                    </div>
+                    <div class="statistics-group">
+                        <label for="selectedFactoryShoesTotalCount">工厂鞋：</label>
+                        <span id="selectedFactoryShoesTotalCount">N/A</span>件
+                    </div>
+                    <div class="statistics-group">
+                        <label for="selectedTradeShoesTotalCount">贸易鞋：</label>
+                        <span id="selectedTradeShoesTotalCount">N/A</span>件
+                    </div>
+                    <div class="statistics-group">
+                        <label for="selectedGMTotalCount">百货类：</label>
+                        <span id="selectedGMTotalCount">N/A</span>件
                     </div>
                 </div>
             </div>
@@ -168,26 +191,28 @@
 
     .cart.statistics .statistics-box {
         width: 520px;
-        height: 50px;
+        /*height: 50px;*/
+        height: 110px;
         background: #fff;
         border-top: 1px solid #eee;
     }
 
     .cart.statistics .statistics-box .statistics-group {
         display: inline-block;
-        height: 50px;
-        line-height: 50px;
+        height: 25px;
+        line-height: 25px;
     }
 
     .cart.statistics .statistics-box .statistics-group label {
         vertical-align: unset;
-        font-size: 16px;
-        font-weight: 600;
+        font-size: 14px;
+        /*font-weight: 600;*/
         margin-left: 15px;
+        color: #0c80d7;
     }
 
     .cart.statistics .statistics-box .statistics-group span {
-        font-size: 16px;
+        font-size: 14px;
     }
 
 </style>
@@ -198,7 +223,8 @@
 
         // 初始化购物车高度
         var cartHeight = $(document.body).height();
-        cartHeight = cartHeight - (89 + 89);
+        var remarkHeight = 60;
+        cartHeight = cartHeight - (89 + 89 + remarkHeight);
         $(".cart-table").css("height", cartHeight);
     });
 
@@ -314,10 +340,18 @@
         $('#selectedGoodsTotalVolume').text((data.selectedGoodsTotalVolume).toFixed(2));
         // 总计
         $('#selectedGoodsTotalPrice').text(MXF.priceFormatter(data.selectedGoodsTotalPrice)); // OSREC.CurrencyFormatter.format((data.selectedGoodsTotalPrice * 0.01).toFixed(2), {currency: 'MZN'})
+
+        $('#selectedGoodsTotalCount').text(data.selectedGoodsTotalCount);
+        $('#selectedFactoryShoesTotalCount').text(data.selectedFactoryShoesTotalCount);
+        $('#selectedTradeShoesTotalCount').text(data.selectedTradeShoesTotalCount);
+        $('#selectedGMTotalCount').text(data.selectedGMTotalCount);
+
     }
 
     function submitOrder() {
-        var data = {};
+        var data = {
+            remark: $('#cartStatistics input[name=remark]').val()
+        };
         MXF.ajaxing(true);
         $.post('/order/submit', data, function (data) {
             if (data.success) {

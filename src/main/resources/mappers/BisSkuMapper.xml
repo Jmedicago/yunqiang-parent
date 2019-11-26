@@ -335,6 +335,7 @@
     <sql id="esWhereSql">
         <where>
             <if test="keyword != null and keyword != ''">and s.keyword like CONCAT('%', #{keyword}, '%')</if>
+            <if test="productType != null and productType != ''">and pt.path like CONCAT('%', #{productType}, '%')</if>
         </where>
     </sql>
 

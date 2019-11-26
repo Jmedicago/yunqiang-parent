@@ -25,7 +25,8 @@
                         code="product.name"/></th>
                 <th data-options="field:'code',width:150,halign:'center',align:'center'"><spring:message
                         code="product.code"/></th>
-                <th data-options="field: 'skuProperties', width:150, halign: 'center', align: 'left'"><spring:message code="st.out.property"/></th>
+                <th data-options="field: 'skuProperties', width:150, halign: 'center', align: 'left'"><spring:message
+                        code="st.out.property"/></th>
                 <th data-options="field: 'pack', width:100, halign: 'center', align: 'center'"><spring:message
                         code="sku.pack"/></th>
                 <th data-options="field: 'volume', width:80, halign: 'center', align: 'center'"><spring:message
@@ -44,7 +45,8 @@
                     <spring:message code="sku.availableStock"/></th>
                 <th data-options="field: 'container', width:80, halign: 'center', align: 'center'">
                     <spring:message code="sku.container"/></th>
-                <th data-options="field: 'remark', width:100, halign: 'center', align: 'center'"><spring:message code="st.out.remark"/></th>
+                <th data-options="field: 'remark', width:100, halign: 'center', align: 'center'"><spring:message
+                        code="st.out.remark"/></th>
             </tr>
             </thead>
         </table>
@@ -61,7 +63,8 @@
                 </a>
             </div>--%>
             <div>
-                <a href="#" data-cmd="del" mustsel msg="<spring:message code="message.delete"/>" data-options="disabled:true" class="easyui-linkbutton"
+                <a href="#" data-cmd="del" mustsel msg="<spring:message code="message.delete"/>"
+                   data-options="disabled:true" class="easyui-linkbutton"
                    iconCls="icon-remove" plain="true">
                     <spring:message code="common.delete"/>
                 </a>
@@ -75,6 +78,9 @@
                            data-options="url:'/product-type/json',method:'get'" style="width:200px;">--%>
                     关键字：
                     <input class="easyui-textbox theme-textbox-radius" name="keyword" style="width:200px;">&nbsp;
+                    <spring:message code="product.info.type"/>：
+                    <input class="easyui-combotree theme-textbox-radius" name="productType"
+                           data-options="url:'/product-type/json',method:'get'" style="width:200px;">
                     <a href="javascript:;" data-cmd="search" class="easyui-linkbutton button-default">
                         <spring:message code="common.search"/>
                     </a>
@@ -107,13 +113,13 @@
         }
         return '';
     }
-    
+
     function availableStockFormatter(value, row, index) {
         row.index = index;
         row.keyword = null;
         var obj = JSON.stringify(row);
         var a = "<a class='btn-d default' onclick='addInventoryAmount(" + obj + ")'><i style='border: 1px solid #ccc;' class='icon iconfont icon-cart-add'></i></a>";
-        var i = "<input onchange='changeInventoryAmount(this, " + obj + ")' type='number' value='"+ value +"' style='width: 50px; text-align: center; height: 16px; margin-top: -5px; border-top: 1px solid #ccc; border-bottom: 1px solid #eee'>";
+        var i = "<input onchange='changeInventoryAmount(this, " + obj + ")' type='number' value='" + value + "' style='width: 50px; text-align: center; height: 16px; margin-top: -5px; border-top: 1px solid #ccc; border-bottom: 1px solid #eee'>";
         var d = "<a class='btn-d default' onclick='removeInventoryAmount(" + obj + ")'><i style='border: 1px solid #ccc;' class='icon iconfont icon-cart-remove'></i></a>";
         return d + i + a;
     }

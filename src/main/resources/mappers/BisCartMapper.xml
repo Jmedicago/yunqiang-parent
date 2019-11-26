@@ -203,4 +203,8 @@
         delete from t_bis_cart where userId = #{userId} and selected = 1
     </delete>
 
+    <select id="getTotalByProductType" parameterType="java.lang.Long" resultType="int">
+        SELECT SUM(c.amount) FROM t_bis_cart c, t_bis_product p WHERE c.productId = p.id AND p.productType IN (SELECT pt.id FROM t_bis_product_type pt WHERE path LIKE CONCAT('%',#{productType},'%'));
+    </select>
+
 </mapper>

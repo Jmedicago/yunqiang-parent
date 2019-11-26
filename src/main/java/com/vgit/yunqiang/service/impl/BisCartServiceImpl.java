@@ -187,6 +187,12 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
         int selectedGoodsNumber = 0;
         double selectedGoodsTotalVolume = 0;
         double selectedGoodsTotalPrice = 0;
+
+        int selectedGoodsTotalCount = 0;
+        int selectedFactoryShoesTotalCount = 0;
+        int selectedTradeShoesTotalCount = 0;
+        int selectedGMTotalCount = 0;
+
         if (null != cartList) {
             for (BisCart bisCart : cartList) {
                 goodsNumber += bisCart.getAmount();
@@ -197,6 +203,11 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
                     selectedGoodsTotalVolume += bisCart.getAmount() * bisCart.getSku().getVolume();
                     selectedGoodsTotalPrice += bisCart.getAmount() * bisCart.getSku().getCostPrice();
                 }
+
+                selectedGoodsTotalCount += bisCart.getAmount();
+                selectedFactoryShoesTotalCount = this.mapper.getTotalByProductType(1035L);
+                selectedTradeShoesTotalCount = this.mapper.getTotalByProductType(1010L);
+                selectedGMTotalCount = this.mapper.getTotalByProductType(1011L);
             }
         }
         result.put("goodsNumber", goodsNumber);
@@ -205,6 +216,13 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
         result.put("selectedGoodsNumber", selectedGoodsNumber);
         result.put("selectedGoodsTotalVolume", selectedGoodsTotalVolume);
         result.put("selectedGoodsTotalPrice", selectedGoodsTotalPrice);
+
+        // 新增
+        result.put("selectedGoodsTotalCount", selectedGoodsTotalCount);
+        result.put("selectedFactoryShoesTotalCount", selectedFactoryShoesTotalCount);
+        result.put("selectedTradeShoesTotalCount", selectedTradeShoesTotalCount);
+        result.put("selectedGMTotalCount", selectedGMTotalCount);
+
         return result;
     }
 

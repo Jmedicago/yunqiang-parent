@@ -23,6 +23,7 @@
                 <th data-options="field: 'confirmTime', width: 130, halign: 'center', align: 'center', formatter: MXF.dateTimeFormatter"><spring:message code="order.confirm.time"/></th>
                 <th data-options="field: 'commentStatus', width: 80, halign: 'center', align: 'center', formatter: commentStateFormatter"><spring:message code="order.comment.time"/></th>
                 <th data-options="field: 'digest', width:200"><spring:message code="order.detail"/></th>
+                <th data-options="field: 'remark', width:200">备注</th>
             </tr>
             </thead>
         </table>
