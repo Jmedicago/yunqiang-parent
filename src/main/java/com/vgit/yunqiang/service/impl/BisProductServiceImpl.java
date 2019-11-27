@@ -394,6 +394,11 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                             bisSku.setAvailableStock(Integer.valueOf(availableStock));
                         }
                     }
+                    if ("备注".equals(entry.getKey())) {
+                        if (StringUtils.isNotBlank(entry.getValue())) {
+                            bisSku.setRemark(entry.getValue());
+                        }
+                    }
                 }
                 // 保存商品信息
                 LOGGER.info("Excel导入的商品信息:{}", bisProduct.toString());

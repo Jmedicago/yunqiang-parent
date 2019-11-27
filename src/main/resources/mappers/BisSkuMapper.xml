@@ -391,7 +391,7 @@
 
     <select id="es" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery" resultType="com.vgit.yunqiang.model.ProductModel">
         SELECT s.id, p.name, p.productType, pt.path, p.code, s.pack, s.volume, s.costPrice, s.marketPrice, s.profit, s.supplier, s.container, s.availableStock, s.frozenStock, s.pushStockTime, s.skuProperties,
-        s.skuMainPic FROM t_bis_sku s
+        s.skuMainPic, s.remark FROM t_bis_sku s
         LEFT JOIN t_bis_product p ON s.productId = p.id
         LEFT JOIN t_bis_product_type pt ON pt.id = p.productType
         <include refid="esWhereSql"/>

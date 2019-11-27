@@ -45,7 +45,8 @@
                name="remark" value="${bisProduct.remark}">
     </div>
     <div class="input-div" style="margin: 35px 0; text-align: center">
-        <a class="easyui-linkbutton button-lg button-default" onclick="MXF.ajaxForm(this)"><spring:message code="common.submit"/></a>
+        <a class="easyui-linkbutton button-lg button-default" onclick="MXF.ajaxForm(this)"><spring:message
+                code="common.submit"/></a>
         <a class="easyui-linkbutton button-lg" onclick="MXF.clearForm(this)"><spring:message code="common.reset"/></a>
     </div>
 </form>
@@ -57,7 +58,16 @@
     }
 
     function changeProductType(newValue, oldValue) {
-        $('#propertiesCombobox').combobox('setValues', []);
+        //
+        $.get('/property/json?productType=' + newValue, function (data) {
+            var select = [];
+            for (var i = 0; i < data.length; i++) {
+                select.push(data[i].id);
+            }
+            $('#propertiesCombobox').combobox('setValues', select);
+        });
+
+        // $('#propertiesCombobox').combobox('setValues', []);
         $('#propertiesCombobox').combobox('reload', '/property/json?productType=' + newValue);
     }
 

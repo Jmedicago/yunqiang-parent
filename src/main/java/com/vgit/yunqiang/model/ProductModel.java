@@ -51,6 +51,8 @@ public class ProductModel {
     // 预览图
     private String skuMainPic;
 
+    private String remark;
+
     public Long getId() {
         return id;
     }
@@ -185,6 +187,14 @@ public class ProductModel {
 
     public void setSkuMainPic(String skuMainPic) {
         this.skuMainPic = skuMainPic;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     @Override

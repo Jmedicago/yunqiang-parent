@@ -6,7 +6,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <div style="padding:10px">
     <a href="#" onclick="addSku()" class="easyui-linkbutton" iconCls="icon-add"><spring:message code="sku.add"/></a>
-    <div id="editSkuDiv" style="display:none;border:solid 1px #ccc;border-radius:4px;padding:10px;margin-top:10px;overflow:hidden;background:#f9f9f9;">
+    <div id="editSkuDiv"
+         style="display:none;border:solid 1px #ccc;border-radius:4px;padding:10px;margin-top:10px;overflow:hidden;background:#f9f9f9;">
         <form id="skuForm" action="/product/storeSku" method="post">
             <input type="hidden" name="id"/>
             <input type="hidden" name="productId" value="${product.id}"/>
@@ -74,21 +75,31 @@
                             <input class="easyui-textbox" name="marketPrice"
                                    style="width:200px;"/>
                         </td>
-                        <td><%--<spring:message code="sku.profit"/>（%）--%></td>
+                        <%--<td>&lt;%&ndash;<spring:message code="sku.profit"/>（%）&ndash;%&gt;</td>
                         <td>
-                            <%--<input class="easyui-textbox" name="profit"
-                                   style="width:200px;"/>--%>
-                        </td>
-                    </tr>
-                    <tr>
+                            &lt;%&ndash;<input class="easyui-textbox" name="profit"
+                                   style="width:200px;"/>&ndash;%&gt;
+                        </td>--%>
                         <td><spring:message code="sku.supplier"/></td>
                         <td>
                             <input class="easyui-textbox" name="supplier"
                                    style="width:200px;"/>
                         </td>
+                    </tr>
+                    <tr>
+                        <%--<td><spring:message code="sku.supplier"/></td>
+                        <td>
+                            <input class="easyui-textbox" name="supplier"
+                                   style="width:200px;"/>
+                        </td>--%>
                         <td><spring:message code="sku.availableStock"/></td>
                         <td>
                             <input class="easyui-textbox" name="availableStock"
+                                   style="width:200px;"/>
+                        </td>
+                        <td>备注</td>
+                        <td>
+                            <input class="easyui-textbox" name="remark"
                                    style="width:200px;"/>
                         </td>
                         <td><%--<spring:message code="sku.frozenStock"/>--%></td>
@@ -100,11 +111,14 @@
                     <tr>
                         <td><spring:message code="sku.skuMainPic"/></td>
                         <td colspan="4" id="skuPicEditor">
-                            <a href="javascript:void(0)" class="easyui-linkbutton onePicUpload" style="background-color: #0c80d7; color: #fff;"><spring:message code="common.uploadImage"/></a>
+                            <a href="javascript:void(0)" class="easyui-linkbutton onePicUpload"
+                               style="background-color: #0c80d7; color: #fff;"><spring:message
+                                    code="common.uploadImage"/></a>
                             <input type="hidden" name="skuMainPic" value="${sku.skuMainPic}"/>
                         <td>
                             <a class="easyui-linkbutton button-lg button-default"
-                               onclick="MXF.ajaxForm(this, storeSkuCallback, formatSkuPrice)"><spring:message code="common.submit"/></a>
+                               onclick="MXF.ajaxForm(this, storeSkuCallback, formatSkuPrice)"><spring:message
+                                    code="common.submit"/></a>
                             <a class="easyui-linkbutton button-lg button-danger"
                                onclick="$('#editSkuDiv').hide()"><spring:message code="common.reset"/></a>
                         </td>
@@ -137,18 +151,18 @@
         <c:forEach items="${skuList}" var="sku">
             <tr>
                 <td>${sku.skuCode}</td>
-                    <c:forEach items="${skuProperties}" var="p">
-                        <c:forEach items="${sku.skuPropertyList}" var="op">
-                            <c:if test="${p.id == op.propId}">
-                                <td>${op.value}</td>
-                            </c:if>
-                        </c:forEach>
+                <c:forEach items="${skuProperties}" var="p">
+                    <c:forEach items="${sku.skuPropertyList}" var="op">
+                        <c:if test="${p.id == op.propId}">
+                            <td>${op.value}</td>
+                        </c:if>
                     </c:forEach>
+                </c:forEach>
                 <td>${sku.pack}</td>
                 <td>${sku.volume}</td>
                 <td>${sku.container}</td>
                 <td><fmt:formatNumber value="${sku.costPrice * 0.01}" type="currency" pattern="MTn.00"/></td>
-                <td><fmt:formatNumber value="${sku.marketPrice * 0.01}" type="currency" pattern="MTn.00"/> </td>
+                <td><fmt:formatNumber value="${sku.marketPrice * 0.01}" type="currency" pattern="MTn.00"/></td>
                 <td>${sku.profit}</td>
                 <td title="${sku.supplier}">${fn:substring(sku.supplier, 0, 15)}</td>
                 <td>${sku.availableStock}</td>
@@ -158,7 +172,8 @@
                         <img height="30" width="30" src="${sku.skuMainPic}"/>
                     </c:if>
                 </td>
-                <td><a class="easyui-linkbutton button-default button-sm" onclick="editSku(${sku.id})"><spring:message code="common.edit"/></a></td>
+                <td><a class="easyui-linkbutton button-default button-sm" onclick="editSku(${sku.id})"><spring:message
+                        code="common.edit"/></a></td>
             </tr>
         </c:forEach>
         </tbody>
