@@ -18,33 +18,33 @@
                     <thead>
                     <tr>
                         <th data-options="field: 'id', checkbox:true"></th>
-                        <th data-options="field:'path',width:150,halign:'center',align:'center'"><spring:message
+                        <th data-options="field:'path',width:150,halign:'center',align:'center',sortable:true"><spring:message
                                 code="product.type.name"/></th>
                         <%--<th data-options="field: 'skuName', width:100, halign: 'center', align: 'center'"><spring:message code="st.out.product"/></th>--%>
                         <th data-options="field: 'skuMainPic', width: 50, halign: 'center', align: 'center', formatter: skuMainPicFormatter">
                             <spring:message code="sku.skuMainPic"/></th>
-                        <th data-options="field:'name',width:150,halign:'center',align:'center'"><spring:message
+                        <th data-options="field:'name',width:150,halign:'center',align:'center',sortable:true"><spring:message
                                 code="product.name"/></th>
-                        <th data-options="field:'code',width:150,halign:'center',align:'center'"><spring:message
+                        <th data-options="field:'code',width:150,halign:'center',align:'center',sortable:true"><spring:message
                                 code="product.code"/></th>
                         <th data-options="field: 'skuProperties', width:150, halign: 'center', align: 'left'"><spring:message code="st.out.property"/></th>
-                        <th data-options="field: 'pack', width:100, halign: 'center', align: 'center'"><spring:message
+                        <th data-options="field: 'pack', width:100, halign: 'center', align: 'center',sortable:true"><spring:message
                                 code="sku.pack"/></th>
-                        <th data-options="field: 'volume', width:80, halign: 'center', align: 'center'"><spring:message
+                        <th data-options="field: 'volume', width:80, halign: 'center', align: 'center',sortable:true"><spring:message
                                 code="sku.volume"/>（m<sup>3</sup>）
                         </th>
-                        <th data-options="field: 'costPrice', width:80, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                        <th data-options="field: 'costPrice', width:80, halign: 'center', align: 'center',sortable:true, formatter: MXF.priceFormatter">
                             <spring:message code="sku.costPrice"/></th>
-                        <th data-options="field: 'marketPrice', width:80, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                        <th data-options="field: 'marketPrice', width:80, halign: 'center', align: 'center',sortable:true, formatter: MXF.priceFormatter">
                             <spring:message code="sku.marketPrice"/></th>
                         <th data-options="field: 'profit', width:50, halign: 'center', align: 'center'"><spring:message
                                 code="sku.profit"/>（%）
                         </th>
-                        <th data-options="field: 'supplier', width:80, halign: 'center', align: 'center'">
+                        <th data-options="field: 'supplier', width:80, halign: 'center', align: 'center',sortable:true">
                             <spring:message code="sku.supplier"/></th>
-                        <th data-options="field: 'availableStock', width:50, halign: 'center', align: 'center'">
+                        <th data-options="field: 'availableStock', width:50, halign: 'center', align: 'center',sortable:true">
                             <spring:message code="sku.availableStock"/></th>
-                        <th data-options="field: 'container', width:80, halign: 'center', align: 'center'">
+                        <th data-options="field: 'container', width:80, halign: 'center', align: 'center',sortable:true">
                             <spring:message code="sku.container"/></th>
                         <th data-options="field: 'remark', width:100, halign: 'center', align: 'center'"><spring:message code="st.out.remark"/></th>
                     </tr>
@@ -85,7 +85,7 @@
                 </div>
             </div>
         </div>
-        <div data-options="region:'east',border:true,title:'<spring:message code="st.out.cart"/>'" style="width: 520px;">
+        <div data-options="region:'east',border:true,title:'<spring:message code="st.out.cart"/>'" style="width: 910px;">
             <div class="tableGroup cart-table">
                 <table id="cartGrid" class="easyui-datagrid" data-options="
                             singleSelect: false,
@@ -124,12 +124,20 @@
                     <thead>
                     <tr>
                         <th data-options="field: 'id',checkbox:true"></th>
-                        <th data-options="field: 'skuMainPic', width:50, halign: 'center', align: 'center', formatter: skuMainPicFormatter">
+                        <th data-options="field: 'sku', width:100, halign: 'center', align: 'center', formatter: function(val) { return val.skuCode }">商品型号</th>
+                        <th data-options="field: 'name', width:100, halign: 'center', align: 'center'"><spring:message code="st.out.product"/></th>
+                        <th data-options="field: 'sku.availableStock', width:50, halign: 'center', align: 'center', formatter: function(val, row) { console.log(row); return row.sku.availableStock }">库存数量</th>
+                        <th data-options="field: 'sku.pack', width:50, halign: 'center', align: 'center', formatter: function(val, row) { return row.sku.pack }">包装规格</th>
+                        <th data-options="field: 'sku.costPrice', width:100, halign: 'center', align: 'center', formatter: function(val, row) { return MXF.priceFormatter(row.sku.costPrice)}">批发价格</th>
+                        <th data-options="field: 'skuMainPic', width:50, halign: 'center', align: 'center', formatter: skuMainPicFormatter">样图</th>
+                        <th data-options="field: 'skuProperties', width:150, halign: 'center', align: 'left'"><spring:message code="st.out.property"/></th>
+                        <th data-options="field: 'amount', width:100, halign: 'center', align: 'center', formatter: cartAmountFormatter"><spring:message code="st.out.amount"/></th>
+                        <%--<th data-options="field: 'skuMainPic', width:50, halign: 'center', align: 'center', formatter: skuMainPicFormatter">
                             <spring:message code="st.out.image"/>
                         </th>
                         <th data-options="field: 'name', width:100, halign: 'center', align: 'center'"><spring:message code="st.out.product"/></th>
                         <th data-options="field: 'skuProperties', width:150, halign: 'center', align: 'left'"><spring:message code="st.out.property"/></th>
-                        <th data-options="field: 'amount', width:100, halign: 'center', align: 'center', formatter: cartAmountFormatter"><spring:message code="st.out.amount"/></th>
+                        <th data-options="field: 'amount', width:100, halign: 'center', align: 'center', formatter: cartAmountFormatter"><spring:message code="st.out.amount"/></th>--%>
                     </tr>
                     </thead>
                 </table>
@@ -190,7 +198,8 @@
     }
 
     .cart.statistics .statistics-box {
-        width: 520px;
+        /*width: 520px;*/
+        width: 910px;
         /*height: 50px;*/
         height: 110px;
         background: #fff;

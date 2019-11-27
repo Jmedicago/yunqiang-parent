@@ -164,6 +164,25 @@
         </where>
     </sql>
 
+    <sql id="orderSql">
+        order by
+        <choose>
+            <when test="sort == 'code'">
+                p.code
+            </when>
+            <when test="sort == 'name'">
+                p.name
+            </when>
+            <when test="sort == 'typeName'">
+                p.productType
+            </when>
+            <otherwise>
+                p.createTime
+            </otherwise>
+        </choose>
+        ${order}
+    </sql>
+
     <select id="queryTotal" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery" resultType="int">
         select count(0) from t_bis_product p left join t_bis_product_type pt on p.productType = pt.id
         <include refid="whereSql"/>
@@ -173,6 +192,7 @@
             resultType="com.vgit.yunqiang.pojo.BisProduct">
         select p.* from t_bis_product p left join t_bis_product_type pt on p.productType = pt.id
         <include refid="whereSql"/>
+        <include refid="orderSql"/>
         limit #{start}, #{rows}
     </select>
     

@@ -205,9 +205,21 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
                 }
 
                 selectedGoodsTotalCount += bisCart.getAmount();
-                selectedFactoryShoesTotalCount = this.mapper.getTotalByProductType(1035L);
-                selectedTradeShoesTotalCount = this.mapper.getTotalByProductType(1010L);
-                selectedGMTotalCount = this.mapper.getTotalByProductType(1011L);
+
+                Integer cSelectedFactoryShoesTotalCount = this.mapper.getTotalByProductType(1035L);
+                if (cSelectedFactoryShoesTotalCount != null) {
+                    selectedFactoryShoesTotalCount = cSelectedFactoryShoesTotalCount;
+                }
+
+                Integer cSelectedTradeShoesTotalCount = this.mapper.getTotalByProductType(1010L);
+                if (cSelectedTradeShoesTotalCount != null) {
+                    selectedTradeShoesTotalCount = cSelectedTradeShoesTotalCount;
+                }
+
+                Integer cSelectedGMTotalCount = this.mapper.getTotalByProductType(1011L);
+                if (cSelectedGMTotalCount != null) {
+                    selectedTradeShoesTotalCount = cSelectedGMTotalCount;
+                }
             }
         }
         result.put("goodsNumber", goodsNumber);

@@ -92,5 +92,5 @@ public interface BisCartMapper extends BaseMapper<BisCart> {
      * @param productType
      * @return
      */
-    int getTotalByProductType(Long productType);
+    Integer getTotalByProductType(Long productType);
 }

@@ -10,15 +10,15 @@
             <thead>
             <tr>
                 <th data-options="field:'id',checkbox:true"></th>
-                <th data-options="field:'code',width:120,halign:'center',align:'center'"><spring:message code="product.code"/></th>
-                <th data-options="field:'name',halign:'center',align:'center',width:150"><spring:message code="product.name"/></th>
+                <th data-options="field:'code',width:120,halign:'center',align:'center',sortable:true"><spring:message code="product.code"/></th>
+                <th data-options="field:'name',halign:'center',align:'center',width:150,sortable:true"><spring:message code="product.name"/></th>
                 <%--<th data-options="field:'state',width:80, formatter:productStateFormatter"><spring:message
                         code="product.state"/></th>--%>
                <%-- <th data-options="field:'productMedia',width:80,halign:'center',align:'center',formatter:productMediaFormatter"><spring:message
                         code="product.resources"/></th>--%>
                 <%--<th data-options="field:'stockName',width:80,halign:'center',align:'center',formatter:productStockFormatter"><spring:message
                         code="product.stock"/></th>--%>
-                <th data-options="field:'typeName',width:150,halign:'center',align:'center'"><spring:message
+                <th data-options="field:'typeName',width:150,halign:'center',align:'center',sortable:true"><spring:message
                         code="product.type.name"/></th>
                 <th data-options="field:'createTime',width:150,halign:'center',align:'center',formatter:MXF.dateTimeFormatter"><spring:message
                         code="common.createTime"/></th>

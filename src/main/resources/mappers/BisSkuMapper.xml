@@ -339,19 +339,63 @@
         </where>
     </sql>
 
-    <select id="esTotal" parameterType="java.lang.String" resultType="int">
+    <sql id="esOrderSql">
+        order by
+        <choose>
+            <when test="sort == 'name'">
+                p.name
+            </when>
+            <when test="sort == 'path'">
+                p.productType
+            </when>
+            <when test="sort == 'code'">
+                p.code
+            </when>
+            <when test="sort == 'pack'">
+                s.pack
+            </when>
+            <when test="sort == 'volume'">
+                s.volume
+            </when>
+            <when test="sort == 'costPrice'">
+                s.costPrice
+            </when>
+            <when test="sort == 'marketPrice'">
+                s.marketPrice
+            </when>
+            <when test="sort == 'profit'">
+                s.profit
+            </when>
+            <when test="sort == 'supplier'">
+                s.supplier
+            </when>
+            <when test="sort == 'container'">
+                s.container
+            </when>
+            <when test="sort == 'availableStock'">
+                s.availableStock
+            </when>
+            <otherwise>
+                s.createTime
+            </otherwise>
+        </choose>
+        ${order}
+    </sql>
+
+    <select id="esTotal" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery" resultType="int">
         select count(0) FROM t_bis_sku s
         LEFT JOIN t_bis_product p ON s.productId = p.id
         LEFT JOIN t_bis_product_type pt ON pt.id = p.productType
         <include refid="esWhereSql"/>
     </select>
 
-    <select id="es" parameterType="java.lang.String" resultType="com.vgit.yunqiang.model.ProductModel">
+    <select id="es" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery" resultType="com.vgit.yunqiang.model.ProductModel">
         SELECT s.id, p.name, p.productType, pt.path, p.code, s.pack, s.volume, s.costPrice, s.marketPrice, s.profit, s.supplier, s.container, s.availableStock, s.frozenStock, s.pushStockTime, s.skuProperties,
         s.skuMainPic FROM t_bis_sku s
         LEFT JOIN t_bis_product p ON s.productId = p.id
         LEFT JOIN t_bis_product_type pt ON pt.id = p.productType
         <include refid="esWhereSql"/>
+        <include refid="esOrderSql"/>
         limit #{start}, #{rows}
     </select>
 

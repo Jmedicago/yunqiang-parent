@@ -12,13 +12,19 @@
                            striped: true,
                            singleSelect: false,
                            toolbar: '#stockShuntTB',
-                           url: '/sku/json'">
+                           url: '/sku/es'">
             <thead>
             <tr>
                 <th data-options="field: 'id', checkbox:true"></th>
-                <th data-options="field: 'skuName', width:100, halign: 'center', align: 'center'"><spring:message code="st.out.product"/></th>
+                <th data-options="field:'path',width:150,halign:'center',align:'center',sortable:true"><spring:message
+                        code="product.type.name"/></th>
+                <%--<th data-options="field: 'skuName', width:100, halign: 'center', align: 'center'"><spring:message code="st.out.product"/></th>--%>
                 <th data-options="field: 'skuMainPic', width: 50, halign: 'center', align: 'center', formatter: skuMainPicFormatter">
                     <spring:message code="sku.skuMainPic"/></th>
+                <th data-options="field:'name',width:150,halign:'center',align:'center',sortable:true"><spring:message
+                        code="product.name"/></th>
+                <th data-options="field:'code',width:150,halign:'center',align:'center',sortable:true"><spring:message
+                        code="product.code"/></th>
                 <th data-options="field: 'skuProperties', width:150, halign: 'center', align: 'left'"><spring:message code="st.out.property"/></th>
                 <th data-options="field: 'pack', width:100, halign: 'center', align: 'center'"><spring:message
                         code="sku.pack"/></th>
