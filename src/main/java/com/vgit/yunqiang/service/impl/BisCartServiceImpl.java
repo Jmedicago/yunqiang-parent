@@ -218,7 +218,7 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
 
                 Integer cSelectedGMTotalCount = this.mapper.getTotalByProductType(1011L);
                 if (cSelectedGMTotalCount != null) {
-                    selectedTradeShoesTotalCount = cSelectedGMTotalCount;
+                    selectedGMTotalCount = cSelectedGMTotalCount;
                 }
             }
         }

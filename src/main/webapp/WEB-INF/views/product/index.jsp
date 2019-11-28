@@ -167,8 +167,12 @@
                     MXF.ajaxing(true);
                     $.post('/product/batch', {excelUrl: url}, function (data) {
                         MXF.ajaxing(false);
-                        MXF.alert("导入成功！");
-                        $('#productGrid').datagrid('reload');
+                        if (data.success) {
+                            MXF.alert("导入成功！");
+                            $('#productGrid').datagrid('reload');
+                        } else {
+                            MXF.alert(data.message + "，" + data.info);
+                        }
                     });
                 }
             });

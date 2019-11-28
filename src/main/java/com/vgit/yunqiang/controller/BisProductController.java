@@ -1,5 +1,7 @@
 package com.vgit.yunqiang.controller;
 
+import com.vgit.yunqiang.common.consts.ICodes;
+import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.query.ProductQuery;
 import com.vgit.yunqiang.common.utils.Page;
 import com.vgit.yunqiang.common.utils.Ret;
@@ -203,7 +205,11 @@ public class BisProductController {
     @RequestMapping("/batch")
     @ResponseBody
     public Ret batch(String excelUrl, HttpServletRequest request) {
-        return this.bisProductService.batch(excelUrl);
+        try {
+            return this.bisProductService.batch(excelUrl);
+        } catch (BisException e) {
+            return Ret.me().setSuccess(false).setCode(ICodes.FAILED).setInfo(e.getInfo());
+        }
     }
 
 }

@@ -376,7 +376,7 @@ MXF.alert = function (msg, isSuccess) {
     if (null == msg || '' == msg) msg = '未知信息';
     gPane.find('.globalContent').html(msg);
     gPane.css('margin', '-' + (gPane.height() / 2) + 'px 0 0 -' + (gPane.width() / 2) + 'px');
-    gPane.stop().fadeIn(100).delay(2000).fadeOut(200);
+    gPane.stop().fadeIn(100).delay(10000).fadeOut(200);
 };
 //确认对话框
 MXF.confirm = function (msg, fn, cfn) {

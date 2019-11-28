@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.vgit.yunqiang.common.consts.GlobalSettingNames;
+import com.vgit.yunqiang.common.exception.BisException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.EncryptedDocumentException;
@@ -154,7 +155,16 @@ public class ExcelUtils {
                 if (row != null) {
                     int cellTotal = row.getPhysicalNumberOfCells(); // 表头总共的列数
                     for (int j = 0; j < cellTotal; j++) {
-                        cellData = (String) getCellFormatValue(row.getCell(j));
+                        try {
+                            cellData = (String) getCellFormatValue(row.getCell(j));
+                        } catch (Exception e) {
+                            Map<String, Object> result = new HashMap<String, Object>();
+                            result.put("row", i + 1); // 行
+                            result.put("col", j + 1); // 列
+                            result.put("value", row.getCell(j));
+                            throw new BisException().setData(result).setInfo("内容格式不正确");
+                        }
+
                         Row titles = ExcelUtils.readTitle(sheet);
                         Cell cell = titles.getCell(j);
                         map.put(cell.getStringCellValue(), cellData);
@@ -168,7 +178,7 @@ public class ExcelUtils {
         return list;
     }
 
-    private static Object getCellFormatValue(Cell cell) {
+    private static Object getCellFormatValue(Cell cell) throws Exception {
         Object cellValue = null;
         if (cell != null) {
             // 判断cell类型
