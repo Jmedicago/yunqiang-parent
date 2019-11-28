@@ -58,6 +58,14 @@ public interface BisSkuMapper extends BaseMapper<BisSku> {
     BisSku getSkuByCode(String code);
 
     /**
+     * 根据code查询商品SKU
+     *
+     * @param code
+     * @return
+     */
+    List<BisSku> getSkusByCode(String code);
+
+    /**
      * 根据商品ID查询SKU列表
      *
      * @param code

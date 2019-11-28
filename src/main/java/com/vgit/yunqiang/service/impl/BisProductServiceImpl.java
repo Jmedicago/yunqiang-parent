@@ -169,7 +169,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
             this.skuMapper.updatePart(sku);
         } else {
             // 新增
-            String maxCode = this.skuMapper.getMaxCode(sku.getProductId());
+            /*String maxCode = this.skuMapper.getMaxCode(sku.getProductId());
             String seq = "01";
             if (StringUtils.isNotBlank(maxCode)) {
                 seq = maxCode.substring(maxCode.length() - 2);
@@ -180,7 +180,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                 } else {
                     seq = "" + seqNumber;
                 }
-            }
+            }*/
             BisProduct product = this.get(sku.getProductId());
             if (null != product.getName()) {
                 sku.setSkuName(product.getName());
@@ -237,6 +237,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
         sb.append(sku.toString());
 
         BisProduct product = this.mapper.get(sku.getProductId());
+
         sb.append(product.toString());
 
         sb.append(ProductTypeFormat.getProductTypePath(product.getProductType()));
@@ -279,7 +280,8 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                 initProduct(bisProduct);
                 this.savePart(bisProduct);
                 for (Map.Entry<String, String> entry : list.get(curr).entrySet()) {
-                    if ("类别".equals(entry.getKey())) { // 格式：工厂鞋.EVA鞋.绑带鞋
+                    String header = entry.getKey().trim().replaceAll("\r|\n*", "");
+                    if ("类别".equals(header)) { // 格式：工厂鞋.EVA鞋.绑带鞋
                         if (StringUtils.isNotBlank(entry.getValue())) {
                             String[] names = entry.getValue().split("\\.");
                             try {
@@ -288,12 +290,13 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                                     bisProduct.setProductType(bisProductType.getId());
                                 }
                             } catch (BisException e) {
-                                throw new BisException().setInfo("第 类别 列的第" + curr + 1 + "行，值为" + entry.getValue() + "的格式或值不正确，" + e.getInfo());
+                                int ci = curr + 1;
+                                throw new BisException().setInfo("第 类别 列的第" + ci + "行，值为" + entry.getValue() + "的格式或值不正确，" + e.getInfo());
                             }
 
                         }
                     }
-                    if ("权属".equals(entry.getKey())) {
+                    if ("权属".equals(header)) {
                         if (StringUtils.isNotBlank(entry.getValue())) {
                             BisStock bisStock = this.bisStockService.getStockByName(entry.getValue());
                             if (bisStock != null) {
@@ -302,12 +305,12 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                         }
 
                     }
-                    if ("品名".equals(entry.getKey())) {
+                    if ("品名".equals(header)) {
                         if (StringUtils.isNotBlank(entry.getValue())) {
                             bisProduct.setName(entry.getValue());
                         }
                     }
-                    if ("图示".equals(entry.getKey())) {
+                    if ("图示".equals(header)) {
                         for (Map<String, PictureData> image : images) {
                             String key = String.valueOf(curr + start);
                             PictureData pic = image.get(key);
@@ -331,7 +334,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                             }
                         }
                     }
-                    if ("属性".equals(entry.getKey())) {
+                    if ("属性".equals(header)) {
                         if (StringUtils.isNotBlank(entry.getValue())) { // 颜色：红色V，码段：37-41#
                             PropertyQuery query = new PropertyQuery();
                             query.setProductType(bisProduct.getProductType());
@@ -371,7 +374,8 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                                                     this.bisPropertyService.getOptions(bisProperty.getId());
                                                 }
                                             } else {
-                                                String info = "第 属性 列的第" + curr + 1 + "行，值为" + entry.getValue() + "的格式或值不正确，未匹配到属性名称为" + propEntry.getKey() + "，请修改正确后继续操作";
+                                                int ci = curr + 1;
+                                                String info = "第 属性 列的第" + ci + "行，值为" + entry.getValue() + "的格式或值不正确，未匹配到属性名称为" + propEntry.getKey() + "，请修改正确后继续操作";
                                                 throw new BisException().setCode(ICodes.FAILED).setInfo(info);
                                             }
                                         }
@@ -384,54 +388,58 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                             bisSku.setSkuPropertyList(skuPropertyList);
                         }
                     }
-                    if ("货品编号".equals(entry.getKey())) {
+                    if ("货品编号".equals(header)) {
                         if (StringUtils.isNotBlank(entry.getValue())) {
                             bisProduct.setCode(entry.getValue());
                         }
                     }
-                    if ("包装形态".equals(entry.getKey())) {
+                    if ("包装形态".equals(header)) {
                         if (StringUtils.isNotBlank(entry.getValue())) {
                             String pack = entry.getValue().split("\\.")[0];
                             try {
                                 bisSku.setPack(Integer.parseInt(pack));
                             } catch (NumberFormatException e) {
-                                String info = "第 包装形态 列的第" + curr + 1 + "行，值为" + entry.getValue() + "的格式或值不正确，该字段的只能是数字或者为空值";
+                                int ci = curr + 1;
+                                String info = "第 包装形态 列的第" + ci + "行，值为" + entry.getValue() + "的格式或值不正确，该字段的只能是数字或者为空值";
                                 throw new BisException().setCode(ICodes.FAILED).setInfo(info);
                             }
                         } else {
                             bisSku.setPack(0);
                         }
                     }
-                    if ("单件体积".equals(entry.getKey())) {
+                    if ("单件体积".equals(header)) {
                         if (StringUtils.isNotBlank(entry.getValue())) {
                             try {
                                 bisSku.setVolume(Double.valueOf(entry.getValue()));
                             } catch (NumberFormatException e) {
-                                String info = "第 单件体积 列的第" + curr + 1 + "行，值为" + entry.getValue() + "的格式或值不正确，该字段的只能是数字或者为空值";
+                                int ci = curr + 1;
+                                String info = "第 单件体积 列的第" + ci + "行，值为" + entry.getValue() + "的格式或值不正确，该字段的只能是数字或者为空值";
                                 throw new BisException().setCode(ICodes.FAILED).setInfo(info);
                             }
                         } else {
                             bisSku.setVolume(0d);
                         }
                     }
-                    if ("单体成本".equals(entry.getKey())) {
+                    if ("单体成本".equals(header)) {
                         if (StringUtils.isNotBlank(entry.getValue())) {
                             try {
                                 bisSku.setCostPrice(Double.valueOf(entry.getValue()) * 100);
                             } catch (NumberFormatException e) {
-                                String info = "第 单体成本 列的第" + curr + 1 + "行，值为" + entry.getValue() + "的格式或值不正确，该字段的只能是数字或者为空值";
+                                int ci = curr + 1;
+                                String info = "第 单体成本 列的第" + ci + "行，值为" + entry.getValue() + "的格式或值不正确，该字段的只能是数字或者为空值";
                                 throw new BisException().setCode(ICodes.FAILED).setInfo(info);
                             }
                         } else {
                             bisSku.setCostPrice(0d);
                         }
                     }
-                    if ("建议批发价".equals(entry.getKey())) {
+                    if ("建议批发价".equals(header)) {
                         if (StringUtils.isNotBlank(entry.getValue())) {
                             try {
                                 bisSku.setMarketPrice(Double.valueOf(entry.getValue()) * 100);
                             } catch (NumberFormatException e) {
-                                String info = "第 建议批发价 列的第" + curr + 1 + "行，值为" + entry.getValue() + "的格式或值不正确，该字段的只能是数字或者为空值";
+                                int ci = curr + 1;
+                                String info = "第 建议批发价 列的第" + ci + "行，值为" + entry.getValue() + "的格式或值不正确，该字段的只能是数字或者为空值";
                                 throw new BisException().setCode(ICodes.FAILED).setInfo(info);
                             }
 
@@ -439,42 +447,44 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                             bisSku.setMarketPrice(0d);
                         }
                     }
-                    if ("货柜编号".equals(entry.getKey())) {
+                    if ("货柜编号".equals(header)) {
                         if (StringUtils.isNotBlank(entry.getValue())) {
                             bisSku.setContainer(entry.getValue());
                         }
                     }
-                    if ("利润".equals(entry.getKey())) {
+                    if ("利润".equals(header)) {
                         if (StringUtils.isNotBlank(entry.getValue())) {
                             try {
                                 bisSku.setProfit(Double.valueOf(entry.getValue()));
                             } catch (NumberFormatException e) {
-                                String info = "第 利润 列的第" + curr + 1 + "行，值为" + entry.getValue() + "的格式或值不正确，该字段的只能是数字或者为空值";
+                                int ci = curr + 1;
+                                String info = "第 利润 列的第" + ci + "行，值为" + entry.getValue() + "的格式或值不正确，该字段的只能是数字或者为空值";
                                 throw new BisException().setCode(ICodes.FAILED).setInfo(info);
                             }
                         } else {
                             bisSku.setProfit(0d);
                         }
                     }
-                    if ("供应商".equals(entry.getKey())) {
+                    if ("供应商".equals(header)) {
                         if (StringUtils.isNotBlank(entry.getValue())) {
                             bisSku.setSupplier(entry.getValue());
                         }
                     }
-                    if ("待入库件数".equals(entry.getKey())) {
+                    if ("待入库件数".equals(header)) {
                         if (StringUtils.isNotBlank(entry.getValue())) {
                             String availableStock = entry.getValue().split("\\.")[0];
                             try {
                                 bisSku.setAvailableStock(Integer.valueOf(availableStock));
                             } catch (NumberFormatException e) {
-                                String info = "第 待入库件数 列的第" + curr + 1 + "行，值为" + entry.getValue() + "的格式或值不正确，该字段的只能是数字或者为空值";
+                                int ci = curr + 1;
+                                String info = "第 待入库件数 列的第" + ci + "行，值为" + entry.getValue() + "的格式或值不正确，该字段的只能是数字或者为空值";
                                 throw new BisException().setCode(ICodes.FAILED).setInfo(info);
                             }
                         } else {
                             bisSku.setAvailableStock(0);
                         }
                     }
-                    if ("备注".equals(entry.getKey())) {
+                    if ("备注".equals(header)) {
                         if (StringUtils.isNotBlank(entry.getValue())) {
                             bisSku.setRemark(entry.getValue());
                         }
@@ -549,19 +559,46 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
         return false;
     }
 
-    private boolean exist(BisSku bisSku) {
+    /*private boolean exist(BisSku bisSku) {
         BisSku sku = this.skuMapper.selectByProperties(bisSku.getSkuCode(), bisSku.getSkuProperties());
         if (sku != null) { // 是同一商品
             sku.setAvailableStock(sku.getAvailableStock() + bisSku.getAvailableStock());
             sku.setUpdateTime(System.currentTimeMillis());
             // 生成SEO关键字
-            this.setKeyword(bisSku);
+            //this.setKeyword(bisSku);
             this.skuMapper.updatePart(sku);
             return true;
         } else {
             return false;
         }
+    }*/
+
+    private boolean exist(BisSku bisSku) {
+        List<BisSku> skus = this.skuMapper.getSkusByCode(bisSku.getSkuCode());
+        if (skus == null) {
+            return false;
+        }
+        for (BisSku sku : skus) {
+            //判断属性是否相同
+            if (sku.getSkuProperties() != null && sku.getSkuProperties().equals(bisSku.getSkuProperties())) {
+                // 是同一商品
+                sku.setAvailableStock(sku.getAvailableStock() + bisSku.getAvailableStock());
+                sku.setUpdateTime(System.currentTimeMillis());
+                this.skuMapper.updatePart(sku);
+                return true;
+            } else if(StringUtils.isBlank(sku.getSkuProperties()) && StringUtils.isBlank(bisSku.getSkuProperties())) {
+                // 是同一商品
+                sku.setAvailableStock(sku.getAvailableStock() + bisSku.getAvailableStock());
+                sku.setUpdateTime(System.currentTimeMillis());
+                this.skuMapper.updatePart(sku);
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
     }
+
 
     private void setProperties(BisSku sku) {
         // 获取SKU的属性集合格式字符串
@@ -614,10 +651,10 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                 String key = opts[0];
                 String val = opts[1];
                 if (StringUtils.isNotBlank(key)) {
-                    key = key.trim().replaceAll("\r|\n*","");
+                    key = key.trim().replaceAll("\r|\n*", "");
                 }
                 if (StringUtils.isNotBlank(val)) {
-                    val = val.trim().replaceAll("\r|\n*","");
+                    val = val.trim().replaceAll("\r|\n*", "");
                 }
 
                 // kv.put(opts[0], opts[1]);

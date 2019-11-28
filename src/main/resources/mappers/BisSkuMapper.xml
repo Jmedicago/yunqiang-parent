@@ -262,6 +262,10 @@
     	select * from t_bis_sku where skuCode = #{code}
     </select>
 
+    <select id="getSkusByCode" parameterType="java.lang.String" resultType="com.vgit.yunqiang.pojo.BisSku">
+        select * from t_bis_sku where skuCode = #{code}
+    </select>
+
     <insert id="saveProperties" parameterType="list">
         INSERT INTO t_bis_sku_property(skuId, propId, propName, optionId, value) VALUES
         <foreach separator="," index="index" item="item" collection="list">
