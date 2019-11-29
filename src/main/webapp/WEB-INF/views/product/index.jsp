@@ -182,8 +182,9 @@
     function toPage() {
         var tabs = $("#tabs");
         var uri = '/product-view';
-        var title = '<spring:message code="mu.pt.view"/>';
+        var title = '商品列表';
         var tab = tabs.tabs("getTab", title);
+        console.log('open' + title, tab);
         if (tab) {
             tabs.tabs("select", title);
         } else {

@@ -380,7 +380,9 @@
     }
 
     function submitOrder() {
+        var digest = '工厂鞋：' + $('#selectedFactoryShoesTotalCount').text() + '件<br>贸易鞋：' + $('#selectedTradeShoesTotalCount').text() + '件<br>百货类：' + $('#selectedGMTotalCount').text() + '件';
         var data = {
+            digest:  digest,
             remark: $('#cartStatistics input[name=remark]').val()
         };
         MXF.ajaxing(true);

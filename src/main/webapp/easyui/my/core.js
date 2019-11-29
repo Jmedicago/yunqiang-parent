@@ -16,18 +16,6 @@ function initATarget() {
             if (tab) {
                 console.log('[INFO] On click cur tab.');
                 tabs.tabs("select", title);
-
-                /*var selTab = tabs.tabs('getSelected');
-                var url = $(selTab.panel('options').content).attr('src');
-                tabs.tabs('update', {
-                    tab: selTab,
-                    options: {
-                        content:createFrame(url)
-                    }
-                })*/
-                /*var tab = tabs.tabs('getSelected');  // 获取选择的面板
-                tab.panel('refresh', uri);*/
-
             } else {
                 tabs.tabs('add', {
                     title: title,

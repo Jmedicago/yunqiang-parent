@@ -75,4 +75,14 @@ public class BisOrderController {
         return Ret.me();
     }
 
+    @RequestMapping(ControllerConsts.URL_SHOW)
+    public String show(Long id, Model model) {
+        if (id != null) {
+            // 订单信息
+            BisOrder bisOrder = this.bisOrderService.get(id);
+            model.addAttribute("bisOrder", bisOrder);
+        }
+        return DOMAIN + ControllerConsts.VIEW_SHOW;
+    }
+
 }

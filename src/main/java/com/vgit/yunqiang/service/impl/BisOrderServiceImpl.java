@@ -61,7 +61,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
     public Ret create(BisOrder formOrder, Long billId) {
         Double totalMoney = 0.0d; // 订单所有商品的总价
         Double totalVolume = 0.0d; // 总体积
-        StringBuilder digest = new StringBuilder(); // 订单摘要
+        //StringBuilder digest = new StringBuilder(); // 订单摘要
 
         // 获取用户购物车情况:处理库存、销量、计算订单总价及摘要
         List<BisCart> carts = this.bisCartService.getCarts(formOrder.getUserId());
@@ -101,7 +101,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
                 totalMoney += bisCart.getAmount() * bisCart.getSku().getCostPrice();
                 totalVolume += bisCart.getAmount() * bisCart.getSku().getVolume();
                 // 获取摘要
-                digest.append(bisCart.getName());
+                /*digest.append(bisCart.getName());
                 String skuProperties = bisCart.getSkuProperties();
                 if (StringUtils.isNotBlank(skuProperties)) {
                     String[] propArr = skuProperties.split("_");
@@ -110,7 +110,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
                         digest.append("-").append(propValueArr[3]);
                     }
                 }
-                digest.append("×").append(bisCart.getAmount()).append(",");
+                digest.append("×").append(bisCart.getAmount()).append(",");*/
             }
         }
 
@@ -127,7 +127,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
         formOrder.setTotalMoney(totalMoney);
         formOrder.setTotalVolume(totalVolume);
         formOrder.setCommentStatus(BooleanConsts.NO);
-        formOrder.setDigest(digest.toString());
+        //formOrder.setDigest(digest.toString());
         formOrder.setCreateTime(System.currentTimeMillis());
         formOrder.setUpdateTime(formOrder.getCreateTime());
         formOrder.setConfirmTime(System.currentTimeMillis());
@@ -224,6 +224,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
             long lastConfirmTime = (millsExpires.add(new BigDecimal(System.currentTimeMillis()))).longValue();
 
             order.setConfirmTime(lastConfirmTime);
+            order.setShipTime(System.currentTimeMillis());
             order.setStatus((int) OrderStateConsts.WAIT_SHIP_TAKE);
             order.setUpdateTime(System.currentTimeMillis());
             this.updatePart(order);
@@ -272,6 +273,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
                     this.bisSkuService.updatePart(bisSku);*/
                 }
             }
+            bisOrder.setShipTime(System.currentTimeMillis());
             bisOrder.setStatus((int) OrderStateConsts.WAIT_SHIP_SEND);
             this.mapper.updatePart(bisOrder);
 

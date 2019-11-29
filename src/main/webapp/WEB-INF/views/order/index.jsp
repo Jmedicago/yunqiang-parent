@@ -20,10 +20,13 @@
                 <th data-options="field: 'stockId', width: 80, halign: 'center', align: 'center', formatter: stockFormatter"><spring:message code="order.store"/></th>
                 <th data-options="field: 'status', width: 80, halign: 'center', align: 'center', formatter: orderStateFormatter"><spring:message code="order.state"/></th>
                 <th data-options="field: 'totalMoney', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter"><spring:message code="order.price.total"/></th>
-                <th data-options="field: 'confirmTime', width: 130, halign: 'center', align: 'center', formatter: MXF.dateTimeFormatter"><spring:message code="order.confirm.time"/></th>
-                <th data-options="field: 'commentStatus', width: 80, halign: 'center', align: 'center', formatter: commentStateFormatter"><spring:message code="order.comment.time"/></th>
+                <th data-options="field: 'confirmTime', width: 130, halign: 'center', align: 'center', formatter: MXF.dateTimeFormatter"><spring:message code="order.submit.time"/></th>
+                <th data-options="field: 'shipTime', width: 130, halign: 'center', align: 'center', formatter: MXF.dateTimeFormatter"><spring:message code="order.ship.time"/></th>
+                <th data-options="field: 'finishedTime', width: 130, halign: 'center', align: 'center', formatter: MXF.dateTimeFormatter"><spring:message code="order.confirm.time"/></th>
+                <th data-options="field: 'commentStatus', width: 80, halign: 'center', align: 'center', formatter: commentStateFormatter"><spring:message code="order.state"/></th>
                 <th data-options="field: 'digest', width:200,formatter:MXF.cellTooltipFormatter"><spring:message code="order.detail"/></th>
                 <th data-options="field: 'remark', width:200,formatter:MXF.cellTooltipFormatter">备注</th>
+                <th data-options="field: 'option', width:200,formatter:optionFormatter">操作</th>
             </tr>
             </thead>
         </table>
@@ -33,10 +36,10 @@
                    iconCls="icon-remove" plain="true">
                     <spring:message code="common.delete"/>
                 </a>--%>
-                <a href="#" data-cmd="edit" title="<spring:message code="common.edit"/>" height="747" width="590" mustsel data-options="disabled:true" class="easyui-linkbutton"
+                <%--<a href="#" data-cmd="edit" title="<spring:message code="common.edit"/>" height="747" width="590" mustsel data-options="disabled:true" class="easyui-linkbutton"
                    iconCls="icon-edit" plain="true">
                     <spring:message code="common.edit"/>
-                </a>
+                </a>--%>
                 <span class="buttonSplit">&nbsp;</span>
                 <a href="#" data-cmd="confirmShip" mustsel data-options="disabled:true" class="easyui-linkbutton"
                    iconCls="icon-ok" plain="true">
@@ -91,6 +94,11 @@
         return stockName;
     }
     
+    function optionFormatter(val, row) {
+        var a = "<a href='#' onClick='showOrderDetail("+ row.id +")'><span style='margin-left: 5px;'>查看明细</span></a>";
+        return a;
+    }
+    
     function confirmShip() {
         var row = $('#orderGrid').datagrid('getSelected');
         if (row == null) {
@@ -117,6 +125,12 @@
             return;
         }
         MXF.openDialog('#productCommentWindow', '<spring:message code="commit.dialog.order.commit"/>', '/product-comment/index?orderId=' + row.id, function () {}, 590, 800);
+    }
+    
+    function showOrderDetail(id) {
+        MXF.openDialog('#showOrderDetailWindow', '查看明细', '/order/show?id=' + id, function () {
+            
+        },590, 800);
     }
 
 </script>

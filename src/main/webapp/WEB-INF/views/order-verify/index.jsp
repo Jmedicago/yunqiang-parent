@@ -20,7 +20,10 @@
                 <th data-options="field: 'stockId', width: 80, formatter: stockFormatter"><spring:message code="order.store"/></th>
                 <th data-options="field: 'status', width: 80, formatter: orderVerilyStateFormatter"><spring:message code="order.state"/></th>
                 <th data-options="field: 'totalMoney', width: 100, formatter: MXF.priceFormatter"><spring:message code="order.price.total"/></th>
+                <%--<th data-options="field: 'createTime', width: 130, halign: 'center', align: 'center', formatter: MXF.dateTimeFormatter"><spring:message code="order.submit.time"/></th>--%>
                 <th data-options="field: 'confirmTime', width: 130, formatter: MXF.dateTimeFormatter"><spring:message code="order.submit.time"/></th>
+                <th data-options="field: 'shipTime', width: 130, halign: 'center', align: 'center', formatter: MXF.dateTimeFormatter"><spring:message code="order.ship.time"/></th>
+                <th data-options="field: 'finishedTime', width: 130, halign: 'center', align: 'center', formatter: MXF.dateTimeFormatter"><spring:message code="order.confirm.time"/></th>
                 <th data-options="field: 'digest', width:200"><spring:message code="order.detail"/></th>
                 <th data-options="field: 'remark', width:200">备注</th>
             </tr>
