@@ -93,4 +93,11 @@ public interface BisCartMapper extends BaseMapper<BisCart> {
      * @return
      */
     Integer getTotalByProductType(Long productType);
+
+    /**
+     * 根据SKUID移除购物车
+     *
+     * @param skuId
+     */
+    void delCartBySkuId(Long skuId);
 }

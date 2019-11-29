@@ -39,10 +39,10 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
 
     @Autowired
     private BisSkuService bisSkuService;
-    
+
     @Autowired
     private QuartzService quartzService;
-    
+
     @Autowired
     private SysUserService sysUserService;
 
@@ -195,30 +195,34 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
 
         if (null != cartList) {
             for (BisCart bisCart : cartList) {
-                goodsNumber += bisCart.getAmount();
-                goodsTotalVolume += bisCart.getAmount() * bisCart.getSku().getVolume();
-                goodsTotalPrice += bisCart.getAmount() * bisCart.getSku().getCostPrice();
-                if (bisCart.getSelected() == BooleanConsts.YES) {
-                    selectedGoodsNumber += bisCart.getAmount();
-                    selectedGoodsTotalVolume += bisCart.getAmount() * bisCart.getSku().getVolume();
-                    selectedGoodsTotalPrice += bisCart.getAmount() * bisCart.getSku().getCostPrice();
-                }
+                if (bisCart.getSku() == null) {
+                    this.mapper.delCartBySkuId(bisCart.getSkuId());
+                } else {
+                    goodsNumber += bisCart.getAmount();
+                    goodsTotalVolume += bisCart.getAmount() * bisCart.getSku().getVolume();
+                    goodsTotalPrice += bisCart.getAmount() * bisCart.getSku().getCostPrice();
+                    if (bisCart.getSelected() == BooleanConsts.YES) {
+                        selectedGoodsNumber += bisCart.getAmount();
+                        selectedGoodsTotalVolume += bisCart.getAmount() * bisCart.getSku().getVolume();
+                        selectedGoodsTotalPrice += bisCart.getAmount() * bisCart.getSku().getCostPrice();
+                    }
 
-                selectedGoodsTotalCount += bisCart.getAmount();
+                    selectedGoodsTotalCount += bisCart.getAmount();
 
-                Integer cSelectedFactoryShoesTotalCount = this.mapper.getTotalByProductType(1035L);
-                if (cSelectedFactoryShoesTotalCount != null) {
-                    selectedFactoryShoesTotalCount = cSelectedFactoryShoesTotalCount;
-                }
+                    Integer cSelectedFactoryShoesTotalCount = this.mapper.getTotalByProductType(1035L);
+                    if (cSelectedFactoryShoesTotalCount != null) {
+                        selectedFactoryShoesTotalCount = cSelectedFactoryShoesTotalCount;
+                    }
 
-                Integer cSelectedTradeShoesTotalCount = this.mapper.getTotalByProductType(1010L);
-                if (cSelectedTradeShoesTotalCount != null) {
-                    selectedTradeShoesTotalCount = cSelectedTradeShoesTotalCount;
-                }
+                    Integer cSelectedTradeShoesTotalCount = this.mapper.getTotalByProductType(1010L);
+                    if (cSelectedTradeShoesTotalCount != null) {
+                        selectedTradeShoesTotalCount = cSelectedTradeShoesTotalCount;
+                    }
 
-                Integer cSelectedGMTotalCount = this.mapper.getTotalByProductType(1011L);
-                if (cSelectedGMTotalCount != null) {
-                    selectedGMTotalCount = cSelectedGMTotalCount;
+                    Integer cSelectedGMTotalCount = this.mapper.getTotalByProductType(1011L);
+                    if (cSelectedGMTotalCount != null) {
+                        selectedGMTotalCount = cSelectedGMTotalCount;
+                    }
                 }
             }
         }

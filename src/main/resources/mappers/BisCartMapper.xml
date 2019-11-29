@@ -207,4 +207,9 @@
         SELECT SUM(c.amount) FROM t_bis_cart c, t_bis_product p WHERE c.productId = p.id AND p.productType IN (SELECT pt.id FROM t_bis_product_type pt WHERE path LIKE CONCAT('%',#{productType},'%'));
     </select>
 
+    <delete id="delCartBySkuId" parameterType="java.lang.Long">
+      delete from t_bis_cart
+        where skuId = #{skuId,jdbcType=BIGINT}
+    </delete>
+
 </mapper>
