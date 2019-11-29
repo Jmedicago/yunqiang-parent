@@ -396,6 +396,12 @@ MXF.confirm = function (msg, fn, cfn) {
             cfn();
         }
     });
+
+    $(document).keydown(function (event) {
+        if (event.keyCode == 13) {
+            gPane.find('.btn-confirm').triggerHandler('click');
+        }
+    });
 };
 //提示信息
 MXF.info = function (msg) {

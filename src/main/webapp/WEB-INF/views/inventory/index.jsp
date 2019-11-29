@@ -127,18 +127,22 @@
 
     function changeInventoryAmount(that, obj) {
         var amount = $(that).val();
-        $.post('/inventory/addAmount', {id: obj.id, availableStock: amount}, function (res) {
-            if (res.success) {
-                // 更新字段
-                $("#inventoryGrid").datagrid("updateRow", {
-                    index: obj.index, //行索引
-                    row: {
-                        availableStock: amount //行中的某个字段
-                    }
-                });
-            } else {
-                MXF.alert(res.info, res.success);
-            }
+        MXF.confirm('确认修改？', function () {
+            $.post('/inventory/addAmount', {id: obj.id, availableStock: amount}, function (res) {
+                if (res.success) {
+                    // 更新字段
+                    $("#inventoryGrid").datagrid("updateRow", {
+                        index: obj.index, //行索引
+                        row: {
+                            availableStock: amount //行中的某个字段
+                        }
+                    });
+                } else {
+                    MXF.alert(res.info, res.success);
+                }
+            });
+        }, function () {
+            $(that).val(obj.availableStock);
         });
     }
 
