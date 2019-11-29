@@ -9,6 +9,8 @@ public class BaseQuery implements Serializable {
 
     public static final String ASC = "asc";
 
+    public static final String DESC = "DESC";
+
     // 每页返回行数
     private int rows = 10;
 
@@ -19,7 +21,7 @@ public class BaseQuery implements Serializable {
     private String sort;
 
     // 排序顺序
-    private String order = ASC;
+    private String order = DESC;
 
     public int getRows() {
         return rows;

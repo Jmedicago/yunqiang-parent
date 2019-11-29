@@ -8,7 +8,7 @@
                            fit: true,
                            method: 'post',
                            pagination: true,
-                           pageSize: 10,
+                           pageSize: 50,
                            striped: true,
                            singleSelect: false,
                            toolbar: '#stockShuntTB',
@@ -25,7 +25,7 @@
                         code="product.name"/></th>
                 <th data-options="field:'code',width:150,halign:'center',align:'center',sortable:true"><spring:message
                         code="product.code"/></th>
-                <th data-options="field: 'skuProperties', width:150, halign: 'center', align: 'left'"><spring:message code="st.out.property"/></th>
+                <th data-options="field: 'skuProperties', width:150, halign: 'center', align: 'left',formatter:MXF.cellTooltipFormatter"><spring:message code="st.out.property"/></th>
                 <th data-options="field: 'pack', width:100, halign: 'center', align: 'center'"><spring:message
                         code="sku.pack"/></th>
                 <th data-options="field: 'volume', width:80, halign: 'center', align: 'center'"><spring:message
@@ -44,9 +44,9 @@
                     <spring:message code="sku.availableStock"/></th>
                 <th data-options="field: 'frozenStock', width:50, halign: 'center', align: 'center'">
                     北仓库存</th>
-                <th data-options="field: 'container', width:80, halign: 'center', align: 'center'">
+                <th data-options="field: 'container', width:80, halign: 'center', align: 'center',formatter:MXF.cellTooltipFormatter">
                     <spring:message code="sku.container"/></th>
-                <th data-options="field: 'remark', width:100, halign: 'center', align: 'center'"><spring:message code="st.out.remark"/></th>
+                <th data-options="field: 'remark', width:100, halign: 'center', align: 'center',formatter:MXF.cellTooltipFormatter"><spring:message code="st.out.remark"/></th>
                 <th data-options="field: 'option', width:100, halign: 'center', align: 'center', formatter: optionFormatter"><spring:message code="common.option"/></th>
             </tr>
             </thead>

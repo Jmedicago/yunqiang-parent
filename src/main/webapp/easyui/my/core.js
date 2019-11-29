@@ -16,6 +16,18 @@ function initATarget() {
             if (tab) {
                 console.log('[INFO] On click cur tab.');
                 tabs.tabs("select", title);
+
+                /*var selTab = tabs.tabs('getSelected');
+                var url = $(selTab.panel('options').content).attr('src');
+                tabs.tabs('update', {
+                    tab: selTab,
+                    options: {
+                        content:createFrame(url)
+                    }
+                })*/
+                /*var tab = tabs.tabs('getSelected');  // 获取选择的面板
+                tab.panel('refresh', uri);*/
+
             } else {
                 tabs.tabs('add', {
                     title: title,
@@ -551,8 +563,33 @@ Date.prototype.format = function (format) {
     return format;
 };
 
+function formatMoney(number, places, symbol, thousand, decimal) {
+    number = number || 0;
+    places = !isNaN(places = Math.abs(places)) ? places : 2;
+    symbol = symbol !== undefined ? symbol : "MTn";
+    thousand = thousand || ",";
+    decimal = decimal || ".";
+    var negative = number < 0 ? "-" : "",
+        i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + "",
+        j = (j = i.length) > 3 ? j % 3 : 0;
+    return negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "") + symbol;
+}
+
 MXF.priceFormatter = function (val) {
-    return OSREC.CurrencyFormatter.format(val * 0.01, {currency: 'MZN', decimal: '.', group: ','});
+    //return OSREC.CurrencyFormatter.format(val * 0.01, {currency: 'MZN', decimal: '.', group: ','});
+    return formatMoney(val * 0.01);
+}
+
+//格式化单元格提示信息
+MXF.cellTooltipFormatter = function (value) {
+    if (value) {
+        var title = value;
+        title = value.replace(/<br>/g, "\n");
+        return "<span title='" + title + "'>" + value + "</span>";
+    } else {
+        return "";
+    }
+
 }
 
 MXF.priceParse = function (val) {

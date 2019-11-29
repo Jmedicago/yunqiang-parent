@@ -5,7 +5,7 @@
     <div class="tableGroup">
         <table id="productGrid" class="easyui-datagrid" title="<spring:message code="mu.pt.info"/>"
                data-options="rownumbers:true,fit:true,method:'get',
-				pagination:true,pageSize:10,striped:true,singleSelect:false,
+				pagination:true,pageSize:50,striped:true,singleSelect:false,
 				toolbar:'#productTB',url:'/product/json'">
             <thead>
             <tr>

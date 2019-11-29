@@ -102,7 +102,23 @@
     </div>
     <!--结束左侧菜单-->
     <div data-options="region:'center',title:''">
-        <div id="tabs" class="easyui-tabs">
+        <div id="tabs" class="easyui-tabs" data-options="onSelect:function(title, index){
+            $('#mainMenu').find('a[uri]').each(function(i, v){
+                var $this = $(this);
+                var mUri = $this.attr('uri');
+                var mTitle = $this.text();
+                if (title == mTitle) {
+                    var tab = $('#tabs').tabs('getSelected');
+                    $('#tabs').tabs('update', {
+	                    tab: tab,
+	                    options: {
+		                    title: title,
+		                    href: mUri
+	                    }
+                    });
+                }
+            })
+        }">
             <div title="<spring:message code="common.home"/>" style="padding:20px;"
                  data-options="region:'center',border:false,href:'/main/dashbord'">
             </div>

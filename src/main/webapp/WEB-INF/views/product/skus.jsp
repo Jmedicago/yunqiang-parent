@@ -161,8 +161,8 @@
                 <td>${sku.pack}</td>
                 <td>${sku.volume}</td>
                 <td>${sku.container}</td>
-                <td><fmt:formatNumber value="${sku.costPrice * 0.01}" type="currency" pattern="MTn.00"/></td>
-                <td><fmt:formatNumber value="${sku.marketPrice * 0.01}" type="currency" pattern="MTn.00"/></td>
+                <td><fmt:formatNumber value="${sku.costPrice * 0.01}" type="currency" pattern="00MTn"/></td>
+                <td><fmt:formatNumber value="${sku.marketPrice * 0.01}" type="currency" pattern="00MTn"/></td>
                 <td>${sku.profit}</td>
                 <td title="${sku.supplier}">${fn:substring(sku.supplier, 0, 15)}</td>
                 <td>${sku.availableStock}</td>

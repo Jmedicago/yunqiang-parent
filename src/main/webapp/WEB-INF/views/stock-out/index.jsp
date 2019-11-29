@@ -10,7 +10,7 @@
                            fit: true,
                            method: 'post',
                            pagination: true,
-                           pageSize: 10,
+                           pageSize: 50,
                            striped: true,
                            singleSelect: false,
                            toolbar: '#stockOutTB',
@@ -27,7 +27,7 @@
                                 code="product.name"/></th>
                         <th data-options="field:'code',width:150,halign:'center',align:'center',sortable:true"><spring:message
                                 code="product.code"/></th>
-                        <th data-options="field: 'skuProperties', width:150, halign: 'center', align: 'left'"><spring:message code="st.out.property"/></th>
+                        <th data-options="field: 'skuProperties', width:150, halign: 'center', align: 'left',formatter:MXF.cellTooltipFormatter"><spring:message code="st.out.property"/></th>
                         <th data-options="field: 'pack', width:100, halign: 'center', align: 'center',sortable:true"><spring:message
                                 code="sku.pack"/></th>
                         <th data-options="field: 'volume', width:80, halign: 'center', align: 'center',sortable:true"><spring:message
@@ -44,9 +44,9 @@
                             <spring:message code="sku.supplier"/></th>
                         <th data-options="field: 'availableStock', width:50, halign: 'center', align: 'center',sortable:true">
                             <spring:message code="sku.availableStock"/></th>
-                        <th data-options="field: 'container', width:80, halign: 'center', align: 'center',sortable:true">
+                        <th data-options="field: 'container', width:80, halign: 'center', align: 'center',sortable:true,formatter:MXF.cellTooltipFormatter">
                             <spring:message code="sku.container"/></th>
-                        <th data-options="field: 'remark', width:100, halign: 'center', align: 'center'"><spring:message code="st.out.remark"/></th>
+                        <th data-options="field: 'remark', width:100, halign: 'center', align: 'center',formatter:MXF.cellTooltipFormatter"><spring:message code="st.out.remark"/></th>
                     </tr>
                     </thead>
                 </table>
@@ -85,7 +85,8 @@
                 </div>
             </div>
         </div>
-        <div data-options="region:'east',border:true,title:'<spring:message code="st.out.cart"/>'" style="width: 910px;">
+        <!-- east -->
+        <div data-options="region:'south',border:true,title:'<spring:message code="st.out.cart"/>'" style="width: 100%;"> <!-- width: 910px; -->
             <div class="tableGroup cart-table">
                 <table id="cartGrid" class="easyui-datagrid" data-options="
                             singleSelect: false,
@@ -133,7 +134,7 @@
                         <th data-options="field: 'sku.availableStock', width:50, halign: 'center', align: 'center', formatter: function(val, row) { console.log(row); return row.sku.availableStock }">
                             <spring:message code="sku.availableStock"/></th>
                         </th>
-                        <th data-options="field: 'sku.pack', width:50, halign: 'center', align: 'center', formatter: function(val, row) { return row.sku.pack }">
+                        <th data-options="field: 'sku.pack', width:100, halign: 'center', align: 'center', formatter: function(val, row) { return row.sku.pack }">
                             <spring:message code="sku.pack"/>
                         </th>
                         <th data-options="field: 'sku.costPrice', width:100, halign: 'center', align: 'center', formatter: function(val, row) { return MXF.priceFormatter(row.sku.costPrice)}">
@@ -215,7 +216,8 @@
 
     .cart.statistics .statistics-box {
         /*width: 520px;*/
-        width: 910px;
+        /*width: 910px;*/
+        /*width: 100%;*/
         /*height: 50px;*/
         height: 110px;
         background: #fff;
@@ -248,9 +250,13 @@
 
         // 初始化购物车高度
         var cartHeight = $(document.body).height();
+        var cartWidth = $(document.body).width();
+        var menuWidth = 250;
         var remarkHeight = 60;
         cartHeight = cartHeight - (89 + 89 + remarkHeight);
+        cartWidth = cartWidth -menuWidth;
         $(".cart-table").css("height", cartHeight);
+        $(".statistics-box").css("width", cartWidth);
     });
 
     function productStateFormatter(value) {

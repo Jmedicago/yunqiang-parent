@@ -22,8 +22,8 @@
                 <th data-options="field: 'totalMoney', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter"><spring:message code="order.price.total"/></th>
                 <th data-options="field: 'confirmTime', width: 130, halign: 'center', align: 'center', formatter: MXF.dateTimeFormatter"><spring:message code="order.confirm.time"/></th>
                 <th data-options="field: 'commentStatus', width: 80, halign: 'center', align: 'center', formatter: commentStateFormatter"><spring:message code="order.comment.time"/></th>
-                <th data-options="field: 'digest', width:200"><spring:message code="order.detail"/></th>
-                <th data-options="field: 'remark', width:200">备注</th>
+                <th data-options="field: 'digest', width:200,formatter:MXF.cellTooltipFormatter"><spring:message code="order.detail"/></th>
+                <th data-options="field: 'remark', width:200,formatter:MXF.cellTooltipFormatter">备注</th>
             </tr>
             </thead>
         </table>

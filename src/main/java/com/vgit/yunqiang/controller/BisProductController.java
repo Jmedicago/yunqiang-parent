@@ -177,8 +177,12 @@ public class BisProductController {
             sku.setSkuPropertyList(skuPropertyList);
         }
 
+        if (sku.getMarketPrice() != null) {
+            sku.setMarketPrice(sku.getMarketPrice() * 100);
+        } else {
+            sku.setMarketPrice(0d);
+        }
 
-        sku.setMarketPrice(sku.getMarketPrice() * 100);
         sku.setCostPrice(sku.getCostPrice() * 100);
         this.bisProductService.saveSku(sku);
         return Ret.me();
