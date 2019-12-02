@@ -1,10 +1,13 @@
 package com.vgit.yunqiang.service.test;
 
+import com.vgit.yunqiang.pojo.LogResources;
+import com.vgit.yunqiang.service.LogResourceService;
 import com.vgit.yunqiang.service.SysUserService;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -16,6 +19,9 @@ public class UserServiceTest {
 
     @Resource
     private SysUserService sysUserService;
+
+    @Autowired
+    private LogResourceService logResourceService;
 
     @Test
     public void testFindRoles() throws Exception {
@@ -34,6 +40,16 @@ public class UserServiceTest {
         String encodedPassword = hash.toHex();
         System.out.println("password:" + encodedPassword);
         System.out.println("salt:" + salt2);
+    }
+
+    @Test
+    public void testSaveLogger() {
+        LogResources resources = new LogResources();
+        resources.setOldFileName("test");
+        resources.setRename("test");
+        resources.setState(1);
+        resources.setCreateTime(System.currentTimeMillis());
+        logResourceService.savePart(resources);
     }
 
 }

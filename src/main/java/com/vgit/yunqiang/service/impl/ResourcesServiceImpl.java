@@ -5,8 +5,11 @@ import com.vgit.yunqiang.common.consts.GlobalSettingNames;
 import com.vgit.yunqiang.common.utils.FtpUtils;
 import com.vgit.yunqiang.common.utils.GlobalSetting;
 import com.vgit.yunqiang.common.utils.IDUtils;
+import com.vgit.yunqiang.pojo.LogResources;
+import com.vgit.yunqiang.service.LogResourceService;
 import com.vgit.yunqiang.service.ResourcesService;
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +20,9 @@ import java.util.Map;
 @Service
 public class ResourcesServiceImpl implements ResourcesService {
 
+    @Autowired
+    private LogResourceService logResourceService;
+
     @Override
     public Map<String, Object> upload(MultipartFile uploadFile) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -24,6 +30,14 @@ public class ResourcesServiceImpl implements ResourcesService {
             //生成一个新的文件名
             //取原始文件名
             String oldName = uploadFile.getOriginalFilename();
+
+            //上传前检查
+            if (this.logResourceService.exist(oldName)) {
+                resultMap.put("error", 1);
+                resultMap.put("message", "该文件已存在");
+                return resultMap;
+            }
+
             //生成新文件名
             String newName = IDUtils.genImageName();
             newName = newName + oldName.substring(oldName.lastIndexOf("."));
@@ -45,6 +59,16 @@ public class ResourcesServiceImpl implements ResourcesService {
             resultMap.put("error", 0);
             resultMap.put("url", GlobalSetting.get(GlobalSettingNames.IMAGE_BASE_URL) + "/" + newName);
             resultMap.put("oldFileName", oldName);
+
+            LogResources logResources = new LogResources();
+            logResources.setOldFileName(oldName);
+            logResources.setFileName(newName);
+            //logResources.setSuffix();
+            logResources.setResource(GlobalSetting.get(GlobalSettingNames.IMAGE_BASE_URL) + "/" + newName);
+            logResources.setState(1);
+            logResources.setCreateTime(System.currentTimeMillis());
+            this.logResourceService.save(logResources);
+            System.out.println(logResources.toString());
             return resultMap;
 
         } catch (Exception e) {

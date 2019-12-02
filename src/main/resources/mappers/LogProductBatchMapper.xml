@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vgit.yunqiang.mapper.LogProductBatchMapper" >
+    <resultMap id="BaseResultMap" type="com.vgit.yunqiang.pojo.LogProductBatch" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="fileName" property="fileName" jdbcType="VARCHAR" />
+        <result column="resource" property="resource" jdbcType="VARCHAR" />
+        <result column="state" property="state" jdbcType="TINYINT" />
+        <result column="createTime" property="createTime" jdbcType="BIGINT" />
+        <result column="updateTime" property="updateTime" jdbcType="BIGINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, fileName, resource, state, createTime, updateTime, remark
+    </sql>
+
+    <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from t_log_product_batch
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long" >
+        delete from t_log_product_batch
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.LogProductBatch" >
+        insert into t_log_product_batch (id, fileName, resource,
+          state, createTime, updateTime,
+          remark)
+        values (#{id,jdbcType=BIGINT}, #{fileName,jdbcType=VARCHAR}, #{resource,jdbcType=VARCHAR},
+          #{state,jdbcType=TINYINT}, #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT},
+          #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.LogProductBatch" >
+        insert into t_log_product_batch
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="fileName != null" >
+                fileName,
+            </if>
+            <if test="resource != null" >
+                resource,
+            </if>
+            <if test="state != null" >
+                state,
+            </if>
+            <if test="createTime != null" >
+                createTime,
+            </if>
+            <if test="updateTime != null" >
+                updateTime,
+            </if>
+            <if test="remark != null" >
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="fileName != null" >
+                #{fileName,jdbcType=VARCHAR},
+            </if>
+            <if test="resource != null" >
+                #{resource,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null" >
+                #{state,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null" >
+                #{remark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.LogProductBatch" >
+        update t_log_product_batch
+        <set >
+            <if test="fileName != null" >
+                fileName = #{fileName,jdbcType=VARCHAR},
+            </if>
+            <if test="resource != null" >
+                resource = #{resource,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null" >
+                state = #{state,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null" >
+                createTime = #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null" >
+                updateTime = #{updateTime,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.LogProductBatch" >
+        update t_log_product_batch
+        set fileName = #{fileName,jdbcType=VARCHAR},
+          resource = #{resource,jdbcType=VARCHAR},
+          state = #{state,jdbcType=TINYINT},
+          createTime = #{createTime,jdbcType=BIGINT},
+          updateTime = #{updateTime,jdbcType=BIGINT},
+          remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+</mapper>

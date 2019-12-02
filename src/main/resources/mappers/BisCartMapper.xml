@@ -204,7 +204,7 @@
     </delete>
 
     <select id="getTotalByProductType" parameterType="java.lang.Long" resultType="java.lang.Integer">
-        SELECT SUM(c.amount) FROM t_bis_cart c, t_bis_product p WHERE c.productId = p.id AND p.productType IN (SELECT pt.id FROM t_bis_product_type pt WHERE path LIKE CONCAT('%',#{productType},'%'));
+        SELECT SUM(c.amount) FROM t_bis_cart c, t_bis_product p WHERE c.productId = p.id AND p.productType IN (SELECT pt.id FROM t_bis_product_type pt WHERE path LIKE CONCAT('%',#{productType},'%')) AND c.userId = #{userId}
     </select>
 
     <delete id="delCartBySkuId" parameterType="java.lang.Long">

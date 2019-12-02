@@ -4,15 +4,15 @@
 <div class="tab-wrap">
     <div class="tableGroup">
         <table id="orderVerifyGrid" class="easyui-datagrid" title="<spring:message code="mu.order.verify"/>" data-options="
-                   rownumbers: true,
-                   fit: true,
-                   method: 'post',
-				   pagination: true,
-				   pageSize: 10,
-				   striped: true,
-				   singleSelect: false,
-				   toolbar: '#orderVerifyTB',
-				   url:'/order-verify/json'">
+        rownumbers: true,
+        fit: true,
+        method: 'post',
+        pagination: true,
+        pageSize: 10,
+        striped: true,
+        singleSelect: true,
+        toolbar: '#orderVerifyTB',
+        url:'/order-verify/json'">
             <thead>
             <tr>
                 <th data-options="field: 'id', checkbox: true"></th>
@@ -32,8 +32,8 @@
         <div id="orderVerifyTB">
             <div>
                 <%--<a href="#" data-cmd="del" mustsel data-options="disabled:true" class="easyui-linkbutton"
-                   iconCls="icon-remove" plain="true">
-                    <spring:message code="common.delete"/>
+                       iconCls="icon-remove" plain="true">
+                <spring:message code="common.delete"/>
                 </a>--%>
                 <a href="#" data-cmd="editOrderDetail" title="<spring:message code="common.edit"/>" height="747"
                    width="590" mustsel data-options="disabled:true" class="easyui-linkbutton"
@@ -99,9 +99,12 @@
             MXF.error("<spring:message code="message.select"/>！");
             return;
         }
-        MXF.openDialog('#editOrderVerifyWindow', '<spring:message code="common.edit"/>', '/order/edit?id=' + row.id, function () {
+        /*MXF.openDialog('#editOrderVerifyWindow', '订单号：' + row.orderSn, '/order/edit?id=' + row.id, function () {
 
-        }, 590, 747);
+        }, 590, 747);*/
+        MXF.openDialog('#editOrderVerifyWindow', '订单号：' + row.orderSn, '/order-verify/edit?id=' + row.id, function () {
+
+        }, 800, 747, true);
     }
 
     function sendShip() {

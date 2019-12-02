@@ -152,6 +152,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
                 orderDetail.setTotalMoney(bisCart.getAmount() * sku.getCostPrice());
                 orderDetail.setTotalVolume(bisCart.getAmount() * sku.getVolume());
                 orderDetail.setIsComment(0);
+                orderDetail.setInputUser("终端店长");
                 this.bisOrderDetailService.savePart(orderDetail);
             }
         }
@@ -317,6 +318,77 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
         bisOrder.setCommentStatus((byte) 1);
         this.mapper.updatePart(bisOrder);
         return false;
+    }
+
+    private void addToOrder(Long orderId, Long skuId, Integer number) throws BisException {
+        BisOrder bisOrder = this.mapper.get(orderId);
+        // 查询订单是否存在
+        BisOrderDetail existBisOrderDetail = this.bisOrderDetailService.getOrderDetail(orderId, skuId);
+        // 检查商品库存数量
+        BisSku curSku = this.bisSkuService.get(skuId);
+        // 检查权属
+        this.bisSkuService.checkStock(String.valueOf(bisOrder.getStockId()), curSku);
+        // 存在则增加数量
+        if (null != existBisOrderDetail) {
+            existBisOrderDetail.setAmount(existBisOrderDetail.getAmount() + number);
+            this.bisOrderDetailService.updatePart(existBisOrderDetail);
+            return;
+        }
+        // 获取数据库最新的SKU信息
+        BisSku sku = bisProductService.getSku(skuId);
+        // 获取商品的信息
+        BisProduct product = this.bisProductService.get(sku.getProductId());
+        // 获取展示主图
+        String mainPic = sku.getSkuMainPic();
+        if (StringUtils.isBlank(mainPic)) {
+            List<BisProductMedia> productMedias = this.bisProductService.getProductMedias(product.getId());
+            if (!productMedias.isEmpty()) {
+                mainPic = productMedias.get(0).getResource();
+            }
+        }
+
+        BisOrderDetail orderDetail = new BisOrderDetail();
+        orderDetail.setOrderId(orderId);
+        orderDetail.setProductId(product.getId());
+        orderDetail.setName(product.getName());
+        orderDetail.setSkuId(skuId);
+        orderDetail.setSkuMainPic(mainPic);
+        orderDetail.setSkuProperties(sku.getSkuProperties());
+        orderDetail.setPrice(sku.getCostPrice());
+        orderDetail.setAmount(number);
+        orderDetail.setVolume(sku.getVolume());
+        orderDetail.setTotalMoney(number * sku.getCostPrice());
+        orderDetail.setTotalVolume(number * sku.getVolume());
+        orderDetail.setIsComment(0);
+        orderDetail.setInputUser("仓管员");
+
+        this.bisOrderDetailService.savePart(orderDetail);
+
+        // 更新订单信息
+        BisOrder order = new BisOrder();
+        order.setId(orderId);
+        order.setDigest(this.bisOrderDetailService.digest(orderId));
+        List<BisOrderDetail> orderDetailList = this.bisOrderDetailService.getList(orderId);
+        double totalVolume = 0d;
+        double totalPrice = 0d;
+        for (BisOrderDetail orderDetailItem : orderDetailList) {
+            totalVolume += orderDetailItem.getAmount() * orderDetailItem.getVolume();
+            totalPrice += orderDetailItem.getAmount() * orderDetailItem.getPrice();
+        }
+        order.setTotalVolume(totalVolume);
+        order.setTotalMoney(totalPrice);
+        this.mapper.updatePart(order);
+    }
+
+
+    @Override
+    public void addToOrder(Long orderId, Long...skuIds) {
+        if (skuIds == null || skuIds.length == 0) {
+            return;
+        }
+        for (Long skuId : skuIds) {
+            this.addToOrder(orderId, skuId, 1);
+        }
     }
 
     /**

@@ -193,6 +193,7 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
         int selectedTradeShoesTotalCount = 0;
         int selectedGMTotalCount = 0;
 
+        Long userId = null;
         if (null != cartList) {
             for (BisCart bisCart : cartList) {
                 if (bisCart.getSku() == null) {
@@ -208,21 +209,7 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
                     }
 
                     selectedGoodsTotalCount += bisCart.getAmount();
-
-                    Integer cSelectedFactoryShoesTotalCount = this.mapper.getTotalByProductType(1035L);
-                    if (cSelectedFactoryShoesTotalCount != null) {
-                        selectedFactoryShoesTotalCount = cSelectedFactoryShoesTotalCount;
-                    }
-
-                    Integer cSelectedTradeShoesTotalCount = this.mapper.getTotalByProductType(1010L);
-                    if (cSelectedTradeShoesTotalCount != null) {
-                        selectedTradeShoesTotalCount = cSelectedTradeShoesTotalCount;
-                    }
-
-                    Integer cSelectedGMTotalCount = this.mapper.getTotalByProductType(1011L);
-                    if (cSelectedGMTotalCount != null) {
-                        selectedGMTotalCount = cSelectedGMTotalCount;
-                    }
+                    userId = bisCart.getUserId();
                 }
             }
         }
@@ -232,6 +219,26 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
         result.put("selectedGoodsNumber", selectedGoodsNumber);
         result.put("selectedGoodsTotalVolume", selectedGoodsTotalVolume);
         result.put("selectedGoodsTotalPrice", selectedGoodsTotalPrice);
+
+
+        if (userId != null) {
+            Integer cSelectedFactoryShoesTotalCount = this.mapper.getTotalByProductType(1035L, userId);
+            if (cSelectedFactoryShoesTotalCount != null) {
+                selectedFactoryShoesTotalCount = cSelectedFactoryShoesTotalCount;
+            }
+
+            Integer cSelectedTradeShoesTotalCount = this.mapper.getTotalByProductType(1010L, userId);
+            if (cSelectedTradeShoesTotalCount != null) {
+                selectedTradeShoesTotalCount = cSelectedTradeShoesTotalCount;
+            }
+
+            Integer cSelectedGMTotalCount = this.mapper.getTotalByProductType(1011L, userId);
+            if (cSelectedGMTotalCount != null) {
+                selectedGMTotalCount = cSelectedGMTotalCount;
+            }
+
+        }
+
 
         // 新增
         result.put("selectedGoodsTotalCount", selectedGoodsTotalCount);

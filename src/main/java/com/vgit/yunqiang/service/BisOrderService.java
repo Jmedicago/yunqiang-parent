@@ -78,4 +78,12 @@ public interface BisOrderService extends BaseService<BisOrder> {
      * @return
      */
     boolean hasNotComment(Long orderId);
+
+    /**
+     * 仓管员新增商品到指定订单
+     *
+     * @param orderId
+     * @param splitToLong
+     */
+    void addToOrder(Long orderId, Long[] splitToLong);
 }

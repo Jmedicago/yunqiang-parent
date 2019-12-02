@@ -12,7 +12,7 @@
                            pagination: true,
                            pageSize: 50,
                            striped: true,
-                           singleSelect: false,
+                           singleSelect: true,
                            toolbar: '#stockOutTB',
                            url: '/sku/es'"> <!-- /sku/json -->
                     <thead>
@@ -86,8 +86,8 @@
             </div>
         </div>
         <!-- east -->
-        <div data-options="region:'south',border:true,title:'<spring:message code="st.out.cart"/>'" style="width: 100%;"> <!-- width: 910px; -->
-            <div class="tableGroup cart-table">
+        <div data-options="region:'south',border:true,title:'<spring:message code="st.out.cart"/>'" style="width: 100%; height: 430px;"> <!-- width: 910px; -->
+            <div class="tableGroup cart-table" style="height: 282px">
                 <table id="cartGrid" class="easyui-datagrid" data-options="
                             singleSelect: false,
                             fit: true,
@@ -253,9 +253,10 @@
         var cartWidth = $(document.body).width();
         var menuWidth = 250;
         var remarkHeight = 60;
-        cartHeight = cartHeight - (89 + 89 + remarkHeight);
+        //cartHeight = cartHeight - (89 + 89 + remarkHeight + 200);
+        cartHeight = cartHeight - 110;
         cartWidth = cartWidth -menuWidth;
-        $(".cart-table").css("height", cartHeight);
+        //$(".cart-table").css("height", cartHeight);
         $(".statistics-box").css("width", cartWidth);
     });
 
@@ -398,7 +399,7 @@
             }
         });
     }
-    
+
     function viewComment(val, row) {
         var row = $('#stockOutGrid').datagrid('getSelected');
         if (row == null) {

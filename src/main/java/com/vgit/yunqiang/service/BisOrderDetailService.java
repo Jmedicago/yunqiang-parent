@@ -6,6 +6,8 @@ import com.vgit.yunqiang.common.utils.Page;
 import com.vgit.yunqiang.pojo.BisOrder;
 import com.vgit.yunqiang.pojo.BisOrderDetail;
 
+import java.util.List;
+
 public interface BisOrderDetailService extends BaseService<BisOrderDetail> {
 
 	/**
@@ -23,4 +25,28 @@ public interface BisOrderDetailService extends BaseService<BisOrderDetail> {
 	 * @return
 	 */
 	BisOrder updateOrderDetail(BisOrderDetail orderDetail) throws BisException;
+
+
+	/**
+	 * 订单类别统计
+	 *
+	 * @param orderId
+	 * @return
+	 */
+	String digest(Long orderId);
+
+	/**
+	 *
+	 *
+	 * @return
+	 */
+	BisOrderDetail getOrderDetail(Long orderId, Long skuId);
+
+	/**
+	 * 订单明细列表
+	 *
+	 * @param orderId
+	 * @return
+	 */
+	List<BisOrderDetail> getList(Long orderId);
 }

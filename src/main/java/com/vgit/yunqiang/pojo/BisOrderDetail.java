@@ -31,6 +31,8 @@ public class BisOrderDetail {
 
     private Integer isComment;
 
+    private String inputUser;
+
     public Long getId() {
         return id;
     }
@@ -133,5 +135,13 @@ public class BisOrderDetail {
 
     public void setIsComment(Integer isComment) {
         this.isComment = isComment;
+    }
+
+    public String getInputUser() {
+        return inputUser;
+    }
+
+    public void setInputUser(String inputUser) {
+        this.inputUser = inputUser;
     }
 }

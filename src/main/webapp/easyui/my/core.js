@@ -559,8 +559,8 @@ Date.prototype.format = function (format) {
 
 function formatMoney(number, places, symbol, thousand, decimal) {
     number = number || 0;
-    places = !isNaN(places = Math.abs(places)) ? places : 2;
-    symbol = symbol !== undefined ? symbol : "MTn";
+    places = !isNaN(places = Math.abs(places)) ? places : 0; // 2
+    symbol = symbol !== undefined ? symbol : "MTn"; //MTn
     thousand = thousand || ",";
     decimal = decimal || ".";
     var negative = number < 0 ? "-" : "",
@@ -598,11 +598,12 @@ MXF.dateTimeFormatter = function (val, row) {
     return '';
 };
 
-MXF.openDialog = function (el, title, url, callback, width, height) {
+MXF.openDialog = function (el, title, url, callback, width, height, maximized) {
     var editWindow = $('<div id="' + el + '"></div>');
     editWindow.appendTo('body');
     var _width = width || 600;
     var _height = height || 450;
+    var _maximized = maximized || false;
     editWindow.window({
         title: title,
         width: _width,
@@ -610,6 +611,7 @@ MXF.openDialog = function (el, title, url, callback, width, height) {
         modal: true,
         closed: false,
         border: false,
+        maximized: _maximized,
         href: url,
         onLoad: callback,
         onClose: function () {

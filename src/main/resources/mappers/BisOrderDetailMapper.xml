@@ -3,7 +3,7 @@
 <mapper namespace="com.vgit.yunqiang.mapper.BisOrderDetailMapper">
 
     <sql id="Base_Column_List">
-		id, orderId, productId, name, skuId, skuMainPic, skuProperties, price, amount, volume, totalMoney, totalVolume, isComment
+		id, orderId, productId, name, skuId, skuMainPic, skuProperties, price, amount, volume, totalMoney, totalVolume, isComment, inputUser
     </sql>
 	
 	<select id="get" parameterType="com.vgit.yunqiang.pojo.BisOrderDetail" resultType="java.lang.Long">
@@ -23,11 +23,11 @@
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 		insert into t_bit_order_detail(
-		orderId, productId, name, skuId, skuMainPic, skuProperties, price, amount, volume, totalMoney, totalVolume, isComment
+		orderId, productId, name, skuId, skuMainPic, skuProperties, price, amount, volume, totalMoney, totalVolume, isComment, inputUser
 		)
 		values(
 		#{orderId, jdbcType=BIGINT}, #{productId, jdbcType=BIGINT}, #{name, jdbcType=VARCHAR}, #{skuId, jdbcType=BIGINT}, #{skuMainPic, jdbcType=VARCHAR},
-		#{skuProperties, jdbcType=VARCHAR}, #{price, jdbcType=DOUBLE}, #{amount, jdbcType=INTEGER}, #{volume, jdbcType=DOUBLE} #{totalMoney, jdbcType=DOUBLE}, #{totalVolume, jdbcType=DOUBLE}, #{isComment, jdbcType=TINYINT}
+		#{skuProperties, jdbcType=VARCHAR}, #{price, jdbcType=DOUBLE}, #{amount, jdbcType=INTEGER}, #{volume, jdbcType=DOUBLE} #{totalMoney, jdbcType=DOUBLE}, #{totalVolume, jdbcType=DOUBLE}, #{isComment, jdbcType=TINYINT}, #{inputUser, jdbcType=VARCHAR}
 		)
 	</insert>
 	
@@ -73,6 +73,9 @@
 			<if test="isComment != null">
 				isComment,
 			</if>
+			<if test="inputUser != null">
+				inputUser,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="orderId !=null">
@@ -111,6 +114,9 @@
 			<if test="isComment !=null">
 				#{isComment, jdbcType=TINYINT},
 			</if>
+			<if test="inputUser != null">
+				#{inputUser, jdbcType=VARCHAR},
+			</if>
 		</trim>
 	</insert>
 	
@@ -119,7 +125,7 @@
 		update t_bis_order_detail
         set orderId =#{orderId, jdbcType=BIGINT}, productId =#{productId, jdbcType=BIGINT}, name =#{name, jdbcType=VARCHAR}, 
         skuId =#{skuId, jdbcType=BIGINT}, skuMainPic =#{skuMainPic, jdbcType=VARCHAR}, skuProperties =#{skuProperties, jdbcType=VARCHAR}, 
-        price =#{price, jdbcType=DOUBLE}, amount =#{amount, jdbcType=INTEGER}, volume = #{volume,jdbcType=DOUBLE}, totalMoney =#{totalMoney, jdbcType=DOUBLE}, totalVolume =#{totalVolume, jdbcType=DOUBLE}, isComment = #{isComment, jdbcType=TINYINT}
+        price =#{price, jdbcType=DOUBLE}, amount =#{amount, jdbcType=INTEGER}, volume = #{volume,jdbcType=DOUBLE}, totalMoney =#{totalMoney, jdbcType=DOUBLE}, totalVolume =#{totalVolume, jdbcType=DOUBLE}, isComment = #{isComment, jdbcType=TINYINT}, #{inputUser, jdbcType=VARCHAR},
         where id = #{id,jdbcType=BIGINT}
 	</update>
 	
@@ -162,6 +168,9 @@
 			<if test="isComment !=null">
 				isComment = #{isComment, jdbcType=TINYINT},
 			</if>
+			<if test="inputUser != null">
+				inputUser = #{inputUser, jdbcType=VARCHAR},
+			</if>
 		</set>
 		where id=#{id,jdbcType=BIGINT}
 	</update>
@@ -173,5 +182,17 @@
 	<update id="changeNumber">
 		update t_bis_order_detail set amount =#{number, jdbcType=INTEGER} where orderId = #{orderId, jdbcType=BIGINT}
 	</update>
+
+	<select id="getTotalByProductType" parameterType="java.lang.Long" resultType="java.lang.Integer">
+         SELECT SUM(od.amount) FROM t_bis_order_detail od, t_bis_product p WHERE od.productId = p.id AND p.productType IN (SELECT pt.id FROM t_bis_product_type pt WHERE path LIKE CONCAT('%',#{productType},'%')) AND od.orderId = #{orderId};
+    </select>
+
+	<select id="getByOrderDetailSku" resultType="com.vgit.yunqiang.pojo.BisOrderDetail">
+		select * from t_bis_order_detail where orderId = #{orderId} and skuId = #{skuId}
+	</select>
+
+	<select id="getList" resultType="com.vgit.yunqiang.pojo.BisOrderDetail">
+		select * from t_bis_order_detail where orderId = #{orderId}
+	</select>
 
 </mapper>

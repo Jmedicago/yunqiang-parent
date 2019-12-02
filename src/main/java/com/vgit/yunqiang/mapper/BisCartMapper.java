@@ -92,7 +92,7 @@ public interface BisCartMapper extends BaseMapper<BisCart> {
      * @param productType
      * @return
      */
-    Integer getTotalByProductType(Long productType);
+    Integer getTotalByProductType(@Param("productType") Long productType, @Param("userId") Long userId);
 
     /**
      * 根据SKUID移除购物车

@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.vgit.yunqiang.service.BisOrderService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +68,51 @@ public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> i
         }
     }
 
+    @Override
+    public String digest(Long orderId) {
+        StringBuffer digest = new StringBuffer();
+
+        int selectedGoodsTotalCount = 0;
+        int selectedFactoryShoesTotalCount = 0;
+        int selectedTradeShoesTotalCount = 0;
+        int selectedGMTotalCount = 0;
+
+        if (orderId != null) {
+            Integer cSelectedFactoryShoesTotalCount = this.mapper.getTotalByProductType(1035L, orderId);
+            if (cSelectedFactoryShoesTotalCount != null) {
+                selectedFactoryShoesTotalCount = cSelectedFactoryShoesTotalCount;
+            }
+
+            Integer cSelectedTradeShoesTotalCount = this.mapper.getTotalByProductType(1010L, orderId);
+            if (cSelectedTradeShoesTotalCount != null) {
+                selectedTradeShoesTotalCount = cSelectedTradeShoesTotalCount;
+            }
+
+            Integer cSelectedGMTotalCount = this.mapper.getTotalByProductType(1011L, orderId);
+            if (cSelectedGMTotalCount != null) {
+                selectedGMTotalCount = cSelectedGMTotalCount;
+            }
+
+        }
+
+        // 新增
+        digest.append("工厂鞋：" + selectedFactoryShoesTotalCount + "件<br>");
+        digest.append("贸易鞋：" + selectedTradeShoesTotalCount + "件<br>");
+        digest.append("百货类：" + selectedGMTotalCount + "件<br>");
+
+        return digest.toString();
+    }
+
+    @Override
+    public BisOrderDetail getOrderDetail(Long orderId, Long skuId) {
+        return this.mapper.getByOrderDetailSku(orderId, skuId);
+    }
+
+    @Override
+    public List<BisOrderDetail> getList(Long orderId) {
+        return this.mapper.getList(orderId);
+    }
+
     private boolean isLocked(Long orderId) {
         BisOrder order = this.bisOrderService.get(orderId);
         if (order != null && order.getStatus() <= 0) {
@@ -79,7 +123,7 @@ public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> i
 
     private BisOrder updateOrder(Long orderId) {
         // 更新订单信息
-        StringBuilder digest = new StringBuilder(); // 订单摘要
+        // StringBuilder digest = new StringBuilder(); // 订单摘要
         Double totalMoney = 0.0d; // 订单所有商品的总价
         Double totalVolume = 0.0d; // 订单所有商品的体积
         List<BisOrderDetail> orderDetails = this.mapper.getOrderDetail(orderId);
@@ -89,7 +133,7 @@ public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> i
             // 获取商品的体积
             totalVolume += detail.getAmount() * detail.getVolume();
             // 获取摘要
-            digest.append(detail.getName());
+            /*digest.append(detail.getName());
             String skuProperties = detail.getSkuProperties();
             if (StringUtils.isNotBlank(skuProperties)) {
                 String[] propArr = skuProperties.split("_");
@@ -98,12 +142,13 @@ public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> i
                     digest.append("-").append(propValueArr[3]);
                 }
             }
-            digest.append("×").append(detail.getAmount()).append(",");
+            digest.append("×").append(detail.getAmount()).append(",");*/
         }
         BisOrder bisOrder = this.bisOrderService.get(orderId);
         bisOrder.setTotalMoney(totalMoney);
         bisOrder.setTotalVolume(totalVolume);
-        bisOrder.setDigest(digest.toString());
+        //bisOrder.setDigest(digest.toString());
+        bisOrder.setDigest(digest(orderId));
         bisOrder.setDetailList(orderDetails);
         this.bisOrderService.updatePart(bisOrder);
         return bisOrder;
