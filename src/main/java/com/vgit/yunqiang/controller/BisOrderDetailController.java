@@ -72,4 +72,18 @@ public class BisOrderDetailController {
 		}
 	}
 
+	@RequestMapping("/changeAmount")
+	@ResponseBody
+	public Ret changeAmount(BisOrderDetail orderDetail) {
+		try {
+			if (orderDetail.getRealAmount() < 1) {
+				return Ret.me().setSuccess(false).setInfo("数量不能是负数");
+			}
+			BisOrder order = this.bisOrderDetailService.updateOrderDetail(orderDetail);
+			return Ret.me().setCode(ICodes.SUCCESS).setData(order);
+		} catch (BisException e) {
+			return Ret.me().setSuccess(false).setCode(e.getCode());
+		}
+	}
+
 }

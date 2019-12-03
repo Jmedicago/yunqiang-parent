@@ -42,8 +42,12 @@
                     <spring:message code="sku.supplier"/></th>
                 <th data-options="field: 'availableStock', width:50, halign: 'center', align: 'center'">
                     <spring:message code="sku.availableStock"/></th>
-                <th data-options="field: 'frozenStock', width:50, halign: 'center', align: 'center'">
+                <%--<th data-options="field: 'frozenStock', width:50, halign: 'center', align: 'center'">
+                    北仓库存</th>--%>
+                <th data-options="field: 'northStock', width:50, halign: 'center', align: 'center'">
                     北仓库存</th>
+                <th data-options="field: 'southStock', width:50, halign: 'center', align: 'center'">
+                    南仓库存</th>
                 <th data-options="field: 'container', width:80, halign: 'center', align: 'center',formatter:MXF.cellTooltipFormatter">
                     <spring:message code="sku.container"/></th>
                 <th data-options="field: 'remark', width:100, halign: 'center', align: 'center',formatter:MXF.cellTooltipFormatter"><spring:message code="st.out.remark"/></th>

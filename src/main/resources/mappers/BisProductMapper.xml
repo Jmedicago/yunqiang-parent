@@ -159,6 +159,7 @@
 
     <sql id="whereSql">
         <where>
+            <if test="code!=null and code!=''">and p.code = #{code}</if>
             <if test="name!=null and name!=''">and p.name like CONCAT('%', #{name}, '%')</if>
             <if test="productType!=null">and pt.path like CONCAT('%', #{productType}, '%')</if>
         </where>

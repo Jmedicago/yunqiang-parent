@@ -9,6 +9,7 @@ import com.vgit.yunqiang.common.utils.StrUtils;
 import com.vgit.yunqiang.mapper.BisOrderDetailMapper;
 import com.vgit.yunqiang.pojo.BisOrder;
 import com.vgit.yunqiang.pojo.BisOrderDetail;
+import com.vgit.yunqiang.pojo.BisSku;
 import com.vgit.yunqiang.service.BisOrderDetailService;
 
 import java.util.HashMap;
@@ -16,11 +17,15 @@ import java.util.List;
 import java.util.Map;
 
 import com.vgit.yunqiang.service.BisOrderService;
+import com.vgit.yunqiang.service.BisSkuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> implements BisOrderDetailService {
+
+    @Autowired
+    private BisSkuService bisSkuService;
 
     @Autowired
     private BisOrderDetailMapper mapper;
@@ -57,9 +62,10 @@ public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> i
             BisOrderDetail newOrderDetail = new BisOrderDetail();
             // 更新订单明细
             newOrderDetail.setId(orderDetail.getId());
-            newOrderDetail.setTotalVolume(orderDetail.getVolume() * orderDetail.getAmount());
-            newOrderDetail.setTotalMoney(orderDetail.getPrice() * orderDetail.getAmount());
-            newOrderDetail.setAmount(orderDetail.getAmount());
+            newOrderDetail.setTotalVolume(orderDetail.getVolume() * orderDetail.getRealAmount());
+            newOrderDetail.setTotalMoney(orderDetail.getPrice() * orderDetail.getRealAmount());
+            // newOrderDetail.setAmount(orderDetail.getAmount());
+            newOrderDetail.setRealAmount(orderDetail.getRealAmount());
             this.updatePart(newOrderDetail);
             BisOrder bisOrder = this.updateOrder(orderDetail.getOrderId());
             return bisOrder;
@@ -129,9 +135,9 @@ public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> i
         List<BisOrderDetail> orderDetails = this.mapper.getOrderDetail(orderId);
         for (BisOrderDetail detail : orderDetails) {
             // 获取商品订单总价
-            totalMoney += detail.getAmount() * detail.getPrice();
+            totalMoney += detail.getRealAmount() * detail.getPrice();
             // 获取商品的体积
-            totalVolume += detail.getAmount() * detail.getVolume();
+            totalVolume += detail.getRealAmount() * detail.getVolume();
             // 获取摘要
             /*digest.append(detail.getName());
             String skuProperties = detail.getSkuProperties();

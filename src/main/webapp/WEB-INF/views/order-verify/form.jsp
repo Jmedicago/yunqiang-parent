@@ -115,8 +115,12 @@
                                 code="order.detail.ptname"/></th>
                         <th data-options="field: 'skuProperties', width: 200, halign: 'center', align: 'left'">
                             <spring:message code="order.detail.property"/></th>
-                        <th data-options="field: 'amount', width:100, halign: 'center', align: 'center', formatter: orderVerifyAmountFormatter">
-                            <spring:message code="order.detail.amount"/></th>
+                        <th data-options="field: 'availableStock', width:100, halign: 'center', align: 'center'">
+                            库存数量</th>
+                        <th data-options="field: 'amount', width:100, halign: 'center', align: 'center'">
+                            需求数量</th>
+                        <th data-options="field: 'realAmount', width:100, halign: 'center', align: 'center', formatter: orderVerifyAmountFormatter">
+                            实际数量</th>
                         <th data-options="field: 'inputUser', width:100, halign: 'center', align: 'center'">
                             操作人</th>
                     </tr>
@@ -164,7 +168,7 @@
                     $('#orderVerifyDetailGrid').datagrid('reload');
                     $('#orderVerifyGrid').datagrid('reload');
                 } else {
-                    MXF.alert(data.info + "，" + data.message, data.success);
+                    MXF.alert(data.message + "，" + data.info, data.success);
                 }
             });
         }
@@ -180,8 +184,35 @@
         var add = "<a class='btn-d default' onclick='addOrderVerifyDetailAmount(" + obj + ")'><i style='border: 1px solid #ccc;' class='icon iconfont icon-cart-add'></i></a>";
         var remove = "<a class='btn-d default' onclick='removeOrderVerifyDetailAmount(" + obj + ")'><i style='border: 1px solid #ccc;' class='icon iconfont icon-cart-remove'></i></a>";
         var input = "<span style='display: inline-block; width: 30px;'>" + value + "</span>";
-        return remove + input + add;
+        var i = "<input onchange='changeOrderVerifyDetailAmount(this, " + obj + ")' type='text' value='" + value + "' style='width: 50px; text-align: center; height: 16px; margin-top: -5px; border: 1px solid #ccc;'>";
+        return i;
     }
+
+    function changeOrderVerifyDetailAmount(that, obj) {
+        var temp = obj.realAmount;
+        obj.realAmount = $(that).val();
+        MXF.confirm('确认修改？', function () {
+            $.post('/order-detail/changeAmount', obj, function (res) {
+                if (res.success) {
+                    // 更新字段
+                    $("#orderVerifyDetailGrid").datagrid("updateRow", {
+                        index: obj.index, //行索引
+                        row: {
+                            realAmount: obj.realAmount //行中的某个字段
+                        }
+                    });
+                    // 更新统计
+                    orderVerifyDetailStatistics(res.data);
+                } else {
+                    $(that).val(temp);
+                    MXF.alert(res.message, res.success);
+                }
+            });
+        }, function () {
+            $(that).val(temp);
+        });
+    }
+
 
     function addOrderVerifyDetailAmount(obj) {
         obj.amount++;

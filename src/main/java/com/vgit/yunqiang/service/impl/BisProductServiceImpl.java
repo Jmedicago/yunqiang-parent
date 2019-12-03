@@ -281,7 +281,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                 this.savePart(bisProduct);
                 for (Map.Entry<String, String> entry : list.get(curr).entrySet()) {
                     String header = entry.getKey().trim().replaceAll("\r|\n*", "");
-                    if ("类别".equals(header)) { // 格式：工厂鞋.EVA鞋.绑带鞋
+                    if ("类别".equals(header) || "类别名称".equals(header)) { // 格式：工厂鞋.EVA鞋.绑带鞋
                         if (StringUtils.isNotBlank(entry.getValue())) {
                             String[] names = entry.getValue().split("\\.");
                             try {
@@ -310,7 +310,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                             bisProduct.setName(entry.getValue());
                         }
                     }
-                    if ("图示".equals(header)) {
+                    if ("图示".equals(header) || "图片".equals(header)) {
                         for (Map<String, PictureData> image : images) {
                             String key = String.valueOf(curr + start);
                             PictureData pic = image.get(key);
@@ -334,7 +334,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                             }
                         }
                     }
-                    if ("属性".equals(header)) {
+                    if ("属性".equals(header) || "属性名".equals(header)) {
                         if (StringUtils.isNotBlank(entry.getValue())) { // 颜色：红色V，码段：37-41#
                             PropertyQuery query = new PropertyQuery();
                             query.setProductType(bisProduct.getProductType());
@@ -407,7 +407,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                             bisSku.setPack(0);
                         }
                     }
-                    if ("单件体积".equals(header)) {
+                    if ("单件体积".equals(header) || "体积".equals(header)) {
                         if (StringUtils.isNotBlank(entry.getValue())) {
                             try {
                                 bisSku.setVolume(Double.valueOf(entry.getValue()));
@@ -420,7 +420,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                             bisSku.setVolume(0d);
                         }
                     }
-                    if ("单体成本".equals(header)) {
+                    if ("单体成本".equals(header) || "成本价".equals(header)) {
                         if (StringUtils.isNotBlank(entry.getValue())) {
                             try {
                                 bisSku.setCostPrice(Double.valueOf(entry.getValue()) * 100);
@@ -433,7 +433,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                             bisSku.setCostPrice(0d);
                         }
                     }
-                    if ("建议批发价".equals(header)) {
+                    if ("建议批发价".equals(header) || "批发价".equals(header)) {
                         if (StringUtils.isNotBlank(entry.getValue())) {
                             try {
                                 bisSku.setMarketPrice(Double.valueOf(entry.getValue()) * 100);
@@ -470,7 +470,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                             bisSku.setSupplier(entry.getValue());
                         }
                     }
-                    if ("待入库件数".equals(header)) {
+                    if ("待入库件数".equals(header) || "件数".equals(header)) {
                         if (StringUtils.isNotBlank(entry.getValue())) {
                             String availableStock = entry.getValue().split("\\.")[0];
                             try {

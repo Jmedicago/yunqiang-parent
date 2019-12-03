@@ -28,6 +28,8 @@ public class BisSkuServiceImpl extends BaseServiceImpl<BisSku> implements BisSku
 
     private static final String NORTH_STOCK = "1062";
 
+    private static final String SOUTH_STOCK = "1050";
+
     @Autowired
     private BisSkuMapper mapper;
 

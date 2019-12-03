@@ -215,6 +215,25 @@
         </where>
     </sql>
 
+	<sql id="orderSql">
+		order by
+		<choose>
+			<when test="sort == 'stockId'">
+				bo.stockId
+			</when>
+			<when test="sort == 'status'">
+				bo.status
+			</when>
+			<when test="sort == 'confirmTime'">
+				bo.confirmTime
+			</when>
+			<otherwise>
+				bo.confirmTime
+			</otherwise>
+		</choose>
+		${order}
+	</sql>
+
     <select id="queryTotal" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery" resultType="int">
         select count(0) from t_bis_order bo 
         <include refid="whereSql"/>
@@ -224,7 +243,7 @@
             resultType="com.vgit.yunqiang.pojo.BisOrder">
         select * from t_bis_order bo 
         <include refid="whereSql"/>
-        order by bo.createTime asc
+        <include refid="orderSql"/>
         limit #{start}, #{rows}
     </select>
 

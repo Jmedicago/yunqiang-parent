@@ -120,9 +120,9 @@
         var obj = JSON.stringify(row);
         var a = "<a class='btn-d default' onclick='addInventoryAmount(" + obj + ")'><i style='border: 1px solid #ccc;' class='icon iconfont icon-cart-add'></i></a>";
         /*var i = "<input onchange='changeInventoryAmount(this, " + obj + ")' type='number' value='" + value + "' style='width: 50px; text-align: center; height: 16px; margin-top: -5px; border-top: 1px solid #ccc; border-bottom: 1px solid #eee'>";*/
-        var i = "<input onchange='changeInventoryAmount(this, " + obj + ")' type='text' value='" + value + "' style='width: 50px; text-align: center; height: 16px; margin-top: -5px; border-top: 1px solid #ccc; border-bottom: 1px solid #eee'>";
+        var i = "<input onchange='changeInventoryAmount(this, " + obj + ")' type='text' value='" + value + "' style='width: 50px; text-align: center; height: 16px; margin-top: -5px; border: 1px solid #ccc;'>";
         var d = "<a class='btn-d default' onclick='removeInventoryAmount(" + obj + ")'><i style='border: 1px solid #ccc;' class='icon iconfont icon-cart-remove'></i></a>";
-        return d + i + a;
+        return i;
     }
 
     function changeInventoryAmount(that, obj) {

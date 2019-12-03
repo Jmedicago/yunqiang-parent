@@ -12,7 +12,7 @@
                            pagination: true,
                            pageSize: 50,
                            striped: true,
-                           singleSelect: true,
+                           singleSelect: false,
                            toolbar: '#stockOutTB',
                            url: '/sku/es'"> <!-- /sku/json -->
                     <thead>

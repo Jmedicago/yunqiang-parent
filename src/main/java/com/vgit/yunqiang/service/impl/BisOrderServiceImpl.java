@@ -153,6 +153,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
                 orderDetail.setTotalVolume(bisCart.getAmount() * sku.getVolume());
                 orderDetail.setIsComment(0);
                 orderDetail.setInputUser("终端店长");
+                orderDetail.setRealAmount(bisCart.getAmount());
                 this.bisOrderDetailService.savePart(orderDetail);
             }
         }
@@ -260,7 +261,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
 
                     String stockId = String.valueOf(bisOrder.getStockId());
                     try {
-                        this.bisSkuService.reduceStock(stockId, bisSku, orderDetail.getAmount());
+                        this.bisSkuService.reduceStock(stockId, bisSku, orderDetail.getRealAmount());
                     } catch (BisException e) {
                         return Ret.me().setSuccess(false).setCode(e.getCode()).setInfo(e.getInfo());
                     }
@@ -330,7 +331,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
         this.bisSkuService.checkStock(String.valueOf(bisOrder.getStockId()), curSku);
         // 存在则增加数量
         if (null != existBisOrderDetail) {
-            existBisOrderDetail.setAmount(existBisOrderDetail.getAmount() + number);
+            existBisOrderDetail.setRealAmount(existBisOrderDetail.getAmount() + number);
             this.bisOrderDetailService.updatePart(existBisOrderDetail);
             return;
         }
@@ -355,12 +356,13 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
         orderDetail.setSkuMainPic(mainPic);
         orderDetail.setSkuProperties(sku.getSkuProperties());
         orderDetail.setPrice(sku.getCostPrice());
-        orderDetail.setAmount(number);
+        //orderDetail.setAmount(number);
         orderDetail.setVolume(sku.getVolume());
         orderDetail.setTotalMoney(number * sku.getCostPrice());
         orderDetail.setTotalVolume(number * sku.getVolume());
         orderDetail.setIsComment(0);
         orderDetail.setInputUser("仓管员");
+        orderDetail.setRealAmount(number);
 
         this.bisOrderDetailService.savePart(orderDetail);
 
@@ -372,8 +374,8 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
         double totalVolume = 0d;
         double totalPrice = 0d;
         for (BisOrderDetail orderDetailItem : orderDetailList) {
-            totalVolume += orderDetailItem.getAmount() * orderDetailItem.getVolume();
-            totalPrice += orderDetailItem.getAmount() * orderDetailItem.getPrice();
+            totalVolume += orderDetailItem.getRealAmount() * orderDetailItem.getVolume();
+            totalPrice += orderDetailItem.getRealAmount() * orderDetailItem.getPrice();
         }
         order.setTotalVolume(totalVolume);
         order.setTotalMoney(totalPrice);

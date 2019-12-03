@@ -264,7 +264,16 @@ public class ExcelUtils {
             if (suffix.equals(OFFICE_EXCEL_XLS)) {
                 sheetIndexPicMap = getSheetPicturesFromHSSF(i, (HSSFSheet) sheet, (HSSFWorkbook) workbook);
             } else {
-                sheetIndexPicMap = getSheetPicturesFromXSSF(i, (XSSFSheet) sheet, (XSSFWorkbook) workbook);
+                try {
+                    sheetIndexPicMap = getSheetPicturesFromXSSF(i, (XSSFSheet) sheet, (XSSFWorkbook) workbook);
+                } catch (Exception e) {
+                    Map<String, Object> result = new HashMap<String, Object>();
+                    result.put("row", 0); // 行
+                    result.put("col", 0); // 列
+                    result.put("value", "");
+                   throw new BisException().setData(result).setInfo("图片格式不正确");
+                }
+
             }
             // 将当前sheet图片map存入list
             sheetList.add(sheetIndexPicMap);
@@ -315,7 +324,7 @@ public class ExcelUtils {
      * @return Map key:图片单元格索引（0_1_1）String，value:图片流 PictureData
      */
     private static Map<String, PictureData> getSheetPicturesFromXSSF(int sheetNum,
-                                                                     XSSFSheet sheet, XSSFWorkbook workbook) {
+                                                                     XSSFSheet sheet, XSSFWorkbook workbook) throws Exception {
         Map<String, PictureData> sheetIndexPicMap = new HashMap<String, PictureData>();
         for (POIXMLDocumentPart dr : sheet.getRelations()) {
             if (dr instanceof XSSFDrawing) {

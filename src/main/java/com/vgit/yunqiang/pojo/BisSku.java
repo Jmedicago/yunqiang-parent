@@ -56,6 +56,10 @@ public class BisSku extends BasePojo {
     // 关键字
     private String keyword;
 
+    private Integer northStock;
+
+    private Integer southStock;
+
     /**
      * Sku的属性值列表
      */
@@ -203,6 +207,22 @@ public class BisSku extends BasePojo {
 
     public void setSkuPropertyList(List<BisSkuProperty> skuPropertyList) {
         this.skuPropertyList = skuPropertyList;
+    }
+
+    public Integer getNorthStock() {
+        return northStock;
+    }
+
+    public void setNorthStock(Integer northStock) {
+        this.northStock = northStock;
+    }
+
+    public Integer getSouthStock() {
+        return southStock;
+    }
+
+    public void setSouthStock(Integer southStock) {
+        this.southStock = southStock;
     }
 
     @Override
