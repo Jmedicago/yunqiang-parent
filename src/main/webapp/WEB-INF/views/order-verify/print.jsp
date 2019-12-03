@@ -12,7 +12,7 @@
     <title><spring:message code="common.title"/></title>
 </head>
 <body>
-<div class="tab-wrap" id="printContent" style="width: 620px">
+<div class="tab-wrap" id="printContent" style="width: 1210px">
     <div class="print-head">
         <style type="text/css">
             .print-head {
@@ -67,7 +67,7 @@
                 text-align: center;
             }
         </style>
-        <ul>
+        <ul style="width: 680px;float: left;">
             <li>
                 <span>订单编号：${printOrder.orderSn}</span><br>
                 <span>下单店长：${stockFormatter}</span>
@@ -85,6 +85,9 @@
                 </a>
             </li>
         </ul>
+        <div style="padding: 20px 0">
+            <span>${printOrder.digest}</span>
+        </div>
     </div>
     <div class="tableGroup">
         <table id="orderPrintGrid" class="gridtable" title="订单明细">
@@ -96,7 +99,9 @@
                 </th>
                 <th data-options="field: 'name', width: 120, halign: 'center', align: 'center'">商品名</th>
                 <th data-options="field: 'skuProperties', width: 200, halign: 'center', align: 'left'">属性</th>
-                <th data-options="field: 'amount', width:100, halign: 'center', align: 'center'">数量</th>
+                <th data-options="field: 'availableStock', width:100, halign: 'center', align: 'center'">库存数量</th>
+                <th data-options="field: 'amount', width:100, halign: 'center', align: 'center'">需求数量</th>
+                <th data-options="field: 'realAmount', width:100, halign: 'center', align: 'center'">实际数量</th>
             </tr>
             </thead>
             <tbody>
@@ -106,7 +111,9 @@
                     <td><img width="50px" height="50px" src="${item.skuMainPic}"></td>
                     <td>${item.name}</td>
                     <td>${item.skuProperties}</td>
+                    <td>x ${item.availableStock}</td>
                     <td>x ${item.amount}</td>
+                    <td>x ${item.realAmount}</td>
                 </tr>
             </c:forEach>
             </tbody>
