@@ -4,6 +4,8 @@ import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.service.BaseService;
 import com.vgit.yunqiang.pojo.BisStockShunt;
 
+import java.util.List;
+
 public interface BisStockShuntService extends BaseService<BisStockShunt> {
 
     // 总仓
@@ -53,4 +55,20 @@ public interface BisStockShuntService extends BaseService<BisStockShunt> {
      */
     void shunt(BisStockShunt stockShunt) throws BisException;
 
+    /**
+     * 查询SKU库存量
+     *
+     * @param skuId
+     * @return
+     */
+    List<BisStockShunt> getList(Long skuId);
+
+    /**
+     * 查看商品库存
+     *
+     * @param skuId
+     * @param stockId
+     * @return
+     */
+    BisStockShunt getSkuStock(Long skuId, Long stockId);
 }

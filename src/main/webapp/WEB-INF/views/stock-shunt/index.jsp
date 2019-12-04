@@ -25,7 +25,8 @@
                         code="product.name"/></th>
                 <th data-options="field:'code',width:150,halign:'center',align:'center',sortable:true"><spring:message
                         code="product.code"/></th>
-                <th data-options="field: 'skuProperties', width:150, halign: 'center', align: 'left',formatter:MXF.cellTooltipFormatter"><spring:message code="st.out.property"/></th>
+                <th data-options="field: 'skuProperties', width:150, halign: 'center', align: 'left',formatter:MXF.cellTooltipFormatter">
+                    <spring:message code="st.out.property"/></th>
                 <th data-options="field: 'pack', width:100, halign: 'center', align: 'center'"><spring:message
                         code="sku.pack"/></th>
                 <th data-options="field: 'volume', width:80, halign: 'center', align: 'center'"><spring:message
@@ -40,18 +41,33 @@
                 </th>
                 <th data-options="field: 'supplier', width:80, halign: 'center', align: 'center'">
                     <spring:message code="sku.supplier"/></th>
-                <th data-options="field: 'availableStock', width:50, halign: 'center', align: 'center'">
-                    <spring:message code="sku.availableStock"/></th>
+                <%--<th data-options="field: 'availableStock', width:50, halign: 'center', align: 'center'">
+                    <spring:message code="sku.availableStock"/></th>--%>
                 <%--<th data-options="field: 'frozenStock', width:50, halign: 'center', align: 'center'">
                     北仓库存</th>--%>
-                <th data-options="field: 'northStock', width:50, halign: 'center', align: 'center'">
-                    北仓库存</th>
-                <th data-options="field: 'southStock', width:50, halign: 'center', align: 'center'">
-                    南仓库存</th>
+                <th data-options="field: 'defaultStock', width:50, halign: 'center', align: 'center', formatter: function (val, row) {
+                    var amount = 0;
+                    $.each(row.stockShunt, function (index, item) {
+                        if (item.stockId == 1000) {
+                            amount = item.amount;
+                        }
+                    });
+                    return amount;
+                }">
+                    总仓
+                </th>
+                <th data-options="field: 'northStock', width:150, halign: 'center', align: 'center', formatter: northStockShuntFormatter">
+                    北部分仓
+                </th>
+                <th data-options="field: 'southStock', width:150, halign: 'center', align: 'center', formatter: southStockShuntFormatter">
+                    南部分仓
+                </th>
                 <th data-options="field: 'container', width:80, halign: 'center', align: 'center',formatter:MXF.cellTooltipFormatter">
                     <spring:message code="sku.container"/></th>
-                <th data-options="field: 'remark', width:100, halign: 'center', align: 'center',formatter:MXF.cellTooltipFormatter"><spring:message code="st.out.remark"/></th>
-                <th data-options="field: 'option', width:100, halign: 'center', align: 'center', formatter: optionFormatter"><spring:message code="common.option"/></th>
+                <th data-options="field: 'remark', width:100, halign: 'center', align: 'center',formatter:MXF.cellTooltipFormatter">
+                    <spring:message code="st.out.remark"/></th>
+                <%-- <th data-options="field: 'option', width:100, halign: 'center', align: 'center', formatter: optionFormatter">
+                     <spring:message code="common.option"/></th>--%>
             </tr>
             </thead>
         </table>
@@ -74,10 +90,59 @@
         </div>
     </div>
 </div>
+<style type="text/css">
+    .shunt-amount {
+        display: inline-block;
+        padding: 5px 20px;
+        border: 1px solid #999;
+    }
+
+    .shunt-btn {
+        display: inline-block;
+        padding: 5px 5px;
+        border-top: 1px solid #999;
+        border-bottom: 1px solid #999;
+        border-right: 1px solid #999;
+        color: blue !important;
+    }
+</style>
 <script>
     $(function () {
         MXF.getTabContentHeight();
     });
+
+    function northStockShuntFormatter(val, row) {
+        var data = {
+            amount: 0,
+            skuId: row.id,
+            stockId: 1050
+        };
+        $.each(row.stockShunt, function (index, item) {
+            if (item.stockId == data.stockId) {
+                data.amount = item.amount;
+            }
+        });
+        var text = '<span class="shunt-amount">' + data.amount + '</span>';
+        var btn = '<a href="#" onclick="shuntStock(' + data.skuId + ',' + data.stockId + ')" class="shunt-btn">分流</a>';
+        return text + btn;
+    }
+
+    function southStockShuntFormatter(val, row) {
+        var data = {
+            amount: 0,
+            skuId: row.id,
+            stockId: 1062
+        };
+        $.each(row.stockShunt, function (index, item) {
+            if (item.stockId == data.stockId) {
+                data.amount = item.amount;
+            }
+        });
+        var text = '<span class="shunt-amount">' + data.amount + '</span>';
+        var btn = '<a href="#" onclick="shuntStock(' + data.skuId + ',' + data.stockId + ')"  class="shunt-btn">分流</a>';
+        return text + btn;
+    }
+
 
     function productStateFormatter(value) {
         if (0 == value) {
@@ -94,15 +159,15 @@
         }
         return '';
     }
-    
+
     function optionFormatter(value, row) {
         var obj = JSON.stringify(row);
-        var a = "<a href='#' onclick='shuntStock(" + obj +")' remote='false' class='easyui-linkbutton' plain='true'><i class='iconfont'>&#xe6f6;</i>分流</a>";
+        var a = "<a href='#' onclick='shuntStock(" + obj + ")' remote='false' class='easyui-linkbutton' plain='true'><i class='iconfont'>&#xe6f6;</i>分流</a>";
         return a;
     }
-    
-    function shuntStock(obj) {
-        MXF.openDialog("shuntStockDialog", "商品分流", "/stock-shunt/edit?id=" + obj.id, function () {
+
+    function shuntStock(skuId, stockId) {
+        MXF.openDialog("shuntStockDialog", "商品分流", "/stock-shunt/edit?skuId=" + skuId + "&stockId=" + stockId, function () {
 
         }, 600, 300);
     }

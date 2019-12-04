@@ -1,7 +1,12 @@
 package com.vgit.yunqiang.model;
 
+import com.vgit.yunqiang.pojo.BisStockShunt;
 import com.vgit.yunqiang.service.format.ProductTypeFormat;
 import com.vgit.yunqiang.service.format.PropertyFormat;
+import com.vgit.yunqiang.service.format.StockShuntFormatter;
+
+import java.util.List;
+import java.util.Map;
 
 public class ProductModel {
 
@@ -52,6 +57,9 @@ public class ProductModel {
     private String skuMainPic;
 
     private String remark;
+
+    // 库存
+    private List<BisStockShunt> stockShunt;
 
     public Long getId() {
         return id;
@@ -195,6 +203,10 @@ public class ProductModel {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public List<BisStockShunt> getStockShunt() {
+        return StockShuntFormatter.getShunts(id);
     }
 
     @Override

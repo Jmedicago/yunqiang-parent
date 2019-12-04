@@ -2,12 +2,18 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <form method="post" style="width: 600px; margin: 30px auto;" action="/stock-shunt/shunt">
-    <input type="hidden" name="id" value="${bisSku.id}"/>
-    <input type="hidden" name="availableStock" value="${bisSku.availableStock}"/>
+    <input type="hidden" name="skuId" value="${bisStockShunt.skuId}"/>
     <div class="input-div">
-        <label class="label-top">北部仓库</label>
-        <input class="easyui-textbox theme-textbox-radius" name="frozenStock" value="${bisSku.frozenStock}"
-               data-options="required:true">
+        <label class="label-top">分仓</label>
+        <select class="easyui-combobox" style="width:450px;" name="stockId">
+            <option value="1062">北部分仓</option>
+            <option value="1050">南部分仓</option>
+        </select>
+    </div>
+    <div class="input-div">
+        <label class="label-top">数量</label>
+        <input id="code" class="easyui-textbox theme-textbox-radius" name="code" data-options="required:true"
+               value="${bisStockShunt.amount}" style="width:450px;">
     </div>
     <div class="input-div" style="text-align: center; margin: 35px 0">
         <a class="easyui-linkbutton button-lg button-default" onclick="MXF.ajaxForm(this, function() {

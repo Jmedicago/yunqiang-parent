@@ -163,4 +163,8 @@
         select * from t_bis_stock_shunt where stockId = #{stockId} and skuId = #{skuId} and state = 1
     </select>
 
+    <select id="getList" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisStockShunt">
+        select * from t_bis_stock_shunt where skuId = #{skuId}
+    </select>
+
 </mapper>

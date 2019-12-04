@@ -92,6 +92,16 @@ public class BisStockShuntServiceImpl extends BaseServiceImpl<BisStockShunt> imp
     }
 
     @Override
+    public List<BisStockShunt> getList(Long skuId) {
+        return this.mapper.getList(skuId);
+    }
+
+    @Override
+    public BisStockShunt getSkuStock(Long skuId, Long stockId) {
+        return this.mapper.getAmountBy(stockId, skuId);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public void checkOut(Long orderId) throws BisException {
         // 查询订单信息
