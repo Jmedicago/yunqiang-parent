@@ -15,6 +15,10 @@ import com.vgit.yunqiang.mapper.BisStockMapper;
 import com.vgit.yunqiang.pojo.BisStock;
 import com.vgit.yunqiang.service.BisStockService;
 
+import static com.vgit.yunqiang.service.BisStockShuntService.DEFAULT_STOCK;
+import static com.vgit.yunqiang.service.BisStockShuntService.NORTH_STOCK;
+import static com.vgit.yunqiang.service.BisStockShuntService.SOUTH_STOCK;
+
 /**
  * 业务 - 库存
  *
@@ -92,6 +96,18 @@ public class BisStockServiceImpl extends TreeGridServiceImpl<BisStock> implement
     @Override
     public BisStock getStockByName(String name) {
         return this.mapper.getStockByName(name);
+    }
+
+    @Override
+    public String getShipmentLocation(Long stockId) {
+        BisStock stock = this.mapper.get(stockId);
+        if (stock.getPath().contains(NORTH_STOCK)) { // 是否是北部仓库
+            return NORTH_STOCK;
+        } else if (stock.getPath().contains(SOUTH_STOCK)) {
+            return SOUTH_STOCK;
+        } else {
+            return DEFAULT_STOCK;
+        }
     }
 
 }

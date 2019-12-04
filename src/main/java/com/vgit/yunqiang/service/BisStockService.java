@@ -43,4 +43,12 @@ public interface BisStockService extends TreeGridService<BisStock> {
      */
     BisStock getStockByName(String name);
 
+    /**
+     * 查找出货位置信息
+     *
+     * @param stockId
+     * @return
+     */
+    String getShipmentLocation(Long stockId);
+
 }

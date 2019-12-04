@@ -46,7 +46,6 @@ public class UserServiceTest {
     public void testSaveLogger() {
         LogResources resources = new LogResources();
         resources.setOldFileName("test");
-        resources.setRename("test");
         resources.setState(1);
         resources.setCreateTime(System.currentTimeMillis());
         logResourceService.savePart(resources);
