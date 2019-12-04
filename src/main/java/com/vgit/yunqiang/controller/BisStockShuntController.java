@@ -32,6 +32,12 @@ public class BisStockShuntController {
     @RequestMapping(ControllerConsts.URL_EDIT)
     public String form(Long skuId, Long stockId, Model model) {
         BisStockShunt bisStockShunt = this.bisStockShuntService.getSkuStock(skuId, stockId);
+        if (bisStockShunt == null) {
+            bisStockShunt = new BisStockShunt();
+            bisStockShunt.setSkuId(skuId);
+            bisStockShunt.setStockId(stockId);
+            bisStockShunt.setAmount(0);
+        }
         model.addAttribute("bisStockShunt", bisStockShunt);
         return DOMAIN + ControllerConsts.VIEW_EDIT;
     }

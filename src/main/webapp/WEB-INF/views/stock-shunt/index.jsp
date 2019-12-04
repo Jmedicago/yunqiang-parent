@@ -115,7 +115,7 @@
         var data = {
             amount: 0,
             skuId: row.id,
-            stockId: 1050
+            stockId: 1062
         };
         $.each(row.stockShunt, function (index, item) {
             if (item.stockId == data.stockId) {
@@ -131,7 +131,7 @@
         var data = {
             amount: 0,
             skuId: row.id,
-            stockId: 1062
+            stockId: 1050
         };
         $.each(row.stockShunt, function (index, item) {
             if (item.stockId == data.stockId) {

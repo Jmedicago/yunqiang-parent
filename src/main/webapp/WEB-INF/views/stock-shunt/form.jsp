@@ -5,14 +5,14 @@
     <input type="hidden" name="skuId" value="${bisStockShunt.skuId}"/>
     <div class="input-div">
         <label class="label-top">分仓</label>
-        <select class="easyui-combobox" style="width:450px;" name="stockId">
+        <select id="stockShuntCombobox" class="easyui-combobox" style="width:450px;" name="stockId" data-options="onLoadSuccess:initStockShunt,">
             <option value="1062">北部分仓</option>
             <option value="1050">南部分仓</option>
         </select>
     </div>
     <div class="input-div">
         <label class="label-top">数量</label>
-        <input id="code" class="easyui-textbox theme-textbox-radius" name="code" data-options="required:true"
+        <input class="easyui-textbox theme-textbox-radius" name="amount" data-options="required:true"
                value="${bisStockShunt.amount}" style="width:450px;">
     </div>
     <div class="input-div" style="text-align: center; margin: 35px 0">
@@ -24,3 +24,8 @@
     </div>
     <hr style="border:0;margin-bottom:20px;"/>
 </form>
+<script>
+    function initStockShunt() {
+        $('#stockShuntCombobox').combobox('setValue', ${bisStockShunt.stockId});
+    }
+</script>
