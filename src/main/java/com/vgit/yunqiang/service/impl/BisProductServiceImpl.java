@@ -52,6 +52,9 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
     private BisStockService bisStockService;
 
     @Autowired
+    private BisStockShuntService bisStockShuntService;
+
+    @Autowired
     private ResourcesService resourcesService;
 
     @Override
@@ -190,6 +193,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                 sku.setSkuCode(product.getCode());
             }
             if (null == (sku.getAvailableStock())) {
+                // 增加库存
                 sku.setAvailableStock(0);
             }
             if (null == sku.getFrozenStock()) {
@@ -213,6 +217,9 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
             System.out.println(sku.toString());
             System.out.println("-----------------------------");
             this.skuMapper.save(sku);
+
+            // 更新库存
+            this.bisStockShuntService.checkIn(sku.getId(), sku.getAvailableStock());
         }
 
         List<BisSkuProperty> skuPropertyList = sku.getSkuPropertyList();
@@ -521,6 +528,9 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                             // 生成SEO关键字
                             this.setKeyword(bisSku);
                             this.saveSku(bisSku);
+
+                            // 更新库存
+                            this.bisStockShuntService.checkIn(bisSku.getId(), bisSku.getAvailableStock());
                         }
                     }
                 } else { // 不存在，新增商品
@@ -533,6 +543,9 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                     // 生成SEO关键字
                     this.setKeyword(bisSku);
                     this.saveSku(bisSku);
+
+                    // 更新库存
+                    this.bisStockShuntService.checkIn(bisSku.getId(), bisSku.getAvailableStock());
                 }
                 this.mapper.delProductByName("newNode");
             }

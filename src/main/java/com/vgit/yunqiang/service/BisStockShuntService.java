@@ -48,6 +48,14 @@ public interface BisStockShuntService extends BaseService<BisStockShunt> {
     void checkIn(BisStockShunt stockShunt);
 
     /**
+     * 入库
+     *
+     * @param skuId
+     * @param amount
+     */
+    void checkIn(Long skuId, Integer amount);
+
+    /**
      * 处理库存
      *
      * @param stockShunt
@@ -71,4 +79,23 @@ public interface BisStockShuntService extends BaseService<BisStockShunt> {
      * @return
      */
     BisStockShunt getSkuStock(Long skuId, Long stockId);
+
+    /**
+     * 检查库存
+     *
+     * @param skuId  需求商品
+     * @param stockId 需求零售店
+     * @param amount 需求数量
+     * @return
+     */
+    boolean checkStock(Long skuId, Long stockId, Integer amount);
+
+    /**
+     * 根据订单信息查询剩余SKU库存
+     *
+     * @param skuId
+     * @param orderId
+     * @return
+     */
+    Integer getSkuStockByOrderId(Long skuId, Long orderId);
 }

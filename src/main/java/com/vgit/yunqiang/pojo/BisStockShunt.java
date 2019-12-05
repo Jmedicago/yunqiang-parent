@@ -27,6 +27,14 @@ public class BisStockShunt extends BasePojo {
      */
     private Long confirmTime;
 
+    public BisStockShunt() {
+    }
+
+    public BisStockShunt(Long skuId, Integer amount) {
+        this.skuId = skuId;
+        this.amount = amount;
+    }
+
     public Long getId() {
         return id;
     }

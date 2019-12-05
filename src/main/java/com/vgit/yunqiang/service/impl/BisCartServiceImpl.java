@@ -13,11 +13,7 @@ import com.vgit.yunqiang.pojo.BisProduct;
 import com.vgit.yunqiang.pojo.BisProductMedia;
 import com.vgit.yunqiang.pojo.BisSku;
 import com.vgit.yunqiang.pojo.SysUser;
-import com.vgit.yunqiang.service.BisCartService;
-import com.vgit.yunqiang.service.BisProductService;
-import com.vgit.yunqiang.service.BisSkuService;
-import com.vgit.yunqiang.service.QuartzService;
-import com.vgit.yunqiang.service.SysUserService;
+import com.vgit.yunqiang.service.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +42,9 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
     @Autowired
     private SysUserService sysUserService;
 
+    @Autowired
+    private BisStockShuntService bisStockShuntService;
+
     @Override
     protected BaseMapper<BisCart> getMapper() {
         return this.mapper;
@@ -55,8 +54,6 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
     public void add(Long userId, Long skuId, Integer number) throws BisException {
         // 查询购物车是否存在
         BisCart existBisCart = this.mapper.getByUserSku(userId, skuId);
-        // 检查商品库存数量
-        BisSku curSku = this.bisSkuService.get(skuId);
         // 检查权属
     	/*SysUser sysUser = this.sysUserService.get(userId);
     	if (sysUser != null) {
@@ -66,16 +63,27 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
     			throw new BisException().setInfo("您没有加入该 " + curSku.getSkuCode() + " " + curSku.getSkuName() + "的权限！");
     		}
     	}*/
-
-        SysUser sysUser = this.sysUserService.get(userId);
+        /*SysUser sysUser = this.sysUserService.get(userId);
         if (sysUser != null) {
             String stockIds = sysUser.getStockIds();
             this.bisSkuService.checkStock(stockIds, curSku);
-        }
+        }*/
         
         /*if (curSku.getAvailableStock() == 0) { // 库存不足
             throw new BisException().setCode(BisProductMsgConsts.IN_A_SHORT_INVENTORY).setInfo(curSku.getSkuCode() + " " + curSku.getSkuName());
         }*/
+
+        // 检查商品库存数量
+        BisSku curSku = this.bisSkuService.get(skuId);
+        SysUser sysUser = this.sysUserService.get(userId);
+        if (sysUser != null) {
+            String stockIds = sysUser.getStockIds();
+            // 检查库存
+            boolean flag = this.bisStockShuntService.checkStock(skuId, Long.valueOf(stockIds), number);
+            if (!flag) {
+                throw new BisException().setCode(BisProductMsgConsts.IN_A_SHORT_INVENTORY).setInfo(curSku.getSkuCode() + " " + curSku.getSkuName());
+            }
+        }
 
         // 存在则增加数量
         if (null != existBisCart) {
@@ -131,7 +139,19 @@ public class BisCartServiceImpl extends BaseServiceImpl<BisCart> implements BisC
     }
 
     @Override
-    public BisSku changeNumber(Long userId, Long cartId, Integer number) {
+    public BisSku changeNumber(Long userId, Long cartId, Long skuId, Integer number) {
+        // 检查库存
+        BisSku curSku = this.bisSkuService.get(skuId);
+        SysUser sysUser = this.sysUserService.get(userId);
+        if (sysUser != null) {
+            String stockIds = sysUser.getStockIds();
+            // 检查库存
+            boolean flag = this.bisStockShuntService.checkStock(skuId, Long.valueOf(stockIds), number);
+            if (!flag) {
+                throw new BisException().setCode(BisProductMsgConsts.IN_A_SHORT_INVENTORY).setInfo(curSku.getSkuCode() + " " + curSku.getSkuName());
+            }
+        }
+        // 改变库存
         this.mapper.changeNumber(userId, cartId, number);
         BisCart cart = this.mapper.get(cartId);
         return this.bisProductService.getSku(cart.getSkuId());

@@ -1,6 +1,6 @@
 package com.vgit.yunqiang.pojo;
 
-import com.vgit.yunqiang.service.format.SkuFormat;
+import com.vgit.yunqiang.service.format.StockShuntFormat;
 
 /**
  * 订单明细
@@ -37,7 +37,7 @@ public class BisOrderDetail {
 
     private Integer realAmount;
 
-    private String availableStock;
+    private Integer availableStock;
 
     public Long getId() {
         return id;
@@ -159,7 +159,7 @@ public class BisOrderDetail {
         this.realAmount = realAmount;
     }
 
-    public String getAvailableStock() {
-        return SkuFormat.getAvailableStock(skuId);
+    public Integer getAvailableStock() {
+        return StockShuntFormat.getSkuStock(skuId, orderId);
     }
 }

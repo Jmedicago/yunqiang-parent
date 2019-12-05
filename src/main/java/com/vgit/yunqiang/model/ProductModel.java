@@ -3,10 +3,9 @@ package com.vgit.yunqiang.model;
 import com.vgit.yunqiang.pojo.BisStockShunt;
 import com.vgit.yunqiang.service.format.ProductTypeFormat;
 import com.vgit.yunqiang.service.format.PropertyFormat;
-import com.vgit.yunqiang.service.format.StockShuntFormatter;
+import com.vgit.yunqiang.service.format.StockShuntFormat;
 
 import java.util.List;
-import java.util.Map;
 
 public class ProductModel {
 
@@ -206,7 +205,7 @@ public class ProductModel {
     }
 
     public List<BisStockShunt> getStockShunt() {
-        return StockShuntFormatter.getShunts(id);
+        return StockShuntFormat.getShunts(id);
     }
 
     @Override

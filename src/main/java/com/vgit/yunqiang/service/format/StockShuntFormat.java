@@ -5,18 +5,16 @@ import com.vgit.yunqiang.service.BisStockShuntService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
-public class StockShuntFormatter {
+public class StockShuntFormat {
 
     private static BisStockShuntService bisStockShuntService;
 
     @Autowired
     public void setBisStockShuntService(BisStockShuntService bisStockShuntService) {
-        StockShuntFormatter.bisStockShuntService = bisStockShuntService;
+        StockShuntFormat.bisStockShuntService = bisStockShuntService;
     }
 
     /*public static  Map<String, Object> getShunts(Long id) {
@@ -50,6 +48,10 @@ public class StockShuntFormatter {
 
     public static List<BisStockShunt> getShunts(Long id) {
         return bisStockShuntService.getList(id);
+    }
+
+    public static Integer getSkuStock(Long skuId, Long orderId) {
+        return bisStockShuntService.getSkuStockByOrderId(skuId, orderId);
     }
 
 }

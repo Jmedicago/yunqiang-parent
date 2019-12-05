@@ -18,20 +18,26 @@
                     <thead>
                     <tr>
                         <th data-options="field: 'id', checkbox:true"></th>
-                        <th data-options="field:'path',width:150,halign:'center',align:'center',sortable:true"><spring:message
-                                code="product.type.name"/></th>
+                        <th data-options="field:'path',width:150,halign:'center',align:'center',sortable:true">
+                            <spring:message
+                                    code="product.type.name"/></th>
                         <%--<th data-options="field: 'skuName', width:100, halign: 'center', align: 'center'"><spring:message code="st.out.product"/></th>--%>
                         <th data-options="field: 'skuMainPic', width: 50, halign: 'center', align: 'center', formatter: skuMainPicFormatter">
                             <spring:message code="sku.skuMainPic"/></th>
-                        <th data-options="field:'name',width:150,halign:'center',align:'center',sortable:true"><spring:message
-                                code="product.name"/></th>
-                        <th data-options="field:'code',width:150,halign:'center',align:'center',sortable:true"><spring:message
-                                code="product.code"/></th>
-                        <th data-options="field: 'skuProperties', width:150, halign: 'center', align: 'left',formatter:MXF.cellTooltipFormatter"><spring:message code="st.out.property"/></th>
-                        <th data-options="field: 'pack', width:100, halign: 'center', align: 'center',sortable:true"><spring:message
-                                code="sku.pack"/></th>
-                        <th data-options="field: 'volume', width:80, halign: 'center', align: 'center',sortable:true"><spring:message
-                                code="sku.volume"/>（m<sup>3</sup>）
+                        <th data-options="field:'name',width:150,halign:'center',align:'center',sortable:true">
+                            <spring:message
+                                    code="product.name"/></th>
+                        <th data-options="field:'code',width:150,halign:'center',align:'center',sortable:true">
+                            <spring:message
+                                    code="product.code"/></th>
+                        <th data-options="field: 'skuProperties', width:150, halign: 'center', align: 'left',formatter:MXF.cellTooltipFormatter">
+                            <spring:message code="st.out.property"/></th>
+                        <th data-options="field: 'pack', width:100, halign: 'center', align: 'center',sortable:true">
+                            <spring:message
+                                    code="sku.pack"/></th>
+                        <th data-options="field: 'volume', width:80, halign: 'center', align: 'center',sortable:true">
+                            <spring:message
+                                    code="sku.volume"/>（m<sup>3</sup>）
                         </th>
                         <th data-options="field: 'costPrice', width:80, halign: 'center', align: 'center',sortable:true, formatter: MXF.priceFormatter">
                             <spring:message code="sku.costPrice"/></th>
@@ -42,11 +48,39 @@
                         </th>
                         <th data-options="field: 'supplier', width:80, halign: 'center', align: 'center',sortable:true">
                             <spring:message code="sku.supplier"/></th>
-                        <th data-options="field: 'availableStock', width:50, halign: 'center', align: 'center',sortable:true">
-                            <spring:message code="sku.availableStock"/></th>
+                        <%--<th data-options="field: 'availableStock', width:50, halign: 'center', align: 'center',sortable:true">
+                            <spring:message code="sku.availableStock"/></th>--%>
+                        <th data-options="field: 'defaultStock', width:50, halign: 'center', align: 'center', formatter: function (val, row) {
+                            var amount = 0;
+                            $.each(row.stockShunt, function (index, item) {
+                                if (item.stockId == 1000) {
+                                    amount = item.amount;
+                                }
+                            });
+                            return amount;
+                        }">总仓</th>
+                        <th data-options="field: 'northStock', width:50, halign: 'center', align: 'center', formatter: function (val, row) {
+                            var amount = 0;
+                            $.each(row.stockShunt, function (index, item) {
+                                if (item.stockId == 1062) {
+                                    amount = item.amount;
+                                }
+                            });
+                            return amount;
+                        }">北部分仓</th>
+                        <th data-options="field: 'southStock', width:50, halign: 'center', align: 'center', formatter: function (val, row) {
+                            var amount = 0;
+                            $.each(row.stockShunt, function (index, item) {
+                                if (item.stockId == 1050) {
+                                    amount = item.amount;
+                                }
+                            });
+                            return amount;
+                        }">南部分仓</th>
                         <th data-options="field: 'container', width:80, halign: 'center', align: 'center',sortable:true,formatter:MXF.cellTooltipFormatter">
                             <spring:message code="sku.container"/></th>
-                        <th data-options="field: 'remark', width:100, halign: 'center', align: 'center',formatter:MXF.cellTooltipFormatter"><spring:message code="st.out.remark"/></th>
+                        <th data-options="field: 'remark', width:100, halign: 'center', align: 'center',formatter:MXF.cellTooltipFormatter">
+                            <spring:message code="st.out.remark"/></th>
                     </tr>
                     </thead>
                 </table>
@@ -86,7 +120,8 @@
             </div>
         </div>
         <!-- east -->
-        <div data-options="region:'south',border:true,title:'<spring:message code="st.out.cart"/>'" style="width: 100%; height: 430px;"> <!-- width: 910px; -->
+        <div data-options="region:'south',border:true,title:'<spring:message code="st.out.cart"/>'"
+             style="width: 100%; height: 430px;"> <!-- width: 910px; -->
             <div class="tableGroup cart-table" style="height: 282px">
                 <table id="cartGrid" class="easyui-datagrid" data-options="
                             singleSelect: false,
@@ -176,7 +211,8 @@
             <div id="cartStatistics" class="cart statistics">
                 <div class="statistics-box">
                     <div class="remark-box">
-                        <input class="easyui-textbox theme-textbox-radius" data-options="multiline:true, prompt: '备注：'" style="height:60px; width: 100%;"
+                        <input class="easyui-textbox theme-textbox-radius" data-options="multiline:true, prompt: '备注：'"
+                               style="height:60px; width: 100%;"
                                name="remark" value="${bisCart.remark}">
                     </div>
                     <div class="statistics-group">
@@ -255,7 +291,7 @@
         var remarkHeight = 60;
         //cartHeight = cartHeight - (89 + 89 + remarkHeight + 200);
         cartHeight = cartHeight - 110;
-        cartWidth = cartWidth -menuWidth;
+        cartWidth = cartWidth - menuWidth;
         //$(".cart-table").css("height", cartHeight);
         $(".statistics-box").css("width", cartWidth);
     });
@@ -282,7 +318,28 @@
         var add = "<a class='btn-d default' onclick='addCartAmount(" + obj + ")'><i style='border: 1px solid #ccc;' class='icon iconfont icon-cart-add'></i></a>";
         var remove = "<a class='btn-d default' onclick='removeCartAmount(" + obj + ")'><i style='border: 1px solid #ccc;' class='icon iconfont icon-cart-remove'></i></a>";
         var input = "<span style='display: inline-block; width: 30px;'>" + value + "</span>";
-        return remove + input + add;
+
+        var i = "<input onchange='changeCartAmount(this, " + obj + ")' type='text' value='" + value + "' style='width: 50px; text-align: center; height: 16px; margin-top: -5px; border: 1px solid #ccc;'>";
+        return i;
+    }
+
+    function changeCartAmount(that, obj) {
+        var amount = $(that).val();
+        $.post('/cart/changeNumber', {cartId: obj.id, skuId: obj.skuId, number: amount}, function (res) {
+            if (res.success) {
+                // 更新字段
+                $("#cartGrid").datagrid("updateRow", {
+                    index: obj.index, //行索引
+                    row: {
+                        amount: amount //行中的某个字段
+                    }
+                });
+                // 更新统计
+                statistics(res.data);
+            } else {
+                MXF.alert(res.message + "，" + res.info, res.success);
+            }
+        });
     }
 
     function addCartAmount(obj) {
@@ -383,7 +440,7 @@
     function submitOrder() {
         var digest = '工厂鞋：' + $('#selectedFactoryShoesTotalCount').text() + '件<br>贸易鞋：' + $('#selectedTradeShoesTotalCount').text() + '件<br>百货类：' + $('#selectedGMTotalCount').text() + '件';
         var data = {
-            digest:  digest,
+            digest: digest,
             remark: $('#cartStatistics input[name=remark]').val()
         };
         MXF.ajaxing(true);

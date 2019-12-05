@@ -6,6 +6,7 @@ import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
 import com.vgit.yunqiang.mapper.BisStockShuntMapper;
 import com.vgit.yunqiang.pojo.BisOrder;
 import com.vgit.yunqiang.pojo.BisOrderDetail;
+import com.vgit.yunqiang.pojo.BisStock;
 import com.vgit.yunqiang.pojo.BisStockShunt;
 import com.vgit.yunqiang.service.BisOrderDetailService;
 import com.vgit.yunqiang.service.BisOrderService;
@@ -102,6 +103,30 @@ public class BisStockShuntServiceImpl extends BaseServiceImpl<BisStockShunt> imp
     }
 
     @Override
+    public boolean checkStock(Long skuId, Long stockId, Integer amount) {
+        // 查询出货位置信息
+        String location = this.bisStockService.getShipmentLocation(stockId);
+        // 查询出货位置库存量
+        BisStockShunt stock = this.getSkuStock(skuId, Long.valueOf(location));
+        if (stock != null && stock.getAmount() >= amount) { // 库存量大于需求量
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Integer getSkuStockByOrderId(Long skuId, Long orderId) {
+        BisOrder order = this.bisOrderService.get(orderId);
+        if (order != null) {
+            BisStockShunt stockShunt = this.getSkuStock(skuId, order.getStockId());
+            if (stockShunt != null) {
+                return stockShunt.getAmount();
+            }
+        }
+        return 0;
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public void checkOut(Long orderId) throws BisException {
         // 查询订单信息
@@ -164,6 +189,11 @@ public class BisStockShuntServiceImpl extends BaseServiceImpl<BisStockShunt> imp
             stockShunt.setCreateTime(System.currentTimeMillis());
             this.mapper.savePart(stockShunt);
         }
+    }
+
+    @Override
+    public void checkIn(Long skuId, Integer amount) {
+        this.checkIn(new BisStockShunt(skuId, amount));
     }
 
 }

@@ -40,9 +40,10 @@ public interface BisCartService extends BaseService<BisCart> {
      *
      * @param userId
      * @param cartId
+     * @param skuId
      * @param number
      */
-    BisSku changeNumber(Long userId, Long cartId, Integer number);
+    BisSku changeNumber(Long userId, Long cartId, Long skuId, Integer number);
 
     /**
      * 选中购物车

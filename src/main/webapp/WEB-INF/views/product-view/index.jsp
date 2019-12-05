@@ -27,26 +27,61 @@
                         code="product.name"/></th>
                 <th data-options="field:'code',width:150,halign:'center',align:'center',sortable:true"><spring:message
                         code="product.code"/></th>
-                <th data-options="field: 'skuProperties', width:150, halign: 'center', align: 'left',formatter:MXF.cellTooltipFormatter"><spring:message code="st.out.property"/></th>
-                <th data-options="field: 'pack', width:100, halign: 'center', align: 'center',sortable:true"><spring:message
-                        code="sku.pack"/></th>
-                <th data-options="field: 'volume', width:80, halign: 'center', align: 'center',sortable:true"><spring:message
-                        code="sku.volume"/>（m<sup>3</sup>）
+                <th data-options="field: 'skuProperties', width:150, halign: 'center', align: 'left',formatter:MXF.cellTooltipFormatter">
+                    <spring:message code="st.out.property"/></th>
+                <th data-options="field: 'pack', width:100, halign: 'center', align: 'center',sortable:true">
+                    <spring:message
+                            code="sku.pack"/></th>
+                <th data-options="field: 'volume', width:80, halign: 'center', align: 'center',sortable:true">
+                    <spring:message
+                            code="sku.volume"/>（m<sup>3</sup>）
                 </th>
                 <th data-options="field: 'costPrice', width:80, halign: 'center', align: 'center',sortable:true,formatter: MXF.priceFormatter">
                     <spring:message code="sku.costPrice"/></th>
                 <th data-options="field: 'marketPrice', width:80, halign: 'center', align: 'center',sortable:true, formatter: MXF.priceFormatter">
                     <spring:message code="sku.marketPrice"/></th>
-                <th data-options="field: 'profit', width:50, halign: 'center', align: 'center',sortable:true"><spring:message
-                        code="sku.profit"/>（%）
+                <th data-options="field: 'profit', width:50, halign: 'center', align: 'center',sortable:true">
+                    <spring:message
+                            code="sku.profit"/>（%）
                 </th>
                 <th data-options="field: 'supplier', width:80, halign: 'center', align: 'center',sortable:true">
                     <spring:message code="sku.supplier"/></th>
-                <th data-options="field: 'availableStock', width:150, halign: 'center', align: 'center',sortable:true">
-                    <spring:message code="sku.availableStock"/></th>
+                <%--<th data-options="field: 'availableStock', width:150, halign: 'center', align: 'center',sortable:true">
+                    <spring:message code="sku.availableStock"/></th>--%>
+                <th data-options="field: 'defaultStock', width:50, halign: 'center', align: 'center', formatter: function (val, row) {
+                            var amount = 0;
+                            $.each(row.stockShunt, function (index, item) {
+                                if (item.stockId == 1000) {
+                                    amount = item.amount;
+                                }
+                            });
+                            return amount;
+                        }">总仓
+                </th>
+                <th data-options="field: 'northStock', width:50, halign: 'center', align: 'center', formatter: function (val, row) {
+                            var amount = 0;
+                            $.each(row.stockShunt, function (index, item) {
+                                if (item.stockId == 1062) {
+                                    amount = item.amount;
+                                }
+                            });
+                            return amount;
+                        }">北部分仓
+                </th>
+                <th data-options="field: 'southStock', width:50, halign: 'center', align: 'center', formatter: function (val, row) {
+                            var amount = 0;
+                            $.each(row.stockShunt, function (index, item) {
+                                if (item.stockId == 1050) {
+                                    amount = item.amount;
+                                }
+                            });
+                            return amount;
+                        }">南部分仓
+                </th>
                 <th data-options="field: 'container', width:80, halign: 'center', align: 'center',sortable:true,formatter:MXF.cellTooltipFormatter">
                     <spring:message code="sku.container"/></th>
-                <th data-options="field: 'remark', width:100, halign: 'center', align: 'center', formatter:MXF.cellTooltipFormatter"><spring:message code="st.out.remark"/></th>
+                <th data-options="field: 'remark', width:100, halign: 'center', align: 'center', formatter:MXF.cellTooltipFormatter">
+                    <spring:message code="st.out.remark"/></th>
             </tr>
             </thead>
         </table>
@@ -62,12 +97,13 @@
                     <spring:message code="st.out.view.assess"/>
                 </a>
             </div>--%>
-                <div>
-                    <a href="#" data-cmd="del" mustsel msg="<spring:message code="message.delete"/>" data-options="disabled:true" class="easyui-linkbutton"
-                       iconCls="icon-remove" plain="true">
-                        <spring:message code="common.delete"/>
-                    </a>
-                </div>
+            <div>
+                <a href="#" data-cmd="del" mustsel msg="<spring:message code="message.delete"/>"
+                   data-options="disabled:true" class="easyui-linkbutton"
+                   iconCls="icon-remove" plain="true">
+                    <spring:message code="common.delete"/>
+                </a>
+            </div>
             <div class="searchForm" style="border: unset; margin: 0; padding: 5px 5px">
                 <form>
                     关键字：

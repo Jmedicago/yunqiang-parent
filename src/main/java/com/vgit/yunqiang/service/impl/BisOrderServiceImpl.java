@@ -50,6 +50,9 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
     private BisOrderDetailService bisOrderDetailService;
 
     @Autowired
+    private BisStockShuntService bisStockShuntService;
+
+    @Autowired
     private QuartzService quartzService;
 
     @Override
@@ -254,7 +257,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
     public Ret sendShip(Long orderId) {
         BisOrder bisOrder = this.mapper.get(orderId);
         if (bisOrder.getStatus() == 0) {
-            Page<BisOrderDetail> page = this.bisOrderDetailService.getOrderDetail(orderId);
+           /* Page<BisOrderDetail> page = this.bisOrderDetailService.getOrderDetail(orderId);
             if (page != null) {
                 for (BisOrderDetail orderDetail : page.getRows()) {
                     BisSku bisSku = this.bisSkuService.get(orderDetail.getSkuId());
@@ -265,16 +268,21 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
                     } catch (BisException e) {
                         return Ret.me().setSuccess(false).setCode(e.getCode()).setInfo(e.getInfo());
                     }
-                    /*// 库存不足
-                    if (orderDetail.getAmount() > bisSku.getAvailableStock()) {
+
+                    // 库存不足
+                    //if (orderDetail.getAmount() > bisSku.getAvailableStock()) {
                         return Ret.me().setSuccess(false).setCode(SysUserMsgConsts.ORDER_STOCK_NOT_ENOUGH);
-                    }
+                    //}
                     // 库存充足，扣除库存
-                    bisSku.setAvailableStock(bisSku.getAvailableStock() - orderDetail.getAmount());
-                    bisSku.setFrozenStock(bisSku.getFrozenStock() + orderDetail.getAmount());
-                    this.bisSkuService.updatePart(bisSku);*/
+                    //bisSku.setAvailableStock(bisSku.getAvailableStock() - orderDetail.getAmount());
+                    //bisSku.setFrozenStock(bisSku.getFrozenStock() + orderDetail.getAmount());
+                    //this.bisSkuService.updatePart(bisSku);
                 }
-            }
+            }*/
+
+            // 减库存
+            this.bisStockShuntService.checkOut(orderId);
+
             bisOrder.setShipTime(System.currentTimeMillis());
             bisOrder.setStatus((int) OrderStateConsts.WAIT_SHIP_SEND);
             this.mapper.updatePart(bisOrder);
@@ -384,7 +392,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
 
 
     @Override
-    public void addToOrder(Long orderId, Long...skuIds) {
+    public void addToOrder(Long orderId, Long... skuIds) {
         if (skuIds == null || skuIds.length == 0) {
             return;
         }

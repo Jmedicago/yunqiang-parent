@@ -61,14 +61,14 @@ public class BisCartController {
 
     @RequestMapping("/addAmount")
     @ResponseBody
-    public Ret cartAddAmount(Long cartId, Integer number) {
+    public Ret cartAddAmount(Long cartId, Long skuId, Integer number) {
         BisCart cart = this.bisCartService.get(cartId);
         // 获取商品总库存
         BisSku sku = this.bisSkuService.get(cart.getSkuId());
         if (number > sku.getAvailableStock()) {
             return Ret.me().setSuccess(false).setInfo("商品库存不足！");
         }
-        BisSku bisSku = this.bisCartService.changeNumber(UserContext.getUserId(), cartId, number);
+        BisSku bisSku = this.bisCartService.changeNumber(UserContext.getUserId(), cartId, skuId, number);
         Map<String, Object> calResultMap = this.bisCartService.calculate(UserContext.getUserId());
         Double marketPrice = bisSku.getMarketPrice();
         Double costPrice = bisSku.getCostPrice();
@@ -81,11 +81,11 @@ public class BisCartController {
 
     @RequestMapping("/removeAmount")
     @ResponseBody
-    public Ret cartRemoveAmount(Long cartId, Integer number) {
+    public Ret cartRemoveAmount(Long cartId, Long skuId, Integer number) {
         if (number < 1) {
             return Ret.me().setSuccess(false).setInfo("已减到最小数量！");
         }
-        BisSku bisSku = this.bisCartService.changeNumber(UserContext.getUserId(), cartId, number);
+        BisSku bisSku = this.bisCartService.changeNumber(UserContext.getUserId(), cartId, skuId, number);
         Map<String, Object> calResultMap = this.bisCartService.calculate(UserContext.getUserId());
         Double marketPrice = bisSku.getMarketPrice();
         Double costPrice = bisSku.getCostPrice();
@@ -105,16 +105,20 @@ public class BisCartController {
      */
     @RequestMapping("/changeNumber")
     @ResponseBody
-    public Ret changeCartNumber(Long cartId, Integer number) {
-        BisSku sku = this.bisCartService.changeNumber(UserContext.getUserId(), cartId, number);
-        Map<String, Object> calResultMap = this.bisCartService.calculate(UserContext.getUserId());
-        Double marketPrice = sku.getMarketPrice();
-        Double costPrice = sku.getCostPrice();
-        Double total = costPrice * number;
-        calResultMap.put("marketPrice", marketPrice);
-        calResultMap.put("price", costPrice);
-        calResultMap.put("subTotal", total);
-        return Ret.me().setData(calResultMap);
+    public Ret changeCartNumber(Long cartId, Long skuId, Integer number) {
+        try {
+            BisSku sku = this.bisCartService.changeNumber(UserContext.getUserId(), cartId, skuId, number);
+            Map<String, Object> calResultMap = this.bisCartService.calculate(UserContext.getUserId());
+            Double marketPrice = sku.getMarketPrice();
+            Double costPrice = sku.getCostPrice();
+            Double total = costPrice * number;
+            calResultMap.put("marketPrice", marketPrice);
+            calResultMap.put("price", costPrice);
+            calResultMap.put("subTotal", total);
+            return Ret.me().setData(calResultMap);
+        } catch (BisException e) {
+            return Ret.me().setSuccess(false).setCode(e.getCode()).setInfo(e.getInfo());
+        }
     }
 
     @RequestMapping("/changeSelected")

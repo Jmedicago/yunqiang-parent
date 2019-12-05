@@ -48,8 +48,35 @@
                         </th>
                         <th data-options="field: 'supplier', width:80, halign: 'center', align: 'center',sortable:true">
                             <spring:message code="sku.supplier"/></th>
-                        <th data-options="field: 'availableStock', width:50, halign: 'center', align: 'center',sortable:true">
-                            <spring:message code="sku.availableStock"/></th>
+                        <%--<th data-options="field: 'availableStock', width:50, halign: 'center', align: 'center',sortable:true">
+                            <spring:message code="sku.availableStock"/></th>--%>
+                        <th data-options="field: 'defaultStock', width:50, halign: 'center', align: 'center', formatter: function (val, row) {
+                            var amount = 0;
+                            $.each(row.stockShunt, function (index, item) {
+                                if (item.stockId == 1000) {
+                                    amount = item.amount;
+                                }
+                            });
+                            return amount;
+                        }">总仓</th>
+                        <th data-options="field: 'northStock', width:50, halign: 'center', align: 'center', formatter: function (val, row) {
+                            var amount = 0;
+                            $.each(row.stockShunt, function (index, item) {
+                                if (item.stockId == 1062) {
+                                    amount = item.amount;
+                                }
+                            });
+                            return amount;
+                        }">北部分仓</th>
+                        <th data-options="field: 'southStock', width:50, halign: 'center', align: 'center', formatter: function (val, row) {
+                            var amount = 0;
+                            $.each(row.stockShunt, function (index, item) {
+                                if (item.stockId == 1050) {
+                                    amount = item.amount;
+                                }
+                            });
+                            return amount;
+                        }">南部分仓</th>
                         <th data-options="field: 'container', width:80, halign: 'center', align: 'center',sortable:true,formatter:MXF.cellTooltipFormatter">
                             <spring:message code="sku.container"/></th>
                         <th data-options="field: 'remark', width:100, halign: 'center', align: 'center',formatter:MXF.cellTooltipFormatter">
