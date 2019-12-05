@@ -167,9 +167,13 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                 sku.setProfit(profit * 100);
             }
             sku.setUpdateTime(System.currentTimeMillis());
+
             // 生成SEO关键字
             this.setKeyword(sku);
             this.skuMapper.updatePart(sku);
+
+            // 更新库存
+            this.bisStockShuntService.checkIn(sku.getId(), sku.getAvailableStock());
         } else {
             // 新增
             /*String maxCode = this.skuMapper.getMaxCode(sku.getProductId());

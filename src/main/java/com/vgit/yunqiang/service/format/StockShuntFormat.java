@@ -17,34 +17,13 @@ public class StockShuntFormat {
         StockShuntFormat.bisStockShuntService = bisStockShuntService;
     }
 
-    /*public static  Map<String, Object> getShunts(Long id) {
-        Map<String, Object> shunts = new HashMap<>();
-        List<BisStockShunt> bisStockShunts = bisStockShuntService.getList(id);
-        if (bisStockShunts != null && bisStockShunts.size() > 0) {
-            for (BisStockShunt stockShunt : bisStockShunts) {
-                if (BisStockShuntService.DEFAULT_STOCK.equals(String.valueOf(stockShunt.getStockId()))) {
-                    shunts.put("总仓库存", stockShunt.getAmount());
-                } else {
-                    shunts.put("总仓库存", 0);
-                }
-                if (BisStockShuntService.NORTH_STOCK.equals(String.valueOf(stockShunt.getStockId()))) {
-                    shunts.put("北仓库存", stockShunt.getAmount());
-                } else {
-                    shunts.put("北仓库存", 0);
-                }
-                if (BisStockShuntService.SOUTH_STOCK.equals(String.valueOf(stockShunt.getStockId()))) {
-                    shunts.put("南仓库存", stockShunt.getAmount());
-                } else {
-                    shunts.put("南仓库存", 0);
-                }
-            }
-        } else {
-            shunts.put("总仓库存", 0);
-            shunts.put("北仓库存", 0);
-            shunts.put("南仓库存", 0);
+    public static Integer getDefaultStock(Long id) {
+        BisStockShunt stockShunt = bisStockShuntService.getSkuStock(id, Long.valueOf(BisStockShuntService.DEFAULT_STOCK));
+        if (stockShunt == null) {
+            return 0;
         }
-        return shunts;
-    }*/
+        return stockShunt.getAmount();
+    }
 
     public static List<BisStockShunt> getShunts(Long id) {
         return bisStockShuntService.getList(id);

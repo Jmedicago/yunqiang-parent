@@ -1,6 +1,7 @@
 package com.vgit.yunqiang.pojo;
 
 import com.vgit.yunqiang.pojo.base.BasePojo;
+import com.vgit.yunqiang.service.format.StockShuntFormat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +60,8 @@ public class BisSku extends BasePojo {
     private Integer northStock;
 
     private Integer southStock;
+
+    private Integer defaultStock;
 
     /**
      * Sku的属性值列表
@@ -247,4 +250,7 @@ public class BisSku extends BasePojo {
                 '}';
     }
 
+    public Integer getDefaultStock() {
+        return StockShuntFormat.getDefaultStock(id);
+    }
 }

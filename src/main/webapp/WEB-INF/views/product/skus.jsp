@@ -141,8 +141,8 @@
             <th><spring:message code="sku.marketPrice"/></th>
             <th><spring:message code="sku.profit"/>（%）</th>
             <th><spring:message code="sku.supplier"/></th>
-            <th><spring:message code="sku.availableStock"/></th>
-            <th><spring:message code="sku.frozenStock"/></th>
+            <th>总仓库存<%--<spring:message code="sku.availableStock"/>--%></th>
+            <%--<th><spring:message code="sku.frozenStock"/></th>--%>
             <th><spring:message code="sku.skuMainPic"/></th>
             <th><spring:message code="common.option"/></th>
         </tr>
@@ -165,8 +165,9 @@
                 <td><fmt:formatNumber value="${sku.marketPrice * 0.01}" type="currency" pattern="00MTn"/></td>
                 <td>${sku.profit}</td>
                 <td title="${sku.supplier}">${fn:substring(sku.supplier, 0, 15)}</td>
-                <td>${sku.availableStock}</td>
-                <td>${sku.frozenStock}</td>
+                <%--<td>${sku.availableStock}</td>--%>
+                <td>${sku.defaultStock}</td>
+                <%--<td>${sku.frozenStock}</td>--%>
                 <td>
                     <c:if test="${sku.skuMainPic != null && sku.skuMainPic != ''}">
                         <img height="30" width="30" src="${sku.skuMainPic}"/>
@@ -207,6 +208,7 @@
             $('#editSkuDiv').show();
             data.marketPrice = (data.marketPrice * 0.01).toFixed(2);
             data.costPrice = (data.costPrice * 0.01).toFixed(2);
+            data.availableStock = data.defaultStock;
             $('#skuForm').form('load', data);
             //重新渲染
             MXF.initOnePicUploader(data.skuMainPic);

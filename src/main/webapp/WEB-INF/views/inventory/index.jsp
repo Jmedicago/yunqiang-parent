@@ -44,15 +44,7 @@
                 <%--<th data-options="field: 'availableStock', width:150, halign: 'center', align: 'center',sortable:true, formatter:availableStockFormatter">
                     <spring:message code="sku.availableStock"/></th>--%>
 
-                <th data-options="field: 'defaultStock', width:50, halign: 'center', align: 'center', formatter: function (val, row) {
-                    var amount = 0;
-                    $.each(row.stockShunt, function (index, item) {
-                        if (item.stockId == 1000) {
-                            amount = item.amount;
-                        }
-                    });
-                    return amount;
-                }">
+                <th data-options="field: 'defaultStock', width:150, halign: 'center', align: 'center', formatter: defaultStockShuntFormatter">
                     总仓
                 </th>
                 <th data-options="field: 'northStock', width:50, halign: 'center', align: 'center', formatter: function (val, row) {
@@ -127,7 +119,22 @@
         </div>
     </div>
 </div>
+<style type="text/css">
+    .shunt-amount {
+        display: inline-block;
+        padding: 5px 20px;
+        border: 1px solid #999;
+    }
 
+    .shunt-btn {
+        display: inline-block;
+        padding: 5px 5px;
+        border-top: 1px solid #999;
+        border-bottom: 1px solid #999;
+        border-right: 1px solid #999;
+        color: blue !important;
+    }
+</style>
 <script>
     $(function () {
         MXF.getTabContentHeight();
@@ -147,6 +154,29 @@
             return '<img onclick="MXF.showImageDialog(this.src)" style="display: block" height="38" width="38" src="' + value + '"/>';
         }
         return '';
+    }
+
+    function defaultStockShuntFormatter(val, row) {
+        var data = {
+            amount: 0,
+            skuId: row.id,
+            stockId: 1000
+        };
+        $.each(row.stockShunt, function (index, item) {
+            if (item.stockId == data.stockId) {
+                data.amount = item.amount;
+            }
+        });
+        var text = '<span class="shunt-amount">' + data.amount + '</span>';
+        var btn = '<a href="#" onclick="shuntDefaultStock(' + data.skuId + ',' + data.stockId + ')"  class="shunt-btn">修改</a>';
+        return text + btn;
+    }
+
+
+    function shuntDefaultStock(skuId, stockId) {
+        MXF.openDialog("shuntStockDialog", "新增库存", "/inventory/edit?skuId=" + skuId + "&stockId=" + stockId, function () {
+
+        }, 600, 300);
     }
 
     function availableStockFormatter(value, row, index) {
