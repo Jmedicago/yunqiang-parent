@@ -18,8 +18,11 @@ import java.util.Map;
 
 import com.vgit.yunqiang.service.BisOrderService;
 import com.vgit.yunqiang.service.BisSkuService;
+import com.vgit.yunqiang.service.BisStockShuntService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import static com.vgit.yunqiang.common.consts.msg.BisProductMsgConsts.IN_A_SHORT_INVENTORY;
 
 @Service
 public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> implements BisOrderDetailService {
@@ -32,6 +35,9 @@ public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> i
 
     @Autowired
     private BisOrderService bisOrderService;
+
+    @Autowired
+    private BisStockShuntService bisStockShuntService;
 
     @Override
     protected BaseMapper<BisOrderDetail> getMapper() {
@@ -59,6 +65,12 @@ public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> i
     @Override
     public BisOrder updateOrderDetail(BisOrderDetail orderDetail) throws BisException {
         if (this.isLocked(orderDetail.getOrderId())) {
+            // 检查库存
+            BisOrder bisOrder = this.bisOrderService.get(orderDetail.getOrderId());
+            if (!this.bisStockShuntService.checkStock(orderDetail.getSkuId(), bisOrder.getStockId(), orderDetail.getRealAmount())) {
+                throw new BisException().setCode(IN_A_SHORT_INVENTORY);
+            }
+
             BisOrderDetail newOrderDetail = new BisOrderDetail();
             // 更新订单明细
             newOrderDetail.setId(orderDetail.getId());
@@ -67,8 +79,8 @@ public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> i
             // newOrderDetail.setAmount(orderDetail.getAmount());
             newOrderDetail.setRealAmount(orderDetail.getRealAmount());
             this.updatePart(newOrderDetail);
-            BisOrder bisOrder = this.updateOrder(orderDetail.getOrderId());
-            return bisOrder;
+            BisOrder newOrder = this.updateOrder(orderDetail.getOrderId());
+            return newOrder;
         } else {
             throw new BisException().setCode(BisOrderMsgConsts.ORDER_LOCKED);
         }

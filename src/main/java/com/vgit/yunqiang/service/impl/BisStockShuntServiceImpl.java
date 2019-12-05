@@ -118,7 +118,9 @@ public class BisStockShuntServiceImpl extends BaseServiceImpl<BisStockShunt> imp
     public Integer getSkuStockByOrderId(Long skuId, Long orderId) {
         BisOrder order = this.bisOrderService.get(orderId);
         if (order != null) {
-            BisStockShunt stockShunt = this.getSkuStock(skuId, order.getStockId());
+            // 查询出货位置信息
+            String location = this.bisStockService.getShipmentLocation(order.getStockId());
+            BisStockShunt stockShunt = this.getSkuStock(skuId, Long.valueOf(location));
             if (stockShunt != null) {
                 return stockShunt.getAmount();
             }

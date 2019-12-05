@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.vgit.yunqiang.common.consts.msg.BisProductMsgConsts.IN_A_SHORT_INVENTORY;
+
 @Service
 public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements BisOrderService {
 
@@ -74,7 +76,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
                 BisSku sku = bisCart.getSku();
 
                 // 检查权属
-                Long userId = formOrder.getUserId();
+                /*Long userId = formOrder.getUserId();
                 SysUser sysUser = this.sysUserService.get(userId);
                 if (sysUser != null) {
                     String stockIds = sysUser.getStockIds();
@@ -85,6 +87,12 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
                     } catch (BisException e) {
                         return Ret.me().setSuccess(false).setCode(e.getCode()).setInfo(e.getInfo());
                     }
+                }*/
+
+                // 检查库存
+                boolean flag = this.bisStockShuntService.checkStock(sku.getId(), formOrder.getStockId(), bisCart.getAmount());
+                if (!flag) {
+                    return Ret.me().setSuccess(false).setCode(IN_A_SHORT_INVENTORY).setInfo(sku.getId() + " " + sku.getSkuName());
                 }
 
                 /*// 当前可用库存
@@ -334,12 +342,12 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
         // 查询订单是否存在
         BisOrderDetail existBisOrderDetail = this.bisOrderDetailService.getOrderDetail(orderId, skuId);
         // 检查商品库存数量
-        BisSku curSku = this.bisSkuService.get(skuId);
-        // 检查权属
-        this.bisSkuService.checkStock(String.valueOf(bisOrder.getStockId()), curSku);
+        if(!this.bisStockShuntService.checkStock(skuId, bisOrder.getStockId(), existBisOrderDetail.getRealAmount() + number)){
+            throw new BisException().setCode(IN_A_SHORT_INVENTORY);
+        }
         // 存在则增加数量
         if (null != existBisOrderDetail) {
-            existBisOrderDetail.setRealAmount(existBisOrderDetail.getAmount() + number);
+            existBisOrderDetail.setRealAmount(existBisOrderDetail.getRealAmount() + number);
             this.bisOrderDetailService.updatePart(existBisOrderDetail);
             return;
         }
