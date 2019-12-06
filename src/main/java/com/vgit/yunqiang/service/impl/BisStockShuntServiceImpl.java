@@ -64,7 +64,7 @@ public class BisStockShuntServiceImpl extends BaseServiceImpl<BisStockShunt> imp
     public void shunt(BisStockShunt stockShunt) throws BisException {
         // 查询总仓库存信息
         BisStockShunt defaultStockShunt = this.mapper.getAmountBy(Long.valueOf(DEFAULT_STOCK), stockShunt.getSkuId());
-        if (defaultStockShunt != null && defaultStockShunt.getAmount() > stockShunt.getAmount()) { // 检查库存
+        if (defaultStockShunt != null && defaultStockShunt.getAmount() >= stockShunt.getAmount()) { // 检查库存
             BisStockShunt childStock = this.mapper.getAmountBy(stockShunt.getStockId(), stockShunt.getSkuId());
             // 分流
             if (childStock != null) {
