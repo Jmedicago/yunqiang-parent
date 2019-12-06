@@ -43,6 +43,36 @@ public class TimeUtils {
 
 
     /**
+     * 获取当天开始时间
+     *
+     * @return
+     */
+    public static Date getDayBegin(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 0);//0点
+        cal.set(Calendar.MINUTE, 0);//0分
+        cal.set(Calendar.SECOND, 0);//0秒
+        cal.set(Calendar.MILLISECOND, 0);//0毫秒
+        return cal.getTime();
+    }
+
+
+    /**
+     * 获取当天结束时间
+     *
+     * @return
+     */
+    public static Date getDayEnd(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 23);//23点
+        cal.set(Calendar.MINUTE, 59);//59分
+        cal.set(Calendar.SECOND, 59);//59秒
+        return cal.getTime();
+    }
+
+    /**
      * 获取昨天开始时间
      *
      * @return

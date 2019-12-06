@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vgit.yunqiang.mapper.LogStockShuntMapper">
+    <resultMap id="BaseResultMap" type="com.vgit.yunqiang.pojo.LogStockShunt">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="date" jdbcType="BIGINT" property="date"/>
+        <result column="stockId" jdbcType="BIGINT" property="stockId"/>
+        <result column="skuId" jdbcType="BIGINT" property="skuId"/>
+        <result column="amount" jdbcType="INTEGER" property="amount"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="inputUser" jdbcType="BIGINT" property="inputUser"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, date, stockId, skuId, amount, state, inputUser
+    </sql>
+
+    <select id="get" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_log_stock_shunt
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from t_log_stock_shunt
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.LogStockShunt">
+        insert into t_log_stock_shunt (id, date, stockId,
+          skuId, amount, state,
+          inputUser)
+        values (#{id,jdbcType=BIGINT}, #{date,jdbcType=BIGINT}, #{stockId,jdbcType=BIGINT},
+          #{skuId,jdbcType=BIGINT}, #{amount,jdbcType=INTEGER}, #{state,jdbcType=TINYINT},
+          #{inputUser,jdbcType=BIGINT})
+    </insert>
+
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.LogStockShunt">
+        insert into t_log_stock_shunt
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="date != null">
+                date,
+            </if>
+            <if test="stockId != null">
+                stockId,
+            </if>
+            <if test="skuId != null">
+                skuId,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="inputUser != null">
+                inputUser,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="date != null">
+                #{date,jdbcType=BIGINT},
+            </if>
+            <if test="stockId != null">
+                #{stockId,jdbcType=BIGINT},
+            </if>
+            <if test="skuId != null">
+                #{skuId,jdbcType=BIGINT},
+            </if>
+            <if test="amount != null">
+                #{amount,jdbcType=INTEGER},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=TINYINT},
+            </if>
+            <if test="inputUser != null">
+                #{inputUser,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.LogStockShunt">
+        update t_log_stock_shunt
+        <set>
+            <if test="date != null">
+                date = #{date,jdbcType=BIGINT},
+            </if>
+            <if test="stockId != null">
+                stockId = #{stockId,jdbcType=BIGINT},
+            </if>
+            <if test="skuId != null">
+                skuId = #{skuId,jdbcType=BIGINT},
+            </if>
+            <if test="amount != null">
+                amount = #{amount,jdbcType=INTEGER},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=TINYINT},
+            </if>
+            <if test="inputUser != null">
+                inputUser = #{inputUser,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.LogStockShunt">
+        update t_log_stock_shunt
+        set date = #{date,jdbcType=BIGINT},
+          stockId = #{stockId,jdbcType=BIGINT},
+          skuId = #{skuId,jdbcType=BIGINT},
+          amount = #{amount,jdbcType=INTEGER},
+          state = #{state,jdbcType=TINYINT},
+          inputUser = #{inputUser,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <resultMap id="logStockShuntResultMap" type="com.vgit.yunqiang.pojo.LogStockShunt">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="date" jdbcType="BIGINT" property="date"/>
+        <result column="stockId" jdbcType="BIGINT" property="stockId"/>
+        <result column="skuId" jdbcType="BIGINT" property="skuId"/>
+        <result column="amount" jdbcType="INTEGER" property="amount"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="inputUser" jdbcType="BIGINT" property="inputUser"/>
+        <association property="sku" javaType="com.vgit.yunqiang.pojo.BisSku">
+            <id column="id" property="id"/>
+            <result column="productId" jdbcType="BIGINT" property="productId"/>
+            <result column="skuCode" jdbcType="VARCHAR" property="skuCode"/>
+            <result column="skuName" property="skuName"/>
+            <result column="pack" property="pack"/>
+            <result column="volume" property="volume"/>
+            <result column="costPrice" property="costPrice"/>
+            <result column="marketPrice" property="marketPrice"/>
+            <result column="profit" property="profit"/>
+            <result column="supplier" property="supplier"/>
+            <result column="container" jdbcType="VARCHAR" property="container"/>
+            <result column="availableStock" jdbcType="INTEGER" property="availableStock"/>
+            <result column="frozenStock" jdbcType="INTEGER" property="frozenStock"/>
+            <result column="pushStockTime" jdbcType="BIGINT" property="pushStockTime"/>
+            <result column="skuProperties" jdbcType="VARCHAR" property="skuProperties"/>
+            <result column="skuMainPic" jdbcType="VARCHAR" property="skuMainPic"/>
+        </association>
+    </resultMap>
+
+    <sql id="whereSql">
+        <where>
+            <if test="stockId != null and stockId != ''">and lss.stockId = #{stockId}</if>
+            <if test="skuId != null and skuId != ''">and lss.skuId = #{skuId}</if>
+            <if test="date != null and date != ''">and lss.date &gt;= #{beginDate} and lss.date &lt;= #{endDate}</if>
+        </where>
+    </sql>
+
+    <select id="queryTotal" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery" resultType="int">
+        select count(0) from t_log_stock_shunt lss
+        <include refid="whereSql"/>
+    </select>
+
+    <select id="query" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery"
+            resultMap="logStockShuntResultMap">
+        select lss.*, s.id, s.skuCode, s.skuName, s.pack, s.volume, s.costPrice, s.marketPrice, s.profit, s.supplier, s.container,
+        s.availableStock, s.frozenStock, s.pushStockTime, s.skuProperties, s.skuMainPic
+        from t_log_stock_shunt lss
+        left join t_bis_sku s on lss.skuId = s.id
+        <include refid="whereSql"/>
+        limit #{start}, #{rows}
+    </select>
+
+</mapper>

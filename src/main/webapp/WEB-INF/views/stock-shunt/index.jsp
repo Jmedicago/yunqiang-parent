@@ -72,7 +72,12 @@
             </thead>
         </table>
         <div id="stockShuntTB">
-            <div class="searchForm" style="border: unset; margin: 0; padding: 5px 5px">
+            <div>
+                <a href="#" data-cmd="viewStockShuntLog" remote="false" class="easyui-linkbutton" plain="true">
+                    查看日志
+                </a>
+            </div>
+            <div class="searchForm">
                 <form>
                     <spring:message code="product.info.name"/>：
                     <input class="easyui-textbox theme-textbox-radius" name="name" style="width:200px;">&nbsp;
@@ -170,6 +175,24 @@
         MXF.openDialog("shuntStockDialog", "商品分流", "/stock-shunt/edit?skuId=" + skuId + "&stockId=" + stockId, function () {
 
         }, 600, 300);
+    }
+    
+    function viewStockShuntLog() {
+        var tabs = $("#tabs");
+        var uri = '/stock-shunt-log';
+        var title = '商品分流日志';
+        var tab = tabs.tabs("getTab", title);
+        console.log('open' + title, tab);
+        if (tab) {
+            tabs.tabs("select", title);
+        } else {
+            tabs.tabs('add', {
+                title: title,
+                href: uri,
+                closable: true,
+                bodyCls: "content"
+            });
+        }
     }
 </script>
 

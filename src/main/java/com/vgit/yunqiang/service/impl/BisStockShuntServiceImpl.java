@@ -4,14 +4,8 @@ import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
 import com.vgit.yunqiang.mapper.BisStockShuntMapper;
-import com.vgit.yunqiang.pojo.BisOrder;
-import com.vgit.yunqiang.pojo.BisOrderDetail;
-import com.vgit.yunqiang.pojo.BisStock;
-import com.vgit.yunqiang.pojo.BisStockShunt;
-import com.vgit.yunqiang.service.BisOrderDetailService;
-import com.vgit.yunqiang.service.BisOrderService;
-import com.vgit.yunqiang.service.BisStockService;
-import com.vgit.yunqiang.service.BisStockShuntService;
+import com.vgit.yunqiang.pojo.*;
+import com.vgit.yunqiang.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +28,9 @@ public class BisStockShuntServiceImpl extends BaseServiceImpl<BisStockShunt> imp
 
     @Autowired
     private BisStockService bisStockService;
+
+    @Autowired
+    private LogStockShuntService logStockShuntService;
 
     @Override
     protected BaseMapper<BisStockShunt> getMapper() {
@@ -83,6 +80,16 @@ public class BisStockShuntServiceImpl extends BaseServiceImpl<BisStockShunt> imp
                 childStock.setCreateTime(System.currentTimeMillis());
                 this.mapper.savePart(childStock);
             }
+            // 操作日志
+            LogStockShunt shuntLog = new LogStockShunt();
+            shuntLog.setAmount(stockShunt.getAmount());
+            shuntLog.setDate(System.currentTimeMillis());
+            shuntLog.setStockId(stockShunt.getStockId());
+            shuntLog.setSkuId(stockShunt.getSkuId());
+            shuntLog.setState((byte) 1);
+            shuntLog.setInputUser(stockShunt.getStockId());
+            this.logStockShuntService.save(shuntLog);
+
             defaultStockShunt.setAmount(defaultStockShunt.getAmount() - stockShunt.getAmount()); // 总仓减库存
             defaultStockShunt.setUpdateTime(System.currentTimeMillis());
             this.mapper.updatePart(defaultStockShunt);
