@@ -12,9 +12,9 @@ import com.vgit.yunqiang.common.utils.StrUtils;
 import com.vgit.yunqiang.mapper.BisSkuMapper;
 import com.vgit.yunqiang.mapper.BisStockMapper;
 import com.vgit.yunqiang.model.ProductModel;
-import com.vgit.yunqiang.pojo.BisSku;
-import com.vgit.yunqiang.pojo.BisStock;
-import com.vgit.yunqiang.pojo.SysUser;
+import com.vgit.yunqiang.pojo.*;
+import com.vgit.yunqiang.service.BisProductService;
+import com.vgit.yunqiang.service.BisProductTypeService;
 import com.vgit.yunqiang.service.BisSkuService;
 import com.vgit.yunqiang.service.BisStockService;
 import org.apache.commons.lang3.StringUtils;
@@ -35,6 +35,12 @@ public class BisSkuServiceImpl extends BaseServiceImpl<BisSku> implements BisSku
 
     @Autowired
     private BisStockService bisStockService;
+
+    @Autowired
+    private BisProductTypeService bisProductTypeService;
+
+    @Autowired
+    private BisProductService bisProductService;
 
     @Override
     protected BaseMapper<BisSku> getMapper() {
@@ -123,6 +129,16 @@ public class BisSkuServiceImpl extends BaseServiceImpl<BisSku> implements BisSku
     @Override
     public void delByProduct(Long productId) {
         this.mapper.delByProductIds(productId);
+    }
+
+    @Override
+    public Long getProductType(Long skuId) {
+        BisSku sku = this.mapper.get(skuId);
+        if (sku != null) {
+            BisProduct product = this.bisProductService.get(sku.getProductId());
+            return product.getProductType();
+        }
+        return null;
     }
 
 }

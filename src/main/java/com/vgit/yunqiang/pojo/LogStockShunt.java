@@ -1,5 +1,7 @@
 package com.vgit.yunqiang.pojo;
 
+import com.vgit.yunqiang.service.format.ProductTypeFormat;
+import com.vgit.yunqiang.service.format.SkuFormat;
 import com.vgit.yunqiang.service.format.StockFormat;
 
 public class LogStockShunt {
@@ -86,6 +88,16 @@ public class LogStockShunt {
 
     public String getStockFormatter() {
         return StockFormat.getStockName(stockId);
+    }
+
+    public String getProductTypeFormatter() {
+        Long productTypeId = SkuFormat.getProductType(skuId);
+        if (productTypeId != null) {
+            return ProductTypeFormat.getProductTypePath(productTypeId);
+        } else {
+            return null;
+        }
+
     }
 
 }

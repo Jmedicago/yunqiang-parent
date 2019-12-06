@@ -87,4 +87,11 @@ public interface BisSkuService extends BaseService<BisSku> {
      */
     void delByProduct(Long productId);
 
+    /**
+     * 根据SKU获取SKU
+     *
+     * @param skuId
+     * @return
+     */
+    Long getProductType(Long skuId);
 }

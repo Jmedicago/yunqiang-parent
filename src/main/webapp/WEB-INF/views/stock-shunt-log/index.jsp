@@ -11,7 +11,7 @@
             <tr>
                 <th data-options="field:'id',checkbox:true"></th>
                 <th data-options="field:'date',width:180,formatter:MXF.dateTimeFormatter">日期</th>
-                <th data-options="field:'stockFormatter',width:100">分仓</th>
+                <th data-options="field:'productTypeFormatter',width:100">类别名称</th>
                 <th data-options="field:'sku.skuMainPic',width:80,formatter:stockShuntImageFormatter">图片</th>
                 <th data-options="field:'sku.skuName',width:100,formatter:function(val, row){return row.sku.skuName}">品名</th>
                 <th data-options="field:'sku.skuCode',width:150,formatter:function(val, row){return row.sku.skuCode}">
@@ -25,7 +25,7 @@
                 <th data-options="field:'sku.profit',width:100, formatter:function(val,row){return row.sku.profit}">利润</th>
                 <th data-options="field:'sku.supplier',width:100, formatter:function(val,row){return row.sku.supplier}">供应商</th>
                 <th data-options="field:'sku.container',width:100, formatter:function(val,row){return row.sku.container}">货柜编号</th>
-
+                <th data-options="field:'stockFormatter',width:100">分仓</th>
                 <th data-options="field:'amount',width:50">数量</th>
                 <th data-options="field:'state',width:50,formatter:stockShuntStateFormatter"><spring:message
                         code="common.status"/></th>

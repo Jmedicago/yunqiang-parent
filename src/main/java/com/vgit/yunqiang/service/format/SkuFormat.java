@@ -22,4 +22,11 @@ public class SkuFormat {
         }
         return "0";
     }
+
+    public static Long getProductType(Long skuId) {
+        if (skuId != null) {
+            return bisSkuService.getProductType(skuId);
+        }
+        return null;
+    }
 }
