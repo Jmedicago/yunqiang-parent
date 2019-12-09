@@ -258,7 +258,8 @@
             <if test="keyword != null and keyword != ''">and tbs.keyword like CONCAT('%', #{keyword}, '%')</if>
             <if test="code != null and code != ''">and tbp.code like CONCAT('%', #{code}, '%')</if>
             <if test="name != null and name != ''">and tbp.name like CONCAT('%', #{name}, '%')</if>
-            <if test="productType != null and productType != ''">and tbpt.path like CONCAT('%', #{productType}, '%')</if>
+            <if test="productType != null and productType != ''">and tbpt.path like CONCAT('%', #{productType}, '%')
+            </if>
         </where>
     </sql>
 
@@ -277,7 +278,7 @@
         <include refid="whereSql"/>
         limit #{start}, #{rows}
     </select>
-    
+
     <select id="getSkuByCode" parameterType="java.lang.String" resultType="com.vgit.yunqiang.pojo.BisSku">
     	select * from t_bis_sku where skuCode = #{code}
     </select>
@@ -413,14 +414,25 @@
         <include refid="esWhereSql"/>
     </select>
 
-    <select id="es" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery" resultType="com.vgit.yunqiang.model.ProductModel">
-        SELECT s.id, p.name, p.productType, pt.path, p.code, s.pack, s.volume, s.costPrice, s.marketPrice, s.profit, s.supplier, s.container, s.availableStock, s.frozenStock, s.pushStockTime, s.skuProperties,
+    <select id="es" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery"
+            resultType="com.vgit.yunqiang.model.ProductModel">
+        SELECT s.id, p.name, p.productType, pt.path, p.code, s.pack, s.volume, s.costPrice, s.marketPrice, s.profit,
+        s.supplier, s.container, s.availableStock, s.frozenStock, s.pushStockTime, s.skuProperties,
         s.skuMainPic, s.remark FROM t_bis_sku s
         LEFT JOIN t_bis_product p ON s.productId = p.id
         LEFT JOIN t_bis_product_type pt ON pt.id = p.productType
         <include refid="esWhereSql"/>
         <include refid="esOrderSql"/>
         limit #{start}, #{rows}
+    </select>
+
+    <select id="getAll" resultType="com.vgit.yunqiang.model.ProductModel">
+        SELECT s.id, p.name, p.productType, pt.path, p.code, s.pack, s.volume, s.costPrice, s.marketPrice, s.profit, s.supplier, s.container, s.availableStock, s.frozenStock, s.pushStockTime, s.skuProperties,
+        s.skuMainPic, s.remark, ss.`amount` as allStock FROM t_bis_sku s
+        LEFT JOIN t_bis_product p ON s.productId = p.id
+        LEFT JOIN t_bis_product_type pt ON pt.id = p.productType
+        LEFT JOIN t_bis_stock_shunt ss ON ss.`skuId` = s.id
+        WHERE ss.`stockId` = 1000
     </select>
 
     <delete id="delByProductIds" parameterType="java.lang.Long">

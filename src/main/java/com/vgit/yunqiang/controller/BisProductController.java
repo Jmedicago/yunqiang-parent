@@ -216,4 +216,21 @@ public class BisProductController {
         }
     }
 
+
+    /**
+     * Excel 批量导出
+     *
+     * @param fileName
+     * @param request
+     * @return
+     */
+    @RequestMapping("/export")
+    public String export(String fileName, HttpServletRequest request) throws Exception {
+        if (StringUtils.isNotBlank(fileName)) {
+            fileName = new String(fileName.getBytes("ISO-8859-1"), "UTF-8");
+        }
+
+        return "redirect:" + this.bisProductService.export(fileName, request);
+    }
+
 }

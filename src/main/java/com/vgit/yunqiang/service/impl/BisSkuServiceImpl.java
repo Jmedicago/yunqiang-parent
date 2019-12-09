@@ -10,7 +10,6 @@ import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
 import com.vgit.yunqiang.common.utils.Page;
 import com.vgit.yunqiang.common.utils.StrUtils;
 import com.vgit.yunqiang.mapper.BisSkuMapper;
-import com.vgit.yunqiang.mapper.BisStockMapper;
 import com.vgit.yunqiang.model.ProductModel;
 import com.vgit.yunqiang.pojo.*;
 import com.vgit.yunqiang.service.BisProductService;
@@ -124,6 +123,11 @@ public class BisSkuServiceImpl extends BaseServiceImpl<BisSku> implements BisSku
         int total = this.mapper.esTotal(query);
         List<ProductModel> list = this.mapper.es(query);
         return new Page<>(list, total, query);
+    }
+
+    @Override
+    public List<ProductModel> getAll() {
+        return this.mapper.getAll();
     }
 
     @Override

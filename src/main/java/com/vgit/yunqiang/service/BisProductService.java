@@ -3,6 +3,7 @@ package com.vgit.yunqiang.service;
 import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.service.BaseService;
 import com.vgit.yunqiang.common.utils.Ret;
+import com.vgit.yunqiang.model.ProductModel;
 import com.vgit.yunqiang.pojo.BisProduct;
 import com.vgit.yunqiang.pojo.BisProductMedia;
 import com.vgit.yunqiang.pojo.BisProperty;
@@ -82,4 +83,13 @@ public interface BisProductService extends BaseService<BisProduct> {
      * @return
      */
     Ret batch(String excelUrl) throws BisException;
+
+    /**
+     * 批量导出
+     *
+     * @param fileName
+     * @param request
+     * @return
+     */
+    String export(String fileName, HttpServletRequest request);
 }

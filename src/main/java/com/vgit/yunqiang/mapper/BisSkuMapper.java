@@ -113,4 +113,11 @@ public interface BisSkuMapper extends BaseMapper<BisSku> {
      * @param productId
      */
     void delByProductIds(Long productId);
+
+    /**
+     * 查看全部商品
+     *
+     * @return
+     */
+    List<ProductModel> getAll();
 }

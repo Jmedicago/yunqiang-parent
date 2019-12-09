@@ -103,6 +103,11 @@
                    iconCls="icon-remove" plain="true">
                     <spring:message code="common.delete"/>
                 </a>
+                <a href="#" data-cmd="exportExcel" class="easyui-linkbutton"
+                   plain="true">
+                    <i class="iconfont">&#xe73f;</i>
+                    批量导出
+                </a>
             </div>
             <div class="searchForm" style="border: unset; margin: 0; padding: 5px 5px">
                 <form>
@@ -144,6 +149,10 @@
             return '<img onclick="MXF.showImageDialog(this.src)" style="display: block" height="38" width="38" src="' + value + '"/>';
         }
         return '';
+    }
+
+    function exportExcel() {
+        window.open('/product/export');
     }
 
 </script>

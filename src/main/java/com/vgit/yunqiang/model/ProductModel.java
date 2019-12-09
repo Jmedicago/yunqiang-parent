@@ -57,6 +57,9 @@ public class ProductModel {
 
     private String remark;
 
+    // 总仓库存
+    private Integer allStock;
+
     // 库存
     private List<BisStockShunt> stockShunt;
 
@@ -208,10 +211,19 @@ public class ProductModel {
         return StockShuntFormat.getShunts(id);
     }
 
+    public Integer getAllStock() {
+        return allStock;
+    }
+
+    public void setAllStock(Integer allStock) {
+        this.allStock = allStock;
+    }
+
     @Override
     public String toString() {
         return "ProductModel{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", productType=" + productType +
                 ", path='" + path + '\'' +
                 ", code='" + code + '\'' +
@@ -227,7 +239,9 @@ public class ProductModel {
                 ", pushStockTime=" + pushStockTime +
                 ", skuProperties='" + skuProperties + '\'' +
                 ", skuMainPic='" + skuMainPic + '\'' +
+                ", remark='" + remark + '\'' +
+                ", allStock=" + allStock +
+                ", stockShunt=" + stockShunt +
                 '}';
     }
-
 }

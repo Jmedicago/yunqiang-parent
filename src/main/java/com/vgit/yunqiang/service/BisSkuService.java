@@ -8,6 +8,8 @@ import com.vgit.yunqiang.common.utils.Page;
 import com.vgit.yunqiang.model.ProductModel;
 import com.vgit.yunqiang.pojo.BisSku;
 
+import java.util.List;
+
 public interface BisSkuService extends BaseService<BisSku> {
 
     /**
@@ -79,6 +81,13 @@ public interface BisSkuService extends BaseService<BisSku> {
      * @return
      */
     Page<ProductModel> es(BaseQuery query);
+
+    /**
+     * 查找全部商品信息
+     *
+     * @return
+     */
+    List<ProductModel> getAll();
 
     /**
      * 根据商品ID删除

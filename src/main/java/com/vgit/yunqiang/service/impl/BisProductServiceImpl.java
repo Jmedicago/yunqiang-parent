@@ -5,12 +5,14 @@ import com.vgit.yunqiang.common.consts.bis.MediaTypeConsts;
 import com.vgit.yunqiang.common.consts.bis.ProductStateConsts;
 import com.vgit.yunqiang.common.consts.bis.PropertyInputModeConsts;
 import com.vgit.yunqiang.common.exception.BisException;
+import com.vgit.yunqiang.common.query.ProductModelQuery;
 import com.vgit.yunqiang.common.query.PropertyQuery;
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
 import com.vgit.yunqiang.common.utils.*;
 import com.vgit.yunqiang.mapper.BisProductMapper;
 import com.vgit.yunqiang.mapper.BisSkuMapper;
+import com.vgit.yunqiang.model.ProductModel;
 import com.vgit.yunqiang.pojo.*;
 import com.vgit.yunqiang.service.*;
 import com.vgit.yunqiang.service.format.ProductTypeFormat;
@@ -23,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.*;
 
@@ -50,6 +53,9 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
 
     @Autowired
     private BisStockService bisStockService;
+
+    @Autowired
+    private BisSkuService bisSkuService;
 
     @Autowired
     private BisStockShuntService bisStockShuntService;
@@ -560,6 +566,59 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
         return Ret.me();
     }
 
+    @Override
+    public String export(String fileName, HttpServletRequest request) {
+        String filePath = null;
+
+        // 文件路径
+        filePath = request.getSession().getServletContext().getRealPath("/");
+        System.out.println("IO输出文件路径：" + filePath);
+
+        // 检查文件名
+        if (StringUtils.isBlank(fileName)) {
+            fileName = UUID.randomUUID().toString();
+        }
+
+        filePath = filePath + "/upload/" + fileName + ".xlsx";
+
+        String[] titleArray = {"类别", "图片", "品名", "货品编号", "属性", "包装形态", "体积", "成本价", "批发价", "利润", "货柜编号", "库存", "供应商", "备注"};
+        List<String> titles = Arrays.asList(titleArray);
+
+        try {
+            // 获得所有商品列表
+            List<ProductModel> products = this.bisSkuService.getAll();
+            System.out.println("商品列表：" + products.toString());
+            ExcelUtils.writeExcel(filePath, fileName, titles, this.productToMap(products));
+            // TODO.上传到FTP
+            return "/upload/" + fileName + ".xlsx";
+        } catch (IOException e) {
+            throw new BisException().setInfo("批量导出商品发生异常");
+        }
+    }
+
+    private List<Map<String, Object>> productToMap(List<ProductModel> products) {
+        List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+        for (ProductModel product : products) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("类别", product.getPath());
+            map.put("图片", product.getSkuMainPic());
+            map.put("品名", product.getName());
+            map.put("货品编号", product.getCode());
+            map.put("属性", product.getSkuProperties());
+            map.put("包装形态", product.getPack());
+            map.put("体积", product.getVolume());
+            map.put("成本价", product.getCostPrice());
+            map.put("批发价", product.getMarketPrice());
+            map.put("利润", product.getProfit());
+            map.put("货柜编号", product.getContainer());
+            map.put("库存", product.getAllStock());
+            map.put("供应商", product.getSupplier());
+            map.put("备注", product.getRemark());
+            mapList.add(map);
+        }
+        return mapList;
+    }
+
     /**
      * 检查属性名称是否存在
      *
@@ -603,7 +662,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                 sku.setUpdateTime(System.currentTimeMillis());
                 this.skuMapper.updatePart(sku);
                 return true;
-            } else if(StringUtils.isBlank(sku.getSkuProperties()) && StringUtils.isBlank(bisSku.getSkuProperties())) {
+            } else if (StringUtils.isBlank(sku.getSkuProperties()) && StringUtils.isBlank(bisSku.getSkuProperties())) {
                 // 是同一商品
                 sku.setAvailableStock(sku.getAvailableStock() + bisSku.getAvailableStock());
                 sku.setUpdateTime(System.currentTimeMillis());
