@@ -9,6 +9,7 @@ import com.vgit.yunqiang.controller.consts.ControllerConsts;
 import com.vgit.yunqiang.pojo.*;
 import com.vgit.yunqiang.service.BisProductService;
 import com.vgit.yunqiang.service.BisSkuService;
+import com.vgit.yunqiang.service.LogResourceService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -35,6 +36,9 @@ public class BisProductController {
 
     @Autowired
     private BisSkuService bisSkuService;
+
+    @Autowired
+    private LogResourceService logResourceService;
 
     @RequestMapping(ControllerConsts.URL_INDEX)
     public String index() {
@@ -212,6 +216,8 @@ public class BisProductController {
         try {
             return this.bisProductService.batch(excelUrl);
         } catch (BisException e) {
+            // 上传失败 删除文件从新上传
+            this.logResourceService.deleteByUrl(excelUrl);
             return Ret.me().setSuccess(false).setCode(ICodes.FAILED).setInfo(e.getInfo());
         }
     }

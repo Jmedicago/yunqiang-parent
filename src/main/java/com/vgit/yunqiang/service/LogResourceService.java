@@ -13,4 +13,10 @@ public interface LogResourceService extends BaseService<LogResources> {
      */
     boolean exist(String fileName);
 
+    /**
+     * 删除上传文件
+     *
+     * @param excelUrl
+     */
+    void deleteByUrl(String excelUrl);
 }

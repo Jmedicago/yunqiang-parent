@@ -16,5 +16,10 @@ public interface LogResourcesMapper extends BaseMapper<LogResources> {
      */
     List<LogResources> findByFileName(@Param("oldFileName") String oldFileName);
 
-
+    /**
+     * 删除文件
+     *
+     * @param resource
+     */
+    void deleteByUrl(String resource);
 }

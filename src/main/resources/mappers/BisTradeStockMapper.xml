@@ -165,6 +165,7 @@
   <sql id="whereSql">
         <where>
             <if test="key != null and key != ''">and bts.fileName like CONCAT('%',#{key},'%')</if>
+            <if test="type != null and type != ''"> and bts.type = #{type}</if>
         </where>
     </sql>
 

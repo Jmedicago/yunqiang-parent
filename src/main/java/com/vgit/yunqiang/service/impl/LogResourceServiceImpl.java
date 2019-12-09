@@ -30,4 +30,9 @@ public class LogResourceServiceImpl extends BaseServiceImpl<LogResources> implem
         return false;
     }
 
+    @Override
+    public void deleteByUrl(String excelUrl) {
+        this.mapper.deleteByUrl(excelUrl);
+    }
+
 }
