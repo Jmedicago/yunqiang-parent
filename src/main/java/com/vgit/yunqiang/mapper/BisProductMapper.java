@@ -86,4 +86,10 @@ public interface BisProductMapper extends BaseMapper<BisProduct> {
 	 */
 	void delProductByName(String name);
 
+    /**
+     * 获取最后一个商品的ID
+     *
+     * @return
+     */
+    Long getLastProductId();
 }

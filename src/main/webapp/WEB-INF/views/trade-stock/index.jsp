@@ -10,18 +10,27 @@
 				toolbar:'#tradeStockTB',url:'/trade-stock/json'">
             <thead>
             <tr>
-                <th data-options="field:'createTime',width:150,halign:'center',align:'center',formatter:MXF.dateTimeFormatter">
-                    <spring:message code="trade.stock.qgtime"/> <br>（<spring:message code="trade.stock.uplaodqgtime"/>）
-                </th>
                 <th data-options="field:'beforeResource',width:200,halign:'center',align:'center',formatter:beforeTradeOrderFormatter">
-                    <spring:message code="trade.stock.gwqgtime"/>
-                </th>
-                <th data-options="field:'afterResource',width:200,halign:'center',align:'center',formatter:afterTradeOrderFormatter">
-                    <spring:message code="trade.stock.gwcgfh"/>
+                    发货清单
                 </th>
                 <th data-options="field:'confirmTime',width:150,halign:'center',align:'center',formatter:MXF.dateTimeFormatter">
-                    <spring:message code="trade.stock.qrtime"/> <br>（<spring:message code="trade.stock.qrcgtime"/>）
+                    预到货时间
                 </th>
+                <th data-options="field:'updateTime',width:150,halign:'center',align:'center',formatter:MXF.dateTimeFormatter">
+                    到货时间
+                </th>
+                <%--<th data-options="field:'createTime',width:150,halign:'center',align:'center',formatter:MXF.dateTimeFormatter">
+                    <spring:message code="trade.stock.qgtime"/> <br>（<spring:message code="trade.stock.uplaodqgtime"/>）
+                </th>--%>
+                <%--<th data-options="field:'beforeResource',width:200,halign:'center',align:'center',formatter:beforeTradeOrderFormatter">
+                    <spring:message code="trade.stock.gwqgtime"/>
+                </th>--%>
+                <%--<th data-options="field:'afterResource',width:200,halign:'center',align:'center',formatter:afterTradeOrderFormatter">
+                    <spring:message code="trade.stock.gwcgfh"/>
+                </th>--%>
+                <%--<th data-options="field:'confirmTime',width:150,halign:'center',align:'center',formatter:MXF.dateTimeFormatter">
+                    <spring:message code="trade.stock.qrtime"/> <br>（<spring:message code="trade.stock.qrcgtime"/>）
+                </th>--%>
                 <th data-options="field:'status',width:80,halign:'center',align:'center',formatter:treadeStateFormatter">
                     <spring:message code="trade.stock.qrdh"/>
                 </th>
@@ -31,13 +40,29 @@
         <div id="tradeStockTB">
             <div>
                 <shiro:hasPermission name="stock:pmcer">
-                    <a href="#" data-cmd="prTrade" title="<spring:message code="trade.stock.qg"/>" remote="false" class="easyui-linkbutton"
+                    <a href="#" data-cmd="prTrade" title="上传货柜清单" remote="false"
+                       class="easyui-linkbutton"
+                       iconCls="icon-add" plain="true">
+                        上传货柜清单
+                    </a>
+                </shiro:hasPermission>
+                <shiro:hasPermission name="stock:purchaser">
+                    <a href="#" data-cmd="finishTrade" mustsel remote="false" data-options="disabled:true"
+                       class="easyui-linkbutton"
+                       iconCls="icon-ok" plain="true">
+                        到货入库
+                    </a>
+                </shiro:hasPermission>
+                <%--<shiro:hasPermission name="stock:pmcer">
+                    <a href="#" data-cmd="prTrade" title="<spring:message code="trade.stock.qg"/>" remote="false"
+                       class="easyui-linkbutton"
                        iconCls="icon-add" plain="true">
                         <spring:message code="trade.stock.qg"/>
                     </a>
                 </shiro:hasPermission>
                 <shiro:hasPermission name="stock:purchaser">
-                    <a href="#" data-cmd="poTrade" title="<spring:message code="trade.stock.cg"/>" mustsel remote="false" data-options="disabled:true"
+                    <a href="#" data-cmd="poTrade" title="<spring:message code="trade.stock.cg"/>" mustsel
+                       remote="false" data-options="disabled:true"
                        class="easyui-linkbutton"
                        iconCls="icon-edit" plain="true">
                         <spring:message code="trade.stock.cg"/>
@@ -49,7 +74,7 @@
                        iconCls="icon-ok" plain="true">
                         <spring:message code="trade.stock.finished"/>
                     </a>
-                </shiro:hasPermission>
+                </shiro:hasPermission>--%>
             </div>
         </div>
     </div>
@@ -68,9 +93,7 @@
 
     function beforeTradeOrderFormatter(v, row) {
         if (row.beforeResource) {
-            var name = '(<spring:message code="trade.stock.qgorder"/>)';
-            name += row.fileName;
-            var a = "<a style='text-decoration: underline; color: #0c80d7;' href='" + row.beforeResource + "'>" + name + "</a>";
+            var a = "<a style='text-decoration: underline; color: #0c80d7;' href='" + row.beforeResource + "'>" + row.fileName + "</a>";
             return a;
         }
         return '';
@@ -87,8 +110,13 @@
         }
     }
 
-    function prTrade() {
+    <%--function prTrade() {
         MXF.openDialog('plTradeWindow', '<spring:message code="trade.stock.wmqgorder"/>', 'trade-stock/pr-trade', function () {
+        }, 600, 250);
+    }--%>
+
+    function prTrade() {
+        MXF.openDialog('plTradeWindow', '上传货柜清单', 'trade-stock/pr-trade', function () {
         }, 600, 250);
     }
 

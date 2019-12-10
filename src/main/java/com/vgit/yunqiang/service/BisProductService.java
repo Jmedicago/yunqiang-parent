@@ -10,6 +10,7 @@ import com.vgit.yunqiang.pojo.BisProperty;
 import com.vgit.yunqiang.pojo.BisSku;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.InputStream;
 import java.util.List;
 
 public interface BisProductService extends BaseService<BisProduct> {
@@ -85,6 +86,15 @@ public interface BisProductService extends BaseService<BisProduct> {
     Ret batch(String excelUrl) throws BisException;
 
     /**
+     * 入库前检查
+     *
+     * @param excelUrl
+     * @return
+     * @throws BisException
+     */
+    Ret importBefore(String excelUrl) throws BisException;
+
+    /**
      * 批量导出
      *
      * @param fileName
@@ -92,4 +102,11 @@ public interface BisProductService extends BaseService<BisProduct> {
      * @return
      */
     String export(String fileName, HttpServletRequest request);
+
+    /**
+     * 获取最后一个商品的ID
+     *
+     * @return
+     */
+    Long getLastProductId();
 }

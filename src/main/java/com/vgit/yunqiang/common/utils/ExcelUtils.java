@@ -65,6 +65,43 @@ public class ExcelUtils {
         return wb;
     }
 
+
+    /**
+     * 根据文件路径获取Workbook对象
+     *
+     * @param fileName    文件名称
+     * @param inputStream 文件全路径
+     */
+    public static Workbook getWorkbook(String fileName, InputStream inputStream)
+            throws EncryptedDocumentException, InvalidFormatException, IOException {
+        InputStream is = null;
+        Workbook wb = null;
+        if (StringUtils.isBlank(fileName)) {
+            throw new IllegalArgumentException("文件路径不能为空");
+        } else {
+            String suffix = getSuffix(fileName);
+            if (StringUtils.isBlank(suffix)) {
+                throw new IllegalArgumentException("文件后缀不能为空");
+            }
+            if (OFFICE_EXCEL_XLS.equals(suffix) || OFFICE_EXCEL_XLSX.equals(suffix)) {
+                try {
+                    is = inputStream;
+                    wb = WorkbookFactory.create(is);
+                } finally {
+                    if (is != null) {
+                        is.close();
+                    }
+                    if (wb != null) {
+                        wb.close();
+                    }
+                }
+            } else {
+                throw new IllegalArgumentException("该文件非Excel文件");
+            }
+        }
+        return wb;
+    }
+
     /**
      * 根据地址获得数据的输入流
      *
@@ -121,6 +158,38 @@ public class ExcelUtils {
             throws EncryptedDocumentException, InvalidFormatException, IOException {
         List<List<Map<String, String>>> sheets = new ArrayList<List<Map<String, String>>>();
         Workbook workbook = getWorkbook(filepath, isUrl);
+        if (workbook != null) {
+            if (sheetNo == null) {
+                int numberOfSheets = workbook.getNumberOfSheets();
+                for (int i = 0; i < numberOfSheets; i++) {
+                    Sheet sheet = workbook.getSheetAt(i);
+                    if (sheet == null) {
+                        continue;
+                    }
+                    sheets.add(readExcelSheet(sheet));
+                }
+                return sheets;
+            } else {
+                Sheet sheet = workbook.getSheetAt(sheetNo);
+                if (sheet != null) {
+                    sheets.add(readExcelSheet(sheet));
+                    return sheets;
+                }
+            }
+        }
+        return sheets;
+    }
+
+    /**
+     * 读取指定Sheet也的内容
+     *
+     * @param inputStream filepath 文件全路径
+     * @param sheetNo     sheet序号,从0开始,如果读取全文sheetNo设置null
+     */
+    public static List<List<Map<String, String>>> readExcel(String fileName, InputStream inputStream, Integer sheetNo)
+            throws EncryptedDocumentException, InvalidFormatException, IOException {
+        List<List<Map<String, String>>> sheets = new ArrayList<List<Map<String, String>>>();
+        Workbook workbook = getWorkbook(fileName, inputStream);
         if (workbook != null) {
             if (sheetNo == null) {
                 int numberOfSheets = workbook.getNumberOfSheets();
@@ -271,7 +340,43 @@ public class ExcelUtils {
                     result.put("row", 0); // 行
                     result.put("col", 0); // 列
                     result.put("value", "");
-                   throw new BisException().setData(result).setInfo("图片格式不正确");
+                    throw new BisException().setData(result).setInfo("图片格式不正确");
+                }
+
+            }
+            // 将当前sheet图片map存入list
+            sheetList.add(sheetIndexPicMap);
+        }
+        return sheetList;
+    }
+
+    public static List<Map<String, PictureData>> getSheetPictures(String fileName, InputStream is) throws IOException, InvalidFormatException {
+        Workbook workbook = getWorkbook(fileName, is);
+        // 获取文件后缀名
+        String suffix = getSuffix(fileName);
+        ;
+        // 创建sheet
+        Sheet sheet = null;
+        //获取excel sheet总数
+        int sheetNumbers = workbook.getNumberOfSheets();
+        // sheet list
+        List<Map<String, PictureData>> sheetList = new ArrayList<Map<String, PictureData>>();
+        // 循环sheet
+        for (int i = 0; i < sheetNumbers; i++) {
+            sheet = workbook.getSheetAt(i);
+            Map<String, PictureData> sheetIndexPicMap;
+            // 判断用XLS还是XLSX的方法获取图片
+            if (suffix.equals(OFFICE_EXCEL_XLS)) {
+                sheetIndexPicMap = getSheetPicturesFromHSSF(i, (HSSFSheet) sheet, (HSSFWorkbook) workbook);
+            } else {
+                try {
+                    sheetIndexPicMap = getSheetPicturesFromXSSF(i, (XSSFSheet) sheet, (XSSFWorkbook) workbook);
+                } catch (Exception e) {
+                    Map<String, Object> result = new HashMap<String, Object>();
+                    result.put("row", 0); // 行
+                    result.put("col", 0); // 列
+                    result.put("value", "");
+                    throw new BisException().setData(result).setInfo("图片格式不正确");
                 }
 
             }

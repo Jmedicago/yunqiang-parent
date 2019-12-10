@@ -3,6 +3,7 @@ package com.vgit.yunqiang.controller;
 import com.vgit.yunqiang.common.consts.bis.TradeStockStateConsts;
 import com.vgit.yunqiang.common.consts.msg.BisTradeStockMsgConsts;
 import com.vgit.yunqiang.common.utils.Ret;
+import com.vgit.yunqiang.common.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class BisTradeStockController {
 	
 	public static final String DOMAIN = "trade-stock";
+
+	public static final Integer TRADE_TYPE = 2;
 	
 	@Autowired
 	public BisTradeStockService bisTradeStockService;
@@ -33,6 +36,7 @@ public class BisTradeStockController {
 	@RequestMapping(ControllerConsts.URL_JSON)
     @ResponseBody
     public Page<BisTradeStock> json(TradeStockQuery query) {
+	    query.setType(TRADE_TYPE);
         return this.bisTradeStockService.queryPage(query);
     }
 
@@ -43,8 +47,8 @@ public class BisTradeStockController {
 
     @RequestMapping("/upload-pr-trade")
     @ResponseBody
-    public Ret uploadPrTrade(Integer type, MultipartFile uploadFile) {
-	    return this.bisTradeStockService.uploadPrTrade(type, uploadFile);
+    public Ret uploadPrTrade(String time, MultipartFile uploadFile) {
+	    return this.bisTradeStockService.uploadPrTrade(time, TRADE_TYPE, uploadFile);
     }
 
     @RequestMapping("/po-trade")

@@ -196,12 +196,12 @@
         <include refid="orderSql"/>
         limit #{start}, #{rows}
     </select>
-    
+
     <delete id="delProductByName" parameterType="java.lang.String">
     	delete from t_bis_product
         where name = #{name, jdbcType=VARCHAR}
     </delete>
-    
+
     <select id="getProducByCode" parameterType="java.lang.String" resultType="com.vgit.yunqiang.pojo.BisProduct">
     	select * from t_bis_product where code = #{code}
     </select>
@@ -278,6 +278,10 @@
         select ts.*, tsp.id spId, tsp.propId, tsp.propName, tsp.optionId, tsp.value from t_bis_sku ts
         LEFT JOIN t_bis_sku_property tsp on ts.id = tsp.skuId
         where ts.productId = #{productId} order by ts.id
+    </select>
+
+    <select id="getLastProductId" resultType="java.lang.Long">
+        SELECT id FROM t_bis_product ORDER BY id DESC LIMIT 0,1
     </select>
 
 </mapper>

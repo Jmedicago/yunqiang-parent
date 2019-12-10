@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 import static jdk.nashorn.internal.objects.Global.Infinity;
@@ -567,6 +568,262 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Ret importBefore(String fileName) throws BisException {
+        List<List<Map<String, String>>> sheets = null;
+        List<Map<String, PictureData>> images = null;
+        boolean isUrl = true;
+
+        try {
+
+            try {
+                // 获取图片
+                images = ExcelUtils.getSheetPictures(fileName, isUrl);
+                // 获取Sheets
+                sheets = ExcelUtils.readExcel(fileName, isUrl, 0);
+            } catch (BisException e) {
+                Map<String, Object> result = (Map<String, Object>) e.getData();
+                throw new BisException().setCode(ICodes.FAILED).setInfo("第" + result.get("col") + "列第" + result.get("row") + "行，值为" + result.get("value") + "的" + e.getInfo());
+            } catch (InvalidFormatException e) {
+                throw new BisException().setCode(ICodes.FAILED).setInfo(e.getMessage());
+            } catch (IOException e) {
+                throw new BisException().setCode(ICodes.FAILED).setInfo(e.getMessage());
+            }
+
+
+            int start = 1; // 图片起始位置
+            // 遍历
+            List<Map<String, String>> list = sheets.get(0);
+            for (int curr = 0; curr < list.size(); curr++) {
+                BisProduct bisProduct = new BisProduct();
+                BisSku bisSku = new BisSku();
+
+                // 获取新商品ID
+                Long productId = this.mapper.getLastProductId() + curr + 1;
+                bisProduct.setId(productId);
+                initProduct(bisProduct);
+
+                for (Map.Entry<String, String> entry : list.get(curr).entrySet()) {
+                    String header = entry.getKey().trim().replaceAll("\r|\n*", "");
+                    if ("类别".equals(header) || "类别名称".equals(header)) { // 格式：工厂鞋.EVA鞋.绑带鞋
+                        if (StringUtils.isNotBlank(entry.getValue())) {
+                            String[] names = entry.getValue().split("\\.");
+                            try {
+                                BisProductType bisProductType = getProductType(1000L, names);
+                                if (bisProductType != null) {
+                                    bisProduct.setProductType(bisProductType.getId());
+                                }
+                            } catch (BisException e) {
+                                int ci = curr + 1;
+                                throw new BisException().setInfo("第 类别 列的第" + ci + "行，值为" + entry.getValue() + "的格式或值不正确，" + e.getInfo());
+                            }
+
+                        }
+                    }
+                    if ("权属".equals(header)) {
+                        if (StringUtils.isNotBlank(entry.getValue())) {
+                            BisStock bisStock = this.bisStockService.getStockByName(entry.getValue());
+                            if (bisStock != null) {
+                                bisProduct.setStock(bisStock.getId());
+                            }
+                        }
+
+                    }
+                    if ("品名".equals(header)) {
+                        if (StringUtils.isNotBlank(entry.getValue())) {
+                            bisProduct.setName(entry.getValue());
+                        }
+                    }
+                    if ("图示".equals(header) || "图片".equals(header)) {
+                        for (Map<String, PictureData> image : images) {
+                            String key = String.valueOf(curr + start);
+                            PictureData pic = image.get(key);
+                            if (pic != null) {
+                                String ext = pic.suggestFileExtension();
+                                byte[] data = pic.getData();
+                                // 上传图片
+                                Map<String, Object> map = this.resourcesService.upload(ext, data);
+                                int state = (int) map.get("error");
+                                if (state == 0) {
+                                    // 保存商品素材
+                                    List<BisProductMedia> productMedias = new ArrayList<>();
+                                    String resource = (String) map.get("url");
+                                    BisProductMedia media = new BisProductMedia();
+                                    media.setProductId(bisProduct.getId());
+                                    media.setResource(resource);
+                                    productMedias.add(media);
+                                    bisProduct.setProductMediaList(productMedias);
+                                }
+
+                            }
+                        }
+                    }
+                    if ("属性".equals(header) || "属性名".equals(header)) {
+                        if (StringUtils.isNotBlank(entry.getValue())) { // 颜色：红色V，码段：37-41#
+                            PropertyQuery query = new PropertyQuery();
+                            query.setProductType(bisProduct.getProductType());
+                            List<BisProperty> properties = this.bisPropertyService.getProperties(query); // 属性集合
+                            List<Long> ids = new ArrayList<Long>(); // 商品属性集合
+                            List<BisSkuProperty> skuPropertyList = new ArrayList<>(); // SKU属性集合
+                            for (BisProperty bisProperty : properties) {
+                                List<Map<String, String>> propList = this.getPropertyMapByStr(entry.getValue());
+                                if (!propList.isEmpty()) {
+                                    for (Map<String, String> propMap : propList) {
+                                        for (Map.Entry<String, String> propEntry : propMap.entrySet()) {
+                                            // 检查属性名称是否存在
+                                            if (checkPropName(properties, propEntry.getKey())) {
+                                                if (bisProperty.getName().equals(propEntry.getKey())) {
+                                                    ids.add(bisProperty.getId());
+
+                                                    if (PropertyInputModeConsts.PROPERTY_INPUT_MODE_TEXT == bisProperty.getInputMode()) { // 文本框
+                                                        BisSkuProperty skuProperty = new BisSkuProperty();
+                                                        skuProperty.setPropId(bisProperty.getId());
+                                                        skuProperty.setPropName(bisProperty.getName());
+                                                        skuProperty.setOptionId(0L);
+                                                        skuProperty.setValue(propEntry.getValue());
+                                                        skuPropertyList.add(skuProperty);
+                                                    } else if (PropertyInputModeConsts.PROPERTY_INPUT_MODE_SELECT == bisProperty.getInputMode()) { // 选择框
+                                                        BisSkuProperty skuProperty = new BisSkuProperty();
+                                                        skuProperty.setPropId(bisProperty.getId());
+                                                        skuProperty.setPropName(bisProperty.getName());
+                                                        List<BisPropertyOption> bisPropertyOptionList = this.bisPropertyService.getOptions(bisProperty.getId());
+                                                        for (BisPropertyOption bisPropertyOption : bisPropertyOptionList) {
+                                                            if (propEntry.getValue().equals(bisPropertyOption.getOptionValue())) {
+                                                                skuProperty.setOptionId(bisPropertyOption.getId());
+                                                                skuProperty.setValue(bisPropertyOption.getOptionValue());
+                                                            }
+                                                        }
+                                                        skuPropertyList.add(skuProperty);
+                                                    }
+                                                    this.bisPropertyService.getOptions(bisProperty.getId());
+                                                }
+                                            } else {
+                                                int ci = curr + 1;
+                                                String info = "第 属性 列的第" + ci + "行，值为" + entry.getValue() + "的格式或值不正确，未匹配到属性名称为" + propEntry.getKey() + "，请修改正确后继续操作";
+                                                throw new BisException().setCode(ICodes.FAILED).setInfo(info);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            Long[] array = new Long[ids.size()];
+                            ids.toArray(array);
+                            bisProduct.setProperties(array);
+                            bisSku.setSkuPropertyList(skuPropertyList);
+                        }
+                    }
+                    if ("货品编号".equals(header)) {
+                        if (StringUtils.isNotBlank(entry.getValue())) {
+                            bisProduct.setCode(entry.getValue());
+                        }
+                    }
+                    if ("包装形态".equals(header)) {
+                        if (StringUtils.isNotBlank(entry.getValue())) {
+                            String pack = entry.getValue().split("\\.")[0];
+                            try {
+                                bisSku.setPack(Integer.parseInt(pack));
+                            } catch (NumberFormatException e) {
+                                int ci = curr + 1;
+                                String info = "第 包装形态 列的第" + ci + "行，值为" + entry.getValue() + "的格式或值不正确，该字段的只能是数字或者为空值";
+                                throw new BisException().setCode(ICodes.FAILED).setInfo(info);
+                            }
+                        } else {
+                            bisSku.setPack(0);
+                        }
+                    }
+                    if ("单件体积".equals(header) || "体积".equals(header)) {
+                        if (StringUtils.isNotBlank(entry.getValue())) {
+                            try {
+                                bisSku.setVolume(Double.valueOf(entry.getValue()));
+                            } catch (NumberFormatException e) {
+                                int ci = curr + 1;
+                                String info = "第 单件体积 列的第" + ci + "行，值为" + entry.getValue() + "的格式或值不正确，该字段的只能是数字或者为空值";
+                                throw new BisException().setCode(ICodes.FAILED).setInfo(info);
+                            }
+                        } else {
+                            bisSku.setVolume(0d);
+                        }
+                    }
+                    if ("单体成本".equals(header) || "成本价".equals(header)) {
+                        if (StringUtils.isNotBlank(entry.getValue())) {
+                            try {
+                                bisSku.setCostPrice(Double.valueOf(entry.getValue()) * 100);
+                            } catch (NumberFormatException e) {
+                                int ci = curr + 1;
+                                String info = "第 单体成本 列的第" + ci + "行，值为" + entry.getValue() + "的格式或值不正确，该字段的只能是数字或者为空值";
+                                throw new BisException().setCode(ICodes.FAILED).setInfo(info);
+                            }
+                        } else {
+                            bisSku.setCostPrice(0d);
+                        }
+                    }
+                    if ("建议批发价".equals(header) || "批发价".equals(header)) {
+                        if (StringUtils.isNotBlank(entry.getValue())) {
+                            try {
+                                bisSku.setMarketPrice(Double.valueOf(entry.getValue()) * 100);
+                            } catch (NumberFormatException e) {
+                                int ci = curr + 1;
+                                String info = "第 建议批发价 列的第" + ci + "行，值为" + entry.getValue() + "的格式或值不正确，该字段的只能是数字或者为空值";
+                                throw new BisException().setCode(ICodes.FAILED).setInfo(info);
+                            }
+
+                        } else {
+                            bisSku.setMarketPrice(0d);
+                        }
+                    }
+                    if ("货柜编号".equals(header)) {
+                        if (StringUtils.isNotBlank(entry.getValue())) {
+                            bisSku.setContainer(entry.getValue());
+                        }
+                    }
+                    if ("利润".equals(header)) {
+                        if (StringUtils.isNotBlank(entry.getValue())) {
+                            try {
+                                bisSku.setProfit(Double.valueOf(entry.getValue()));
+                            } catch (NumberFormatException e) {
+                                int ci = curr + 1;
+                                String info = "第 利润 列的第" + ci + "行，值为" + entry.getValue() + "的格式或值不正确，该字段的只能是数字或者为空值";
+                                throw new BisException().setCode(ICodes.FAILED).setInfo(info);
+                            }
+                        } else {
+                            bisSku.setProfit(0d);
+                        }
+                    }
+                    if ("供应商".equals(header)) {
+                        if (StringUtils.isNotBlank(entry.getValue())) {
+                            bisSku.setSupplier(entry.getValue());
+                        }
+                    }
+                    if ("待入库件数".equals(header) || "件数".equals(header)) {
+                        if (StringUtils.isNotBlank(entry.getValue())) {
+                            String availableStock = entry.getValue().split("\\.")[0];
+                            try {
+                                bisSku.setAvailableStock(Integer.valueOf(availableStock));
+                            } catch (NumberFormatException e) {
+                                int ci = curr + 1;
+                                String info = "第 待入库件数 列的第" + ci + "行，值为" + entry.getValue() + "的格式或值不正确，该字段的只能是数字或者为空值";
+                                throw new BisException().setCode(ICodes.FAILED).setInfo(info);
+                            }
+                        } else {
+                            bisSku.setAvailableStock(0);
+                        }
+                    }
+                    if ("备注".equals(header)) {
+                        if (StringUtils.isNotBlank(entry.getValue())) {
+                            bisSku.setRemark(entry.getValue());
+                        }
+                    }
+                }
+                bisSku.setProductId(bisProduct.getId());
+            }
+            return Ret.me();
+        } catch (BisException e) {
+            e.printStackTrace();
+            throw new BisException().setCode(ICodes.FAILED).setInfo(e.getInfo());
+        }
+    }
+
+    @Override
     public String export(String fileName, HttpServletRequest request) {
         String filePath = null;
 
@@ -594,6 +851,11 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
         } catch (IOException e) {
             throw new BisException().setInfo("批量导出商品发生异常");
         }
+    }
+
+    @Override
+    public Long getLastProductId() {
+        return this.mapper.getLastProductId();
     }
 
     private List<Map<String, Object>> productToMap(List<ProductModel> products) {
