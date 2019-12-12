@@ -10,7 +10,7 @@
                            pagination: true,
                            pageSize: 50,
                            striped: true,
-                           singleSelect: false,
+                           singleSelect: true,
                            toolbar: '#productViewTB',
                            url: '/sku/es'"> <!-- url: '/sku/json' -->
             <thead>

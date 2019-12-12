@@ -4,6 +4,7 @@ import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.service.BaseService;
 import com.vgit.yunqiang.pojo.BisStockShunt;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface BisStockShuntService extends BaseService<BisStockShunt> {
@@ -98,4 +99,13 @@ public interface BisStockShuntService extends BaseService<BisStockShunt> {
      * @return
      */
     Integer getSkuStockByOrderId(Long skuId, Long orderId);
+
+    /**
+     * 批量导出
+     *
+     * @param fileName
+     * @param request
+     * @return
+     */
+    String export(String fileName, HttpServletRequest request);
 }

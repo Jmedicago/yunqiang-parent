@@ -87,6 +87,34 @@ public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> i
     }
 
     @Override
+    public BisOrder updateOrderDetail(Long id, Long orderId, Integer amount) {
+        if (this.isLocked(orderId)) {
+            // 检查库存
+            BisOrder bisOrder = this.bisOrderService.get(orderId);
+
+            BisOrderDetail orderDetail = this.get(id);
+
+            System.out.println(id + " $$$ " + orderId + " ### " + amount);
+            if (!this.bisStockShuntService.checkStock(orderDetail.getSkuId(), bisOrder.getStockId(), amount)) {
+                throw new BisException().setCode(IN_A_SHORT_INVENTORY);
+            }
+
+            BisOrderDetail newOrderDetail = new BisOrderDetail();
+            // 更新订单明细
+            newOrderDetail.setId(id);
+            newOrderDetail.setTotalVolume(orderDetail.getVolume() * amount);
+            newOrderDetail.setTotalMoney(orderDetail.getPrice() * amount);
+            // newOrderDetail.setAmount(orderDetail.getAmount());
+            newOrderDetail.setRealAmount(amount);
+            this.updatePart(newOrderDetail);
+            BisOrder newOrder = this.updateOrder(orderDetail.getOrderId());
+            return newOrder;
+        } else {
+            throw new BisException().setCode(BisOrderMsgConsts.ORDER_LOCKED);
+        }
+    }
+
+    @Override
     public String digest(Long orderId) {
         StringBuffer digest = new StringBuffer();
 
@@ -130,6 +158,7 @@ public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> i
     public List<BisOrderDetail> getList(Long orderId) {
         return this.mapper.getList(orderId);
     }
+
 
     private boolean isLocked(Long orderId) {
         BisOrder order = this.bisOrderService.get(orderId);

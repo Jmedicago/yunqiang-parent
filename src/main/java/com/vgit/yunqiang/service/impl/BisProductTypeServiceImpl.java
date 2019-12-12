@@ -1,6 +1,7 @@
 package com.vgit.yunqiang.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.vgit.yunqiang.common.consts.ICodes;
@@ -54,6 +55,28 @@ public class BisProductTypeServiceImpl extends TreeGridServiceImpl<BisProductTyp
     @Override
     public BisProductType getProductTypeByNameAndParentId(String name, Long parentId) {
         return this.mapper.getProductTypeByNameAndParentId(name, parentId);
+    }
+
+    @Override
+    public String getProductTypeByProductId(Long productId) {
+        BisProductType bisProductType = this.mapper.getProductTypeByProductId(productId);
+        if (bisProductType != null) {
+            StringBuffer sb = new StringBuffer();
+
+            String[] paths = bisProductType.getPath().split("\\.");
+            List<String> pathList = Arrays.asList(paths);
+            //pathList.remove(0);
+
+            for (int i = 2; i < pathList.size(); i++) {
+                BisProductType type = this.get(Long.valueOf(pathList.get(i)));
+                sb.append(type.getName());
+                sb.append("\\");
+            }
+
+            return sb.toString().substring(0, sb.length() - 1);
+        } else {
+            return "unknown";
+        }
     }
 
     /**

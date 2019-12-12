@@ -324,21 +324,29 @@
     }
 
     function changeCartAmount(that, obj) {
+        var temp = obj.amount;
         var amount = $(that).val();
-        $.post('/cart/changeNumber', {cartId: obj.id, skuId: obj.skuId, number: amount}, function (res) {
-            if (res.success) {
-                // 更新字段
-                $("#cartGrid").datagrid("updateRow", {
-                    index: obj.index, //行索引
-                    row: {
-                        amount: amount //行中的某个字段
-                    }
-                });
-                // 更新统计
-                statistics(res.data);
-            } else {
-                MXF.alert(res.message + "，" + res.info, res.success);
-            }
+        $('.window-mask').show();
+        MXF.confirm('确认修改？', function () {
+            $.post('/cart/changeNumber', {cartId: obj.id, skuId: obj.skuId, number: amount}, function (res) {
+                if (res.success) {
+                    // 更新字段
+                    $("#cartGrid").datagrid("updateRow", {
+                        index: obj.index, //行索引
+                        row: {
+                            amount: amount //行中的某个字段
+                        }
+                    });
+                    // 更新统计
+                    statistics(res.data);
+                } else {
+                    MXF.alert(res.message + "，" + res.info, res.success);
+                }
+            });
+            $('.window-mask').hide();
+        }, function () {
+            $(that).val(temp);
+            $('.window-mask').hide();
         });
     }
 
@@ -417,6 +425,7 @@
                 MXF.ajaxFormDone(data);
                 if (data.success) {
                     $('#cartGrid').datagrid('reload');
+                    $('#stockOutGrid').datagrid('uncheckAll');
                 } else {
                     MXF.alert(data.info + "，" + data.message, data.success);
                 }

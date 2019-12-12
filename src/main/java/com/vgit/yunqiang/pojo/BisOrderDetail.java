@@ -1,5 +1,7 @@
 package com.vgit.yunqiang.pojo;
 
+import com.vgit.yunqiang.service.format.ProductTypeFormat;
+import com.vgit.yunqiang.service.format.SkuFormat;
 import com.vgit.yunqiang.service.format.StockShuntFormat;
 
 /**
@@ -36,8 +38,6 @@ public class BisOrderDetail {
     private String inputUser;
 
     private Integer realAmount;
-
-    private Integer availableStock;
 
     public Long getId() {
         return id;
@@ -162,4 +162,13 @@ public class BisOrderDetail {
     public Integer getAvailableStock() {
         return StockShuntFormat.getSkuStock(skuId, orderId);
     }
+
+    public String getProductType() {
+        return ProductTypeFormat.getProductTypeByProductId(productId);
+    }
+
+    public BisSku getSku() {
+        return SkuFormat.get(skuId);
+    }
+
 }

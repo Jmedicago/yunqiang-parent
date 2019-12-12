@@ -6,10 +6,12 @@
     <input type="hidden" name="stockId" value="${stockShunt.stockId}"/>
     <div class="input-div">
         <label class="label-top">数量</label>
-        <input class="easyui-textbox theme-textbox-radius" name="amount" data-options="required:true" style="width:450px;">
+        <input class="easyui-textbox theme-textbox-radius" name="amount" data-options="required:true"
+               style="width:450px;">
     </div>
     <div class="input-div" style="text-align: center; margin: 35px 0">
-        <a class="easyui-linkbutton button-lg button-default" onclick="MXF.ajaxForm(this, function() {
+        <a id="inventoryFormBtn" class="easyui-linkbutton button-lg button-default" onclick="MXF.ajaxForm(this, function() {
+          $('#shuntStockDialog').window('close');
           $('#inventoryGrid').datagrid('reload');
         })"><spring:message
                 code="common.submit"/></a>
@@ -17,3 +19,11 @@
     </div>
     <hr style="border:0;margin-bottom:20px;"/>
 </form>
+
+<script type="text/javascript">
+    $(document).keydown(function (event) {
+        if (event.keyCode == 13) {
+            $('#inventoryFormBtn').triggerHandler('click');
+        }
+    });
+</script>

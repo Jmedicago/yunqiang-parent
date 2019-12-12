@@ -1,5 +1,6 @@
 package com.vgit.yunqiang.service.format;
 
+import com.vgit.yunqiang.pojo.BisProduct;
 import com.vgit.yunqiang.pojo.BisProductType;
 import com.vgit.yunqiang.service.BisProductTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +55,9 @@ public class ProductTypeFormat {
         } else {
             return "unknown";
         }
+    }
+
+    public static String getProductTypeByProductId(Long productId) {
+        return bisProductTypeService.getProductTypeByProductId(productId);
     }
 }

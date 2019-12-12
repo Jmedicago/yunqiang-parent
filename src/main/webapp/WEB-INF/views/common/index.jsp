@@ -158,6 +158,8 @@
     <div class="globalContent"><spring:message code="common.loading"/></div>
 </div>
 
+<div class="window-mask" style="display: none; z-index: 9013; position: fixed;"></div>
+
 <script src="/easyui/plugin/Highcharts-5.0.0/js/highcharts.js"></script>
 <script type="text/javascript" src="/easyui/plugin/ueditor/ueditor.config.js"></script>
 <script type="text/javascript" src="/easyui/plugin/ueditor/ueditor.all.min.js"></script>

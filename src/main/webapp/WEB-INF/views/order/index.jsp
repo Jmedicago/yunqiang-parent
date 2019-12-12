@@ -36,10 +36,10 @@
                    iconCls="icon-remove" plain="true">
                     <spring:message code="common.delete"/>
                 </a>--%>
-                <%--<a href="#" data-cmd="edit" title="<spring:message code="common.edit"/>" height="747" width="590" mustsel data-options="disabled:true" class="easyui-linkbutton"
+                <a href="#" data-cmd="editEditOrder" title="<spring:message code="common.edit"/>" height="747" width="590" mustsel data-options="disabled:true" class="easyui-linkbutton"
                    iconCls="icon-edit" plain="true">
                     <spring:message code="common.edit"/>
-                </a>--%>
+                </a>
                 <span class="buttonSplit">&nbsp;</span>
                 <a href="#" data-cmd="confirmShip" mustsel data-options="disabled:true" class="easyui-linkbutton"
                    iconCls="icon-ok" plain="true">
@@ -131,6 +131,20 @@
         MXF.openDialog('#showOrderDetailWindow', '查看明细', '/order/show?id=' + id, function () {
             
         },590, 800);
+    }
+
+    function editEditOrder() {
+        var row = $('#orderGrid').datagrid('getSelected');
+        if (row == null) {
+            MXF.error("<spring:message code="message.select"/>！");
+            return;
+        }
+        /*MXF.openDialog('#editOrderVerifyWindow', '订单号：' + row.orderSn, '/order/edit?id=' + row.id, function () {
+
+        }, 590, 747);*/
+        MXF.openDialog('#editOrderVerifyWindow', '订单号：' + row.orderSn, '/order-verify/edit?id=' + row.id, function () {
+
+        }, 800, 747, true);
     }
 
 </script>

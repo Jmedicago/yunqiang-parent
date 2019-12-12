@@ -97,11 +97,14 @@
                 <th data-options="field: 'skuMainPic', width:50, halign: 'center', align: 'center', formatter: skuMainPicFormatter">
                     图片
                 </th>
-                <th data-options="field: 'name', width: 120, halign: 'center', align: 'center'">商品名</th>
+                <th data-options="field: 'productType', width: 120, halign: 'center', align: 'center'">类别名称</th>
+                <th data-options="field: 'name', width: 120, halign: 'center', align: 'center'">品名</th>
+                <th data-options="field: 'pack', width: 120, halign: 'center', align: 'center'">包装形态</th>
                 <th data-options="field: 'skuProperties', width: 200, halign: 'center', align: 'left'">属性</th>
                 <th data-options="field: 'availableStock', width:100, halign: 'center', align: 'center'">库存数量</th>
                 <th data-options="field: 'amount', width:100, halign: 'center', align: 'center'">需求数量</th>
-                <th data-options="field: 'realAmount', width:100, halign: 'center', align: 'center'">实际数量</th>
+                <th data-options="field: 'realAmount', width:100, halign: 'center', align: 'center'">实际上货</th>
+                <th data-options="field: 'remark', width:100, halign: 'center', align: 'center'">备注</th>
             </tr>
             </thead>
             <tbody>
@@ -109,11 +112,14 @@
                 <tr>
                     <td>${item.id}</td>
                     <td><img width="50px" height="50px" src="${item.skuMainPic}"></td>
+                    <td>${item.productType}</td>
                     <td>${item.name}</td>
+                    <td>${item.sku.pack}</td>
                     <td>${item.skuProperties}</td>
                     <td>x ${item.availableStock}</td>
                     <td>x ${item.amount}</td>
                     <td>x ${item.realAmount}</td>
+                    <td></td>
                 </tr>
             </c:forEach>
             </tbody>

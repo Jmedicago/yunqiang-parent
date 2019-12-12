@@ -29,4 +29,8 @@ public class SkuFormat {
         }
         return null;
     }
+
+    public static BisSku get(Long skuId) {
+        return bisSkuService.get(skuId);
+    }
 }

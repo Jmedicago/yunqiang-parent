@@ -10,7 +10,7 @@
                            pagination: true,
                            pageSize: 50,
                            striped: true,
-                           singleSelect: false,
+                           singleSelect: true,
                            toolbar: '#inventoryTB',
                            url: '/sku/es'"> <!-- /sku/json -->
             <thead>
@@ -94,6 +94,12 @@
                    data-options="disabled:true" class="easyui-linkbutton"
                    iconCls="icon-remove" plain="true">
                     <spring:message code="common.delete"/>
+                </a>
+                <a href="#" data-cmd="inventoryExport"
+                   class="easyui-linkbutton"
+                   plain="true">
+                    <i class="iconfont">&#xe73f;</i>
+                    批量导出
                 </a>
             </div>
             <div class="searchForm"> <!-- style="border: unset; margin: 0; padding: 5px 5px" -->
@@ -243,6 +249,10 @@
                 MXF.alert(res.info, res.success);
             }
         });
+    }
+    
+    function inventoryExport() {
+        window.open('/inventory/export');
     }
 
 </script>

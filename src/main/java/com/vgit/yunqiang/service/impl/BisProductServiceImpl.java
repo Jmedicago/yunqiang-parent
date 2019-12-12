@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.*;
 
 import static jdk.nashorn.internal.objects.Global.Infinity;
@@ -838,7 +839,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
 
         filePath = filePath + "/upload/" + fileName + ".xlsx";
 
-        String[] titleArray = {"类别", "图片", "品名", "货品编号", "属性", "包装形态", "体积", "成本价", "批发价", "利润", "货柜编号", "库存", "供应商", "备注"};
+        String[] titleArray = {"类别", "图片", "品名", "货品编号", "属性", "包装形态", "体积", "成本价", "批发价", "利润", "库存", "货柜编号", "供应商", "备注"};
         List<String> titles = Arrays.asList(titleArray);
 
         try {
@@ -866,19 +867,29 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
             map.put("图片", product.getSkuMainPic());
             map.put("品名", product.getName());
             map.put("货品编号", product.getCode());
-            map.put("属性", product.getSkuProperties());
+            map.put("属性", formatterSkuProperties(product.getSkuProperties()));
             map.put("包装形态", product.getPack());
             map.put("体积", product.getVolume());
-            map.put("成本价", product.getCostPrice());
-            map.put("批发价", product.getMarketPrice());
+
+            DecimalFormat df = new DecimalFormat("0.00");
+            map.put("成本价", df.format(product.getCostPrice() * 0.01));
+            map.put("批发价", df.format(product.getMarketPrice() * 0.01));
+
             map.put("利润", product.getProfit());
-            map.put("货柜编号", product.getContainer());
             map.put("库存", product.getAllStock());
+            map.put("货柜编号", product.getContainer());
             map.put("供应商", product.getSupplier());
             map.put("备注", product.getRemark());
             mapList.add(map);
         }
         return mapList;
+    }
+
+    private String formatterSkuProperties(String skuProperties) {
+        if (StringUtils.isNotBlank(skuProperties)) {
+            return skuProperties.replaceAll("<br>", "\n");
+        }
+        return "";
     }
 
     /**

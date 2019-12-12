@@ -383,7 +383,7 @@ MXF.confirm = function (msg, fn, cfn) {
     var gPane = $('#globalConfirmPane');
     gPane.find('.globalContent').html(msg);
     gPane.css('margin', '-' + (gPane.height() / 2) + 'px 0 0 -' + (gPane.width() / 2) + 'px');
-    gPane.stop().fadeIn(100).delay(10000).fadeOut(200);
+    gPane.stop().fadeIn(100).delay(1000000).fadeOut(200);
     gPane.find('.btn-confirm').unbind('click').click(function () {
         gPane.hide();
         if (null != fn) {

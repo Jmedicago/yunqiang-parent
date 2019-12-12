@@ -5,7 +5,7 @@
     <div class="tableGroup">
         <table id="roleGrid" class="easyui-datagrid" title="<spring:message code="mu.sys.role"/>"
                data-options="rownumbers:true,fit:true,method:'get',
-				pagination:true,pageSize:10,striped:true,singleSelect:false,
+				pagination:true,pageSize:10,striped:true,singleSelect:true,
 				toolbar:'#roleTB',url:'/role/json'">
             <thead>
             <tr>

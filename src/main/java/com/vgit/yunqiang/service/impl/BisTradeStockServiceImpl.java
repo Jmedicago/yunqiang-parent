@@ -45,6 +45,12 @@ public class BisTradeStockServiceImpl extends BaseServiceImpl<BisTradeStock> imp
         String filePath = null;
         try {
             String oldName = uploadFile.getOriginalFilename();
+
+            //上传前检查
+            if (this.logResourceService.exist(oldName)) {
+                return Ret.me().setSuccess(false).setInfo("该文件已存在");
+            }
+
             //生成新文件名
             String newName = IDUtils.genImageName();
             newName = newName + oldName.substring(oldName.lastIndexOf("."));
@@ -135,6 +141,7 @@ public class BisTradeStockServiceImpl extends BaseServiceImpl<BisTradeStock> imp
     public Ret uploadPrTrade(Integer type, MultipartFile uploadFile) {
         try {
             String oldName = uploadFile.getOriginalFilename();
+
             //生成新文件名
             String newName = IDUtils.genImageName();
             newName = newName + oldName.substring(oldName.lastIndexOf("."));
@@ -170,6 +177,7 @@ public class BisTradeStockServiceImpl extends BaseServiceImpl<BisTradeStock> imp
     public Ret uploadPoTrade(Long id, MultipartFile uploadFile) {
         try {
             String oldName = uploadFile.getOriginalFilename();
+
             //生成新文件名
             String newName = IDUtils.genImageName();
             newName = newName + oldName.substring(oldName.lastIndexOf("."));
@@ -203,12 +211,19 @@ public class BisTradeStockServiceImpl extends BaseServiceImpl<BisTradeStock> imp
     @Override
     public Ret finishTrade(Long id) {
         BisTradeStock bisTradeStock = this.mapper.get(id);
-        bisTradeStock.setStatus((int) TradeStockStateConsts.SHIP_FINISH_TAKE);
-        bisTradeStock.setUpdateTime(System.currentTimeMillis());
-        this.mapper.updatePart(bisTradeStock);
         if (bisTradeStock.getType() == 2) {// 导入商品
-            return this.bisProductService.batch(bisTradeStock.getBeforeResource());
+            if (bisTradeStock.getStatus() == 0) {
+                this.bisProductService.batch(bisTradeStock.getBeforeResource());
+                bisTradeStock.setStatus((int) TradeStockStateConsts.SHIP_FINISH_TAKE);
+                bisTradeStock.setUpdateTime(System.currentTimeMillis());
+                this.mapper.updatePart(bisTradeStock);
+                return Ret.me();
+            }
+            return Ret.me().setSuccess(false).setInfo("已导入");
         } else {
+            bisTradeStock.setStatus((int) TradeStockStateConsts.SHIP_FINISH_TAKE);
+            bisTradeStock.setUpdateTime(System.currentTimeMillis());
+            this.mapper.updatePart(bisTradeStock);
             return Ret.me();
         }
     }

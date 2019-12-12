@@ -14,4 +14,6 @@ public interface BisProductTypeMapper extends BaseMapper<BisProductType> {
      * @return
      */
     BisProductType getProductTypeByNameAndParentId(@Param("name") String name, @Param("parentId") Long parentId);
+
+    BisProductType getProductTypeByProductId(Long productId);
 }

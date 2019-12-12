@@ -31,4 +31,5 @@ public interface BisProductTypeService extends TreeGridService<BisProductType> {
      */
     BisProductType getProductTypeByNameAndParentId(String name, Long parentId);
 
+    String getProductTypeByProductId(Long productId);
 }

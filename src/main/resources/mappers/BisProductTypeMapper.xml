@@ -131,5 +131,9 @@
     <select id="getProductTypeByNameAndParentId" resultType="com.vgit.yunqiang.pojo.BisProductType">
         select * from t_bis_product_type where name = #{name} and parentId = #{parentId}
     </select>
+
+    <select id="getProductTypeByProductId" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisProductType">
+        SELECT pt.* FROM t_bis_product_type pt LEFT JOIN t_bis_product t ON pt.id = t.productType WHERE t.id = 391
+    </select>
    
 </mapper>

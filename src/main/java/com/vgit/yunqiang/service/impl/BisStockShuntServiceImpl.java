@@ -3,14 +3,21 @@ package com.vgit.yunqiang.service.impl;
 import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
+import com.vgit.yunqiang.common.utils.ExcelUtils;
 import com.vgit.yunqiang.mapper.BisStockShuntMapper;
+import com.vgit.yunqiang.model.ProductModel;
 import com.vgit.yunqiang.pojo.*;
 import com.vgit.yunqiang.service.*;
+import com.vgit.yunqiang.service.format.StockShuntFormat;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.*;
 
 import static com.vgit.yunqiang.common.consts.msg.BisProductMsgConsts.IN_A_SHORT_INVENTORY;
 
@@ -31,6 +38,9 @@ public class BisStockShuntServiceImpl extends BaseServiceImpl<BisStockShunt> imp
 
     @Autowired
     private LogStockShuntService logStockShuntService;
+
+    @Autowired
+    private BisSkuService bisSkuService;
 
     @Override
     protected BaseMapper<BisStockShunt> getMapper() {
@@ -133,6 +143,76 @@ public class BisStockShuntServiceImpl extends BaseServiceImpl<BisStockShunt> imp
             }
         }
         return 0;
+    }
+
+    @Override
+    public String export(String fileName, HttpServletRequest request) {
+        String filePath = null;
+
+        // 文件路径
+        filePath = request.getSession().getServletContext().getRealPath("/");
+        System.out.println("IO输出文件路径：" + filePath);
+
+        // 检查文件名
+        if (StringUtils.isBlank(fileName)) {
+            fileName = UUID.randomUUID().toString();
+        }
+
+        filePath = filePath + "/upload/" + fileName + ".xlsx";
+
+        String[] titleArray = {"类别", "图片", "品名", "货品编号", "属性", "包装形态", "体积", "成本价", "批发价", "利润", "总仓", "北部分仓", "南部分仓", "货柜编号", "供应商", "备注"};
+        List<String> titles = Arrays.asList(titleArray);
+
+        try {
+            // 获得所有商品列表
+            List<ProductModel> products = this.bisSkuService.getAll();
+            System.out.println("商品列表：" + products.toString());
+            ExcelUtils.writeExcel(filePath, fileName, titles, this.productToMap(products));
+            // TODO.上传到FTP
+            return "/upload/" + fileName + ".xlsx";
+        } catch (IOException e) {
+            throw new BisException().setInfo("批量导出商品发生异常");
+        }
+    }
+
+    private List<Map<String, Object>> productToMap(List<ProductModel> products) {
+        List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+        for (ProductModel product : products) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("类别", product.getPath());
+            map.put("图片", product.getSkuMainPic());
+            map.put("品名", product.getName());
+            map.put("货品编号", product.getCode());
+            map.put("属性", formatterSkuProperties(product.getSkuProperties()));
+            map.put("包装形态", product.getPack());
+            map.put("体积", product.getVolume());
+            DecimalFormat df = new DecimalFormat("0.00");
+            map.put("成本价", df.format(product.getCostPrice() * 0.01));
+            map.put("批发价", df.format(product.getMarketPrice() * 0.01));
+            map.put("利润", product.getProfit());
+            map.put("总仓", product.getAllStock());
+            List<BisStockShunt> stockShunts = product.getStockShunt();
+            for (BisStockShunt stockShunt : stockShunts) {
+                if (NORTH_STOCK.equals(String.valueOf(stockShunt.getStockId()))) {
+                    map.put("北部分仓", stockShunt.getAmount());
+                }
+                if (SOUTH_STOCK.equals(String.valueOf(stockShunt.getStockId()))) {
+                    map.put("南部分仓", stockShunt.getAmount());
+                }
+            }
+            map.put("货柜编号", product.getContainer());
+            map.put("供应商", product.getSupplier());
+            map.put("备注", product.getRemark());
+            mapList.add(map);
+        }
+        return mapList;
+    }
+
+    private String formatterSkuProperties(String skuProperties) {
+        if (StringUtils.isNotBlank(skuProperties)) {
+            return skuProperties.replaceAll("<br>", "\n");
+        }
+        return "";
     }
 
     @Override

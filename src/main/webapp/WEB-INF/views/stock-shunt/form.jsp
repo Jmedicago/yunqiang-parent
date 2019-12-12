@@ -17,6 +17,7 @@
     <div class="input-div" style="text-align: center; margin: 35px 0">
         <a class="easyui-linkbutton button-lg button-default" onclick="MXF.ajaxForm(this, function() {
           $('#stockShuntGrid').datagrid('reload');
+          $('#shuntStockDialog').window('close');
         })"><spring:message
                 code="common.submit"/></a>
         <a class="easyui-linkbutton button-lg" onclick="MXF.clearForm(this)"><spring:message code="common.reset"/></a>

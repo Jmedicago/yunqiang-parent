@@ -49,4 +49,6 @@ public interface BisOrderDetailService extends BaseService<BisOrderDetail> {
 	 * @return
 	 */
 	List<BisOrderDetail> getList(Long orderId);
+
+	BisOrder updateOrderDetail(Long id, Long orderId, Integer amount);
 }

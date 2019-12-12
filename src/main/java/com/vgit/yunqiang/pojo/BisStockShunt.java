@@ -91,4 +91,16 @@ public class BisStockShunt extends BasePojo {
         this.confirmTime = confirmTime;
     }
 
+    @Override
+    public String toString() {
+        return "BisStockShunt{" +
+                "id=" + id +
+                ", stockId=" + stockId +
+                ", skuId=" + skuId +
+                ", amount=" + amount +
+                ", state=" + state +
+                ", submitTime=" + submitTime +
+                ", confirmTime=" + confirmTime +
+                '}';
+    }
 }

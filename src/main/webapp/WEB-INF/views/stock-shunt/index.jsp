@@ -10,7 +10,7 @@
                            pagination: true,
                            pageSize: 50,
                            striped: true,
-                           singleSelect: false,
+                           singleSelect: true,
                            toolbar: '#stockShuntTB',
                            url: '/sku/es'">
             <thead>

@@ -45,9 +45,9 @@
                    iconCls="icon-ok" plain="true">
                     <spring:message code="order.send"/>
                 </a>
-                <a href="#" data-cmd="printOrder" mustsel data-options="disabled:true" class="easyui-linkbutton"
+                <a href="#" data-cmd="printOrder" class="easyui-linkbutton"
                    iconCls="icon-print" plain="true">
-                    <spring:message code="order.print"/>
+                    点货清单
                 </a>
             </div>
             <div class="searchForm">

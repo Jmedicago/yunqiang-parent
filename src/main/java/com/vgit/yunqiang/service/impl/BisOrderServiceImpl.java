@@ -339,16 +339,44 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
 
     private void addToOrder(Long orderId, Long skuId, Integer number) throws BisException {
         BisOrder bisOrder = this.mapper.get(orderId);
+
+        int realAmount = 0;
         // 查询订单是否存在
         BisOrderDetail existBisOrderDetail = this.bisOrderDetailService.getOrderDetail(orderId, skuId);
+        if (existBisOrderDetail != null) {
+            realAmount = existBisOrderDetail.getRealAmount();
+        }
+
+        number = realAmount + number;
+
         // 检查商品库存数量
-        if(!this.bisStockShuntService.checkStock(skuId, bisOrder.getStockId(), existBisOrderDetail.getRealAmount() + number)){
+        if(!this.bisStockShuntService.checkStock(skuId, bisOrder.getStockId(), number)){
             throw new BisException().setCode(IN_A_SHORT_INVENTORY);
         }
         // 存在则增加数量
         if (null != existBisOrderDetail) {
-            existBisOrderDetail.setRealAmount(existBisOrderDetail.getRealAmount() + number);
+            // 获取数据库最新的SKU信息
+            BisSku sku = bisProductService.getSku(skuId);
+
+            existBisOrderDetail.setRealAmount(number);
+            existBisOrderDetail.setTotalMoney(number * sku.getCostPrice());
+            existBisOrderDetail.setTotalVolume(number * sku.getVolume());
             this.bisOrderDetailService.updatePart(existBisOrderDetail);
+
+            // 更新订单信息
+            BisOrder order = new BisOrder();
+            order.setId(orderId);
+            order.setDigest(this.bisOrderDetailService.digest(orderId));
+            List<BisOrderDetail> orderDetailList = this.bisOrderDetailService.getList(orderId);
+            double totalVolume = 0d;
+            double totalPrice = 0d;
+            for (BisOrderDetail orderDetailItem : orderDetailList) {
+                totalVolume += orderDetailItem.getRealAmount() * orderDetailItem.getVolume();
+                totalPrice += orderDetailItem.getRealAmount() * orderDetailItem.getPrice();
+            }
+            order.setTotalVolume(totalVolume);
+            order.setTotalMoney(totalPrice);
+            this.mapper.updatePart(order);
             return;
         }
         // 获取数据库最新的SKU信息

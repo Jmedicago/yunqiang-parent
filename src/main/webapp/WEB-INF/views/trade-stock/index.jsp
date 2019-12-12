@@ -11,7 +11,7 @@
             <thead>
             <tr>
                 <th data-options="field:'beforeResource',width:200,halign:'center',align:'center',formatter:beforeTradeOrderFormatter">
-                    发货清单
+                    货柜清单名称
                 </th>
                 <th data-options="field:'confirmTime',width:150,halign:'center',align:'center',formatter:MXF.dateTimeFormatter">
                     预到货时间
@@ -86,9 +86,9 @@
     });
 
     function treadeStateFormatter(v) {
-        if (v == 0) return '<red><spring:message code="trade.stock.waitsh"/></red>';
+        if (v == 0) return '<red>待入库</red>';
         if (v == 1) return '<orange><spring:message code="trade.stock.send"/></orange>';
-        if (v == 2) return '<blue><spring:message code="trade.stock.recive"/></blue>';
+        if (v == 2) return '<blue>已入库</blue>';
     }
 
     function beforeTradeOrderFormatter(v, row) {
@@ -141,11 +141,11 @@
             $.get('trade-stock/finish-trade?id=' + row.id, function (res) {
                 if (res.success) {
                     MXF.ajaxing(false);
-                    MXF.alert('<spring:message code="message.goods.in.success"/>！', true);
+                    MXF.alert('<spring:message code="message.goods.in.success"/>' + res.info, true);
                     $('#tradeStockGrid').datagrid('reload');
                 } else {
                     MXF.ajaxing(false);
-                    MXF.alert('<spring:message code="message.goods.in.fail"/>！', false);
+                    MXF.alert('<spring:message code="message.goods.in.fail"/>！' + res.info, false);
                 }
             });
         })

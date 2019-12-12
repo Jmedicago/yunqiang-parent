@@ -15,6 +15,7 @@ import com.vgit.yunqiang.pojo.BisOrder;
 import com.vgit.yunqiang.pojo.BisSku;
 import com.vgit.yunqiang.service.BisOrderService;
 import com.vgit.yunqiang.service.BisSkuService;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,7 +73,7 @@ public class BisOrderDetailController {
 		}
 	}
 
-	@RequestMapping("/changeAmount")
+	/*@RequestMapping("/changeAmount")
 	@ResponseBody
 	public Ret changeAmount(BisOrderDetail orderDetail) {
 		try {
@@ -80,6 +81,20 @@ public class BisOrderDetailController {
 				return Ret.me().setSuccess(false).setInfo("数量不能是负数");
 			}
 			BisOrder order = this.bisOrderDetailService.updateOrderDetail(orderDetail);
+			return Ret.me().setCode(ICodes.SUCCESS).setData(order);
+		} catch (BisException e) {
+			return Ret.me().setSuccess(false).setCode(e.getCode());
+		}
+	}*/
+
+	@RequestMapping("/changeAmount")
+	@ResponseBody
+	public Ret changeAmount(Long id, Long orderId, Integer amount) {
+		try {
+			if (amount < 1) {
+				return Ret.me().setSuccess(false).setInfo("数量不能是负数");
+			}
+			BisOrder order = this.bisOrderDetailService.updateOrderDetail(id, orderId, amount);
 			return Ret.me().setCode(ICodes.SUCCESS).setData(order);
 		} catch (BisException e) {
 			return Ret.me().setSuccess(false).setCode(e.getCode());

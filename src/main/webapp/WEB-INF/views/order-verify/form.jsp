@@ -12,7 +12,7 @@
                            pagination: true,
                            pageSize: 50,
                            striped: true,
-                           singleSelect: true,
+                           singleSelect: false,
                            toolbar: '#orderVerifyStockOutTB',
                            url: '/sku/es'"> <!-- /sku/json -->
                     <thead>
@@ -140,6 +140,12 @@
                         </th>
                         <th data-options="field: 'name', width: 120, halign: 'center', align: 'center'"><spring:message
                                 code="order.detail.ptname"/></th>
+                        <th data-options="field: 'sku.skuCode', width:100, halign: 'center', align: 'center',formatter: function(val, row){ return row.sku.skuCode}">
+                            货品编号</th>
+                        <th data-options="field: 'productType', width:150, halign: 'center', align: 'center'">
+                            类别名称</th>
+                        <th data-options="field: 'sku.pack', width:50, halign: 'center', align: 'center', formatter: function(val, row){ return row.sku.pack}">
+                            包装形态</th>
                         <th data-options="field: 'skuProperties', width: 200, halign: 'center', align: 'left'">
                             <spring:message code="order.detail.property"/></th>
                         <th data-options="field: 'availableStock', width:100, halign: 'center', align: 'center'">
@@ -194,6 +200,7 @@
                 if (data.success) {
                     $('#orderVerifyDetailGrid').datagrid('reload');
                     $('#orderVerifyGrid').datagrid('reload');
+                    $('#orderVerifyStockOutGrid').datagrid('uncheckAll');
                 } else {
                     MXF.alert(data.message + "，" + data.info, data.success);
                 }
@@ -215,9 +222,10 @@
         return i;
     }
 
-    function changeOrderVerifyDetailAmount(that, obj) {
+    /*function changeOrderVerifyDetailAmount(that, obj) {
         var temp = obj.realAmount;
         obj.realAmount = $(that).val();
+        $('.window-mask').show();
         MXF.confirm('确认修改？', function () {
             $.post('/order-detail/changeAmount', obj, function (res) {
                 if (res.success) {
@@ -235,8 +243,40 @@
                     MXF.alert(res.message, res.success);
                 }
             });
+            $('.window-mask').hide();
         }, function () {
             $(that).val(temp);
+            $('.window-mask').hide();
+        });
+    }*/
+
+    function changeOrderVerifyDetailAmount(that, obj) {
+        var temp = obj.realAmount;
+        var amount = $(that).val();
+        $('.window-mask').show();
+        var data = {"id": obj.id, "orderId": obj.orderId, "amount": amount};
+        MXF.confirm('确认修改？', function () {
+            $.post('/order-detail/changeAmount', data, function (res) {
+                if (res.success) {
+                    // 更新字段
+                    $("#editOrderDetailGrid").datagrid("updateRow", {
+                        index: obj.index, //行索引
+                        row: {
+                            realAmount: amount //行中的某个字段
+                        }
+                    });
+                    // 更新统计
+                    editOrderDetailStatistics(res.data);
+                } else {
+                    $(that).val(temp);
+                    MXF.alert(res.message, res.success);
+                }
+            });
+            $('#editOrderDetailGrid').datagrid('reload');
+            $('.window-mask').hide();
+        }, function () {
+            $(that).val(temp);
+            $('.window-mask').hide();
         });
     }
 

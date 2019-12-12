@@ -6,7 +6,7 @@
 		id, orderId, productId, name, skuId, skuMainPic, skuProperties, price, amount, volume, totalMoney, totalVolume, isComment, inputUser, realAmount
     </sql>
 	
-	<select id="get" parameterType="com.vgit.yunqiang.pojo.BisOrderDetail" resultType="java.lang.Long">
+	<select id="get" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisOrderDetail">
 		select 
 		<include refid="Base_Column_List" />
 		from t_bis_order_detail

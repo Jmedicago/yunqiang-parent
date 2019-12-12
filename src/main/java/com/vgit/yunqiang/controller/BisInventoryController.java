@@ -6,11 +6,14 @@ import com.vgit.yunqiang.pojo.BisSku;
 import com.vgit.yunqiang.pojo.BisStockShunt;
 import com.vgit.yunqiang.service.BisSkuService;
 import com.vgit.yunqiang.service.BisStockShuntService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/" + BisInventoryController.DOMAIN)
@@ -54,8 +57,27 @@ public class BisInventoryController {
     @RequestMapping(ControllerConsts.URL_STORE)
     @ResponseBody
     public Ret store(BisStockShunt bisStockShunt) {
+        if (bisStockShunt.getAmount() < 0) {
+            return Ret.me().setSuccess(false).setInfo("不能输入小于0之外的数字！");
+        }
         this.stockShuntService.checkIn(bisStockShunt.getSkuId(), bisStockShunt.getAmount());
         return Ret.me();
+    }
+
+    /**
+     * Excel 批量导出
+     *
+     * @param fileName
+     * @param request
+     * @return
+     */
+    @RequestMapping("/export")
+    public String export(String fileName, HttpServletRequest request) throws Exception {
+        if (StringUtils.isNotBlank(fileName)) {
+            fileName = new String(fileName.getBytes("ISO-8859-1"), "UTF-8");
+        }
+
+        return "redirect:" + this.stockShuntService.export(fileName, request);
     }
 
 }

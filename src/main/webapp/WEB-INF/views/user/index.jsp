@@ -5,7 +5,7 @@
     <div class="tableGroup">
         <table id="userGrid" class="easyui-datagrid" title="<spring:message code="mu.sys.user"/>"
                data-options="rownumbers:true,fit:true,method:'get',
-				pagination:true,pageSize:10,striped:true,singleSelect:false,
+				pagination:true,pageSize:10,striped:true,singleSelect:true,
 				toolbar:'#userTB',url:'/user/json'">
             <thead>
             <tr>
