@@ -9,10 +9,11 @@
         <result column="amount" jdbcType="INTEGER" property="amount"/>
         <result column="state" jdbcType="TINYINT" property="state"/>
         <result column="inputUser" jdbcType="BIGINT" property="inputUser"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, date, stockId, skuId, amount, state, inputUser
+        id, date, stockId, skuId, amount, state, inputUser, remark
     </sql>
 
     <select id="get" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -30,10 +31,10 @@
     <insert id="save" parameterType="com.vgit.yunqiang.pojo.LogStockShunt">
         insert into t_log_stock_shunt (id, date, stockId,
           skuId, amount, state,
-          inputUser)
+          inputUser, remark)
         values (#{id,jdbcType=BIGINT}, #{date,jdbcType=BIGINT}, #{stockId,jdbcType=BIGINT},
           #{skuId,jdbcType=BIGINT}, #{amount,jdbcType=INTEGER}, #{state,jdbcType=TINYINT},
-          #{inputUser,jdbcType=BIGINT})
+          #{inputUser,jdbcType=BIGINT}, #{remark, jdbcType=VARCHAR})
     </insert>
 
     <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.LogStockShunt">
@@ -60,6 +61,9 @@
             <if test="inputUser != null">
                 inputUser,
             </if>
+            <if test="remark != null">
+                remark,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -82,6 +86,9 @@
             </if>
             <if test="inputUser != null">
                 #{inputUser,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                #{remark, jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -107,6 +114,9 @@
             <if test="inputUser != null">
                 inputUser = #{inputUser,jdbcType=BIGINT},
             </if>
+            <if test="remark != null">
+                remark = #{remark, jdbcType=VARCHAR},
+            </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
@@ -118,7 +128,8 @@
           skuId = #{skuId,jdbcType=BIGINT},
           amount = #{amount,jdbcType=INTEGER},
           state = #{state,jdbcType=TINYINT},
-          inputUser = #{inputUser,jdbcType=BIGINT}
+          inputUser = #{inputUser,jdbcType=BIGINT},
+          remark = #{remark, jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
@@ -130,6 +141,7 @@
         <result column="amount" jdbcType="INTEGER" property="amount"/>
         <result column="state" jdbcType="TINYINT" property="state"/>
         <result column="inputUser" jdbcType="BIGINT" property="inputUser"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <association property="sku" javaType="com.vgit.yunqiang.pojo.BisSku">
             <id column="id" property="id"/>
             <result column="productId" jdbcType="BIGINT" property="productId"/>
@@ -155,6 +167,7 @@
             <if test="stockId != null and stockId != ''">and lss.stockId = #{stockId}</if>
             <if test="skuId != null and skuId != ''">and lss.skuId = #{skuId}</if>
             <if test="date != null and date != ''">and lss.date &gt;= #{beginDate} and lss.date &lt;= #{endDate}</if>
+            <if test="remark != null and remark != ''">and lss.remark = #{remark}</if>
         </where>
     </sql>
 

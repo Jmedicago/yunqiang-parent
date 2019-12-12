@@ -135,5 +135,9 @@
     <select id="getProductTypeByProductId" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisProductType">
         SELECT pt.* FROM t_bis_product_type pt LEFT JOIN t_bis_product t ON pt.id = t.productType WHERE t.id = 391
     </select>
+
+    <select id="delBeforeCheck" parameterType="java.lang.Long" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM t_bis_product_type pt JOIN t_bis_product p ON pt.id = p.productType WHERE pt.path like CONCAT('%',#{productType},'%')
+    </select>
    
 </mapper>

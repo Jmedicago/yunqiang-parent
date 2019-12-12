@@ -14,6 +14,11 @@
         <label class="label-top">数量</label>
         <input class="easyui-textbox theme-textbox-radius" name="amount" data-options="required:true" style="width:450px;">
     </div>
+    <div class="input-div">
+        <label class="label-top">备注</label>
+        <input class="easyui-textbox theme-textbox-radius" data-options="multiline:true" style="height:60px;width:450px;"
+               name="remark">
+    </div>
     <div class="input-div" style="text-align: center; margin: 35px 0">
         <a class="easyui-linkbutton button-lg button-default" onclick="MXF.ajaxForm(this, function() {
           $('#stockShuntGrid').datagrid('reload');

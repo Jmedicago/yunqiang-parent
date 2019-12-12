@@ -44,6 +44,11 @@ public class BisProductTypeServiceImpl extends TreeGridServiceImpl<BisProductTyp
 
     @Override
     public Ret deleteById(Long id) {
+        Integer count = this.mapper.delBeforeCheck(id);
+        if (count != null && count > 0) {
+            return Ret.me().setSuccess(false).setInfo("该类目已关联商品，不能删除！");
+        }
+
         BisProductType productType = this.mapper.get(id);
         if (productType != null && productType.getParentId() == TreeGridService.ROOT) {
             return Ret.me().setSuccess(false).setCode(ICodes.NOT_AUTHORIZED);

@@ -16,4 +16,12 @@ public interface BisProductTypeMapper extends BaseMapper<BisProductType> {
     BisProductType getProductTypeByNameAndParentId(@Param("name") String name, @Param("parentId") Long parentId);
 
     BisProductType getProductTypeByProductId(Long productId);
+
+    /**
+     * 删除前检查
+     *
+     * @param productType
+     * @return
+     */
+    Integer delBeforeCheck(Long productType);
 }

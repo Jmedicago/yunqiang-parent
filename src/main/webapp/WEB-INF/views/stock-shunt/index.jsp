@@ -174,7 +174,7 @@
     function shuntStock(skuId, stockId) {
         MXF.openDialog("shuntStockDialog", "商品分流", "/stock-shunt/edit?skuId=" + skuId + "&stockId=" + stockId, function () {
 
-        }, 600, 300);
+        }, 600, 400);
     }
     
     function viewStockShuntLog() {

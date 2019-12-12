@@ -44,9 +44,9 @@ public class BisStockShuntController {
 
     @RequestMapping("/shunt")
     @ResponseBody
-    public Ret shunt(BisStockShunt bisStockShunt) {
+    public Ret shunt(BisStockShunt bisStockShunt, String remark) {
         try {
-            this.bisStockShuntService.shunt(bisStockShunt);
+            this.bisStockShuntService.shunt(bisStockShunt, remark);
         } catch (BisException e) {
             return Ret.me().setSuccess(false).setCode(e.getCode());
         }

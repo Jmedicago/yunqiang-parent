@@ -62,7 +62,7 @@ public interface BisStockShuntService extends BaseService<BisStockShunt> {
      * @param stockShunt
      * @throws BisException 库存不足
      */
-    void shunt(BisStockShunt stockShunt) throws BisException;
+    void shunt(BisStockShunt stockShunt, String remark) throws BisException;
 
     /**
      * 查询SKU库存量

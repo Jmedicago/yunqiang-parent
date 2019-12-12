@@ -20,6 +20,8 @@ public class LogStockShunt {
 
     private Long inputUser;
 
+    private String remark;
+
     private BisSku sku;
 
     public Long getId() {
@@ -76,6 +78,14 @@ public class LogStockShunt {
 
     public void setInputUser(Long inputUser) {
         this.inputUser = inputUser;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public BisSku getSku() {

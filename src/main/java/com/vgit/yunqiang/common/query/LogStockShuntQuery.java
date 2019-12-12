@@ -18,6 +18,8 @@ public class LogStockShuntQuery extends BaseQuery {
 
     private Long endDate;
 
+    private String remark;
+
     public Long getStockId() {
         return stockId;
     }
@@ -57,4 +59,13 @@ public class LogStockShuntQuery extends BaseQuery {
         }
         return null;
     }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
 }

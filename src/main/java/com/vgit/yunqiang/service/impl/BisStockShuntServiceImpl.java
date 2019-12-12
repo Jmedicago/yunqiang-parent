@@ -71,7 +71,7 @@ public class BisStockShuntServiceImpl extends BaseServiceImpl<BisStockShunt> imp
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void shunt(BisStockShunt stockShunt) throws BisException {
+    public void shunt(BisStockShunt stockShunt, String remark) throws BisException {
         // 查询总仓库存信息
         BisStockShunt defaultStockShunt = this.mapper.getAmountBy(Long.valueOf(DEFAULT_STOCK), stockShunt.getSkuId());
         if (defaultStockShunt != null && defaultStockShunt.getAmount() >= stockShunt.getAmount()) { // 检查库存
@@ -98,6 +98,7 @@ public class BisStockShuntServiceImpl extends BaseServiceImpl<BisStockShunt> imp
             shuntLog.setSkuId(stockShunt.getSkuId());
             shuntLog.setState((byte) 1);
             shuntLog.setInputUser(stockShunt.getStockId());
+            shuntLog.setRemark(remark);
             this.logStockShuntService.save(shuntLog);
 
             defaultStockShunt.setAmount(defaultStockShunt.getAmount() - stockShunt.getAmount()); // 总仓减库存

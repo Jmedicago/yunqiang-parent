@@ -5,20 +5,22 @@
     <div class="tableGroup">
         <table id="stockShuntLogGrid" class="easyui-datagrid" title="商品分流日志"
                data-options="rownumbers:true,fit:true,method:'get',
-				pagination:true,pageSize:10,striped:true,singleSelect:false,
+				pagination:true,pageSize:50,striped:true,singleSelect:false,
 				toolbar:'#stockShuntLogTB',url:'/stock-shunt-log/json'">
             <thead>
             <tr>
                 <th data-options="field:'id',checkbox:true"></th>
-                <th data-options="field:'date',width:180,formatter:MXF.dateTimeFormatter">日期</th>
+                <%--<th data-options="field:'date',width:180,formatter:MXF.dateTimeFormatter">日期</th>--%>
                 <th data-options="field:'productTypeFormatter',width:100">类别名称</th>
                 <th data-options="field:'sku.skuMainPic',width:80,formatter:stockShuntImageFormatter">图片</th>
                 <th data-options="field:'sku.skuName',width:100,formatter:function(val, row){return MXF.cellTooltipFormatter(row.sku.skuName)}">品名</th>
+                <th data-options="field:'sku.skuProperties',width:180, formatter:function(val,row){return MXF.cellTooltipFormatter(row.sku.skuPropertiesFormatter)}">属性</th>
                 <th data-options="field:'sku.skuCode',width:150,formatter:function(val, row){return row.sku.skuCode}">
                     货品编码
                 </th>
-                <th data-options="field:'sku.skuProperties',width:180, formatter:function(val,row){return MXF.cellTooltipFormatter(row.sku.skuPropertiesFormatter)}">属性名</th>
                 <th data-options="field:'sku.pack',width:100, formatter:function(val,row){return row.sku.pack}">包装形态</th>
+                <th data-options="field:'amount',width:50">分流件数</th>
+                <th data-options="field:'remark',width:150">备注</th>
                 <th data-options="field:'sku.volume',width:100, formatter:function(val,row){return row.sku.volume}">体积</th>
                 <th data-options="field:'sku.costPrice',width:100, formatter:function(val,row){return MXF.priceFormatter(row.sku.costPrice)}">成本价</th>
                 <th data-options="field:'sku.marketPrice',width:100, formatter:function(val,row){return MXF.priceFormatter(row.sku.marketPrice)}">批发价</th>
@@ -26,7 +28,6 @@
                 <th data-options="field:'sku.supplier',width:100, formatter:function(val,row){return MXF.cellTooltipFormatter(row.sku.supplier)}">供应商</th>
                 <th data-options="field:'sku.container',width:100, formatter:function(val,row){return MXF.cellTooltipFormatter(row.sku.container)}">货柜编号</th>
                 <th data-options="field:'stockFormatter',width:100">分仓</th>
-                <th data-options="field:'amount',width:50">数量</th>
                 <th data-options="field:'state',width:50,formatter:stockShuntStateFormatter"><spring:message
                         code="common.status"/></th>
             </tr>
@@ -42,9 +43,11 @@
                     </select>
                     <%--商品编码：
                     <input class="easyui-textbox theme-textbox-radius" name="code" style="width:100px;">--%>
-                    日期：
+                    <%--日期：
                     <input class="easyui-datetimebox" name="date"
-                           data-options="required:true,showSeconds:false" style="width:100px">
+                           data-options="required:true,showSeconds:false" style="width:100px">--%>
+                    备注：
+                    <input class="easyui-textbox theme-textbox-radius" name="remark" style="width:200px;">&nbsp;
                     <a href="javascript:;" data-cmd="search" class="easyui-linkbutton button-default"><spring:message
                             code="common.search"/></a>
                     <a href="javascript:;" data-cmd="resetSearch" class="easyui-linkbutton"><spring:message
