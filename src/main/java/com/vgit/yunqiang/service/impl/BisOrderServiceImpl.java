@@ -163,7 +163,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
                 orderDetail.setTotalMoney(bisCart.getAmount() * sku.getCostPrice());
                 orderDetail.setTotalVolume(bisCart.getAmount() * sku.getVolume());
                 orderDetail.setIsComment(0);
-                orderDetail.setInputUser("终端店长");
+                orderDetail.setInputUser("");
                 orderDetail.setRealAmount(bisCart.getAmount());
                 this.bisOrderDetailService.savePart(orderDetail);
             }
@@ -405,7 +405,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
         orderDetail.setTotalMoney(number * sku.getCostPrice());
         orderDetail.setTotalVolume(number * sku.getVolume());
         orderDetail.setIsComment(0);
-        orderDetail.setInputUser("仓管员");
+        orderDetail.setInputUser("总仓加货");
         orderDetail.setRealAmount(number);
 
         this.bisOrderDetailService.savePart(orderDetail);

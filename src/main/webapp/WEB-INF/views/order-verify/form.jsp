@@ -237,7 +237,7 @@
             $.post('/order-detail/del', data, function (res) {
                 if (res.success) {
                     // 更新统计
-                    editOrderDetailStatistics(res.data);
+                    orderVerifyDetailStatistics(res.data);
                 } else {
                     MXF.alert(res.message, res.success);
                 }
@@ -293,7 +293,7 @@
                         }
                     });
                     // 更新统计
-                    editOrderDetailStatistics(res.data);
+                    orderVerifyDetailStatistics(res.data);
                 } else {
                     $(that).val(temp);
                     MXF.alert(res.message, res.success);

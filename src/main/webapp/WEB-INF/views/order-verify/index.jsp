@@ -131,16 +131,17 @@
             MXF.error("<spring:message code="message.select"/>！");
             return;
         }
-        MXF.ajaxing(true);
+        /*MXF.ajaxing(true);
         $.get('/order-verify/check-print?id=' + row.id, function (res) {
             MXF.ajaxing(false);
             if (res.success) {
                 window.open('/order-verify/print?id=' + row.id);
-                /* MXF.openDialog('#editOrderVerifyWindow', '打印出库单', '/order-verify/print?id=' + row.id, function () {
-                }, 606, 2000); */
+                /!* MXF.openDialog('#editOrderVerifyWindow', '打印出库单', '/order-verify/print?id=' + row.id, function () {
+                }, 606, 2000); *!/
             } else {
                 MXF.alert(res.message, false);
             }
-        })
+        })*/
+        window.open('/order-verify/print?id=' + row.id);
     }
 </script>
