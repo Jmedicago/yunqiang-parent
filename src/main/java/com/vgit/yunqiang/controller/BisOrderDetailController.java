@@ -101,4 +101,15 @@ public class BisOrderDetailController {
 		}
 	}
 
+	@RequestMapping("/del")
+	@ResponseBody
+	public Ret del(Long id, Long orderId) {
+		try {
+			BisOrder order = this.bisOrderDetailService.delOrderDetail(id, orderId);
+			return Ret.me().setCode(ICodes.SUCCESS).setData(order);
+		} catch (BisException e) {
+			return Ret.me().setSuccess(false).setCode(e.getCode());
+		}
+	}
+
 }

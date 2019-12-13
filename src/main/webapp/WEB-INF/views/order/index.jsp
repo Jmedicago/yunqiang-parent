@@ -95,7 +95,7 @@
     }
     
     function optionFormatter(val, row) {
-        var a = "<a href='#' onClick='showOrderDetail("+ row.id +")'><span style='margin-left: 5px;'>查看明细</span></a>";
+        var a = "<a href='#' onClick='showOrderDetail("+ row.orderSn + "," + row.id +")'><span style='margin-left: 5px;'>查看明细</span></a>";
         return a;
     }
     
@@ -127,10 +127,14 @@
         MXF.openDialog('#productCommentWindow', '<spring:message code="commit.dialog.order.commit"/>', '/product-comment/index?orderId=' + row.id, function () {}, 590, 800);
     }
     
-    function showOrderDetail(id) {
-        MXF.openDialog('#showOrderDetailWindow', '查看明细', '/order/show?id=' + id, function () {
+    function showOrderDetail(orderSn,id) {
+        /*MXF.openDialog('#showOrderDetailWindow', '查看明细', '/order/show?id=' + id, function () {
             
-        },590, 800);
+        },590, 800);*/
+
+        MXF.openDialog('#showOrderDetailWindow', '订单号：' + orderSn, '/order-verify/edit?id=' + id, function () {
+
+        },590, 800, true);
     }
 
     function editEditOrder() {

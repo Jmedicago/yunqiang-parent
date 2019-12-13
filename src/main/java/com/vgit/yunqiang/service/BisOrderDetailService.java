@@ -3,6 +3,7 @@ package com.vgit.yunqiang.service;
 import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.service.BaseService;
 import com.vgit.yunqiang.common.utils.Page;
+import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.pojo.BisOrder;
 import com.vgit.yunqiang.pojo.BisOrderDetail;
 
@@ -51,4 +52,6 @@ public interface BisOrderDetailService extends BaseService<BisOrderDetail> {
 	List<BisOrderDetail> getList(Long orderId);
 
 	BisOrder updateOrderDetail(Long id, Long orderId, Integer amount);
+
+	BisOrder delOrderDetail(Long id, Long orderId);
 }

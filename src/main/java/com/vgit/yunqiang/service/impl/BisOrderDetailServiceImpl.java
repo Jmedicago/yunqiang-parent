@@ -5,6 +5,7 @@ import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
 import com.vgit.yunqiang.common.utils.Page;
+import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.common.utils.StrUtils;
 import com.vgit.yunqiang.mapper.BisOrderDetailMapper;
 import com.vgit.yunqiang.pojo.BisOrder;
@@ -94,7 +95,6 @@ public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> i
 
             BisOrderDetail orderDetail = this.get(id);
 
-            System.out.println(id + " $$$ " + orderId + " ### " + amount);
             if (!this.bisStockShuntService.checkStock(orderDetail.getSkuId(), bisOrder.getStockId(), amount)) {
                 throw new BisException().setCode(IN_A_SHORT_INVENTORY);
             }
@@ -109,6 +109,17 @@ public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> i
             this.updatePart(newOrderDetail);
             BisOrder newOrder = this.updateOrder(orderDetail.getOrderId());
             return newOrder;
+        } else {
+            throw new BisException().setCode(BisOrderMsgConsts.ORDER_LOCKED);
+        }
+    }
+
+    @Override
+    public BisOrder delOrderDetail(Long id, Long orderId) {
+        if (this.isLocked(orderId)) {
+            this.delete(id);
+            BisOrder bisOrder = this.updateOrder(orderId);
+            return bisOrder;
         } else {
             throw new BisException().setCode(BisOrderMsgConsts.ORDER_LOCKED);
         }

@@ -156,6 +156,8 @@
                             实际数量</th>
                         <th data-options="field: 'inputUser', width:100, halign: 'center', align: 'center'">
                             操作人</th>
+                        <th data-options="field: 'option', width:100, halign: 'center', align: 'center',formatter:optionFormatter">
+                            操作</th>
                     </tr>
                     </thead>
                 </table>
@@ -221,6 +223,31 @@
         var i = "<input onchange='changeOrderVerifyDetailAmount(this, " + obj + ")' type='text' value='" + value + "' style='width: 50px; text-align: center; height: 16px; margin-top: -5px; border: 1px solid #ccc;'>";
         return i;
     }
+    
+    function optionFormatter(val, row, index) {
+        var obj = JSON.stringify(row);
+        var del = "<a class='btn-d default' onclick='delOrderVerifyDetailAmount(" + obj +")'>删除</a>";
+        return del;
+    }
+    
+    function delOrderVerifyDetailAmount(obj) {
+        $('.window-mask').show();
+        var data = {"id": obj.id, "orderId": obj.orderId};
+        MXF.confirm('确认修改？', function () {
+            $.post('/order-detail/del', data, function (res) {
+                if (res.success) {
+                    // 更新统计
+                    editOrderDetailStatistics(res.data);
+                } else {
+                    MXF.alert(res.message, res.success);
+                }
+            });
+            $('#orderVerifyDetailGrid').datagrid('reload');
+            $('.window-mask').hide();
+        }, function () {
+            $('.window-mask').hide();
+        });
+    }
 
     /*function changeOrderVerifyDetailAmount(that, obj) {
         var temp = obj.realAmount;
@@ -259,7 +286,7 @@
             $.post('/order-detail/changeAmount', data, function (res) {
                 if (res.success) {
                     // 更新字段
-                    $("#editOrderDetailGrid").datagrid("updateRow", {
+                    $("#orderVerifyDetailGrid").datagrid("updateRow", {
                         index: obj.index, //行索引
                         row: {
                             realAmount: amount //行中的某个字段
@@ -272,7 +299,7 @@
                     MXF.alert(res.message, res.success);
                 }
             });
-            $('#editOrderDetailGrid').datagrid('reload');
+            $('#orderVerifyDetailGrid').datagrid('reload');
             $('.window-mask').hide();
         }, function () {
             $(that).val(temp);
