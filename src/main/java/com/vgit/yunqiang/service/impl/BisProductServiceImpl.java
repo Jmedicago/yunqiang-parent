@@ -842,16 +842,20 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
         String[] titleArray = {"类别", "图片", "品名", "货品编号", "属性", "包装形态", "体积", "成本价", "批发价", "利润", "库存", "货柜编号", "供应商", "备注"};
         List<String> titles = Arrays.asList(titleArray);
 
-        try {
+        /*try {*/
             // 获得所有商品列表
             List<ProductModel> products = this.bisSkuService.getAll();
             System.out.println("商品列表：" + products.toString());
-            ExcelUtils.writeExcel(filePath, fileName, titles, this.productToMap(products));
-            // TODO.上传到FTP
-            return "/upload/" + fileName + ".xlsx";
+        try {
+            Excel2Utils.writeExcel(filePath, fileName, titles, this.productToMap(products));
         } catch (IOException e) {
-            throw new BisException().setInfo("批量导出商品发生异常");
+            e.printStackTrace();
         }
+        // TODO.上传到FTP
+            return "/upload/" + fileName + ".xlsx";
+        /*} catch (IOException e) {
+            throw new BisException().setInfo("批量导出商品发生异常");
+        }*/
     }
 
     @Override

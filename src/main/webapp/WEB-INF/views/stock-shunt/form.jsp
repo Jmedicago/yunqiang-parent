@@ -20,7 +20,7 @@
                name="remark">
     </div>
     <div class="input-div" style="text-align: center; margin: 35px 0">
-        <a class="easyui-linkbutton button-lg button-default" onclick="MXF.ajaxForm(this, function() {
+        <a id="stockShuntFormBtn" class="easyui-linkbutton button-lg button-default" onclick="MXF.ajaxForm(this, function() {
           $('#stockShuntGrid').datagrid('reload');
           $('#shuntStockDialog').window('close');
         })"><spring:message
@@ -33,4 +33,10 @@
     function initStockShunt() {
         $('#stockShuntCombobox').combobox('setValue', ${bisStockShunt.stockId});
     }
+
+    $(document).keydown(function (event) {
+        if (event.keyCode == 13) {
+            $('#stockShuntFormBtn').triggerHandler('click');
+        }
+    });
 </script>

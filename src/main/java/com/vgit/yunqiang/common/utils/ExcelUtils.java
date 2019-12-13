@@ -1,5 +1,6 @@
 package com.vgit.yunqiang.common.utils;
 
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -17,6 +18,8 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.openxmlformats.schemas.drawingml.x2006.spreadsheetDrawing.CTMarker;
+
+import javax.imageio.ImageIO;
 
 /**
  * Excel操作工具类
@@ -537,6 +540,30 @@ public class ExcelUtils {
                             cell.setCellValue(object.toString());
                         }
                     }
+
+                    // 如果是图片
+                    /*if (title.equals("图片")) {
+                        if (map.getValue() != null) {
+                            ByteArrayOutputStream byteArrayOut = new ByteArrayOutputStream();
+                            BufferedImage image = ImageIO.read(new URL((String) map.getValue()));
+                            ImageIO.write(image, "jpg", byteArrayOut);
+                            XSSFClientAnchor anchor = new XSSFClientAnchor(
+                                    0, 0, 0, 0,
+                                    (short) 1, 1, (short) 2, 2
+                            );
+                            // 插入图片
+                            patriarch.createPicture(
+                                    anchor,
+                                    workbook.addPicture(
+                                            byteArrayOut.toByteArray(),
+                                            XSSFWorkbook.PICTURE_TYPE_JPEG
+                                    )
+                            );
+                            byteArrayOut.close();
+                        }
+
+                    }*/
+
                 }
                 index++;
             }
