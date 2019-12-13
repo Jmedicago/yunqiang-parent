@@ -85,5 +85,7 @@ public interface BisOrderService extends BaseService<BisOrder> {
      * @param orderId
      * @param splitToLong
      */
-    void addToOrder(Long orderId, Long[] splitToLong);
+    void addToOrder(Integer o, Long orderId, Long[] splitToLong);
+
+    void updateState(Long orderId, Integer state);
 }

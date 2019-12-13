@@ -50,7 +50,7 @@ public class BisOrderVerifyController {
 
     @RequestMapping("/sendShip")
     @ResponseBody
-    public Ret sendShip(Long orderId){
+    public Ret sendShip(Long orderId) {
         return this.bisOrderService.sendShip(orderId);
     }
 
@@ -69,21 +69,30 @@ public class BisOrderVerifyController {
         return DOMAIN + "/print";
     }
 
+    @RequestMapping("/printed")
+    @ResponseBody
+    public Ret printed(Long orderId) {
+        // 修改订单状态
+        this.bisOrderService.updateState(orderId, 2);
+        return Ret.me();
+    }
+
     @RequestMapping(ControllerConsts.URL_EDIT)
-    public String edit(Long id, Model model) {
+    public String edit(Integer o,  Long id, Model model) {
         if (id != null) {
             // 订单信息
             BisOrder bisOrder = this.bisOrderService.get(id);
             model.addAttribute("bisOrder", bisOrder);
         }
+        model.addAttribute("o", o);
         return DOMAIN + ControllerConsts.VIEW_EDIT;
     }
 
     @RequestMapping("/add")
     @ResponseBody
-    public Ret add(String skuIds, Long orderId) {
+    public Ret add(Integer o, String skuIds, Long orderId) {
         try {
-            this.bisOrderService.addToOrder(orderId, StrUtils.splitToLong(skuIds, ","));
+            this.bisOrderService.addToOrder(o, orderId, StrUtils.splitToLong(skuIds, ","));
             return Ret.me();
         } catch (BisException e) {
             return Ret.me().setSuccess(false).setCode(e.getCode()).setInfo(e.getInfo());

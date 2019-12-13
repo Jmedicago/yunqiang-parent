@@ -31,7 +31,7 @@ import java.util.Map;
 import static com.vgit.yunqiang.common.consts.msg.BisProductMsgConsts.IN_A_SHORT_INVENTORY;
 
 @Service
-public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements BisOrderService {
+public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements  BisOrderService {
 
     @Autowired
     private BisOrderMapper mapper;
@@ -264,7 +264,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
     @Override
     public Ret sendShip(Long orderId) {
         BisOrder bisOrder = this.mapper.get(orderId);
-        if (bisOrder.getStatus() == 0) {
+        if (bisOrder.getStatus() == 2) {
            /* Page<BisOrderDetail> page = this.bisOrderDetailService.getOrderDetail(orderId);
             if (page != null) {
                 for (BisOrderDetail orderDetail : page.getRows()) {
@@ -428,13 +428,22 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
 
 
     @Override
-    public void addToOrder(Long orderId, Long... skuIds) {
+    public void addToOrder(Integer o, Long orderId, Long... skuIds) {
+        if (this.bisOrderDetailService.isLocked(orderId) && o == 2) {
+            throw new BisException().setInfo("订单已锁定");
+        }
+
         if (skuIds == null || skuIds.length == 0) {
             return;
         }
         for (Long skuId : skuIds) {
             this.addToOrder(orderId, skuId, 1);
         }
+    }
+
+    @Override
+    public void updateState(Long orderId, Integer state) {
+        this.mapper.updateState(orderId, state);
     }
 
     /**

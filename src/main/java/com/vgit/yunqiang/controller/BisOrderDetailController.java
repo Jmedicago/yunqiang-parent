@@ -89,12 +89,12 @@ public class BisOrderDetailController {
 
 	@RequestMapping("/changeAmount")
 	@ResponseBody
-	public Ret changeAmount(Long id, Long orderId, Integer amount) {
+	public Ret changeAmount(Integer o, Long id, Long orderId, Integer amount) {
 		try {
 			if (amount < 1) {
 				return Ret.me().setSuccess(false).setInfo("数量不能是负数");
 			}
-			BisOrder order = this.bisOrderDetailService.updateOrderDetail(id, orderId, amount);
+			BisOrder order = this.bisOrderDetailService.updateOrderDetail(o, id, orderId, amount);
 			return Ret.me().setCode(ICodes.SUCCESS).setData(order);
 		} catch (BisException e) {
 			return Ret.me().setSuccess(false).setCode(e.getCode());
@@ -103,9 +103,9 @@ public class BisOrderDetailController {
 
 	@RequestMapping("/del")
 	@ResponseBody
-	public Ret del(Long id, Long orderId) {
+	public Ret del(Integer o, Long id, Long orderId) {
 		try {
-			BisOrder order = this.bisOrderDetailService.delOrderDetail(id, orderId);
+			BisOrder order = this.bisOrderDetailService.delOrderDetail(o, id, orderId);
 			return Ret.me().setCode(ICodes.SUCCESS).setData(order);
 		} catch (BisException e) {
 			return Ret.me().setSuccess(false).setCode(e.getCode());

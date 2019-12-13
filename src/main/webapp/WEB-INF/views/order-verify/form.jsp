@@ -196,7 +196,7 @@
         if (ids.length > 1) ids = ids.substring(1);
         if ('' != ids) {
             MXF.ajaxing(true);
-            $.post('/order-verify/add', {skuIds: ids, orderId: ${bisOrder.id}}, function (data) {
+            $.post('/order-verify/add', {"o": ${o}, skuIds: ids, orderId: ${bisOrder.id}}, function (data) {
                 MXF.ajaxing(false);
                 MXF.ajaxFormDone(data);
                 if (data.success) {
@@ -232,7 +232,7 @@
     
     function delOrderVerifyDetailAmount(obj) {
         $('.window-mask').show();
-        var data = {"id": obj.id, "orderId": obj.orderId};
+        var data = {"o": ${o}, "id": obj.id, "orderId": obj.orderId};
         MXF.confirm('确认修改？', function () {
             $.post('/order-detail/del', data, function (res) {
                 if (res.success) {
@@ -281,7 +281,7 @@
         var temp = obj.realAmount;
         var amount = $(that).val();
         $('.window-mask').show();
-        var data = {"id": obj.id, "orderId": obj.orderId, "amount": amount};
+        var data = {"o": ${o}, "id": obj.id, "orderId": obj.orderId, "amount": amount};
         MXF.confirm('确认修改？', function () {
             $.post('/order-detail/changeAmount', data, function (res) {
                 if (res.success) {

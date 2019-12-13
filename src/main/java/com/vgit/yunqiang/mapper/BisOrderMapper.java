@@ -22,4 +22,5 @@ public interface BisOrderMapper extends BaseMapper<BisOrder> {
      */
     int hasNotComment(@Param("orderId") Long id);
 
+    void updateState(@Param("id") Long id, @Param("status") Integer status);
 }

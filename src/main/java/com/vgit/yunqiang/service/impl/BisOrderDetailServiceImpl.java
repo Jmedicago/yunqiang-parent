@@ -88,41 +88,40 @@ public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> i
     }
 
     @Override
-    public BisOrder updateOrderDetail(Long id, Long orderId, Integer amount) {
-        if (this.isLocked(orderId)) {
-            // 检查库存
-            BisOrder bisOrder = this.bisOrderService.get(orderId);
-
-            BisOrderDetail orderDetail = this.get(id);
-
-            if (!this.bisStockShuntService.checkStock(orderDetail.getSkuId(), bisOrder.getStockId(), amount)) {
-                throw new BisException().setCode(IN_A_SHORT_INVENTORY);
-            }
-
-            BisOrderDetail newOrderDetail = new BisOrderDetail();
-            // 更新订单明细
-            newOrderDetail.setId(id);
-            newOrderDetail.setTotalVolume(orderDetail.getVolume() * amount);
-            newOrderDetail.setTotalMoney(orderDetail.getPrice() * amount);
-            // newOrderDetail.setAmount(orderDetail.getAmount());
-            newOrderDetail.setRealAmount(amount);
-            this.updatePart(newOrderDetail);
-            BisOrder newOrder = this.updateOrder(orderDetail.getOrderId());
-            return newOrder;
-        } else {
+    public BisOrder updateOrderDetail(Integer o, Long id, Long orderId, Integer amount) {
+        if (this.isLocked(orderId) && o == 2) {
             throw new BisException().setCode(BisOrderMsgConsts.ORDER_LOCKED);
         }
+
+        // 检查库存
+        BisOrder bisOrder = this.bisOrderService.get(orderId);
+
+        BisOrderDetail orderDetail = this.get(id);
+
+        if (!this.bisStockShuntService.checkStock(orderDetail.getSkuId(), bisOrder.getStockId(), amount)) {
+            throw new BisException().setCode(IN_A_SHORT_INVENTORY);
+        }
+
+        BisOrderDetail newOrderDetail = new BisOrderDetail();
+        // 更新订单明细
+        newOrderDetail.setId(id);
+        newOrderDetail.setTotalVolume(orderDetail.getVolume() * amount);
+        newOrderDetail.setTotalMoney(orderDetail.getPrice() * amount);
+        // newOrderDetail.setAmount(orderDetail.getAmount());
+        newOrderDetail.setRealAmount(amount);
+        this.updatePart(newOrderDetail);
+        BisOrder newOrder = this.updateOrder(orderDetail.getOrderId());
+        return newOrder;
     }
 
     @Override
-    public BisOrder delOrderDetail(Long id, Long orderId) {
-        if (this.isLocked(orderId)) {
-            this.delete(id);
-            BisOrder bisOrder = this.updateOrder(orderId);
-            return bisOrder;
-        } else {
+    public BisOrder delOrderDetail(Integer o, Long id, Long orderId) {
+        if (this.isLocked(orderId) && o == 2) {
             throw new BisException().setCode(BisOrderMsgConsts.ORDER_LOCKED);
         }
+        this.delete(id);
+        BisOrder bisOrder = this.updateOrder(orderId);
+        return bisOrder;
     }
 
     @Override
@@ -171,9 +170,11 @@ public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> i
     }
 
 
-    private boolean isLocked(Long orderId) {
+    @Override
+    public boolean isLocked(Long orderId) {
         BisOrder order = this.bisOrderService.get(orderId);
-        if (order != null && order.getStatus() <= 0) {
+        // 1, 2, 3, 4, 5
+        if (order != null && order.getStatus() >= 1) { // 已打印订单
             return true;
         }
         return false;

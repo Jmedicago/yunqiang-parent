@@ -145,6 +145,8 @@
     }
 
     function print() {
+        // 修改订单状态为待发货
+        $.post('/order-verify/printed', {"orderId": ${printOrder.id}})
         $("#printContent").printArea();
     }
 </script>

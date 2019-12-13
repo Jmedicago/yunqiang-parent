@@ -75,7 +75,7 @@
     function orderStateFormatter(v) {
         if (v == 0) return '<red><spring:message code="order.state.dsp"/></red>';
         if (v == 1) return '<blue><spring:message code="order.state.dsh"/></blue>'; <%--<spring:message code="order.state.dfh"/>--%>
-        if (v == 2) return '<orange><spring:message code="order.state.dsh"/></orange>';
+        if (v == 2) return '<orange>已打印</orange>';
         if (v == 3) return '<green><spring:message code="order.state.ddwc"/></green>';
         if (v == 5) return '<yellow><spring:message code="order.state.ddgb"/></yellow>';
     }
@@ -132,7 +132,7 @@
             
         },590, 800);*/
 
-        MXF.openDialog('#showOrderDetailWindow', '订单号：' + orderSn, '/order-verify/edit?id=' + id, function () {
+        MXF.openDialog('#showOrderDetailWindow', '订单号：' + orderSn, '/order-verify/edit?o=2&id=' + id, function () {
 
         },590, 800, true);
     }
@@ -146,7 +146,7 @@
         /*MXF.openDialog('#editOrderVerifyWindow', '订单号：' + row.orderSn, '/order/edit?id=' + row.id, function () {
 
         }, 590, 747);*/
-        MXF.openDialog('#editOrderVerifyWindow', '订单号：' + row.orderSn, '/order-verify/edit?id=' + row.id, function () {
+        MXF.openDialog('#editOrderVerifyWindow', '订单号：' + row.orderSn, '/order-verify/edit?o=2&id=' + row.id, function () {
 
         }, 800, 747, true);
     }

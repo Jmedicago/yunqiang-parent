@@ -51,7 +51,9 @@ public interface BisOrderDetailService extends BaseService<BisOrderDetail> {
 	 */
 	List<BisOrderDetail> getList(Long orderId);
 
-	BisOrder updateOrderDetail(Long id, Long orderId, Integer amount);
+	BisOrder updateOrderDetail(Integer o, Long id, Long orderId, Integer amount);
 
-	BisOrder delOrderDetail(Long id, Long orderId);
+	BisOrder delOrderDetail(Integer o, Long id, Long orderId);
+
+	boolean isLocked(Long orderId);
 }
