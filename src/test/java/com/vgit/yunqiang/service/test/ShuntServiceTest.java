@@ -34,7 +34,7 @@ public class ShuntServiceTest {
         bisStockShuntService.checkOut(11L);
     }
 
-    // 分流
+    /*// 分流
     @Test
     public void testShunt() {
         BisStockShunt stockShunt = new BisStockShunt();
@@ -42,7 +42,7 @@ public class ShuntServiceTest {
         stockShunt.setAmount(20);
         stockShunt.setSkuId(145L);
         bisStockShuntService.shunt(stockShunt);
-    }
+    }*/
 
     @Test
     public void testGetShipLocation() {

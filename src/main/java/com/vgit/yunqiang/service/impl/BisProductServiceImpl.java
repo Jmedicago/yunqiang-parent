@@ -1,5 +1,6 @@
 package com.vgit.yunqiang.service.impl;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.vgit.yunqiang.common.consts.ICodes;
 import com.vgit.yunqiang.common.consts.bis.MediaTypeConsts;
 import com.vgit.yunqiang.common.consts.bis.ProductStateConsts;
@@ -86,22 +87,28 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
     }
 
     @Override
-    public BisProduct saveOrUpdateProduct(BisProduct product) {
-        if (product.getId() == null) {
-            this.initProduct(product);
-            this.mapper.savePart(product);
-            // 保存属性集
-            this.storeProperties(product);
-            // 保存商品图片
-            this.storeMedia(product);
-        } else {
-            this.mapper.updatePart(product);
-            // 保存属性集
-            this.storeProperties(product);
-            // 保存商品图片
-            this.storeMedia(product);
+    public BisProduct saveOrUpdateProduct(BisProduct product) throws BisException {
+        try {
+            if (product.getId() == null) {
+                this.initProduct(product);
+                this.mapper.savePart(product);
+                // 保存属性集
+                this.storeProperties(product);
+                // 保存商品图片
+                this.storeMedia(product);
+            } else {
+                this.mapper.updatePart(product);
+                // 保存属性集
+                this.storeProperties(product);
+                // 保存商品图片
+                this.storeMedia(product);
+            }
+            return product;
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            throw new BisException().setInfo(e.getMessage());
         }
-        return product;
+
     }
 
     @Override
@@ -843,16 +850,16 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
         List<String> titles = Arrays.asList(titleArray);
 
         /*try {*/
-            // 获得所有商品列表
-            List<ProductModel> products = this.bisSkuService.getAll();
-            System.out.println("商品列表：" + products.toString());
+        // 获得所有商品列表
+        List<ProductModel> products = this.bisSkuService.getAll();
+        System.out.println("商品列表：" + products.toString());
         try {
             Excel2Utils.writeExcel(filePath, fileName, titles, this.productToMap(products));
         } catch (IOException e) {
             e.printStackTrace();
         }
         // TODO.上传到FTP
-            return "/upload/" + fileName + ".xlsx";
+        return "/upload/" + fileName + ".xlsx";
         /*} catch (IOException e) {
             throw new BisException().setInfo("批量导出商品发生异常");
         }*/

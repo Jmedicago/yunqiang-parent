@@ -101,22 +101,27 @@ public class BisProductController {
     @RequestMapping(ControllerConsts.URL_STORE)
     @ResponseBody
     public Ret store(BisProduct product, Long[] properties, String resources) throws UnsupportedEncodingException {
-        product.setProperties(properties);
-        if (StringUtils.isNotBlank(resources)) {
-            List<BisProductMedia> medias = new ArrayList<>();
-            String[] resourceArr = resources.split(",");
-            for (String resource : resourceArr) {
-                BisProductMedia productMedia = new BisProductMedia();
-                productMedia.setCreateTime(System.currentTimeMillis());
-                productMedia.setUpdateTime(System.currentTimeMillis());
-                productMedia.setResource(resource);
-                medias.add(productMedia);
+        try {
+            product.setProperties(properties);
+            if (StringUtils.isNotBlank(resources)) {
+                List<BisProductMedia> medias = new ArrayList<>();
+                String[] resourceArr = resources.split(",");
+                for (String resource : resourceArr) {
+                    BisProductMedia productMedia = new BisProductMedia();
+                    productMedia.setCreateTime(System.currentTimeMillis());
+                    productMedia.setUpdateTime(System.currentTimeMillis());
+                    productMedia.setResource(resource);
+                    medias.add(productMedia);
+                }
+                product.setProductMediaList(medias);
             }
-            product.setProductMediaList(medias);
+            // 更新商品信息
+            this.bisProductService.saveOrUpdateProduct(product);
+            return Ret.me();
+        } catch (BisException e) {
+            return Ret.me().setSuccess(false).setInfo(e.getInfo());
         }
-        // 更新商品信息
-        this.bisProductService.saveOrUpdateProduct(product);
-        return Ret.me();
+
     }
 
     @RequiresRoles(value = {"admin", "product"}, logical = Logical.OR)
