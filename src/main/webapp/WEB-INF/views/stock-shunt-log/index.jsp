@@ -10,7 +10,9 @@
             <thead>
             <tr>
                 <th data-options="field:'id',checkbox:true"></th>
-                <%--<th data-options="field:'date',width:180,formatter:MXF.dateTimeFormatter">日期</th>--%>
+                <th data-options="field:'remark',width:150,sortable:true">分流订单号</th>
+                <th data-options="field:'stockFormatter',width:100">分仓</th>
+                <th data-options="field:'amount',width:50">分流件数</th>
                 <th data-options="field:'productTypeFormatter',width:100">类别名称</th>
                 <th data-options="field:'sku.skuMainPic',width:80,formatter:stockShuntImageFormatter">图片</th>
                 <th data-options="field:'sku.skuName',width:100,formatter:function(val, row){return MXF.cellTooltipFormatter(row.sku.skuName)}">品名</th>
@@ -19,15 +21,13 @@
                     货品编码
                 </th>
                 <th data-options="field:'sku.pack',width:100, formatter:function(val,row){return row.sku.pack}">包装形态</th>
-                <th data-options="field:'amount',width:50">分流件数</th>
-                <th data-options="field:'remark',width:150">备注</th>
                 <th data-options="field:'sku.volume',width:100, formatter:function(val,row){return row.sku.volume}">体积</th>
                 <th data-options="field:'sku.costPrice',width:100, formatter:function(val,row){return MXF.priceFormatter(row.sku.costPrice)}">成本价</th>
                 <th data-options="field:'sku.marketPrice',width:100, formatter:function(val,row){return MXF.priceFormatter(row.sku.marketPrice)}">批发价</th>
                 <th data-options="field:'sku.profit',width:100, formatter:function(val,row){return row.sku.profit}">利润</th>
                 <th data-options="field:'sku.supplier',width:100, formatter:function(val,row){return MXF.cellTooltipFormatter(row.sku.supplier)}">供应商</th>
                 <th data-options="field:'sku.container',width:100, formatter:function(val,row){return MXF.cellTooltipFormatter(row.sku.container)}">货柜编号</th>
-                <th data-options="field:'stockFormatter',width:100">分仓</th>
+                <th data-options="field:'date',width:180,formatter:MXF.dateTimeFormatter">日期</th>
                 <th data-options="field:'state',width:50,formatter:stockShuntStateFormatter"><spring:message
                         code="common.status"/></th>
             </tr>

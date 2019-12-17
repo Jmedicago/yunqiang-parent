@@ -167,8 +167,21 @@
             <if test="stockId != null and stockId != ''">and lss.stockId = #{stockId}</if>
             <if test="skuId != null and skuId != ''">and lss.skuId = #{skuId}</if>
             <if test="date != null and date != ''">and lss.date &gt;= #{beginDate} and lss.date &lt;= #{endDate}</if>
-            <if test="remark != null and remark != ''">and lss.remark = #{remark}</if>
+            <if test="remark != null and remark != ''">and lss.remark like CONCAT('%', #{remark}, '%')</if>
         </where>
+    </sql>
+
+    <sql id="orderSql">
+        order by
+        <choose>
+            <when test="remark == 'remark'">
+                lss.remark
+            </when>
+            <otherwise>
+                lss.remark
+            </otherwise>
+        </choose>
+        ${order}
     </sql>
 
     <select id="queryTotal" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery" resultType="int">
@@ -183,6 +196,7 @@
         from t_log_stock_shunt lss
         left join t_bis_sku s on lss.skuId = s.id
         <include refid="whereSql"/>
+        <include refid="orderSql"/>
         limit #{start}, #{rows}
     </select>
 

@@ -87,6 +87,17 @@ public class BisStockShuntServiceImpl extends BaseServiceImpl<BisStockShunt> imp
                     defaultStockShunt.setAmount(defaultStockShunt.getAmount() + stockShunt.getAmount()); // 总仓增库存
                     defaultStockShunt.setUpdateTime(System.currentTimeMillis());
                     this.mapper.updatePart(defaultStockShunt);
+
+                    // 操作日志
+                    LogStockShunt shuntLog = new LogStockShunt();
+                    shuntLog.setAmount(0 - stockShunt.getAmount());
+                    shuntLog.setDate(System.currentTimeMillis());
+                    shuntLog.setStockId(stockShunt.getStockId());
+                    shuntLog.setSkuId(stockShunt.getSkuId());
+                    shuntLog.setState((byte) 1);
+                    shuntLog.setInputUser(stockShunt.getStockId());
+                    shuntLog.setRemark(remark);
+                    this.logStockShuntService.save(shuntLog);
                 } else {
                     throw new BisException().setCode(IN_A_SHORT_INVENTORY);
                 }
@@ -112,22 +123,22 @@ public class BisStockShuntServiceImpl extends BaseServiceImpl<BisStockShunt> imp
                     defaultStockShunt.setAmount(defaultStockShunt.getAmount() - stockShunt.getAmount()); // 总仓减库存
                     defaultStockShunt.setUpdateTime(System.currentTimeMillis());
                     this.mapper.updatePart(defaultStockShunt);
+
+                    // 操作日志
+                    LogStockShunt shuntLog = new LogStockShunt();
+                    shuntLog.setAmount(stockShunt.getAmount());
+                    shuntLog.setDate(System.currentTimeMillis());
+                    shuntLog.setStockId(stockShunt.getStockId());
+                    shuntLog.setSkuId(stockShunt.getSkuId());
+                    shuntLog.setState((byte) 1);
+                    shuntLog.setInputUser(stockShunt.getStockId());
+                    shuntLog.setRemark(remark);
+                    this.logStockShuntService.save(shuntLog);
                 } else {
                     throw new BisException().setCode(IN_A_SHORT_INVENTORY);
                 }
                 break;
         }
-
-        // 操作日志
-        LogStockShunt shuntLog = new LogStockShunt();
-        shuntLog.setAmount(stockShunt.getAmount());
-        shuntLog.setDate(System.currentTimeMillis());
-        shuntLog.setStockId(stockShunt.getStockId());
-        shuntLog.setSkuId(stockShunt.getSkuId());
-        shuntLog.setState((byte) 1);
-        shuntLog.setInputUser(stockShunt.getStockId());
-        shuntLog.setRemark(remark);
-        this.logStockShuntService.save(shuntLog);
 
     }
 
