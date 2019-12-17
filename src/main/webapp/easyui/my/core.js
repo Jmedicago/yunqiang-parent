@@ -392,7 +392,9 @@ MXF.confirm = function (msg, fn, cfn) {
     }).delay(1000).fadeOut(200, function () {
         $('.window-mask').hide();
         // 执行取消方法
-        cfn();
+        if (null != cfn) {
+            cfn();
+        }
     });
     gPane.find('.btn-confirm').unbind('click').click(function () {
         gPane.hide();

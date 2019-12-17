@@ -32,10 +32,10 @@
         </table>
         <div id="orderTB">
             <div>
-                <%--<a href="#" data-cmd="del" mustsel data-options="disabled:true" class="easyui-linkbutton"
+                <a href="#" data-cmd="del" msg="确认删除？" mustsel data-options="disabled:true" class="easyui-linkbutton"
                    iconCls="icon-remove" plain="true">
                     <spring:message code="common.delete"/>
-                </a>--%>
+                </a>
                 <a href="#" data-cmd="editEditOrder" title="<spring:message code="common.edit"/>" height="747" width="590" mustsel data-options="disabled:true" class="easyui-linkbutton"
                    iconCls="icon-edit" plain="true">
                     <spring:message code="common.edit"/>
@@ -105,12 +105,18 @@
             MXF.error("<spring:message code="message.select"/>！");
             return;
         }
-        MXF.ajaxing(true);
-        $.get('/order/confirm-finish?orderId=' + row.id, function (res) {
-            MXF.ajaxing(false);
-            MXF.alert(res.message + ' ' + res.info, res.success);
-            $('#orderGrid').datagrid('reload');
-        })
+
+        MXF.confirm("确认收货？", function () {
+            MXF.ajaxing(true);
+            $.get('/order/confirm-finish?orderId=' + row.id, function (res) {
+                MXF.ajaxing(false);
+                MXF.alert(res.message + ' ' + res.info, res.success);
+                $('#orderGrid').datagrid('reload');
+            })
+        }, function () {
+
+        });
+
     }
     
     function commentStateFormatter(val) {
@@ -132,7 +138,7 @@
             
         },590, 800);*/
 
-        MXF.openDialog('#showOrderDetailWindow', '订单号：' + orderSn, '/order-verify/edit?o=2&id=' + id, function () {
+        MXF.openDialog('#showOrderDetailWindow', '订单号：' + orderSn, '/order/show?id=' + id, function () {
 
         },590, 800, true);
     }
@@ -143,12 +149,17 @@
             MXF.error("<spring:message code="message.select"/>！");
             return;
         }
+        if (row.status == 1) {
+            MXF.openDialog('#editOrderVerifyWindow', '订单号：' + row.orderSn, '/order-verify/edit?o=2&id=' + row.id, function () {
+
+            }, 800, 747, true);
+        } else {
+            MXF.error("不能修改订单信息");
+        }
         /*MXF.openDialog('#editOrderVerifyWindow', '订单号：' + row.orderSn, '/order/edit?id=' + row.id, function () {
 
         }, 590, 747);*/
-        MXF.openDialog('#editOrderVerifyWindow', '订单号：' + row.orderSn, '/order-verify/edit?o=2&id=' + row.id, function () {
 
-        }, 800, 747, true);
     }
 
 </script>

@@ -35,7 +35,7 @@ public class BisOrderController {
         query.setStockId(Long.valueOf(UserContext.getUser().getStockIds()));
         return this.bisOrderService.queryPage(query);
     }
-    
+
     @RequestMapping(ControllerConsts.URL_EDIT)
     public String edit(Long id, Model model) {
         if (id != null) {
@@ -84,5 +84,24 @@ public class BisOrderController {
         }
         return DOMAIN + ControllerConsts.VIEW_SHOW;
     }
+
+    /*@RequestMapping("/show")
+    public String show(Integer o,  Long id, Model model) {
+        if (id != null) {
+            // 订单信息
+            BisOrder bisOrder = this.bisOrderService.get(id);
+            model.addAttribute("bisOrder", bisOrder);
+        }
+        model.addAttribute("o", o);
+        return DOMAIN + "/show";
+    }*/
+
+    @RequestMapping(ControllerConsts.URL_DELETE)
+    @ResponseBody
+    public Ret delete(Long id) {
+        this.bisOrderService.delete(id);
+        return Ret.me();
+    }
+
 
 }

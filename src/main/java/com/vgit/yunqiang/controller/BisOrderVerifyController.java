@@ -99,4 +99,11 @@ public class BisOrderVerifyController {
         }
     }
 
+    @RequestMapping(ControllerConsts.URL_DELETE)
+    @ResponseBody
+    public Ret delete(Long id) {
+        this.bisOrderService.delete(id);
+        return Ret.me();
+    }
+
 }

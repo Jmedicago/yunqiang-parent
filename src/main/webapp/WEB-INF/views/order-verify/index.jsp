@@ -25,16 +25,17 @@
                 <th data-options="field: 'shipTime', width: 130, halign: 'center', align: 'center', formatter: MXF.dateTimeFormatter"><spring:message code="order.ship.time"/></th>
                 <th data-options="field: 'finishedTime', width: 130, halign: 'center', align: 'center', formatter: MXF.dateTimeFormatter"><spring:message code="order.confirm.time"/></th>
                 <th data-options="field: 'digest', width:200"><spring:message code="order.detail"/></th>
+                <th data-options="field: 'option', width:200,formatter:optionFormatter">操作</th>
                 <th data-options="field: 'remark', width:200">备注</th>
             </tr>
             </thead>
         </table>
         <div id="orderVerifyTB">
             <div>
-                <%--<a href="#" data-cmd="del" mustsel data-options="disabled:true" class="easyui-linkbutton"
+                <a href="#" data-cmd="del" mustsel msg="确认删除？" data-options="disabled:true" class="easyui-linkbutton"
                        iconCls="icon-remove" plain="true">
                 <spring:message code="common.delete"/>
-                </a>--%>
+                </a>
                 <a href="#" data-cmd="editOrderDetail" title="<spring:message code="common.edit"/>" height="747"
                    width="590" mustsel data-options="disabled:true" class="easyui-linkbutton"
                    iconCls="icon-edit" plain="true">
@@ -91,6 +92,11 @@
             }
         })
         return stockName;
+    }
+
+    function optionFormatter(val, row) {
+        var a = "<a href='#' onClick='showOrderDetail("+ row.orderSn + "," + row.id +")'><span style='margin-left: 5px;'>查看明细</span></a>";
+        return a;
     }
 
     function editOrderDetail() {
