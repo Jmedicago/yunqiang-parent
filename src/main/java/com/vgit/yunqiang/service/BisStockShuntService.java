@@ -46,7 +46,7 @@ public interface BisStockShuntService extends BaseService<BisStockShunt> {
      * @param stockShunt
      * @desc 默认入总仓
      */
-    void checkIn(BisStockShunt stockShunt);
+    void checkIn(String opt, BisStockShunt stockShunt);
 
     /**
      * 入库
@@ -54,7 +54,7 @@ public interface BisStockShuntService extends BaseService<BisStockShunt> {
      * @param skuId
      * @param amount
      */
-    void checkIn(Long skuId, Integer amount);
+    void checkIn(String opt, Long skuId, Integer amount);
 
     /**
      * 处理库存
@@ -62,7 +62,7 @@ public interface BisStockShuntService extends BaseService<BisStockShunt> {
      * @param stockShunt
      * @throws BisException 库存不足
      */
-    void shunt(BisStockShunt stockShunt, String remark) throws BisException;
+    void shunt(String opt, BisStockShunt stockShunt, String remark) throws BisException;
 
     /**
      * 查询SKU库存量

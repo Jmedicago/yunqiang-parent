@@ -71,42 +71,63 @@ public class BisStockShuntServiceImpl extends BaseServiceImpl<BisStockShunt> imp
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void shunt(BisStockShunt stockShunt, String remark) throws BisException {
+    public void shunt(String opt, BisStockShunt stockShunt, String remark) throws BisException {
         // 查询总仓库存信息
         BisStockShunt defaultStockShunt = this.mapper.getAmountBy(Long.valueOf(DEFAULT_STOCK), stockShunt.getSkuId());
-        if (defaultStockShunt != null && defaultStockShunt.getAmount() >= stockShunt.getAmount()) { // 检查库存
-            BisStockShunt childStock = this.mapper.getAmountBy(stockShunt.getStockId(), stockShunt.getSkuId());
-            // 分流
-            if (childStock != null) {
-                childStock.setAmount(childStock.getAmount() + stockShunt.getAmount()); // 分仓加库存
-                childStock.setUpdateTime(System.currentTimeMillis());
-                this.mapper.updatePart(childStock);
-            } else {
-                childStock = new BisStockShunt();
-                childStock.setStockId(stockShunt.getStockId());
-                childStock.setSkuId(stockShunt.getSkuId());
-                childStock.setState((byte) 1);
-                childStock.setAmount(stockShunt.getAmount()); // 分仓初始化库存
-                childStock.setCreateTime(System.currentTimeMillis());
-                this.mapper.savePart(childStock);
-            }
-            // 操作日志
-            LogStockShunt shuntLog = new LogStockShunt();
-            shuntLog.setAmount(stockShunt.getAmount());
-            shuntLog.setDate(System.currentTimeMillis());
-            shuntLog.setStockId(stockShunt.getStockId());
-            shuntLog.setSkuId(stockShunt.getSkuId());
-            shuntLog.setState((byte) 1);
-            shuntLog.setInputUser(stockShunt.getStockId());
-            shuntLog.setRemark(remark);
-            this.logStockShuntService.save(shuntLog);
+        // 查询分仓库存信息
+        BisStockShunt childStock = this.mapper.getAmountBy(stockShunt.getStockId(), stockShunt.getSkuId());
+        switch (opt) {
+            case "sub":
+                if (childStock != null && childStock.getAmount() >= stockShunt.getAmount()) {
+                    // 回退
+                    childStock.setAmount(childStock.getAmount() - stockShunt.getAmount());
+                    childStock.setUpdateTime(System.currentTimeMillis());
+                    this.mapper.updatePart(childStock);
 
-            defaultStockShunt.setAmount(defaultStockShunt.getAmount() - stockShunt.getAmount()); // 总仓减库存
-            defaultStockShunt.setUpdateTime(System.currentTimeMillis());
-            this.mapper.updatePart(defaultStockShunt);
-        } else {
-            throw new BisException().setCode(IN_A_SHORT_INVENTORY);
+                    defaultStockShunt.setAmount(defaultStockShunt.getAmount() + stockShunt.getAmount()); // 总仓增库存
+                    defaultStockShunt.setUpdateTime(System.currentTimeMillis());
+                    this.mapper.updatePart(defaultStockShunt);
+                } else {
+                    throw new BisException().setCode(IN_A_SHORT_INVENTORY);
+                }
+                break;
+            case "add":
+                if (defaultStockShunt != null && defaultStockShunt.getAmount() >= stockShunt.getAmount()) { // 检查库存
+                    childStock = this.mapper.getAmountBy(stockShunt.getStockId(), stockShunt.getSkuId());
+                    // 分流
+                    if (childStock != null) {
+                        childStock.setAmount(childStock.getAmount() + stockShunt.getAmount()); // 分仓加库存
+                        childStock.setUpdateTime(System.currentTimeMillis());
+                        this.mapper.updatePart(childStock);
+                    } else {
+                        childStock = new BisStockShunt();
+                        childStock.setStockId(stockShunt.getStockId());
+                        childStock.setSkuId(stockShunt.getSkuId());
+                        childStock.setState((byte) 1);
+                        childStock.setAmount(stockShunt.getAmount()); // 分仓初始化库存
+                        childStock.setCreateTime(System.currentTimeMillis());
+                        this.mapper.savePart(childStock);
+                    }
+
+                    defaultStockShunt.setAmount(defaultStockShunt.getAmount() - stockShunt.getAmount()); // 总仓减库存
+                    defaultStockShunt.setUpdateTime(System.currentTimeMillis());
+                    this.mapper.updatePart(defaultStockShunt);
+                } else {
+                    throw new BisException().setCode(IN_A_SHORT_INVENTORY);
+                }
+                break;
         }
+
+        // 操作日志
+        LogStockShunt shuntLog = new LogStockShunt();
+        shuntLog.setAmount(stockShunt.getAmount());
+        shuntLog.setDate(System.currentTimeMillis());
+        shuntLog.setStockId(stockShunt.getStockId());
+        shuntLog.setSkuId(stockShunt.getSkuId());
+        shuntLog.setState((byte) 1);
+        shuntLog.setInputUser(stockShunt.getStockId());
+        shuntLog.setRemark(remark);
+        this.logStockShuntService.save(shuntLog);
 
     }
 
@@ -262,28 +283,43 @@ public class BisStockShuntServiceImpl extends BaseServiceImpl<BisStockShunt> imp
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void checkIn(BisStockShunt stockShunt) {
+    public void checkIn(String opt, BisStockShunt stockShunt) {
         // 检查入库
         BisStockShunt defaultStockShunt = this.mapper.getAmountBy(Long.valueOf(DEFAULT_STOCK), stockShunt.getSkuId());
-        if (defaultStockShunt != null) {
-            defaultStockShunt.setAmount(defaultStockShunt.getAmount() + stockShunt.getAmount());
-            defaultStockShunt.setSubmitTime(System.currentTimeMillis());
-            defaultStockShunt.setConfirmTime(System.currentTimeMillis());
-            defaultStockShunt.setUpdateTime(System.currentTimeMillis());
-            this.mapper.updatePart(defaultStockShunt);
-        } else {
-            stockShunt.setStockId(Long.valueOf(DEFAULT_STOCK));
-            stockShunt.setState((byte) 1); // 默认不用审核
-            stockShunt.setSubmitTime(System.currentTimeMillis());
-            stockShunt.setConfirmTime(System.currentTimeMillis());
-            stockShunt.setCreateTime(System.currentTimeMillis());
-            this.mapper.savePart(stockShunt);
+        switch (opt) {
+            case "sub":
+                if (defaultStockShunt != null && defaultStockShunt.getAmount() >= stockShunt.getAmount()) {
+                    defaultStockShunt.setAmount(defaultStockShunt.getAmount() - stockShunt.getAmount());
+                    defaultStockShunt.setSubmitTime(System.currentTimeMillis());
+                    defaultStockShunt.setConfirmTime(System.currentTimeMillis());
+                    defaultStockShunt.setUpdateTime(System.currentTimeMillis());
+                    this.mapper.updatePart(defaultStockShunt);
+                } else {
+                    throw new BisException().setCode(IN_A_SHORT_INVENTORY);
+                }
+                break;
+            case "add": // 检查入库
+                if (defaultStockShunt != null) {
+                    defaultStockShunt.setAmount(defaultStockShunt.getAmount() + stockShunt.getAmount());
+                    defaultStockShunt.setSubmitTime(System.currentTimeMillis());
+                    defaultStockShunt.setConfirmTime(System.currentTimeMillis());
+                    defaultStockShunt.setUpdateTime(System.currentTimeMillis());
+                    this.mapper.updatePart(defaultStockShunt);
+                } else {
+                    stockShunt.setStockId(Long.valueOf(DEFAULT_STOCK));
+                    stockShunt.setState((byte) 1); // 默认不用审核
+                    stockShunt.setSubmitTime(System.currentTimeMillis());
+                    stockShunt.setConfirmTime(System.currentTimeMillis());
+                    stockShunt.setCreateTime(System.currentTimeMillis());
+                    this.mapper.savePart(stockShunt);
+                }
+                break;
         }
     }
 
     @Override
-    public void checkIn(Long skuId, Integer amount) {
-        this.checkIn(new BisStockShunt(skuId, amount));
+    public void checkIn(String opt, Long skuId, Integer amount) {
+        this.checkIn(opt, new BisStockShunt(skuId, amount));
     }
 
 }

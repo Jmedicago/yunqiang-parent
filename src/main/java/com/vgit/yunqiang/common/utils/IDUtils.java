@@ -1,6 +1,10 @@
 package com.vgit.yunqiang.common.utils;
 
+import com.vgit.yunqiang.service.BisStockShuntService;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Random;
 
@@ -72,7 +76,22 @@ public class IDUtils {
 
     public static void main(String[] args) {
         for (int i = 0; i < 100; i++)
-            System.out.println(generateProductCode());
+            System.out.println(generateShuntSn(1050L));
+    }
+
+    public static String generateShuntSn(Long stockId) {
+        String code = "";
+        if (BisStockShuntService.SOUTH_STOCK.equals(String.valueOf(stockId))) {
+            code += "N";
+        } else if (BisStockShuntService.NORTH_STOCK.equals(String.valueOf(stockId))) {
+            code += "B";
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) - 6);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd");
+        String dateString = formatter.format(cal.getTime());
+        code += dateString;
+        return code;
     }
 
 }

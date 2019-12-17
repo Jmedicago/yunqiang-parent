@@ -25,7 +25,7 @@ public class ShuntServiceTest {
         BisStockShunt stockShunt = new BisStockShunt();
         stockShunt.setAmount(100);
         stockShunt.setSkuId(162L);
-        bisStockShuntService.checkIn(stockShunt);
+        //bisStockShuntService.checkIn(stockShunt);
     }
 
     // 出库

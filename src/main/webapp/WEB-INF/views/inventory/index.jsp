@@ -44,7 +44,7 @@
                 <%--<th data-options="field: 'availableStock', width:150, halign: 'center', align: 'center',sortable:true, formatter:availableStockFormatter">
                     <spring:message code="sku.availableStock"/></th>--%>
 
-                <th data-options="field: 'defaultStock', width:150, halign: 'center', align: 'center', formatter: defaultStockShuntFormatter">
+                <th data-options="field: 'defaultStock', width:180, halign: 'center', align: 'center', formatter: defaultStockShuntFormatter">
                     总仓
                 </th>
                 <th data-options="field: 'northStock', width:50, halign: 'center', align: 'center', formatter: function (val, row) {
@@ -140,6 +140,15 @@
         border-right: 1px solid #999;
         color: blue !important;
     }
+
+    .sub-shunt-btn {
+        display: inline-block;
+        padding: 5px 5px;
+        border-top: 1px solid #999;
+        border-bottom: 1px solid #999;
+        border-left: 1px solid #999;
+        color: blue !important;
+    }
 </style>
 <script>
     $(function () {
@@ -173,14 +182,21 @@
                 data.amount = item.amount;
             }
         });
+        var sub = '<a href="#" onclick="subDefaultStock(' + data.skuId + ',' + data.stockId + ')"  class="sub-shunt-btn">减库存</a>';
         var text = '<span class="shunt-amount">' + data.amount + '</span>';
-        var btn = '<a href="#" onclick="shuntDefaultStock(' + data.skuId + ',' + data.stockId + ')"  class="shunt-btn">修改</a>';
-        return text + btn;
+        var btn = '<a href="#" onclick="shuntDefaultStock(' + data.skuId + ',' + data.stockId + ')"  class="shunt-btn">增库存</a>';
+        return sub + text + btn;
+    }
+    
+    function subDefaultStock(skuId, stockId) {
+        MXF.openDialog("shuntStockDialog", "减库存", "/inventory/edit?opt=sub&skuId=" + skuId + "&stockId=" + stockId, function () {
+
+        }, 600, 300);
     }
 
 
     function shuntDefaultStock(skuId, stockId) {
-        MXF.openDialog("shuntStockDialog", "新增库存", "/inventory/edit?skuId=" + skuId + "&stockId=" + stockId, function () {
+        MXF.openDialog("shuntStockDialog", "新增库存", "/inventory/edit?opt=add&skuId=" + skuId + "&stockId=" + stockId, function () {
 
         }, 600, 300);
     }
@@ -191,6 +207,8 @@
         var obj = JSON.stringify(row);
         var a = "<a class='btn-d default' onclick='addInventoryAmount(" + obj + ")'><i style='border: 1px solid #ccc;' class='icon iconfont icon-cart-add'></i></a>";
         /*var i = "<input onchange='changeInventoryAmount(this, " + obj + ")' type='number' value='" + value + "' style='width: 50px; text-align: center; height: 16px; margin-top: -5px; border-top: 1px solid #ccc; border-bottom: 1px solid #eee'>";*/
+        // 回流
+        //var i = "<input onchange='subInventoryAmount(this, " + obj + ")' type='text' value='" + value + "' style='width: 50px; text-align: center; height: 16px; margin-top: -5px; border: 1px solid #ccc;'>";
         var i = "<input onchange='changeInventoryAmount(this, " + obj + ")' type='text' value='" + value + "' style='width: 50px; text-align: center; height: 16px; margin-top: -5px; border: 1px solid #ccc;'>";
         var d = "<a class='btn-d default' onclick='removeInventoryAmount(" + obj + ")'><i style='border: 1px solid #ccc;' class='icon iconfont icon-cart-remove'></i></a>";
         return i;

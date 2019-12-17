@@ -1,5 +1,6 @@
 package com.vgit.yunqiang.controller;
 
+import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.controller.consts.ControllerConsts;
 import com.vgit.yunqiang.pojo.BisSku;
@@ -46,21 +47,27 @@ public class BisInventoryController {
     }
 
     @RequestMapping(ControllerConsts.URL_EDIT)
-    public String edit(Long skuId, Long stockId, Model model) {
+    public String edit(String opt, Long skuId, Long stockId, Model model) {
         BisStockShunt stockShunt = new BisStockShunt();
         stockShunt.setSkuId(skuId);
         stockShunt.setStockId(stockId);
         model.addAttribute("stockShunt", stockShunt);
+        model.addAttribute("opt", opt);
         return DOMAIN + ControllerConsts.VIEW_EDIT;
     }
 
     @RequestMapping(ControllerConsts.URL_STORE)
     @ResponseBody
-    public Ret store(BisStockShunt bisStockShunt) {
+    public Ret store(String opt, BisStockShunt bisStockShunt) {
         if (bisStockShunt.getAmount() < 0) {
             return Ret.me().setSuccess(false).setInfo("不能输入小于0之外的数字！");
         }
-        this.stockShuntService.checkIn(bisStockShunt.getSkuId(), bisStockShunt.getAmount());
+        try {
+            this.stockShuntService.checkIn(opt, bisStockShunt.getSkuId(), bisStockShunt.getAmount());
+        } catch (BisException e) {
+            return Ret.me().setSuccess(false).setCode(e.getCode());
+        }
+
         return Ret.me();
     }
 

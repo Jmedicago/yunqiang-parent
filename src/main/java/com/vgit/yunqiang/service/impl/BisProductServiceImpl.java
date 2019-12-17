@@ -188,7 +188,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
             this.skuMapper.updatePart(sku);
 
             // 更新库存
-            this.bisStockShuntService.checkIn(sku.getId(), sku.getAvailableStock());
+            this.bisStockShuntService.checkIn("add", sku.getId(), sku.getAvailableStock());
         } else {
             // 新增
             /*String maxCode = this.skuMapper.getMaxCode(sku.getProductId());
@@ -238,7 +238,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
             this.skuMapper.save(sku);
 
             // 更新库存
-            this.bisStockShuntService.checkIn(sku.getId(), sku.getAvailableStock());
+            this.bisStockShuntService.checkIn("add", sku.getId(), sku.getAvailableStock());
         }
 
         List<BisSkuProperty> skuPropertyList = sku.getSkuPropertyList();
@@ -549,7 +549,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                             this.saveSku(bisSku);
 
                             // 更新库存
-                            this.bisStockShuntService.checkIn(bisSku.getId(), bisSku.getAvailableStock());
+                            this.bisStockShuntService.checkIn("add", bisSku.getId(), bisSku.getAvailableStock());
                         }
                     }
                 } else { // 不存在，新增商品
@@ -564,7 +564,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                     this.saveSku(bisSku);
 
                     // 更新库存
-                    this.bisStockShuntService.checkIn(bisSku.getId(), bisSku.getAvailableStock());
+                    this.bisStockShuntService.checkIn("add", bisSku.getId(), bisSku.getAvailableStock());
                 }
                 this.mapper.delProductByName("newNode");
             }

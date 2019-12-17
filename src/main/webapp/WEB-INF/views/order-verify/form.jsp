@@ -220,7 +220,7 @@
         var add = "<a class='btn-d default' onclick='addOrderVerifyDetailAmount(" + obj + ")'><i style='border: 1px solid #ccc;' class='icon iconfont icon-cart-add'></i></a>";
         var remove = "<a class='btn-d default' onclick='removeOrderVerifyDetailAmount(" + obj + ")'><i style='border: 1px solid #ccc;' class='icon iconfont icon-cart-remove'></i></a>";
         var input = "<span style='display: inline-block; width: 30px;'>" + value + "</span>";
-        var i = "<input onchange='changeOrderVerifyDetailAmount(this, " + obj + ")' type='text' value='" + value + "' style='width: 50px; text-align: center; height: 16px; margin-top: -5px; border: 1px solid #ccc;'>";
+        var i = "<input class='editOrderDetailAmountInput' onchange='changeOrderVerifyDetailAmount(this, " + obj + ")' type='text' value='" + value + "' style='width: 50px; text-align: center; height: 16px; margin-top: -5px; border: 1px solid #ccc;'>";
         return i;
     }
     
@@ -280,7 +280,8 @@
     function changeOrderVerifyDetailAmount(that, obj) {
         var temp = obj.realAmount;
         var amount = $(that).val();
-        $('.window-mask').show();
+        //$('.window-mask').show();
+        $('.editOrderDetailAmountInput').attr("disabled",true);
         var data = {"o": ${o}, "id": obj.id, "orderId": obj.orderId, "amount": amount};
         MXF.confirm('确认修改？', function () {
             $.post('/order-detail/changeAmount', data, function (res) {
@@ -300,10 +301,12 @@
                 }
             });
             $('#orderVerifyDetailGrid').datagrid('reload');
-            $('.window-mask').hide();
+            $('.editOrderDetailAmountInput').attr("disabled",false);
+            //$('.window-mask').hide();
         }, function () {
             $(that).val(temp);
-            $('.window-mask').hide();
+            $('.editOrderDetailAmountInput').attr("disabled",false);
+            //$('.window-mask').hide();
         });
     }
 

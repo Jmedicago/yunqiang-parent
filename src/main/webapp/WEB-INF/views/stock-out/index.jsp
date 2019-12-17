@@ -319,14 +319,15 @@
         var remove = "<a class='btn-d default' onclick='removeCartAmount(" + obj + ")'><i style='border: 1px solid #ccc;' class='icon iconfont icon-cart-remove'></i></a>";
         var input = "<span style='display: inline-block; width: 30px;'>" + value + "</span>";
 
-        var i = "<input onchange='changeCartAmount(this, " + obj + ")' type='text' value='" + value + "' style='width: 50px; text-align: center; height: 16px; margin-top: -5px; border: 1px solid #ccc;'>";
+        var i = "<input class='cartAmountInput' onchange='changeCartAmount(this, " + obj + ")' type='text' value='" + value + "' style='width: 50px; text-align: center; height: 16px; margin-top: -5px; border: 1px solid #ccc;'>";
         return i;
     }
 
     function changeCartAmount(that, obj) {
         var temp = obj.amount;
         var amount = $(that).val();
-        $('.window-mask').show();
+        //$('.window-mask').show();
+        $('.cartAmountInput').attr("disabled",true);
         MXF.confirm('确认修改？', function () {
             $.post('/cart/changeNumber', {cartId: obj.id, skuId: obj.skuId, number: amount}, function (res) {
                 if (res.success) {
@@ -343,10 +344,12 @@
                     MXF.alert(res.message + "，" + res.info, res.success);
                 }
             });
-            $('.window-mask').hide();
+            //$('.window-mask').hide();
+            $('.cartAmountInput').attr("disabled",false);
         }, function () {
             $(that).val(temp);
-            $('.window-mask').hide();
+            //$('.window-mask').hide();
+            $('.cartAmountInput').attr("disabled",false);
         });
     }
 

@@ -376,14 +376,24 @@ MXF.alert = function (msg, isSuccess) {
     if (null == msg || '' == msg) msg = '未知信息';
     gPane.find('.globalContent').html(msg);
     gPane.css('margin', '-' + (gPane.height() / 2) + 'px 0 0 -' + (gPane.width() / 2) + 'px');
-    gPane.stop().fadeIn(100).delay(10000).fadeOut(200);
+    gPane.stop().fadeIn(100, function () {
+        $('.window-mask').show();
+    }).delay(500).fadeOut(200, function () {
+        $('.window-mask').hide();
+    });
 };
 //确认对话框
 MXF.confirm = function (msg, fn, cfn) {
     var gPane = $('#globalConfirmPane');
     gPane.find('.globalContent').html(msg);
     gPane.css('margin', '-' + (gPane.height() / 2) + 'px 0 0 -' + (gPane.width() / 2) + 'px');
-    gPane.stop().fadeIn(100).delay(1000000).fadeOut(200);
+    gPane.stop().fadeIn(100, function () {
+        $('.window-mask').show();
+    }).delay(1000).fadeOut(200, function () {
+        $('.window-mask').hide();
+        // 执行取消方法
+        cfn();
+    });
     gPane.find('.btn-confirm').unbind('click').click(function () {
         gPane.hide();
         if (null != fn) {

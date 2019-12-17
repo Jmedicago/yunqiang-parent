@@ -56,10 +56,10 @@
                 }">
                     总仓
                 </th>
-                <th data-options="field: 'northStock', width:150, halign: 'center', align: 'center', formatter: northStockShuntFormatter">
+                <th data-options="field: 'northStock', width:180, halign: 'center', align: 'center', formatter: northStockShuntFormatter">
                     北部分仓
                 </th>
-                <th data-options="field: 'southStock', width:150, halign: 'center', align: 'center', formatter: southStockShuntFormatter">
+                <th data-options="field: 'southStock', width:180, halign: 'center', align: 'center', formatter: southStockShuntFormatter">
                     南部分仓
                 </th>
                 <th data-options="field: 'container', width:80, halign: 'center', align: 'center',formatter:MXF.cellTooltipFormatter">
@@ -110,6 +110,14 @@
         border-right: 1px solid #999;
         color: blue !important;
     }
+    .sub-shunt-btn {
+        display: inline-block;
+        padding: 5px 5px;
+        border-top: 1px solid #999;
+        border-bottom: 1px solid #999;
+        border-left: 1px solid #999;
+        color: blue !important;
+    }
 </style>
 <script>
     $(function () {
@@ -127,9 +135,10 @@
                 data.amount = item.amount;
             }
         });
+        var sub = '<a href="#" onclick="subStock(' + data.skuId + ',' + data.stockId + ')"  class="sub-shunt-btn">回退</a>';
         var text = '<span class="shunt-amount">' + data.amount + '</span>';
         var btn = '<a href="#" onclick="shuntStock(' + data.skuId + ',' + data.stockId + ')" class="shunt-btn">分流</a>';
-        return text + btn;
+        return sub + text + btn;
     }
 
     function southStockShuntFormatter(val, row) {
@@ -143,9 +152,22 @@
                 data.amount = item.amount;
             }
         });
+        var sub = '<a href="#" onclick="subStock(' + data.skuId + ',' + data.stockId + ')"  class="sub-shunt-btn">回退</a>';
         var text = '<span class="shunt-amount">' + data.amount + '</span>';
         var btn = '<a href="#" onclick="shuntStock(' + data.skuId + ',' + data.stockId + ')"  class="shunt-btn">分流</a>';
-        return text + btn;
+        return sub + text + btn;
+    }
+    
+    function subStock(skuId, stockId) {
+        MXF.openDialog("shuntStockDialog", "商品回退", "/stock-shunt/edit?opt=sub&skuId=" + skuId + "&stockId=" + stockId, function () {
+
+        }, 600, 400);
+    }
+
+    function shuntStock(skuId, stockId) {
+        MXF.openDialog("shuntStockDialog", "商品分流", "/stock-shunt/edit?opt=add&skuId=" + skuId + "&stockId=" + stockId, function () {
+
+        }, 600, 400);
     }
 
 
@@ -160,7 +182,7 @@
 
     function skuMainPicFormatter(value) {
         if (value) {
-            return '<img style="display: block" height="38" width="38" src="' + value + '"/>';
+            return '<img onclick="MXF.showImageDialog(this.src)" style="display: block" height="38" width="38" src="' + value + '"/>';
         }
         return '';
     }
@@ -169,12 +191,6 @@
         var obj = JSON.stringify(row);
         var a = "<a href='#' onclick='shuntStock(" + obj + ")' remote='false' class='easyui-linkbutton' plain='true'><i class='iconfont'>&#xe6f6;</i>分流</a>";
         return a;
-    }
-
-    function shuntStock(skuId, stockId) {
-        MXF.openDialog("shuntStockDialog", "商品分流", "/stock-shunt/edit?skuId=" + skuId + "&stockId=" + stockId, function () {
-
-        }, 600, 400);
     }
     
     function viewStockShuntLog() {

@@ -3,6 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <form method="post" style="width: 600px; margin: 30px auto;" action="/stock-shunt/shunt">
     <input type="hidden" name="skuId" value="${bisStockShunt.skuId}"/>
+    <input type="hidden" name="opt" value="${opt}"/>
     <div class="input-div">
         <label class="label-top">分仓</label>
         <select id="stockShuntCombobox" class="easyui-combobox" style="width:450px;" name="stockId" data-options="onLoadSuccess:initStockShunt,">
@@ -15,8 +16,8 @@
         <input class="easyui-textbox theme-textbox-radius" name="amount" data-options="required:true" style="width:450px;">
     </div>
     <div class="input-div">
-        <label class="label-top">备注</label>
-        <input class="easyui-textbox theme-textbox-radius" data-options="multiline:true" style="height:60px;width:450px;"
+        <label class="label-top">分流订单号</label>
+        <input class="easyui-textbox theme-textbox-radius" value="${bisStockShunt.remark}" data-options="multiline:true" style="height:60px;width:450px;"
                name="remark">
     </div>
     <div class="input-div" style="text-align: center; margin: 35px 0">

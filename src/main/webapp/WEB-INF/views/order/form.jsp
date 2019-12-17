@@ -236,7 +236,7 @@
     function changeEditOrderDetailAmount(that, obj) {
         var temp = obj.realAmount;
         var amount = $(that).val();
-        $('.window-mask').show();
+        //$('.window-mask').show();
         var data = {"id": obj.id, "orderId": obj.orderId, "amount": amount};
         MXF.confirm('确认修改？', function () {
             $.post('/order-detail/changeAmount', data, function (res) {
@@ -255,10 +255,10 @@
                     MXF.alert(res.message, res.success);
                 }
             });
-            $('.window-mask').hide();
+            //$('.window-mask').hide();
         }, function () {
             $(that).val(temp);
-            $('.window-mask').hide();
+            //$('.window-mask').hide();
         });
     }
 
