@@ -431,6 +431,14 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
 
         this.bisOrderDetailService.savePart(orderDetail);
 
+        // 总库存
+        BisStockShunt bisStockShunt = this.bisStockShuntService.getSkuStock(orderDetail.getSkuId(), bisOrder.getStockId());
+        if (bisStockShunt != null) {
+            Integer totalAmount = bisStockShunt.getAmount() - 1;
+            bisStockShunt.setAmount(totalAmount);
+            this.bisStockShuntService.updatePart(bisStockShunt);
+        }
+
         // 更新订单信息
         BisOrder order = new BisOrder();
         order.setId(orderId);
