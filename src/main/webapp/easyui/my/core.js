@@ -389,7 +389,7 @@ MXF.confirm = function (msg, fn, cfn) {
     gPane.css('margin', '-' + (gPane.height() / 2) + 'px 0 0 -' + (gPane.width() / 2) + 'px');
     gPane.stop().fadeIn(100, function () {
         $('.window-mask').show();
-    }).delay(1000).fadeOut(200, function () {
+    }).delay(5000).fadeOut(200, function () {
         $('.window-mask').hide();
         // 执行取消方法
         if (null != cfn) {

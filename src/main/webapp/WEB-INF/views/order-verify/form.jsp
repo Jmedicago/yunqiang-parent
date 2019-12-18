@@ -155,7 +155,7 @@
                         <th data-options="field: 'realAmount', width:100, halign: 'center', align: 'center', formatter: orderVerifyAmountFormatter">
                             实际数量</th>
                         <th data-options="field: 'inputUser', width:100, halign: 'center', align: 'center'">
-                            操作人</th>
+                            备注</th>
                         <th data-options="field: 'option', width:100, halign: 'center', align: 'center',formatter:optionFormatter">
                             操作</th>
                     </tr>
@@ -203,6 +203,7 @@
                     $('#orderVerifyDetailGrid').datagrid('reload');
                     $('#orderVerifyGrid').datagrid('reload');
                     $('#orderVerifyStockOutGrid').datagrid('uncheckAll');
+                    $('#orderVerifyStockOutGrid').datagrid('reload');
                 } else {
                     MXF.alert(data.message + "，" + data.info, data.success);
                 }
@@ -287,12 +288,14 @@
             $.post('/order-detail/changeAmount', data, function (res) {
                 if (res.success) {
                     // 更新字段
-                    $("#orderVerifyDetailGrid").datagrid("updateRow", {
+                    /*$("#orderVerifyDetailGrid").datagrid("updateRow", {
                         index: obj.index, //行索引
                         row: {
                             realAmount: amount //行中的某个字段
                         }
-                    });
+                    });*/
+                    $('#orderVerifyDetailGrid').datagrid('reload');
+                    $('.editOrderDetailAmountInput').attr("disabled",false);
                     // 更新统计
                     orderVerifyDetailStatistics(res.data);
                 } else {
@@ -300,8 +303,6 @@
                     MXF.alert(res.message, res.success);
                 }
             });
-            $('#orderVerifyDetailGrid').datagrid('reload');
-            $('.editOrderDetailAmountInput').attr("disabled",false);
             //$('.window-mask').hide();
         }, function () {
             $(that).val(temp);

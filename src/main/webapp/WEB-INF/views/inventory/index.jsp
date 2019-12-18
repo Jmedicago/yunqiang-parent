@@ -182,9 +182,9 @@
                 data.amount = item.amount;
             }
         });
-        var sub = '<a href="#" onclick="subDefaultStock(' + data.skuId + ',' + data.stockId + ')"  class="sub-shunt-btn">减库存</a>';
+        var sub = '<a href="#" onclick="subDefaultStock(' + data.skuId + ',' + data.stockId + ')"  class="sub-shunt-btn">减少</a>';
         var text = '<span class="shunt-amount">' + data.amount + '</span>';
-        var btn = '<a href="#" onclick="shuntDefaultStock(' + data.skuId + ',' + data.stockId + ')"  class="shunt-btn">增库存</a>';
+        var btn = '<a href="#" onclick="shuntDefaultStock(' + data.skuId + ',' + data.stockId + ')"  class="shunt-btn">增加</a>';
         return sub + text + btn;
     }
     

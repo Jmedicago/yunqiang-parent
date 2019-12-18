@@ -217,16 +217,8 @@ public class BisSku extends BasePojo {
         this.skuPropertyList = skuPropertyList;
     }
 
-    public Integer getNorthStock() {
-        return northStock;
-    }
-
     public void setNorthStock(Integer northStock) {
         this.northStock = northStock;
-    }
-
-    public Integer getSouthStock() {
-        return southStock;
     }
 
     public void setSouthStock(Integer southStock) {
@@ -257,5 +249,13 @@ public class BisSku extends BasePojo {
 
     public Integer getDefaultStock() {
         return StockShuntFormat.getDefaultStock(id);
+    }
+
+    public Integer getNorthStock() {
+        return StockShuntFormat.getNorthStock(id);
+    }
+
+    public Integer getSouthStock() {
+        return StockShuntFormat.getSouthStock(id);
     }
 }

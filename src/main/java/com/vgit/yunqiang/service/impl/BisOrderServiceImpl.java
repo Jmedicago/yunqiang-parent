@@ -31,7 +31,7 @@ import java.util.Map;
 import static com.vgit.yunqiang.common.consts.msg.BisProductMsgConsts.IN_A_SHORT_INVENTORY;
 
 @Service
-public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements  BisOrderService {
+public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements BisOrderService {
 
     @Autowired
     private BisOrderMapper mapper;
@@ -107,6 +107,8 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements  B
                 /*sku.setAvailableStock(sku.getAvailableStock() - amount);
                 sku.setFrozenStock(sku.getFrozenStock() + amount);
                 this.bisSkuService.updatePart(sku);*/
+
+
                 // TODO .增加商品的销量
                 // 获取商品订单总价
                 totalMoney += bisCart.getAmount() * bisCart.getSku().getCostPrice();
@@ -172,6 +174,9 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements  B
         // 删除购物车已购买部分的数据
         bisCartService.clearQuick(formOrder.getUserId());
 
+        // 减库存
+        this.bisStockShuntService.checkOut(formOrder.getId());
+
         // 取消订单取消倒计时任务
         Map<String, Object> jobParams = new HashMap<>();
         jobParams.put("orderId", formOrder.getId());
@@ -204,13 +209,19 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements  B
         order.setStatus((int) OrderStateConsts.CLOSED);
         this.updatePart(order);
         //TODO .（通知库存系统）恢复商品库存
-        /*List<BisOrderDetail> detailList = order.getDetailList();
+        List<BisOrderDetail> detailList = order.getDetailList();
         for (BisOrderDetail orderDetail : detailList) {
             Long skuId = orderDetail.getSkuId();
-            Integer amount = orderDetail.getAmount();
-            // 恢复库存
-            this.bisSkuService.recoverStock(skuId, amount);
-        }*/
+            Integer amount = orderDetail.getRealAmount();
+
+            // 查询出货地址
+            BisStockShunt bisStockShunt = this.bisStockShuntService.getSkuStock(skuId, order.getStockId());
+            if (bisStockShunt != null) {
+                // 恢复库存
+                bisStockShunt.setAmount(bisStockShunt.getAmount() + amount);
+                this.bisStockShuntService.updatePart(bisStockShunt);
+            }
+        }
     }
 
     @Override
@@ -289,7 +300,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements  B
             }*/
 
             // 减库存
-            this.bisStockShuntService.checkOut(orderId);
+            //this.bisStockShuntService.checkOut(orderId);
 
             bisOrder.setShipTime(System.currentTimeMillis());
             bisOrder.setStatus((int) OrderStateConsts.WAIT_SHIP_SEND);
@@ -350,7 +361,7 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements  B
         number = realAmount + number;
 
         // 检查商品库存数量
-        if(!this.bisStockShuntService.checkStock(skuId, bisOrder.getStockId(), number)){
+        if (!this.bisStockShuntService.checkStock(skuId, bisOrder.getStockId(), number)) {
             throw new BisException().setCode(IN_A_SHORT_INVENTORY);
         }
         // 存在则增加数量
@@ -362,6 +373,16 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements  B
             existBisOrderDetail.setTotalMoney(number * sku.getCostPrice());
             existBisOrderDetail.setTotalVolume(number * sku.getVolume());
             this.bisOrderDetailService.updatePart(existBisOrderDetail);
+
+            // 减库存
+            // 查询总库存
+            BisStockShunt bisStockShunt = this.bisStockShuntService.getSkuStock(existBisOrderDetail.getSkuId(), bisOrder.getStockId());
+            // 总库存
+            if (bisStockShunt != null) {
+                Integer totalAmount = bisStockShunt.getAmount() - 1;
+                bisStockShunt.setAmount(totalAmount);
+                this.bisStockShuntService.updatePart(bisStockShunt);
+            }
 
             // 更新订单信息
             BisOrder order = new BisOrder();

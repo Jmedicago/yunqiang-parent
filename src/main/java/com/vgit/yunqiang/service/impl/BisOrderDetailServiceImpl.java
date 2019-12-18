@@ -11,6 +11,7 @@ import com.vgit.yunqiang.mapper.BisOrderDetailMapper;
 import com.vgit.yunqiang.pojo.BisOrder;
 import com.vgit.yunqiang.pojo.BisOrderDetail;
 import com.vgit.yunqiang.pojo.BisSku;
+import com.vgit.yunqiang.pojo.BisStockShunt;
 import com.vgit.yunqiang.service.BisOrderDetailService;
 
 import java.util.HashMap;
@@ -110,6 +111,26 @@ public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> i
         // newOrderDetail.setAmount(orderDetail.getAmount());
         newOrderDetail.setRealAmount(amount);
         this.updatePart(newOrderDetail);
+
+        // 更新库存  2019\12\18
+        System.out.println("**********************************************");
+        Integer newAmount = orderDetail.getRealAmount() - amount;  // 需求数量 - 实际数量
+        // 查询总库存
+        BisStockShunt bisStockShunt = this.bisStockShuntService.getSkuStock(orderDetail.getSkuId(), bisOrder.getStockId());
+        // 总库存
+        if (bisStockShunt != null) {
+            System.out.println("库存数量：" + bisStockShunt.getAmount()); //50
+            Integer totalAmount =  bisStockShunt.getAmount() + newAmount;
+            bisStockShunt.setAmount(totalAmount);
+            this.bisStockShuntService.updatePart(bisStockShunt);
+            System.out.println("需求数量：" + orderDetail.getRealAmount()); // 20
+            System.out.println("实际数量：" + amount);  // 25
+
+            System.out.println("回滚数量：" + newAmount); // -5
+            System.out.println("计算数量：" + totalAmount); // 50 + -5 = 45
+            System.out.println("**********************************************");
+        }
+
         BisOrder newOrder = this.updateOrder(orderDetail.getOrderId());
         return newOrder;
     }

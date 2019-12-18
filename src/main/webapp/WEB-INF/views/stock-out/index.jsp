@@ -166,8 +166,17 @@
                         <th data-options="field: 'name', width:100, halign: 'center', align: 'center'">
                             <spring:message code="product.name"/></th>
                         </th>
-                        <th data-options="field: 'sku.availableStock', width:50, halign: 'center', align: 'center', formatter: function(val, row) { console.log(row); return row.sku.availableStock }">
+                        <%--<th data-options="field: 'sku.availableStock', width:50, halign: 'center', align: 'center', formatter: function(val, row) { console.log(row); return row.sku.availableStock }">
                             <spring:message code="sku.availableStock"/></th>
+                        </th>--%>
+                        <th data-options="field: 'sku.defaultStock', width:50, halign: 'center', align: 'center', formatter: function(val, row) { console.log(row); return row.sku.defaultStock }">
+                            总仓
+                        </th>
+                        <th data-options="field: 'sku.northStock', width:50, halign: 'center', align: 'center', formatter: function(val, row) { console.log(row); return row.sku.northStock }">
+                            北部分仓
+                        <th data-options="field: 'sku.southStock', width:50, halign: 'center', align: 'center', formatter: function(val, row) { console.log(row); return row.sku.southStock }">
+                            南部分仓
+                        </th>
                         </th>
                         <th data-options="field: 'sku.pack', width:100, halign: 'center', align: 'center', formatter: function(val, row) { return row.sku.pack }">
                             <spring:message code="sku.pack"/>
@@ -175,6 +184,8 @@
                         <th data-options="field: 'sku.costPrice', width:100, halign: 'center', align: 'center', formatter: function(val, row) { return MXF.priceFormatter(row.sku.costPrice)}">
                             <spring:message code="sku.costPrice"/></th>
                         </th>
+                        <th data-options="field: 'marketPrice', width:80, halign: 'center', align: 'center',sortable:true, formatter: function(val, row) { return MXF.priceFormatter(row.sku.marketPrice)}">
+                            <spring:message code="sku.marketPrice"/></th>
                         <th data-options="field: 'skuMainPic', width:50, halign: 'center', align: 'center', formatter: skuMainPicFormatter">
                             <spring:message code="sku.skuMainPic"/></th>
                         </th>

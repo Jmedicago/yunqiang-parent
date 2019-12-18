@@ -20,9 +20,12 @@
                 <th data-options="field: 'skuMainPic', width:50, halign: 'center', align: 'center', formatter: skuMainPicFormatter">
                     <spring:message code="order.detail.image"/>
                 </th>
-                <th data-options="field: 'name', width: 120, halign: 'center', align: 'center'"><spring:message code="order.detail.ptname"/></th>
-                <th data-options="field: 'skuProperties', width: 200, halign: 'center', align: 'left'"><spring:message code="order.detail.property"/></th>
-                <th data-options="field: 'amount', width:100, halign: 'center', align: 'center', formatter: cartAmountFormatter"><spring:message code="order.detail.amount"/></th>
+                <th data-options="field: 'name', width: 120, halign: 'center', align: 'center'"><spring:message
+                        code="order.detail.ptname"/></th>
+                <th data-options="field: 'skuProperties', width: 200, halign: 'center', align: 'left'"><spring:message
+                        code="order.detail.property"/></th>
+                <th data-options="field: 'amount', width:100, halign: 'center', align: 'center', formatter: cartAmountFormatter">
+                    <spring:message code="order.detail.amount"/></th>
             </tr>
             </thead>
         </table>
@@ -36,6 +39,23 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div>
+
+        <form role="form" action="null">
+            <div class="form-group">
+                <label for="title">title</label>
+                <input type="text" class="form-control" id="title" placeholder="place input text..">
+            </div>
+
+            <div class="form-group">
+                <label for="subtitle">subtitle</label>
+                <input type="text" class="form-control" id="subtitle" placeholder="place input text..">
+            </div>
+
+        </form>
+
     </div>
 </div>
 
@@ -61,7 +81,7 @@
     }
 
     function addOrderDetailAmount(obj) {
-        obj.amount ++;
+        obj.amount++;
         $.post('/order-detail/addAmount', obj, function (res) {
             if (res.success) {
                 // 更新字段
@@ -80,7 +100,7 @@
     }
 
     function removeOrderDetailAmount(obj) {
-        obj.amount --;
+        obj.amount--;
         $.post('/order-detail/removeAmount', obj, function (res) {
             if (res.success) {
                 // 更新字段

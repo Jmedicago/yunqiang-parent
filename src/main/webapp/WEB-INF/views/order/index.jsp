@@ -149,7 +149,7 @@
             MXF.error("<spring:message code="message.select"/>！");
             return;
         }
-        if (row.status == 1) {
+        if (row.status == 0) {
             MXF.openDialog('#editOrderVerifyWindow', '订单号：' + row.orderSn, '/order-verify/edit?o=2&id=' + row.id, function () {
 
             }, 800, 747, true);
