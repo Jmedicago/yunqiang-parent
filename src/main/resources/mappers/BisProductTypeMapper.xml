@@ -133,7 +133,7 @@
     </select>
 
     <select id="getProductTypeByProductId" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.BisProductType">
-        SELECT pt.* FROM t_bis_product_type pt LEFT JOIN t_bis_product t ON pt.id = t.productType WHERE t.id = 391
+        SELECT pt.* FROM t_bis_product_type pt LEFT JOIN t_bis_product t ON pt.id = t.productType WHERE t.id = #{productType}
     </select>
 
     <select id="delBeforeCheck" parameterType="java.lang.Long" resultType="java.lang.Integer">

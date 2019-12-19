@@ -65,6 +65,12 @@
                 <th data-options="field: 'sku.pack', width:50, halign: 'center', align: 'center', formatter: function(val, row){ return row.sku.pack}">
                     包装形态
                 </th>
+                <th data-options="field: 'sku.costPrice', width:80, halign: 'center', align: 'center', formatter: function(val, row){ return MXF.priceFormatter(row.sku.costPrice)}">
+                    成本价
+                </th>
+                <th data-options="field: 'sku.marketPrice', width:80, halign: 'center', align: 'center', formatter: function(val, row){ return MXF.priceFormatter(row.sku.marketPrice)}">
+                    批发价
+                </th>
                 <th data-options="field: 'skuProperties', width: 200, halign: 'center', align: 'left'">
                     <spring:message code="order.detail.property"/></th>
                 <th data-options="field: 'availableStock', width:100, halign: 'center', align: 'center'">

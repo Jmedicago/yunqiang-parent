@@ -80,7 +80,7 @@ public class BisProductTypeServiceImpl extends TreeGridServiceImpl<BisProductTyp
 
             return sb.toString().substring(0, sb.length() - 1);
         } else {
-            return "unknown";
+            return "";
         }
     }
 
