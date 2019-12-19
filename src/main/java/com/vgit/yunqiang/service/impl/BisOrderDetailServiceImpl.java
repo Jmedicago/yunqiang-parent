@@ -96,12 +96,28 @@ public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> i
 
         // 检查库存
         BisOrder bisOrder = this.bisOrderService.get(orderId);
-
         BisOrderDetail orderDetail = this.get(id);
 
-        if (!this.bisStockShuntService.checkStock(orderDetail.getSkuId(), bisOrder.getStockId(), amount)) {
-            throw new BisException().setCode(IN_A_SHORT_INVENTORY);
+        // 检查库存 100 - 126 = -26
+        Integer newAmount = orderDetail.getRealAmount() - amount;  // 需求数量 - 实际数量
+        // 查询总库存
+        BisStockShunt bisStockShunt = this.bisStockShuntService.getSkuStock(orderDetail.getSkuId(), bisOrder.getStockId());
+
+        if (newAmount < 0) { // 增库存
+            if (Math.abs(newAmount) > bisStockShunt.getAmount()) {
+                throw new BisException().setCode(IN_A_SHORT_INVENTORY);
+            }
         }
+
+        if (newAmount >= 0) { // 减库存
+            if (newAmount > orderDetail.getRealAmount()) {
+                throw new BisException().setInfo("已减到最小库存数量");
+            }
+        }
+
+        /*if (!this.bisStockShuntService.checkStock(orderDetail.getSkuId(), bisOrder.getStockId(), newAmount)) {
+            throw new BisException().setCode(IN_A_SHORT_INVENTORY);
+        }*/
 
         BisOrderDetail newOrderDetail = new BisOrderDetail();
         // 更新订单明细
@@ -114,13 +130,11 @@ public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> i
 
         // 更新库存  2019\12\18
         System.out.println("**********************************************");
-        Integer newAmount = orderDetail.getRealAmount() - amount;  // 需求数量 - 实际数量
-        // 查询总库存
-        BisStockShunt bisStockShunt = this.bisStockShuntService.getSkuStock(orderDetail.getSkuId(), bisOrder.getStockId());
+
         // 总库存
         if (bisStockShunt != null) {
             System.out.println("库存数量：" + bisStockShunt.getAmount()); //50
-            Integer totalAmount =  bisStockShunt.getAmount() + newAmount;
+            Integer totalAmount = bisStockShunt.getAmount() + newAmount;
             bisStockShunt.setAmount(totalAmount);
             this.bisStockShuntService.updatePart(bisStockShunt);
             System.out.println("需求数量：" + orderDetail.getRealAmount()); // 20

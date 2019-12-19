@@ -97,7 +97,7 @@ public class BisOrderDetailController {
 			BisOrder order = this.bisOrderDetailService.updateOrderDetail(o, id, orderId, amount);
 			return Ret.me().setCode(ICodes.SUCCESS).setData(order);
 		} catch (BisException e) {
-			return Ret.me().setSuccess(false).setCode(e.getCode());
+			return Ret.me().setSuccess(false).setCode(e.getCode()).setInfo(e.getInfo());
 		}
 	}
 
