@@ -1,3 +1,5 @@
+<%@ page import="java.util.Date" %>
+<%@ page import="com.vgit.yunqiang.common.utils.TimeUtils" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
@@ -12,11 +14,11 @@
     <title><spring:message code="common.title"/></title>
 </head>
 <body>
-<div class="tab-wrap" id="printContent" style="width: 1210px">
+<div class="tab-wrap" id="printContent" style="width: 1000px">
     <div class="print-head">
         <style type="text/css">
             .print-head {
-                height: 80px;
+                /*height: 80px;*/
             }
 
             .print-head li {
@@ -67,26 +69,40 @@
                 text-align: center;
             }
         </style>
-        <ul style="width: 680px;float: left;">
-            <li>
-                <span>订单编号：${printOrder.orderSn}</span><br>
-                <span>下单店长：${stockFormatter}</span>
-            </li>
-            <li>
-                <span>金额总计：</span>
-                <span class="money">${printOrder.totalMoney}</span><br>
-                <span>体积总计：${printOrder.totalVolume}</span>
-            </li>
-            <li>
-                <span style="margin-bottom: 10px">下单时间：${confirmTimeFormatter}</span><br>
-                <span>&nbsp;</span>
-                <a class="easyui-linkbutton button-sm button-default" onclick="print()">
-                    打印
-                </a>
-            </li>
-        </ul>
-        <div style="padding: 20px 0">
-            <span>${printOrder.digest}</span>
+        <div>
+            <ul>
+                <li>
+                    <span><%=TimeUtils.dateFormat(new Date(), "yyyy/MM/dd")%></span>
+                </li>
+                <li>
+                    <a class="easyui-linkbutton button-sm button-default" onclick="print()">
+                        打印
+                    </a>
+                </li>
+                <li>
+                    特殊需求备注：
+                    ${printOrder.remark}
+                </li>
+            </ul>
+        </div>
+        <div>
+            <ul>
+                <li>
+                    <span>下单区域：${stockFormatter}</span><br>
+                    <span>下单时间：${confirmTimeFormatter}</span>
+                </li>
+                <li>
+                    <span>订单号：${printOrder.orderSn}</span><br>
+                    <span id="totalMoney" data-money="${printOrder.totalMoney}">总金额：</span>
+                </li>
+                <li>
+                    <span>总件数：${totalCount}</span><br>
+                    <span>总体积：${printOrder.totalVolume}</span><br>
+                </li>
+                <li style="font-size: 14px">
+                    ${printOrder.digest}
+                </li>
+            </ul>
         </div>
     </div>
     <div class="tableGroup">
@@ -97,28 +113,28 @@
                 <th data-options="field: 'skuMainPic', width:50, halign: 'center', align: 'center', formatter: skuMainPicFormatter">
                     图片
                 </th>
-                <th data-options="field: 'productType', width: 120, halign: 'center', align: 'center'">类别名称</th>
+                <th data-options="field: 'code', width: 120, halign: 'center', align: 'center'">货品编号</th>
                 <th data-options="field: 'name', width: 120, halign: 'center', align: 'center'">品名</th>
                 <th data-options="field: 'pack', width: 120, halign: 'center', align: 'center'">包装形态</th>
                 <th data-options="field: 'skuProperties', width: 200, halign: 'center', align: 'left'">属性</th>
-                <th data-options="field: 'availableStock', width:100, halign: 'center', align: 'center'">库存数量</th>
-                <th data-options="field: 'amount', width:100, halign: 'center', align: 'center'">需求数量</th>
-                <th data-options="field: 'realAmount', width:100, halign: 'center', align: 'center'">实际上货</th>
-                <th data-options="field: 'remark', width:100, halign: 'center', align: 'center'">备注</th>
+                <th data-options="field: 'availableStock', width:50, halign: 'center', align: 'center'">库存数量</th>
+                <th data-options="field: 'amount', width:50, halign: 'center', align: 'center'">需求数量</th>
+                <th data-options="field: 'realAmount', width:50, halign: 'center', align: 'center'">实际上货</th>
+                <th data-options="field: 'remark', width:200, halign: 'center', align: 'center'">备注</th>
             </tr>
             </thead>
             <tbody>
             <c:forEach var="item" items="${printOrder.detailList}">
                 <tr>
-                    <td>${item.id}</td>
-                    <td><img width="50px" height="50px" src="${item.skuMainPic}"></td>
-                    <td>${item.productType}</td>
-                    <td>${item.name}</td>
-                    <td>${item.sku.pack}</td>
-                    <td>${item.skuProperties}</td>
-                    <td>x ${item.availableStock}</td>
-                    <td>x ${item.amount}</td>
-                    <td>x ${item.realAmount}</td>
+                    <td style="width: 50px">${item.id}</td>
+                    <td style="width:50px"><img width="50px" height="50px" src="${item.skuMainPic}"></td>
+                    <td style="width: 100px">${item.sku.skuCode}</td>
+                    <td style="width: 150px">${item.name}</td>
+                    <td style="width: 50px">${item.sku.pack}</td>
+                    <td style="width: 150px">${item.skuProperties}</td>
+                    <td style="width: 50px">${item.availableStock}</td>
+                    <td style="width: 50px">${item.amount}</td>
+                    <td style="width: 50px">${item.realAmount}</td>
                     <td></td>
                 </tr>
             </c:forEach>
@@ -130,11 +146,15 @@
 <!-- Jquery Print -->
 <script type="text/javascript" src="/easyui/plugin/jquery.print/jquery.print.js"></script>
 <script type="text/javascript" src="/easyui/plugin/currencyFormatter-master/dist/currencyFormatter.js"></script>
+
+<script type="text/javascript" src="/easyui/my/core.js"></script>
 <!--第三方插件加载结束-->
 <script type="text/javascript">
     $(function () {
         // 金额格式化
-        OSREC.CurrencyFormatter.formatAll({selector: '.money', currency: 'CNY'});
+        //OSREC.CurrencyFormatter.formatAll({selector: '.money', currency: 'CNY'});
+        var money = $('#totalMoney').data('money');
+        $('#totalMoney').append(MXF.priceFormatter(money))
     });
 
     function skuMainPicFormatter(value) {

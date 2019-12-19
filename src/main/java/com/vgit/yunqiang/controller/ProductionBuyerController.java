@@ -83,5 +83,11 @@ public class ProductionBuyerController {
         return this.bisTradeStockService.finishTrade(id);
     }
 
+    @RequestMapping("/delete")
+    @ResponseBody
+    public Ret delete(Long id) {
+        this.bisTradeStockService.delete(id);
+        return Ret.me();
+    }
 
 }

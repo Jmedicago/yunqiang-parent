@@ -9,6 +9,7 @@ import com.vgit.yunqiang.common.utils.TimeUtils;
 import com.vgit.yunqiang.controller.consts.ControllerConsts;
 import com.vgit.yunqiang.controller.utils.UserContext;
 import com.vgit.yunqiang.pojo.BisOrder;
+import com.vgit.yunqiang.pojo.BisOrderDetail;
 import com.vgit.yunqiang.service.BisOrderService;
 import com.vgit.yunqiang.service.BisStockService;
 import org.slf4j.Logger;
@@ -66,7 +67,19 @@ public class BisOrderVerifyController {
         model.addAttribute("printOrder", printOrder);
         model.addAttribute("confirmTimeFormatter", TimeUtils.dateFormat(new Date(printOrder.getConfirmTime())));
         model.addAttribute("stockFormatter", this.bisStockService.get(printOrder.getStockId()).getName());
+        model.addAttribute("totalCount", this.getTotal(printOrder));
         return DOMAIN + "/print";
+    }
+
+    private int getTotal(BisOrder bisOrder) {
+        int total = 0;
+        if (bisOrder == null) {
+            return 0;
+        }
+        for (BisOrderDetail detail : bisOrder.getDetailList()) {
+            total += detail.getAmount();
+        }
+        return total;
     }
 
     @RequestMapping("/printed")

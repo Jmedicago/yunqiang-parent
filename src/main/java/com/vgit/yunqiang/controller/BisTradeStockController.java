@@ -20,23 +20,23 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/" + BisTradeStockController.DOMAIN)
 public class BisTradeStockController {
-	
-	public static final String DOMAIN = "trade-stock";
 
-	public static final Integer TRADE_TYPE = 2;
-	
-	@Autowired
-	public BisTradeStockService bisTradeStockService;
-	
-	@RequestMapping(ControllerConsts.URL_INDEX)
+    public static final String DOMAIN = "trade-stock";
+
+    public static final Integer TRADE_TYPE = 2;
+
+    @Autowired
+    public BisTradeStockService bisTradeStockService;
+
+    @RequestMapping(ControllerConsts.URL_INDEX)
     public String index() {
         return DOMAIN + ControllerConsts.VIEW_INDEX;
     }
-	
-	@RequestMapping(ControllerConsts.URL_JSON)
+
+    @RequestMapping(ControllerConsts.URL_JSON)
     @ResponseBody
     public Page<BisTradeStock> json(TradeStockQuery query) {
-	    query.setType(TRADE_TYPE);
+        query.setType(TRADE_TYPE);
         return this.bisTradeStockService.queryPage(query);
     }
 
@@ -48,27 +48,27 @@ public class BisTradeStockController {
     @RequestMapping("/upload-pr-trade")
     @ResponseBody
     public Ret uploadPrTrade(String time, MultipartFile uploadFile) {
-	    return this.bisTradeStockService.uploadPrTrade(time, TRADE_TYPE, uploadFile);
+        return this.bisTradeStockService.uploadPrTrade(time, TRADE_TYPE, uploadFile);
     }
 
     @RequestMapping("/po-trade")
     public String poTrade(Long id, Model model) {
         BisTradeStock bisTradeStock = this.bisTradeStockService.get(id);
         model.addAttribute("bisTradeStock", bisTradeStock);
-	    return DOMAIN + "/po";
+        return DOMAIN + "/po";
     }
 
     @RequestMapping("/upload-po-trade")
     @ResponseBody
     public Ret uploadPoTrade(Long id, MultipartFile uploadFile) {
-	    // 检查采购状态
+        // 检查采购状态
         BisTradeStock tradeStock = this.bisTradeStockService.get(id);
         if (tradeStock.getStatus() == TradeStockStateConsts.SHIP_FINISH_TAKE) {
             return Ret.me().setSuccess(false).setCode(BisTradeStockMsgConsts.TRADE_FINISHED);
         }
 
-	    if (id == null) {
-	        return Ret.me().setSuccess(false).setCode(BisTradeStockMsgConsts.TRADE_NULL);
+        if (id == null) {
+            return Ret.me().setSuccess(false).setCode(BisTradeStockMsgConsts.TRADE_NULL);
         }
         return this.bisTradeStockService.uploadPoTrade(id, uploadFile);
     }
@@ -77,6 +77,13 @@ public class BisTradeStockController {
     @ResponseBody
     public Ret finishTrade(Long id) {
         return this.bisTradeStockService.finishTrade(id);
+    }
+
+    @RequestMapping("/delete")
+    @ResponseBody
+    public Ret delete(Long id) {
+        this.bisTradeStockService.delete(id);
+        return Ret.me();
     }
 
 }

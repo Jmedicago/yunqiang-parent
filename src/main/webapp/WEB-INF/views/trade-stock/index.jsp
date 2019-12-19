@@ -40,6 +40,10 @@
         <div id="tradeStockTB">
             <div>
                 <shiro:hasPermission name="stock:pmcer">
+                    <a href="#" data-cmd="del" msg="确认删除？" remote="false" class="easyui-linkbutton"
+                       iconCls="icon-remove" plain="true">
+                        删除
+                    </a>
                     <a href="#" data-cmd="prTrade" title="上传货柜清单" remote="false"
                        class="easyui-linkbutton"
                        iconCls="icon-add" plain="true">
