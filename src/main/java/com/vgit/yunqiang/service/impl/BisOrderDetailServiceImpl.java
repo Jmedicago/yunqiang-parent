@@ -50,16 +50,49 @@ public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> i
     public Page<BisOrderDetail> getOrderDetail(Long orderId) {
         Page<BisOrderDetail> page = new Page<BisOrderDetail>();
         double volumeTotal = 0;
+        double totalMoney = 0;
 
         List<BisOrderDetail> orderDetails = this.mapper.getOrderDetail(orderId);
         for (BisOrderDetail orderDetail : orderDetails) {
             volumeTotal += orderDetail.getTotalVolume();
+            totalMoney += orderDetail.getTotalMoney();
             orderDetail.setSkuProperties(StrUtils.convertPropertiesToHtml(orderDetail.getSkuProperties()));
         }
         page.setRows(orderDetails);
 
         Map<String, Object> footer = new HashMap<String, Object>();
         footer.put("volumeTotal", volumeTotal);
+        footer.put("totalMoney", totalMoney);
+
+
+        StringBuffer digest = new StringBuffer();
+        int selectedGoodsTotalCount = 0;
+        int selectedFactoryShoesTotalCount = 0;
+        int selectedTradeShoesTotalCount = 0;
+        int selectedGMTotalCount = 0;
+        if (orderId != null) {
+            Integer cSelectedFactoryShoesTotalCount = this.mapper.getTotalByProductType(1035L, orderId);
+            if (cSelectedFactoryShoesTotalCount != null) {
+                selectedFactoryShoesTotalCount = cSelectedFactoryShoesTotalCount;
+            }
+            Integer cSelectedTradeShoesTotalCount = this.mapper.getTotalByProductType(1010L, orderId);
+            if (cSelectedTradeShoesTotalCount != null) {
+                selectedTradeShoesTotalCount = cSelectedTradeShoesTotalCount;
+            }
+            Integer cSelectedGMTotalCount = this.mapper.getTotalByProductType(1011L, orderId);
+            if (cSelectedGMTotalCount != null) {
+                selectedGMTotalCount = cSelectedGMTotalCount;
+            }
+        }
+        // 新增
+        selectedGoodsTotalCount = selectedFactoryShoesTotalCount + selectedTradeShoesTotalCount + selectedGMTotalCount;
+
+        digest.append(selectedGoodsTotalCount);
+        digest.append("件 (工厂鞋：" + selectedFactoryShoesTotalCount + "件 ");
+        digest.append("贸易鞋：" + selectedTradeShoesTotalCount + "件 ");
+        digest.append("百货类：" + selectedGMTotalCount + "件)");
+        footer.put("digest", digest);
+
         page.setFooter(footer);
         return page;
     }

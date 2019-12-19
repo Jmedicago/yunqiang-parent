@@ -93,13 +93,29 @@
         </table>
         <div id="orderVerifyDetailTB">
             <div style="height: 30px;">
+                <span style="font-weight: 600;"><spring:message code="order.detail.volume.total"/>：</span>
+                <span id="orderVerifyVolumeTotal"></span>
+
+                <span style="font-weight: 600;">上货总金额：</span>
+                <span id="orderVerifyTotalMoney"></span>
+
+                <span style="font-weight: 600;">总件数：</span>
+                <span id="orderVerifyDigest"></span>
             </div>
-            <div style="position: absolute; top: 0; left: 0; width: 200px; height: 40px;">
+            <%--<div style="position: absolute; top: 0; left: 0; width: 200px; height: 40px;">
                 <div style="height: 40px; line-height: 40px; font-size: 14px; text-align: left; padding: 0 20px;">
                     <span style="font-weight: 600;"><spring:message code="order.detail.volume.total"/>：</span>
                     <span id="orderVerifyVolumeTotal"></span>
                 </div>
-            </div>
+                <div style="height: 40px; line-height: 40px; font-size: 14px; text-align: left; padding: 0 20px;">
+                    <span style="font-weight: 600;">上货总金额：</span>
+                    <span id="orderVerifyTotalMoney"></span>
+                </div>
+                <div style="height: 40px; line-height: 40px; font-size: 14px; text-align: left; padding: 0 20px;">
+                    <span style="font-weight: 600;">总件数：</span>
+                    <span id="orderVerifyDigest"></span>
+                </div>
+            </div>--%>
         </div>
     </div>
 </div>
@@ -129,5 +145,7 @@
 
     function loadOrderVerifyDetailSuccess(data) {
         $('#orderVerifyVolumeTotal').text(data.footer.volumeTotal.toFixed(2));
+        $('#orderVerifyTotalMoney').text(MXF.priceFormatter(data.footer.totalMoney));
+        $('#orderVerifyDigest').text(data.footer.digest);
     }
 </script>
