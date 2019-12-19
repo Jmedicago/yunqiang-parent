@@ -47,6 +47,8 @@ public class BisProduct extends BasePojo implements Serializable {
 
 	private String typeName;
 
+	private List<BisSku> skuList;
+
 	public Long getId() {
 		return id;
 	}
@@ -137,6 +139,14 @@ public class BisProduct extends BasePojo implements Serializable {
 
 	public String getProductMedia() {
 		return ProductMediaFormat.getProductImage(id);
+	}
+
+	public List<BisSku> getSkuList() {
+		return skuList;
+	}
+
+	public void setSkuList(List<BisSku> skuList) {
+		this.skuList = skuList;
 	}
 
 	@Override

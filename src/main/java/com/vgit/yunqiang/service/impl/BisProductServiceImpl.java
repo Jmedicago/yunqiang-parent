@@ -272,6 +272,15 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
         return sku;
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public List<BisProduct> batchBefore(String fileName) {
+        List<BisProduct> bisProductList = new ArrayList<>();
+
+
+
+        return bisProductList;
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Ret batch(String excelUrl) {
@@ -384,7 +393,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                                                         skuProperty.setOptionId(0L);
                                                         skuProperty.setValue(propEntry.getValue());
                                                         skuPropertyList.add(skuProperty);
-                                                    } else if (PropertyInputModeConsts.PROPERTY_INPUT_MODE_SELECT == bisProperty.getInputMode()) { // 选择框
+                                                    } /*else if (PropertyInputModeConsts.PROPERTY_INPUT_MODE_SELECT == bisProperty.getInputMode()) { // 选择框
                                                         BisSkuProperty skuProperty = new BisSkuProperty();
                                                         skuProperty.setPropId(bisProperty.getId());
                                                         skuProperty.setPropName(bisProperty.getName());
@@ -396,7 +405,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                                                             }
                                                         }
                                                         skuPropertyList.add(skuProperty);
-                                                    }
+                                                    }*/
                                                     this.bisPropertyService.getOptions(bisProperty.getId());
                                                 }
                                             } else {
@@ -690,7 +699,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                                                         skuProperty.setOptionId(0L);
                                                         skuProperty.setValue(propEntry.getValue());
                                                         skuPropertyList.add(skuProperty);
-                                                    } else if (PropertyInputModeConsts.PROPERTY_INPUT_MODE_SELECT == bisProperty.getInputMode()) { // 选择框
+                                                    } /*else if (PropertyInputModeConsts.PROPERTY_INPUT_MODE_SELECT == bisProperty.getInputMode()) { // 选择框
                                                         BisSkuProperty skuProperty = new BisSkuProperty();
                                                         skuProperty.setPropId(bisProperty.getId());
                                                         skuProperty.setPropName(bisProperty.getName());
@@ -702,7 +711,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                                                             }
                                                         }
                                                         skuPropertyList.add(skuProperty);
-                                                    }
+                                                    }*/
                                                     this.bisPropertyService.getOptions(bisProperty.getId());
                                                 }
                                             } else {
