@@ -145,4 +145,9 @@ public class BisSkuServiceImpl extends BaseServiceImpl<BisSku> implements BisSku
         return null;
     }
 
+    @Override
+    public void falseDel(Long cid) {
+        this.mapper.falseDel(cid);
+    }
+
 }

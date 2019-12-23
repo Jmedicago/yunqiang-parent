@@ -40,7 +40,8 @@ public class BisSkuController {
     public Ret delete(String id) {
         Long[] ids = StrUtils.splitToLong(id);
         for (Long cid : ids) {
-            this.bisSkuService.delete(cid);
+            //this.bisSkuService.delete(cid);
+            this.bisSkuService.falseDel(cid);
         }
         return Ret.me();
     }

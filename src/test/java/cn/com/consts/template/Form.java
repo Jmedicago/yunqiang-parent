@@ -2,6 +2,9 @@ package cn.com.consts.template;
 
 import cn.com.consts.Composite;
 import cn.com.consts.Template;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 
 /**
  * 表单
@@ -11,14 +14,16 @@ public class Form extends Template {
     private String action;
 
     @Override
-    public String build() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("<form role=\"form\" action=\"" + this.action + "\">");
+    public Document build() {
+        Document document = DocumentHelper.createDocument();
+        Element formElement = document.addElement("form");
+        formElement.addAttribute("action", this.action);
+
         for (Object o : children) {
-            sb.append(((Composite) o).build());
+            Document childDocument = ((Composite) o).build();
+            formElement.add(childDocument.getRootElement());
         }
-        sb.append("</form>");
-        return sb.toString();
+        return document;
     }
 
     public void setAction(String action) {

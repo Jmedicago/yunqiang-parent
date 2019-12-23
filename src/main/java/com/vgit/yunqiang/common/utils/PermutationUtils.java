@@ -2,7 +2,7 @@ package com.vgit.yunqiang.common.utils;
 
 import java.util.Arrays;
 
-public class PermutationUtils {
+public class  PermutationUtils {
 
     //s表示，从array[start]后的数据进行全排列
     public static void permute(int[] array, int start) {

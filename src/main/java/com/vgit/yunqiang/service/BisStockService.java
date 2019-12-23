@@ -51,4 +51,5 @@ public interface BisStockService extends TreeGridService<BisStock> {
      */
     String getShipmentLocation(Long stockId);
 
+
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.vgit.yunqiang.pojo.base.BasePojo;
+import com.vgit.yunqiang.service.format.StockFormat;
 
 /**
  * 库存
@@ -97,6 +98,10 @@ public class BisStock extends BasePojo implements Serializable {
 
 	public void setChildren(List<BisStock> children) {
 		this.children = children;
+	}
+
+	public String getStockPath() {
+		return StockFormat.getStockPath(id);
 	}
 
 }

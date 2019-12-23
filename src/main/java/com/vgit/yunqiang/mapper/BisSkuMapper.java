@@ -120,4 +120,18 @@ public interface BisSkuMapper extends BaseMapper<BisSku> {
      * @return
      */
     List<ProductModel> getAll();
+
+    /**
+     * 假删除
+     *
+     * @param id
+     */
+    void falseDelByProductIds(Long id);
+
+    /**
+     * 假删除
+     *
+     * @param id
+     */
+    void falseDel(Long id);
 }

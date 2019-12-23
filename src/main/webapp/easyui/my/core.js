@@ -378,7 +378,7 @@ MXF.alert = function (msg, isSuccess) {
     gPane.css('margin', '-' + (gPane.height() / 2) + 'px 0 0 -' + (gPane.width() / 2) + 'px');
     gPane.stop().fadeIn(100, function () {
         $('.window-mask').show();
-    }).delay(500).fadeOut(200, function () {
+    }).delay(2000).fadeOut(200, function () {
         $('.window-mask').hide();
     });
 };

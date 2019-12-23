@@ -64,6 +64,8 @@ public class BisSku extends BasePojo {
 
     private Integer defaultStock;
 
+    private Integer state;
+
     public String getSkuPropertiesFormatter() {
         return PropertyFormat.formatterProperties(skuProperties);
     }
@@ -223,6 +225,14 @@ public class BisSku extends BasePojo {
 
     public void setSouthStock(Integer southStock) {
         this.southStock = southStock;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
     }
 
     @Override

@@ -8,8 +8,10 @@ import com.vgit.yunqiang.common.utils.StrUtils;
 import com.vgit.yunqiang.controller.consts.ControllerConsts;
 import com.vgit.yunqiang.pojo.SysRole;
 import com.vgit.yunqiang.pojo.SysUser;
+import com.vgit.yunqiang.service.BisStockService;
 import com.vgit.yunqiang.service.SysUserService;
 
+import com.vgit.yunqiang.service.format.StockFormat;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -37,6 +39,9 @@ public class SysUserController {
     @Autowired
     private SysUserService sysUserService;
 
+    @Autowired
+    private BisStockService bisStockService;
+
     @RequestMapping(ControllerConsts.URL_INDEX)
     public String index(Model model) {
         return DOMAIN + ControllerConsts.VIEW_INDEX;
@@ -57,6 +62,7 @@ public class SysUserController {
                 List<String> stocks =  Arrays.asList(stockArr);
                 LOGGER.info("用户归属区域{}", stocks);
                 model.addAttribute("selectStocks", stocks);
+                model.addAttribute("selectStockPath", StockFormat.getStockPath(Long.valueOf(stocks.get(0))));
             }
             // 用户信息
             LOGGER.info("用户信息{}", sysUser);

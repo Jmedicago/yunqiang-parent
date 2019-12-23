@@ -51,12 +51,12 @@
                         <td><spring:message code="sku.pack"/></td>
                         <td>
                             <input class="easyui-textbox" name="pack"
-                                   style="width:200px;"/>
+                                   style="width:200px;" data-options="required: true"/>
                         </td>
                         <td><spring:message code="sku.volume"/>（m<sup>3</sup>）</td>
                         <td>
                             <input class="easyui-textbox" name="volume"
-                                   style="width:200px;"/>
+                                   style="width:200px;" data-options="required: true"/>
                         </td>
                         <td><spring:message code="sku.container"/></td>
                         <td>
@@ -68,7 +68,7 @@
                         <td><spring:message code="sku.costPrice"/></td>
                         <td>
                             <input class="easyui-textbox" name="costPrice"
-                                   style="width:200px;"/>
+                                   style="width:200px;" data-options="required: true"/>
                         </td>
                         <td><spring:message code="sku.marketPrice"/></td>
                         <td>
@@ -95,7 +95,7 @@
                         <td><spring:message code="sku.availableStock"/></td>
                         <td>
                             <input class="easyui-textbox" name="availableStock"
-                                   style="width:200px;"/>
+                                   style="width:200px;" data-options="required: true"/>
                         </td>
                         <td>备注</td>
                         <td>

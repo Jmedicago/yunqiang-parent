@@ -2,6 +2,7 @@ package com.vgit.yunqiang.service.test;
 
 import com.vgit.yunqiang.pojo.SysRole;
 import com.vgit.yunqiang.service.SysPermissionService;
+import com.vgit.yunqiang.service.TestService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class PermissionServiceTest {
 
     @Autowired
     private SysPermissionService permissionService;
+
+    @Autowired
+    private TestService testService;
 
     @Test
     public void testGetMenus() {

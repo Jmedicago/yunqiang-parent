@@ -40,7 +40,7 @@ public interface BisProductMapper extends BaseMapper<BisProduct> {
      * @param maps
      */
     void saveProperties(List<Map<String, Long>> maps);
-    
+
     /**
      * 获取商品的SKU列表
      *
@@ -73,18 +73,18 @@ public interface BisProductMapper extends BaseMapper<BisProduct> {
 
     /**
      * 根据商品编码查询商品
-     * 
+     *
      * @param code
      * @return
      */
-	BisProduct getProducByCode(String code);
-	
-	/**
-	 * 删除商品根据商品名称
-	 * 
-	 * @param name
-	 */
-	void delProductByName(String name);
+    BisProduct getProducByCode(String code);
+
+    /**
+     * 删除商品根据商品名称
+     *
+     * @param name
+     */
+    void delProductByName(String name);
 
     /**
      * 获取最后一个商品的ID
@@ -92,4 +92,11 @@ public interface BisProductMapper extends BaseMapper<BisProduct> {
      * @return
      */
     Long getLastProductId();
+
+    /**
+     * 假删除
+     *
+     * @param id
+     */
+    void falseDel(Long id);
 }

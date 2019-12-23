@@ -103,4 +103,11 @@ public interface BisSkuService extends BaseService<BisSku> {
      * @return
      */
     Long getProductType(Long skuId);
+
+    /**
+     * 假删除
+     *
+     * @param cid
+     */
+    void falseDel(Long cid);
 }

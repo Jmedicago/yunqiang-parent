@@ -1,6 +1,9 @@
 package cn.com.consts.component;
 
 import cn.com.consts.Component;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 
 /**
  * 文本框
@@ -18,13 +21,22 @@ public class TextBox extends Component {
     }
 
     @Override
-    public String build() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("<div class=\"form-group\">");
-        sb.append("<label for=\"" + this.name + "\">" + this.label + "</label>");
-        sb.append("<input type=\"text\" class=\"form-control\" id=\"" + this.name + "\" placeholder=\"" + this.placeholder + "\">");
-        sb.append("</div>");
-        return sb.toString();
+    public Document build() {
+        Document document = DocumentHelper.createDocument();
+        Element textBoxElement = document.addElement("div");
+        textBoxElement.addAttribute("class", "form-group");
+
+        Element labelElement = textBoxElement.addElement("label");
+        labelElement.addAttribute("for", this.name);
+        labelElement.setText(this.label);
+
+        Element inputElement = textBoxElement.addElement("input");
+        inputElement.addAttribute("type", "text");
+        inputElement.addAttribute("class", "form-control");
+        inputElement.addAttribute("id", this.name);
+        inputElement.addAttribute("placeholder", this.placeholder);
+
+        return document;
     }
 
     public void setLabel(String label) {

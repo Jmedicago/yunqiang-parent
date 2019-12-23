@@ -1,5 +1,6 @@
 package cn.com.consts;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,16 @@ public abstract class Template implements Composite {
 
     public Composite getChild(int index) {
         return this.children.get(index);
+    }
+
+    @Override
+    public String reader() throws IOException {
+        return null;
+    }
+
+    @Override
+    public void writer(String content) throws IOException {
+
     }
 
 }

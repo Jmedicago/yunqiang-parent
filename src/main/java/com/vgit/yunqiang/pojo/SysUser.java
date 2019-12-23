@@ -1,6 +1,8 @@
 package com.vgit.yunqiang.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.vgit.yunqiang.service.format.RoleFormatter;
+import com.vgit.yunqiang.service.format.StockFormat;
 
 /**
  * 用户
@@ -14,6 +16,8 @@ public class SysUser {
     private String email;
 
     private String phone;
+
+    private String manager;
 
     @JsonIgnore
     private String password;
@@ -30,6 +34,8 @@ public class SysUser {
     private Long createTime;
 
     private Long updateTime;
+
+    private String remark;
 
     public Long getId() {
         return id;
@@ -133,6 +139,30 @@ public class SysUser {
     @JsonIgnore
     public boolean isNotEmpty() {
         return !isEmpty();
+    }
+
+    public String getManager() {
+        return manager;
+    }
+
+    public void setManager(String manager) {
+        this.manager = manager;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getRoleList() {
+        return RoleFormatter.getRoles(roleIds);
+    }
+
+    public String getStockPath() {
+        return StockFormat.getStockPath(Long.valueOf(stockIds));
     }
 
 }

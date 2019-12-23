@@ -11,9 +11,13 @@
             <tr>
                 <th data-options="field:'id',checkbox:true"></th>
                 <th data-options="field:'username',width:100"><spring:message code="user.name"/></th>
-                <th data-options="field:'email',width:180"><spring:message code="user.email"/></th>
-                <th data-options="field:'phone',width:100"><spring:message code="user.phone"/></th>
+                <th data-options="field:'roleIds',width:100,formatter: function(val, row){ return MXF.cellTooltipFormatter(row.roleList)}"><spring:message code="user.roles"/></th>
+                <th data-options="field:'manager',width:100">负责人</th>
+                <th data-options="field:'phone',width:100">联系电话</th>
+                <th data-options="field:'stockIds',width:100,formatter: function(val, row){return MXF.cellTooltipFormatter(row.stockPath)}">归属区域</th>
+                <th data-options="field:'remark', width:150, formatter:MXF.cellTooltipFormatter">门店描述</th>
                 <th data-options="field:'status',width:50,formatter:userStateFormatter"><spring:message code="common.status"/></th>
+                <%--<th data-options="field:'email',width:180"><spring:message code="user.email"/></th>--%>
                 <th data-options="field:'createTime',width:200,formatter:MXF.dateTimeFormatter"><spring:message code="common.createTime"/></th>
             </tr>
             </thead>

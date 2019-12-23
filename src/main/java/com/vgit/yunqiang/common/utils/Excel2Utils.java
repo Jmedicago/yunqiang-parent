@@ -35,7 +35,7 @@ public class Excel2Utils {
         //创建标题
         Map<String, Integer> titleOrder = new HashMap<String, Integer>();
         for (int i = 0; i < titles.size(); i++) {
-            sheet.setColumnWidth(i, 6000);
+            sheet.setColumnWidth(i, 4000);
             cell = row.createCell(i);
             String title = titles.get(i);
             cell.setCellValue(title);
@@ -58,11 +58,12 @@ public class Excel2Utils {
         // 写入正文
         Iterator<Map<String, Object>> iterator = values.iterator();
         // 行号
+
         int index = 1;
         while (iterator.hasNext()) {
             //填充数据
             row = sheet.createRow(index);
-            row.setHeight((short) 2000);
+            row.setHeight((short) 1500);
             Map<String, Object> value = iterator.next();
             for (Map.Entry<String, Object> map : value.entrySet()) {
                 // 获取列名

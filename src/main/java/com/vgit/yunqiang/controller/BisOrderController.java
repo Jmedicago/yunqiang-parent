@@ -99,8 +99,13 @@ public class BisOrderController {
     @RequestMapping(ControllerConsts.URL_DELETE)
     @ResponseBody
     public Ret delete(Long id) {
-        this.bisOrderService.delete(id);
-        return Ret.me();
+        BisOrder bisOrder = this.bisOrderService.get(id);
+        if (bisOrder.getStatus() == 0) {
+            this.bisOrderService.delete(id);
+            return Ret.me();
+        } else {
+            return Ret.me().setSuccess(false).setInfo("订单不能删除");
+        }
     }
 
 

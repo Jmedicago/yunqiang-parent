@@ -32,6 +32,8 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.*;
 
+import static com.vgit.yunqiang.service.BisStockShuntService.NORTH_STOCK;
+import static com.vgit.yunqiang.service.BisStockShuntService.SOUTH_STOCK;
 import static jdk.nashorn.internal.objects.Global.Infinity;
 
 @Service
@@ -127,8 +129,11 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
         Long[] idLongs = new Long[idArr.length];
         for (int i = 0; i < idArr.length; i++) {
             Long id = Long.valueOf(idArr[i]);
-            this.mapper.delete(id);
-            this.skuMapper.delByProductIds(id);
+            // this.mapper.delete(id);
+            // 假删除
+            this.mapper.falseDel(id);
+            //this.skuMapper.delByProductIds(id);
+            this.skuMapper.falseDelByProductIds(id);
             idLongs[i] = id;
         }
     }
@@ -229,6 +234,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
             sku.setPushStockTime(System.currentTimeMillis());
             sku.setCreateTime(System.currentTimeMillis());
             sku.setUpdateTime(System.currentTimeMillis());
+            sku.setState(1);
 
             // 生成SEO关键字
             this.setKeyword(sku);
@@ -377,23 +383,24 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                             List<Long> ids = new ArrayList<Long>(); // 商品属性集合
                             List<BisSkuProperty> skuPropertyList = new ArrayList<>(); // SKU属性集合
                             for (BisProperty bisProperty : properties) {
-                                List<Map<String, String>> propList = this.getPropertyMapByStr(entry.getValue());
-                                if (!propList.isEmpty()) {
-                                    for (Map<String, String> propMap : propList) {
-                                        for (Map.Entry<String, String> propEntry : propMap.entrySet()) {
-                                            // 检查属性名称是否存在
-                                            if (checkPropName(properties, propEntry.getKey())) {
-                                                if (bisProperty.getName().equals(propEntry.getKey())) {
-                                                    ids.add(bisProperty.getId());
+                                try {
+                                    List<Map<String, String>> propList = this.getPropertyMapByStr(entry.getValue());
+                                    if (!propList.isEmpty()) {
+                                        for (Map<String, String> propMap : propList) {
+                                            for (Map.Entry<String, String> propEntry : propMap.entrySet()) {
+                                                // 检查属性名称是否存在
+                                                if (checkPropName(properties, propEntry.getKey())) {
+                                                    if (bisProperty.getName().equals(propEntry.getKey())) {
+                                                        ids.add(bisProperty.getId());
 
-                                                    if (PropertyInputModeConsts.PROPERTY_INPUT_MODE_TEXT == bisProperty.getInputMode()) { // 文本框
-                                                        BisSkuProperty skuProperty = new BisSkuProperty();
-                                                        skuProperty.setPropId(bisProperty.getId());
-                                                        skuProperty.setPropName(bisProperty.getName());
-                                                        skuProperty.setOptionId(0L);
-                                                        skuProperty.setValue(propEntry.getValue());
-                                                        skuPropertyList.add(skuProperty);
-                                                    } /*else if (PropertyInputModeConsts.PROPERTY_INPUT_MODE_SELECT == bisProperty.getInputMode()) { // 选择框
+                                                        if (PropertyInputModeConsts.PROPERTY_INPUT_MODE_TEXT == bisProperty.getInputMode()) { // 文本框
+                                                            BisSkuProperty skuProperty = new BisSkuProperty();
+                                                            skuProperty.setPropId(bisProperty.getId());
+                                                            skuProperty.setPropName(bisProperty.getName());
+                                                            skuProperty.setOptionId(0L);
+                                                            skuProperty.setValue(propEntry.getValue());
+                                                            skuPropertyList.add(skuProperty);
+                                                        } /*else if (PropertyInputModeConsts.PROPERTY_INPUT_MODE_SELECT == bisProperty.getInputMode()) { // 选择框
                                                         BisSkuProperty skuProperty = new BisSkuProperty();
                                                         skuProperty.setPropId(bisProperty.getId());
                                                         skuProperty.setPropName(bisProperty.getName());
@@ -406,15 +413,20 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
                                                         }
                                                         skuPropertyList.add(skuProperty);
                                                     }*/
-                                                    this.bisPropertyService.getOptions(bisProperty.getId());
+                                                        this.bisPropertyService.getOptions(bisProperty.getId());
+                                                    }
+                                                } else {
+                                                    int ci = curr + 1;
+                                                    String info = "第 属性 列的第" + ci + "行，值为" + entry.getValue() + "的格式或值不正确，未匹配到属性名称为" + propEntry.getKey() + "，请修改正确后继续操作";
+                                                    throw new BisException().setCode(ICodes.FAILED).setInfo(info);
                                                 }
-                                            } else {
-                                                int ci = curr + 1;
-                                                String info = "第 属性 列的第" + ci + "行，值为" + entry.getValue() + "的格式或值不正确，未匹配到属性名称为" + propEntry.getKey() + "，请修改正确后继续操作";
-                                                throw new BisException().setCode(ICodes.FAILED).setInfo(info);
                                             }
                                         }
                                     }
+                                } catch (BisException e) {
+                                    int ci = curr + 1;
+                                    String info = "第 属性 列的第" + ci + "行，值为" + entry.getValue() + "的格式或值不正确，请修改正确后继续操作";
+                                    throw new BisException().setCode(ICodes.FAILED).setInfo(info);
                                 }
                             }
                             Long[] array = new Long[ids.size()];
@@ -896,7 +908,16 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
             map.put("批发价", df.format(product.getMarketPrice() * 0.01));
 
             map.put("利润", product.getProfit());
-            map.put("库存", product.getAllStock());
+            map.put("总仓", product.getAllStock());
+            List<BisStockShunt> stockShunts = product.getStockShunt();
+            for (BisStockShunt stockShunt : stockShunts) {
+                if (NORTH_STOCK.equals(String.valueOf(stockShunt.getStockId()))) {
+                    map.put("北部分仓", stockShunt.getAmount());
+                }
+                if (SOUTH_STOCK.equals(String.valueOf(stockShunt.getStockId()))) {
+                    map.put("南部分仓", stockShunt.getAmount());
+                }
+            }
             map.put("货柜编号", product.getContainer());
             map.put("供应商", product.getSupplier());
             map.put("备注", product.getRemark());
@@ -951,12 +972,18 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
             //判断属性是否相同
             if (sku.getSkuProperties() != null && sku.getSkuProperties().equals(bisSku.getSkuProperties())) {
                 // 是同一商品
+                sku.setCostPrice(bisSku.getCostPrice());
+                sku.setMarketPrice(bisSku.getMarketPrice());
+                sku.setRemark(bisSku.getRemark());
                 sku.setAvailableStock(sku.getAvailableStock() + bisSku.getAvailableStock());
                 sku.setUpdateTime(System.currentTimeMillis());
                 this.skuMapper.updatePart(sku);
                 return true;
             } else if (StringUtils.isBlank(sku.getSkuProperties()) && StringUtils.isBlank(bisSku.getSkuProperties())) {
                 // 是同一商品
+                sku.setCostPrice(bisSku.getCostPrice());
+                sku.setMarketPrice(bisSku.getMarketPrice());
+                sku.setRemark(bisSku.getRemark());
                 sku.setAvailableStock(sku.getAvailableStock() + bisSku.getAvailableStock());
                 sku.setUpdateTime(System.currentTimeMillis());
                 this.skuMapper.updatePart(sku);
@@ -1009,30 +1036,34 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
     }
 
     private List<Map<String, String>> getPropertyMapByStr(String value) { // 颜色：红色V，码段：37-41#
-        if (StringUtils.isNotBlank(value)) {
-            List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-            // 格式化
-            value = value.replace("：", ":").replace("，", ",");
-            String[] properties = value.split(",");
-            for (String prop : properties) {
-                String[] opts = prop.split(":");
-                Map<String, String> kv = new HashMap<String, String>();
-                String key = opts[0];
-                String val = opts[1];
-                if (StringUtils.isNotBlank(key)) {
-                    key = key.trim().replaceAll("\r|\n*", "");
-                }
-                if (StringUtils.isNotBlank(val)) {
-                    val = val.trim().replaceAll("\r|\n*", "");
-                }
+        try {
+            if (StringUtils.isNotBlank(value)) {
+                List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+                // 格式化
+                value = value.replace("：", ":").replace("，", ",");
+                String[] properties = value.split(",");
+                for (String prop : properties) {
+                    String[] opts = prop.split(":");
+                    Map<String, String> kv = new HashMap<String, String>();
+                    String key = opts[0];
+                    String val = opts[1];
+                    if (StringUtils.isNotBlank(key)) {
+                        key = key.trim().replaceAll("\r|\n*", "");
+                    }
+                    if (StringUtils.isNotBlank(val)) {
+                        val = val.trim().replaceAll("\r|\n*", "");
+                    }
 
-                // kv.put(opts[0], opts[1]);
-                kv.put(key, val);
-                list.add(kv);
+                    // kv.put(opts[0], opts[1]);
+                    kv.put(key, val);
+                    list.add(kv);
+                }
+                return list;
             }
-            return list;
+            return null;
+        } catch (Exception e) {
+            throw new BisException().setInfo(e.getMessage());
         }
-        return null;
     }
 
     private BisProductType getProductType(Long parentId, String... names) throws BisException {
