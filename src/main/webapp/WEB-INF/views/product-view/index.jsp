@@ -11,6 +11,7 @@
                            pageSize: 50,
                            striped: true,
                            singleSelect: true,
+                           loadFilter: loadFilter,
                            toolbar: '#productViewTB',
                            url: '/sku/es'"> <!-- url: '/sku/json' -->
             <thead>
@@ -108,6 +109,14 @@
                     <i class="iconfont">&#xe73f;</i>
                     批量导出
                 </a>
+                <a href="#" data-cmd="queryNotNull" class="easyui-linkbutton"
+                   plain="true">
+                    在售商品
+                </a>
+                <a href="#" data-cmd="queryNull" class="easyui-linkbutton"
+                   plain="true">
+                    缺货商品
+                </a>
             </div>
             <div class="searchForm" style="border: unset; margin: 0; padding: 5px 5px">
                 <form>
@@ -153,6 +162,44 @@
 
     function exportExcel() {
         window.open('/product/export');
+    }
+
+    var stockNull = false;
+
+    function loadFilter(data) {
+        return isShowStockNull(data, stockNull);
+    }
+
+    function isShowStockNull(data, isShow) {
+        var array = [];
+        for (var i = 0; i < data.rows.length; i++) {
+            if (data.rows[i]) {
+                for (var j = 0; j < data.rows[i].stockShunt.length; j++) {
+                    var stock = data.rows[i].stockShunt[j];
+                    if (stock.stockId == 1000) {
+                        if (stock.amount == 0) {
+                            // 库存为零 保留
+                            array.push(data.rows[i]);
+                            data.rows.splice(i, 1);
+                        }
+                    }
+                }
+            }
+        }
+        if (isShow) {
+            data.rows = array;
+        }
+        return data;
+    }
+    
+    function queryNull() {
+        stockNull = true;
+        $('#productViewGrid').datagrid('reload');
+    }
+    
+    function queryNotNull() {
+        stockNull = false;
+        $('#productViewGrid').datagrid('reload');
     }
 
 </script>

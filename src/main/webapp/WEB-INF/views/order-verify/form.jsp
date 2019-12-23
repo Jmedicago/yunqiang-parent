@@ -13,6 +13,7 @@
                            pageSize: 50,
                            striped: true,
                            singleSelect: false,
+                           loadFilter: loadFilter,
                            toolbar: '#orderVerifyStockOutTB',
                            url: '/sku/es'"> <!-- /sku/json -->
                     <thead>
@@ -353,6 +354,32 @@
     function orderVerifyDetailStatistics(data) {
         $('#orderVerifyVolumeTotal').text(data.totalVolume.toFixed(2));
         $('#orderVerifyGrid').datagrid('reload');
+    }
+
+    function loadFilter(data) {
+        return isShowStockNull(data, false);
+    }
+
+    function isShowStockNull(data, isShow) {
+        var array = [];
+        for (var i = 0; i < data.rows.length; i++) {
+            if (data.rows[i]) {
+                for (var j = 0; j < data.rows[i].stockShunt.length; j++) {
+                    var stock = data.rows[i].stockShunt[j];
+                    if (stock.stockId == 1000) {
+                        if (stock.amount == 0) {
+                            // 库存为零 保留
+                            array.push(data.rows[i]);
+                            data.rows.splice(i, 1);
+                        }
+                    }
+                }
+            }
+        }
+        if (isShow) {
+            data.rows = array;
+        }
+        return data;
     }
 
 </script>

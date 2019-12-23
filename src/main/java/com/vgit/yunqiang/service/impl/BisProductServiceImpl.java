@@ -234,7 +234,7 @@ public class BisProductServiceImpl extends BaseServiceImpl<BisProduct> implement
             sku.setPushStockTime(System.currentTimeMillis());
             sku.setCreateTime(System.currentTimeMillis());
             sku.setUpdateTime(System.currentTimeMillis());
-            sku.setState(1);
+            sku.setState(1) ;
 
             // 生成SEO关键字
             this.setKeyword(sku);
