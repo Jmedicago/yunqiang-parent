@@ -49,4 +49,28 @@ public class StockShuntFormat {
         return stockShunt.getAmount();
     }
 
+    public static Integer getAmountByDefault(Long id) {
+        BisStockShunt stockShunt = bisStockShuntService.getSkuStock(id, Long.valueOf(BisStockShuntService.DEFAULT_STOCK));
+        if (stockShunt == null) {
+            return 0;
+        }
+        return stockShunt.getAmount();
+    }
+
+    public static Integer getAmountByNorth(Long id) {
+        BisStockShunt stockShunt = bisStockShuntService.getSkuStock(id, Long.valueOf(BisStockShuntService.NORTH_STOCK));
+        if (stockShunt == null) {
+            return 0;
+        }
+        return stockShunt.getAmount();
+    }
+
+    public static Integer getAmountBySouth(Long id) {
+        BisStockShunt stockShunt = bisStockShuntService.getSkuStock(id, Long.valueOf(BisStockShuntService.SOUTH_STOCK));
+        if (stockShunt == null) {
+            return 0;
+        }
+        return stockShunt.getAmount();
+    }
+
 }

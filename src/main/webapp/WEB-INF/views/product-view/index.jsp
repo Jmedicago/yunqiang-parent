@@ -13,6 +13,9 @@
                            singleSelect: true,
                            loadFilter: loadFilter,
                            toolbar: '#productViewTB',
+                           remoteSort: false,
+
+                           sortOrder: 'asc',
                            url: '/sku/es'"> <!-- url: '/sku/json' -->
             <thead>
             <tr>
@@ -47,9 +50,18 @@
                 </th>
                 <th data-options="field: 'supplier', width:80, halign: 'center', align: 'center',sortable:true">
                     <spring:message code="sku.supplier"/></th>
+                <th data-options="field: 'defaultStock', width:80, halign: 'center', align: 'center',sortable:true">
+                    总仓
+                </th>
+                <th data-options="field: 'northStock', width:80, halign: 'center', align: 'center',sortable:true">
+                    北部分仓
+                </th>
+                <th data-options="field: 'southStock', width:80, halign: 'center', align: 'center',sortable:true">
+                    南部分仓
+                </th>
                 <%--<th data-options="field: 'availableStock', width:150, halign: 'center', align: 'center',sortable:true">
                     <spring:message code="sku.availableStock"/></th>--%>
-                <th data-options="field: 'defaultStock', width:50, halign: 'center', align: 'center', formatter: function (val, row) {
+                <%--<th data-options="field: 'defaultStock', width:50, halign: 'center', align: 'center', sortable:true, formatter: function (val, row) {
                             var amount = 0;
                             $.each(row.stockShunt, function (index, item) {
                                 if (item.stockId == 1000) {
@@ -59,7 +71,7 @@
                             return amount;
                         }">总仓
                 </th>
-                <th data-options="field: 'northStock', width:50, halign: 'center', align: 'center', formatter: function (val, row) {
+                <th data-options="field: 'northStock', width:50, halign: 'center', align: 'center', sortable:true, formatter: function (val, row) {
                             var amount = 0;
                             $.each(row.stockShunt, function (index, item) {
                                 if (item.stockId == 1062) {
@@ -69,7 +81,7 @@
                             return amount;
                         }">北部分仓
                 </th>
-                <th data-options="field: 'southStock', width:50, halign: 'center', align: 'center', formatter: function (val, row) {
+                <th data-options="field: 'southStock', width:50, halign: 'center', align: 'center', sortable:true, formatter: function (val, row) {
                             var amount = 0;
                             $.each(row.stockShunt, function (index, item) {
                                 if (item.stockId == 1050) {
@@ -78,7 +90,7 @@
                             });
                             return amount;
                         }">南部分仓
-                </th>
+                </th>--%>
                 <th data-options="field: 'container', width:80, halign: 'center', align: 'center',sortable:true,formatter:MXF.cellTooltipFormatter">
                     <spring:message code="sku.container"/></th>
                 <th data-options="field: 'remark', width:100, halign: 'center', align: 'center', formatter:MXF.cellTooltipFormatter">
@@ -99,11 +111,11 @@
                 </a>
             </div>--%>
             <div>
-                <a href="#" data-cmd="del" mustsel msg="<spring:message code="message.delete"/>"
+                <%--<a href="#" data-cmd="del" mustsel msg="<spring:message code="message.delete"/>"
                    data-options="disabled:true" class="easyui-linkbutton"
                    iconCls="icon-remove" plain="true">
                     <spring:message code="common.delete"/>
-                </a>
+                </a>--%>
                 <a href="#" data-cmd="exportExcel" class="easyui-linkbutton"
                    plain="true">
                     <i class="iconfont">&#xe73f;</i>

@@ -1,16 +1,13 @@
 package cn.com.consts;
 
-import cn.com.consts.component.ComboBox;
-import cn.com.consts.component.DataGrid;
-import cn.com.consts.component.Link;
-import cn.com.consts.component.TextBox;
+import cn.com.consts.component.*;
 import cn.com.consts.template.Form;
 import cn.com.consts.template.Body;
-import cn.com.consts.component.Head;
-import cn.com.consts.component.Html;
 import org.dom4j.Document;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,8 +19,7 @@ public class App {
         Body body = new Body();
 
         DataGrid table = new DataGrid();
-        Form form = new Form();
-        form.setAction("/article/store.do");
+        Form form = new Form("/article/store.do", "post");
 
         TextBox title = new TextBox("title");
         title.setLabel("title");
@@ -78,7 +74,7 @@ public class App {
         //JFrame
     }
 
-    public void t5() {
+    public void t5() throws IOException {
         Html html = new Html();
         Head head = new Head();
         head.setTitle("云强企业管理系统");
@@ -88,11 +84,15 @@ public class App {
         links.add(link1);
         head.addLinks(links);
 
+        List<Script> scripts = new ArrayList<>();
+        Script script1 = new Script("https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js");
+        scripts.add(script1);
+        head.addScripts(scripts);
+
         html.setHead(head);
         Body body = new Body();
         DataGrid table = new DataGrid();
-        Form form = new Form();
-        form.setAction("/article/store.do");
+        Form form = new Form("/article/store.do", "post");
         TextBox title = new TextBox("title");
         title.setLabel("title");
         title.setPlaceholder("place input text..");
@@ -104,11 +104,30 @@ public class App {
         body.add(form);
         html.setBody(body);
         Document document = html.build();
-        System.out.println(document.getRootElement().asXML());
+
+        OutputFormat format = OutputFormat.createPrettyPrint();
+        format.setEncoding("utf-8");
+        format.setSuppressDeclaration(true); //是否设置声明文档类型
+        format.setIndent(true); // 是否又首行缩进
+        format.setNewlines(true); // 是否设置换行
+
+        File file = new File("G:/workspace/yunqiang-parent/src/main/webapp/WEB-INF/views/test/index.ftl");
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+        XMLWriter writer = new XMLWriter(bufferedOutputStream, format);
+        writer.write(document);
+        writer.flush();
+
+
+        //System.out.println(document.getRootElement().asXML());
     }
 
     public static void main(String[] args) {
-        new App().t5();
+        try {
+            new App().t5();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -34,6 +34,7 @@ public class TextBox extends Component {
         inputElement.addAttribute("type", "text");
         inputElement.addAttribute("class", "form-control");
         inputElement.addAttribute("id", this.name);
+        inputElement.addAttribute("name", this.name);
         inputElement.addAttribute("placeholder", this.placeholder);
 
         return document;

@@ -20,7 +20,7 @@
                         code="product.stock"/></th>--%>
                 <th data-options="field:'typeName',width:150,halign:'center',align:'center',sortable:true"><spring:message
                         code="product.type.name"/></th>
-                <th data-options="field:'createTime',width:150,halign:'center',align:'center',formatter:MXF.dateTimeFormatter"><spring:message
+                <th data-options="field:'createTime',width:150,halign:'center',align:'center',sortable:true,formatter:MXF.dateTimeFormatter"><spring:message
                         code="common.createTime"/></th>
                 <th data-options="field:'option',width:150,halign:'center',align:'center',formatter:optionFormatter"><spring:message
                         code="common.option"/></th>

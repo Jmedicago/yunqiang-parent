@@ -16,4 +16,5 @@ public class Tags {
 
     public static final String SCRIPT = "script";
 
+    public static final String BUTTON = "button";
 }

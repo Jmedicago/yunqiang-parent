@@ -244,4 +244,17 @@ public class ProductModel {
                 ", stockShunt=" + stockShunt +
                 '}';
     }
+
+    public Integer getDefaultStock() {
+        return StockShuntFormat.getAmountByDefault(id);
+    }
+
+    public Integer getNorthStock() {
+        return StockShuntFormat.getAmountByNorth(id);
+    }
+
+    public Integer getSouthStock() {
+        return StockShuntFormat.getAmountBySouth(id);
+    }
+
 }
