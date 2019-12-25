@@ -4,7 +4,7 @@ import org.dom4j.Document;
 
 import java.io.IOException;
 
-public interface Composite {
+public interface   Composite {
 
     Document build();
 

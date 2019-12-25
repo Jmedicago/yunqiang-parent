@@ -252,7 +252,7 @@
                     editOrderDetailStatistics(res.data);
                 } else {
                     $(that).val(temp);
-                    MXF.alert(res.message, res.success);
+                    MXF.alert(res.message + " " + res.info, res.success);
                 }
             });
             //$('.window-mask').hide();

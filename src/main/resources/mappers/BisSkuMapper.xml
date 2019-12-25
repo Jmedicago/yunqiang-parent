@@ -337,6 +337,7 @@
         <result column="createTime" jdbcType="BIGINT" property="createTime"/>
         <result column="updateTime" jdbcType="BIGINT" property="updateTime"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="state" jdbcType="INTEGER" property="state"/>
         <collection property="skuPropertyList" javaType="list" ofType="com.vgit.yunqiang.pojo.BisSkuProperty">
             <id column="spId" property="id"/>
             <result column="propId" property="propId"/>

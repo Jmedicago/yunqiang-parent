@@ -8,10 +8,7 @@ import com.vgit.yunqiang.common.utils.Page;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.common.utils.StrUtils;
 import com.vgit.yunqiang.mapper.BisOrderDetailMapper;
-import com.vgit.yunqiang.pojo.BisOrder;
-import com.vgit.yunqiang.pojo.BisOrderDetail;
-import com.vgit.yunqiang.pojo.BisSku;
-import com.vgit.yunqiang.pojo.BisStockShunt;
+import com.vgit.yunqiang.pojo.*;
 import com.vgit.yunqiang.service.BisOrderDetailService;
 
 import java.util.HashMap;
@@ -130,6 +127,12 @@ public class BisOrderDetailServiceImpl extends BaseServiceImpl<BisOrderDetail> i
         // 检查库存
         BisOrder bisOrder = this.bisOrderService.get(orderId);
         BisOrderDetail orderDetail = this.get(id);
+
+        // 检查商品状态
+        BisSku bisSku = this.bisSkuService.get(orderDetail.getSkuId());
+        if (bisSku.getState() == 0) {
+            throw new BisException().setInfo("商品已锁定");
+        }
 
         // 检查库存 100 - 126 = -26
         Integer newAmount = orderDetail.getRealAmount() - amount;  // 需求数量 - 实际数量
