@@ -1,10 +1,12 @@
 package com.vgit.yunqiang.service;
 
 import com.vgit.yunqiang.common.exception.BisException;
+import com.vgit.yunqiang.common.query.ReportQuery;
 import com.vgit.yunqiang.common.service.BaseService;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.pojo.FinStockDaily;
 
+import java.util.Hashtable;
 import java.util.List;
 
 public interface FinStockDailyService extends BaseService<FinStockDaily> {
@@ -50,4 +52,19 @@ public interface FinStockDailyService extends BaseService<FinStockDaily> {
      */
     boolean validateTime(Long dailyId);
 
+    /**
+     * 店员日报
+     *
+     * @param query
+     * @return
+     */
+    Hashtable<String, Object> genDailyReport(ReportQuery query);
+
+    /**
+     * 查询每日表报明细
+     *
+     * @param stockId
+     * @return
+     */
+    List<FinStockDaily> queryDaily(Long stockId);
 }

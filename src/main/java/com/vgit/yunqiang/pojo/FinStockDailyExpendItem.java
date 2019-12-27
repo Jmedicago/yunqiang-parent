@@ -14,6 +14,8 @@ public class FinStockDailyExpendItem extends BasePojo {
 
     private Double amount;
 
+    private FinExpendItem expendItem;
+
     public Long getId() {
         return id;
     }
@@ -52,6 +54,26 @@ public class FinStockDailyExpendItem extends BasePojo {
 
     public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public FinExpendItem getExpendItem() {
+        return expendItem;
+    }
+
+    public void setExpendItem(FinExpendItem expendItem) {
+        this.expendItem = expendItem;
+    }
+
+    @Override
+    public String toString() {
+        return "FinStockDailyExpendItem{" +
+                "id=" + id +
+                ", dailyId=" + dailyId +
+                ", expendItemId=" + expendItemId +
+                ", detail='" + detail + '\'' +
+                ", amount=" + amount +
+                ", expendItem=" + expendItem +
+                '}';
     }
 
 }

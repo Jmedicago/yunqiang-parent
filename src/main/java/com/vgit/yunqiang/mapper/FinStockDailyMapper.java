@@ -22,7 +22,7 @@ public interface FinStockDailyMapper extends BaseMapper<FinStockDaily> {
      *
      * @return
      */
-    FinStockDaily getPrevious(@Param("id") Long id, @Param("type") Integer type, @Param("stockId")Long stockId);
+    FinStockDaily getPrevious(@Param("id") Long id, @Param("type") Integer type, @Param("stockId") Long stockId);
 
     /**
      * 检查是否存在
@@ -34,4 +34,18 @@ public interface FinStockDailyMapper extends BaseMapper<FinStockDaily> {
      */
     int exist(@Param("startTime") Long startTime, @Param("endTime") Long endTime, @Param("type") Integer type, @Param("stockId") Long stockId);
 
+    /**
+     * 查询日报列表
+     *
+     * @param stockId
+     * @return
+     */
+    List<FinStockDaily> getList(Long stockId);
+
+    /**
+     * 查询每日表报明细
+     *
+     * @return
+     */
+    List<FinStockDaily> queryDaily(Long stockId);
 }

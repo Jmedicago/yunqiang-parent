@@ -1,0 +1,30 @@
+table th, td {
+    width: 150px;
+    height: 30px;
+    text-align: center;
+}
+
+table th {
+    background: rgb(234, 241, 211);
+}
+
+table ul {
+    margin: 0;
+    padding: 0;
+}
+
+table ul li {
+    overflow: hidden;
+    height: 30px;
+    line-height: 30px;
+    list-style-type: none;
+    border-bottom: 1px solid grey;
+}
+
+table ul li:last-child {
+    border-bottom: none;
+}
+
+table .gray {
+    background: #eee;
+}

@@ -15,6 +15,9 @@ import com.vgit.yunqiang.mapper.BisStockMapper;
 import com.vgit.yunqiang.pojo.BisStock;
 import com.vgit.yunqiang.service.BisStockService;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static com.vgit.yunqiang.service.BisStockShuntService.DEFAULT_STOCK;
 import static com.vgit.yunqiang.service.BisStockShuntService.NORTH_STOCK;
 import static com.vgit.yunqiang.service.BisStockShuntService.SOUTH_STOCK;
@@ -107,6 +110,39 @@ public class BisStockServiceImpl extends TreeGridServiceImpl<BisStock> implement
             return SOUTH_STOCK;
         } else {
             return DEFAULT_STOCK;
+        }
+    }
+
+    @Override
+    public String getPath(Long id) {
+        if (id == null) {
+            return "";
+        }
+
+        BisStock bisStock = this.get(id);
+        if (bisStock != null) {
+            StringBuffer sb = new StringBuffer();
+
+            String[] paths = bisStock.getPath().split("\\.");
+            List<String> pathList = Arrays.asList(paths);
+            //pathList.remove(0);
+
+            for (int i = 2; i < pathList.size(); i++) {
+                BisStock type = this.get(Long.valueOf(pathList.get(i)));
+                sb.append(type.getName());
+                //sb.append("\\");
+                sb.append(" ");
+            }
+
+            if (sb.length() > 0) {
+                return sb.toString().substring(0, sb.length() - 1);
+            } else {
+                return "总仓";
+            }
+
+            //return sb.toString();
+        } else {
+            return "";
         }
     }
 

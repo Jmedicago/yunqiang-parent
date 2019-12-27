@@ -161,8 +161,8 @@ public class SysUser {
         return RoleFormatter.getRoles(roleIds);
     }
 
-    public String getStockPath() {
+   /* public String getStockPath() {
         return StockFormat.getStockPath(Long.valueOf(stockIds));
-    }
+    }*/
 
 }

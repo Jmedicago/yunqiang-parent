@@ -43,7 +43,7 @@ public class BisStoreController {
     public List<BisStock> json(StockQuery query) {
         return this.bisStockService.treegrid(TreeGridService.ROOT, query);
     }
-    
+
     @RequestMapping(ControllerConsts.URL_COMBO)
     @ResponseBody
     public List<BisStock> combo() {
@@ -88,6 +88,13 @@ public class BisStoreController {
     @ResponseBody
     public BisStock info(Long id) {
         return this.bisStockService.get(id);
+    }
+
+    @RequestMapping("/getPath")
+    @ResponseBody
+    public Ret getPath(Long id) {
+        String name = this.bisStockService.getPath(id);
+        return Ret.me().setData(name);
     }
 
 }

@@ -2,6 +2,8 @@ package com.vgit.yunqiang.pojo;
 
 import com.vgit.yunqiang.pojo.base.BasePojo;
 
+import java.util.List;
+
 public class FinStockDaily extends BasePojo {
 
     private Long id;
@@ -25,6 +27,8 @@ public class FinStockDaily extends BasePojo {
     private Double deposit;
 
     private Integer type;
+
+    private List<FinStockDailyExpendItem> dailyExpendItems;
 
     public Long getId() {
         return id;
@@ -114,6 +118,14 @@ public class FinStockDaily extends BasePojo {
         this.type = type;
     }
 
+    public List<FinStockDailyExpendItem> getDailyExpendItems() {
+        return dailyExpendItems;
+    }
+
+    public void setDailyExpendItems(List<FinStockDailyExpendItem> dailyExpendItems) {
+        this.dailyExpendItems = dailyExpendItems;
+    }
+
     @Override
     public String toString() {
         return "FinStockDaily{" +
@@ -128,7 +140,7 @@ public class FinStockDaily extends BasePojo {
                 ", safe=" + safe +
                 ", deposit=" + deposit +
                 ", type=" + type +
+                ", dailyExpendItems=" + dailyExpendItems +
                 '}';
     }
-
 }

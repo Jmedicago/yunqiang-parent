@@ -9,17 +9,28 @@
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 
     <!-- 加载配置文件 -->
-    <context:property-placeholder location="classpath:resource/*.properties" />
+    <!--<context:property-placeholder location="classpath:resource/*.properties" />-->
+
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <!-- 注释掉以下property将从环境变量中读取配置数据源配置 -->
+        <property name="locations">
+            <list>
+                <value>classpath:resource/*.properties</value>
+            </list>
+        </property>
+        <property name="ignoreUnresolvablePlaceholders" value="true"></property>
+        <property name="order" value="1"></property>
+    </bean>
 
     <!-- 数据库连接池 -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
           destroy-method="close">
-        <property name="url" value="${jdbc.url}" />
-        <property name="username" value="${jdbc.username}" />
-        <property name="password" value="${jdbc.password}" />
-        <property name="driverClassName" value="${jdbc.driver}" />
-        <property name="maxActive" value="10" />
-        <property name="minIdle" value="5" />
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="maxActive" value="10"/>
+        <property name="minIdle" value="5"/>
     </bean>
 
     <!-- 配置SQL Session Factory -->

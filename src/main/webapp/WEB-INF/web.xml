@@ -68,6 +68,15 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>ureportServlet</servlet-name>
+        <servlet-class>com.bstek.ureport.console.UReportServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ureportServlet</servlet-name>
+        <url-pattern>/ureport/*</url-pattern>
+    </servlet-mapping>
+
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>

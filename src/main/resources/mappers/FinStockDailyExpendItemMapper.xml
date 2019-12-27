@@ -26,7 +26,8 @@
         insert into t_fin_stock_daily_expend_item (id, expendItemId, dailyId, detail,
         amount, createTime, updateTime,
         remark)
-        values (#{id,jdbcType=BIGINT}, #{expendItemId,jdbcType=BIGINT}, #{dailyId,jdbcType=BIGINT}, #{detail,jdbcType=VARCHAR},
+        values (#{id,jdbcType=BIGINT}, #{expendItemId,jdbcType=BIGINT}, #{dailyId,jdbcType=BIGINT},
+        #{detail,jdbcType=VARCHAR},
         #{amount,jdbcType=DOUBLE}, #{createTime,jdbcType=BIGINT},
         #{updateTime,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR})
     </insert>
@@ -148,9 +149,16 @@
 
     <select id="getExpendItemsByStockId" resultType="com.vgit.yunqiang.pojo.FinStockDailyExpendItem">
         <![CDATA[
+
         SELECT tfsdei.* FROM t_fin_stock_daily_expend_item tfsdei LEFT JOIN t_fin_stock_daily tfsd ON tfsdei.dailyId = tfsd.`id`
         WHERE tfsd.`stockId` IN (SELECT tbs.id FROM t_bis_stock tbs WHERE tbs.parentId = #{stockId}) AND tfsdei.createTime >= #{startTime} AND tfsdei.createTime <= #{endTime} OR tfsd.`stockId` = #{stockId} AND tfsdei.createTime >= #{startTime} AND tfsdei.createTime <= #{endTime}
+
         ]]>
+    </select>
+
+    <select id="getExpendByDailyId" parameterType="java.lang.Long"
+            resultType="com.vgit.yunqiang.pojo.FinStockDailyExpendItem">
+        select * from t_fin_stock_daily_expend_item where dailyId = #{dailyId}
     </select>
 
 </mapper>

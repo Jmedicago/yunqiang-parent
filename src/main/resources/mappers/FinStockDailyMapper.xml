@@ -215,20 +215,85 @@
 
     <select id="getChildren" resultType="com.vgit.yunqiang.pojo.FinStockDaily">
         <![CDATA[
+
+
+
         SELECT tfsd.* FROM t_fin_stock_daily tfsd WHERE stockId IN (SELECT tbs.id FROM t_bis_stock tbs WHERE parentId = #{stockId}) AND tfsd.createTime >= #{startTime} AND tfsd.createTime <= #{endTime}
+
+
+
         ]]>
     </select>
 
     <select id="getPrevious" resultType="com.vgit.yunqiang.pojo.FinStockDaily">
         <![CDATA[
+
+
+
         SELECT * FROM t_fin_stock_daily WHERE id = (SELECT MAX(id) FROM t_fin_stock_daily WHERE id < #{id} AND TYPE = #{type} AND stockId = #{stockId})
+
+
+
         ]]>
     </select>
 
     <select id="exist" resultType="int">
         <![CDATA[
+
+
+
         SELECT COUNT(1) FROM t_fin_stock_daily tfsd WHERE tfsd.createTime >= #{startTime} AND tfsd.createTime <= #{endTime} AND tfsd.type = #{type} and tfsd.stockId = #{stockId}
+
+
+
         ]]>
+    </select>
+
+    <select id="getList" parameterType="java.lang.Long" resultType="com.vgit.yunqiang.pojo.FinStockDaily">
+        select * from t_fin_stock_daily where stockId = #{stockId}
+    </select>
+
+    <!--<select id="queryDaily" parameterType="java.lang.Long" resultMap="dailyResultMap">
+        select d.id, d.stockId, d.userId, d.income, d.expendTotal, d.sales, d.purch, d.arrears, d.safe, d.deposit, d.type, d.createTime, ei.category, de.detail from t_fin_stock_daily_expend_item de join t_fin_stock_daily d on d.id = de.dailyId join t_fin_expend_item ei on de.expendItemId = ei.id where d.stockId = #{stockId}
+    </select>-->
+
+    <resultMap id="dailyResultMap" type="com.vgit.yunqiang.pojo.FinStockDaily">
+        <id column="id" jdbcType="BIGINT" property="id"></id>
+        <result column="stockId" jdbcType="BIGINT" property="stockId"/>
+        <result column="userId" jdbcType="BIGINT" property="userId"/>
+        <result column="income" jdbcType="DOUBLE" property="income"/>
+        <result column="expendTotal" jdbcType="DOUBLE" property="expendTotal"/>
+        <result column="sales" jdbcType="DOUBLE" property="sales"/>
+        <result column="purch" jdbcType="DOUBLE" property="purch"/>
+        <result column="arrears" jdbcType="DOUBLE" property="arrears"/>
+        <result column="safe" jdbcType="DOUBLE" property="safe"/>
+        <result column="deposit" jdbcType="DOUBLE" property="deposit"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="createTime" jdbcType="BIGINT" property="createTime"/>
+        <collection property="dailyExpendItems" javaType="java.util.ArrayList" ofType="com.vgit.yunqiang.pojo.FinStockDailyExpendItem">
+            <id column="deId" jdbcType="BIGINT" property="id"/>
+            <result column="amount" jdbcType="INTEGER" property="amount"></result>
+            <result column="detail" jdbcType="VARCHAR" property="detail"></result>
+            <association property="expendItem" javaType="com.vgit.yunqiang.pojo.FinExpendItem">
+                <result column="eId" jdbcType="BIGINT" property="id"></result>
+                <result column="category" jdbcType="VARCHAR" property="category"></result>
+            </association>
+        </collection>
+    </resultMap>
+    <select id="queryDaily" parameterType="java.lang.Long" resultMap="dailyResultMap">
+        SELECT
+            d.*,
+            e.id as eId,
+            e.category,
+            de.id as deId,
+            de.detail,
+            de.amount
+        FROM
+            t_fin_stock_daily d
+            JOIN t_fin_stock_daily_expend_item de ON d.id = de.dailyId
+            JOIN t_fin_expend_item e ON e.id = de.expendItemId
+        WHERE
+            d.stockId = #{stockId}
     </select>
 
 </mapper>

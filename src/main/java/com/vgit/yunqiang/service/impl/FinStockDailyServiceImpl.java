@@ -3,15 +3,18 @@ package com.vgit.yunqiang.service.impl;
 import com.vgit.yunqiang.common.consts.ICodes;
 import com.vgit.yunqiang.common.consts.bis.StockDailyTypeConsts;
 import com.vgit.yunqiang.common.exception.BisException;
+import com.vgit.yunqiang.common.query.ReportQuery;
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
 import com.vgit.yunqiang.common.utils.Page;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.common.utils.TimeUtils;
 import com.vgit.yunqiang.mapper.FinStockDailyMapper;
+import com.vgit.yunqiang.pojo.BisStock;
 import com.vgit.yunqiang.pojo.FinExpendItem;
 import com.vgit.yunqiang.pojo.FinStockDaily;
 import com.vgit.yunqiang.pojo.FinStockDailyExpendItem;
+import com.vgit.yunqiang.service.BisStockService;
 import com.vgit.yunqiang.service.FinExpendItemService;
 import com.vgit.yunqiang.service.FinStockDailyExpendItemService;
 import com.vgit.yunqiang.service.FinStockDailyService;
@@ -21,7 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.List;
 
 @Service
@@ -37,6 +42,9 @@ public class FinStockDailyServiceImpl extends BaseServiceImpl<FinStockDaily> imp
 
     @Autowired
     private FinExpendItemService finExpendItemService;
+
+    @Autowired
+    private BisStockService bisStockService;
 
     @Override
     protected BaseMapper<FinStockDaily> getMapper() {
@@ -81,6 +89,74 @@ public class FinStockDailyServiceImpl extends BaseServiceImpl<FinStockDaily> imp
             return true;
         }
         return false;
+    }
+
+    /**
+     * 店员日报
+     *
+     * @param query
+     * @return
+     */
+    @Override
+    public Hashtable<String, Object> genDailyReport(ReportQuery query) {
+        Hashtable<String, Object> report = new Hashtable<String, Object>();
+        double incomeTotal = 0; // 进
+        double expendTotal = 0; // 出
+        double purchTotal = 0; //本季度累计上货
+        double arrearsTotal = 0; // 客商总额
+        double salesTotal = 0; // 本季度累计销售额
+        List<Hashtable<String, Object>> details = new ArrayList<Hashtable<String, Object>>();
+
+        if (query.getStockId() == null) {
+            return report;
+        }
+        // TODO.判断是否是店员
+        List<FinStockDaily> dailies = this.mapper.queryDaily(query.getStockId());
+        for (FinStockDaily daily : dailies) {
+            double income = daily.getIncome() * 0.01;
+            double expendSubTotal = daily.getExpendTotal() * 0.01;
+            double purch = daily.getPurch() * 0.01;
+            double arrears = daily.getArrears() * 0.01;
+            double sales = daily.getSales() * 0.01;
+
+            // 汇总
+            incomeTotal += income;
+            expendTotal += expendSubTotal;
+            purchTotal += purch;
+
+            // 明细
+            Hashtable<String, Object> detail = new Hashtable<String, Object>();
+            detail.put("date", TimeUtils.dateFormat(new Date(daily.getCreateTime()), "yyyy\\MM\\dd"));
+            detail.put("income", income);
+            detail.put("expendSubTotal", expendSubTotal);
+            detail.put("purch", purch);
+            detail.put("arrears", arrears);
+            detail.put("sales", sales);
+            List<FinStockDailyExpendItem> expendItems = daily.getDailyExpendItems();
+            for (FinStockDailyExpendItem expendItem : expendItems) {
+                expendItem.setAmount(expendItem.getAmount() * 0.01);
+            }
+            detail.put("details", expendItems);
+            details.add(detail);
+        }
+
+        // 自动更新最后一天当日该店员录入的欠款
+        arrearsTotal = dailies != null ? dailies.get(dailies.size() - 1).getArrears() : 0;
+        BisStock stock = this.bisStockService.get(query.getStockId());
+
+        report.put("stockName", stock.getName());
+        report.put("incomeTotal", incomeTotal);
+        report.put("expendTotal", expendTotal);
+        report.put("purchTotal", purchTotal);
+        report.put("arrearsTotal", arrearsTotal);
+        report.put("salesTotal", salesTotal);
+        report.put("details", details);
+        return report;
+    }
+
+    @Override
+    public List<FinStockDaily> queryDaily(Long stockId) {
+        return this.mapper.queryDaily(stockId);
     }
 
     @Override

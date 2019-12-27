@@ -16,4 +16,19 @@ public interface FinStockDailyExpendItemMapper extends BaseMapper<FinStockDailyE
      */
     List<FinStockDailyExpendItem> getExpendItemsByStockId(@Param("stockId") Long stockId, @Param("startTime") Long startTime, @Param("endTime") Long endTime);
 
+    /**
+     * 支出明细
+     *
+     * @param id
+     * @return
+     */
+    List<FinStockDailyExpendItem> getExpendByDailyId(Long id);
+
+    /**
+     * 支出明细
+     *
+     * @param stockId
+     * @return
+     */
+    List<FinStockDailyExpendItem> getExpendReport(Long stockId);
 }

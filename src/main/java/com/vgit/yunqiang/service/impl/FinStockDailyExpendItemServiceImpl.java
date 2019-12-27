@@ -73,4 +73,14 @@ public class FinStockDailyExpendItemServiceImpl extends BaseServiceImpl<FinStock
         return page;
     }
 
+    @Override
+    public List<FinStockDailyExpendItem> getExpendByDailyId(Long id) {
+        return this.mapper.getExpendByDailyId(id);
+    }
+
+    @Override
+    public List<FinStockDailyExpendItem> getExpendReport(Long stockId) {
+        return this.mapper.getExpendReport(stockId);
+    }
+
 }
