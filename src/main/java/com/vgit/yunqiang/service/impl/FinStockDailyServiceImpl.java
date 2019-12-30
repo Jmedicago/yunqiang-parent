@@ -98,7 +98,7 @@ public class FinStockDailyServiceImpl extends BaseServiceImpl<FinStockDaily> imp
      * @return
      */
     @Override
-    public Hashtable<String, Object> genDailyReport(ReportQuery query) {
+    public Hashtable<String, Object> genDyDailyReport(ReportQuery query) {
         Hashtable<String, Object> report = new Hashtable<String, Object>();
         double incomeTotal = 0; // 进
         double expendTotal = 0; // 出
@@ -142,9 +142,8 @@ public class FinStockDailyServiceImpl extends BaseServiceImpl<FinStockDaily> imp
 
         // 自动更新最后一天当日该店员录入的欠款
         arrearsTotal = dailies != null ? dailies.get(dailies.size() - 1).getArrears() : 0;
-        BisStock stock = this.bisStockService.get(query.getStockId());
 
-        report.put("stockName", stock.getName());
+        report.put("stockName", getStockName(query.getStockId()));
         report.put("incomeTotal", incomeTotal);
         report.put("expendTotal", expendTotal);
         report.put("purchTotal", purchTotal);
@@ -154,9 +153,43 @@ public class FinStockDailyServiceImpl extends BaseServiceImpl<FinStockDaily> imp
         return report;
     }
 
+    private String getStockName(Long stockId) {
+        return this.bisStockService.get(stockId).getName();
+    }
+
     @Override
     public List<FinStockDaily> queryDaily(Long stockId) {
         return this.mapper.queryDaily(stockId);
+    }
+
+    /**
+     * 店长日报
+     *
+     * @param query
+     * @return
+     */
+    @Override
+    public Hashtable<String, Object> genDzDailyReport(ReportQuery query) {
+        Hashtable<String, Object> report = new Hashtable<String, Object>();
+        double incomeTotal = 0; // 进
+        double expendTotal = 0; // 出
+        double depositTotal = 0; // 存
+        double purchTotal = 0; //本季度累计上货
+        double arrearsTotal = 0; // 客商总额
+        double salesTotal = 0; // 本季度累计销售额
+        List<Hashtable<String, Object>> details = new ArrayList<Hashtable<String, Object>>();
+
+        if (query.getStockId() == null) {
+            return report;
+        }
+        // TODO.判断是否是店长
+        List<FinStockDaily> dailies = this.mapper.queryDaily(query.getStockId());
+        for (FinStockDaily daily : dailies) {
+
+        }
+
+        report.put("stockName", getStockName(query.getStockId()));
+        return report;
     }
 
     @Override

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vgit.yunqiang.mapper.FinDailyExpendMapper">
+
+    <resultMap id="BaseResultMap" type="com.vgit.yunqiang.pojo.FinDailyExpend">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="expendItemId" property="expendItemId" jdbcType="BIGINT"/>
+        <result column="stockName" property="stockName" jdbcType="VARCHAR"/>
+        <result column="dailyCode" property="dailyCode" jdbcType="VARCHAR"/>
+        <result column="detail" property="detail" jdbcType="VARCHAR"/>
+        <result column="amount" property="amount" jdbcType="DOUBLE"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, expendItemId, stockName, dailyCode, detail, amount
+    </sql>
+
+
+    <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from t_fin_daily_expend
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from t_fin_daily_expend
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.FinDailyExpend">
+        insert into t_fin_daily_expend (id, expendItemId, stockName, dailyCode,
+          detail, amount)
+        values (#{id,jdbcType=BIGINT}, #{expendItemId,jdbcType=BIGINT}, #{stockName,jdbcType=VARCHAR}, #{dailyCode,jdbcType=VARCHAR},
+          #{detail,jdbcType=VARCHAR}, #{amount,jdbcType=DOUBLE})
+    </insert>
+
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.FinDailyExpend">
+        insert into t_fin_daily_expend
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="expendItemId != null">
+                expendItemId,
+            </if>
+            <if test="stockName != null">
+                stockName,
+            </if>
+            <if test="dailyCode != null">
+                dailyCode,
+            </if>
+            <if test="detail != null">
+                detail,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="expendItemId != null">
+                #{expendItemId,jdbcType=BIGINT},
+            </if>
+            <if test="stockName != null">
+                #{stockName,jdbcType=VARCHAR},
+            </if>
+            <if test="dailyCode != null">
+                #{dailyCode,jdbcType=VARCHAR},
+            </if>
+            <if test="detail != null">
+                #{detail,jdbcType=VARCHAR},
+            </if>
+            <if test="amount != null">
+                #{amount,jdbcType=DOUBLE},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.FinDailyExpend">
+        update t_fin_daily_expend
+        <set>
+            <if test="expendItemId != null">
+                expendItemId = #{expendItemId,jdbcType=BIGINT},
+            </if>
+            <if test="stockName != null">
+                stockName = #{stockName,jdbcType=VARCHAR},
+            </if>
+            <if test="dailyCode != null">
+                dailyCode = #{dailyCode,jdbcType=VARCHAR},
+            </if>
+            <if test="detail != null">
+                detail = #{detail,jdbcType=VARCHAR},
+            </if>
+            <if test="amount != null">
+                amount = #{amount,jdbcType=DOUBLE},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.FinDailyExpend">
+        update t_fin_daily_expend
+        set expendItemId = #{expendItemId,jdbcType=BIGINT},
+          stockName = #{stockName,jdbcType=VARCHAR},
+          dailyCode = #{dailyCode,jdbcType=VARCHAR},
+          detail = #{detail,jdbcType=VARCHAR},
+          amount = #{amount,jdbcType=DOUBLE}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+</mapper>

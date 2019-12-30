@@ -22,7 +22,7 @@ table ul li {
 }
 
 table ul li:last-child {
-    border-bottom: none;
+    /*border-bottom: none;*/
 }
 
 table .gray {

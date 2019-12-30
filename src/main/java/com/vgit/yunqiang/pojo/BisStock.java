@@ -8,100 +8,106 @@ import com.vgit.yunqiang.service.format.StockFormat;
 
 /**
  * 库存
- * 
- * @author Admin
  *
+ * @author Admin
  */
 public class BisStock extends BasePojo implements Serializable {
-	
-	private Long id;
-	
-	private String name;
-	
-	private Long parentId;
 
-	private String path;
+    private Long id;
 
-	private Integer type;
+    private String name;
 
-	private String description;
+    private Long parentId;
 
-	private Integer status;
+    private String path;
 
-	private String text;
-	
-	private List<BisStock> children;
+    private Integer type;
 
-	public Long getId() {
-		return id;
-	}
+    private String description;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    private Integer status;
 
-	public String getName() {
-		return name;
-	}
+    private String text;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private List<BisStock> children;
 
-	public Long getParentId() {
-		return parentId;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setParentId(Long parentId) {
-		this.parentId = parentId;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getPath() {
-		return path;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setPath(String path) {
-		this.path = path;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Integer getType() {
-		return type;
-	}
+    public Long getParentId() {
+        return parentId;
+    }
 
-	public void setType(Integer type) {
-		this.type = type;
-	}
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getPath() {
+        return path;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setPath(String path) {
+        this.path = path;
+    }
 
-	public Integer getStatus() {
-		return status;
-	}
+    public Integer getType() {
+        return type;
+    }
 
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
+    public void setType(Integer type) {
+        this.type = type;
+    }
 
-	public String getText() {
-		return name;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public List<BisStock> getChildren() {
-		return children;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setChildren(List<BisStock> children) {
-		this.children = children;
-	}
+    public Integer getStatus() {
+        return status;
+    }
 
-	public String getStockPath() {
-		return StockFormat.getStockPath(id);
-	}
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
+    public String getText() {
+        return name;
+    }
+
+    public List<BisStock> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<BisStock> children) {
+        this.children = children;
+    }
+
+    public String getStockPath() {
+        return StockFormat.getStockPath(id);
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "\"id\":" + id +
+                ", \"name\":\"" + name + "\"" +
+                '}';
+    }
 }

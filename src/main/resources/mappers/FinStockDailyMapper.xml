@@ -218,7 +218,9 @@
 
 
 
+
         SELECT tfsd.* FROM t_fin_stock_daily tfsd WHERE stockId IN (SELECT tbs.id FROM t_bis_stock tbs WHERE parentId = #{stockId}) AND tfsd.createTime >= #{startTime} AND tfsd.createTime <= #{endTime}
+
 
 
 
@@ -230,7 +232,9 @@
 
 
 
+
         SELECT * FROM t_fin_stock_daily WHERE id = (SELECT MAX(id) FROM t_fin_stock_daily WHERE id < #{id} AND TYPE = #{type} AND stockId = #{stockId})
+
 
 
 
@@ -242,7 +246,9 @@
 
 
 
+
         SELECT COUNT(1) FROM t_fin_stock_daily tfsd WHERE tfsd.createTime >= #{startTime} AND tfsd.createTime <= #{endTime} AND tfsd.type = #{type} and tfsd.stockId = #{stockId}
+
 
 
 
@@ -270,7 +276,8 @@
         <result column="deposit" jdbcType="DOUBLE" property="deposit"/>
         <result column="type" jdbcType="INTEGER" property="type"/>
         <result column="createTime" jdbcType="BIGINT" property="createTime"/>
-        <collection property="dailyExpendItems" javaType="java.util.ArrayList" ofType="com.vgit.yunqiang.pojo.FinStockDailyExpendItem">
+        <collection property="dailyExpendItems" javaType="java.util.ArrayList"
+                    ofType="com.vgit.yunqiang.pojo.FinStockDailyExpendItem">
             <id column="deId" jdbcType="BIGINT" property="id"/>
             <result column="amount" jdbcType="INTEGER" property="amount"></result>
             <result column="detail" jdbcType="VARCHAR" property="detail"></result>
@@ -295,5 +302,21 @@
         WHERE
             d.stockId = #{stockId}
     </select>
+
+    <!--<select id="queryInDaily" parameterType="java.lang.Long" resultMap="dailyResultMap">
+        SELECT
+            d.*,
+            e.id AS eId,
+            e.category,
+            de.id AS deId,
+            de.detail,
+            de.amount
+        FROM
+            t_fin_stock_daily d
+            JOIN t_fin_stock_daily_expend_item de ON d.id = de.dailyId
+            JOIN t_fin_expend_item e ON e.id = de.expendItemId
+        WHERE
+            d.stockId IN ( SELECT id FROM t_bis_stock s WHERE s.parentId = #{stockId} )
+    </select>-->
 
 </mapper>

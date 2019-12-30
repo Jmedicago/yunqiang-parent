@@ -49,11 +49,11 @@ public class FinExpendItem extends BasePojo {
 
     @Override
     public String toString() {
-        return "FinExpendItem{" +
-                "id=" + id +
-                ", category='" + category + '\'' +
-                ", article='" + article + '\'' +
-                ", state=" + state +
+        return "{" +
+                "  \"id\":" + id +
+                ", \"category\":\"" + category + "\"" +
+                ", \"article\":\"" + article + "\"" +
+                ", \"state\":" + state +
                 '}';
     }
 

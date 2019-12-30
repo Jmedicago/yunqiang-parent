@@ -58,7 +58,7 @@ public interface FinStockDailyService extends BaseService<FinStockDaily> {
      * @param query
      * @return
      */
-    Hashtable<String, Object> genDailyReport(ReportQuery query);
+    Hashtable<String, Object> genDyDailyReport(ReportQuery query);
 
     /**
      * 查询每日表报明细
@@ -67,4 +67,12 @@ public interface FinStockDailyService extends BaseService<FinStockDaily> {
      * @return
      */
     List<FinStockDaily> queryDaily(Long stockId);
+
+    /**
+     * 店长日报
+     *
+     * @param query
+     * @return
+     */
+    Hashtable<String, Object> genDzDailyReport(ReportQuery query);
 }

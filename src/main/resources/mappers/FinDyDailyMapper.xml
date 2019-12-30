@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vgit.yunqiang.mapper.FinDyDailyMapper">
+
+    <resultMap id="BaseResultMap" type="com.vgit.yunqiang.pojo.FinDyDaily">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="stockId" property="stockId" jdbcType="BIGINT"/>
+        <result column="userId" property="userId" jdbcType="BIGINT"/>
+        <result column="date" property="date" jdbcType="DATE"/>
+        <result column="income" property="income" jdbcType="DOUBLE"/>
+        <result column="expendSubTotal" property="expendSubTotal" jdbcType="DOUBLE"/>
+        <result column="purch" property="purch" jdbcType="DOUBLE"/>
+        <result column="arrears" property="arrears" jdbcType="DOUBLE"/>
+        <result column="sales" property="sales" jdbcType="DOUBLE"/>
+        <result column="createTime" property="createTime" jdbcType="BIGINT"/>
+        <result column="updateTime" property="updateTime" jdbcType="BIGINT"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, code, stockId, userId, date, income, expendSubTotal, purch, arrears, sales, createTime,
+        updateTime, remark
+    </sql>
+
+    <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from t_fin_dy_daily
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from t_fin_dy_daily
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.FinDyDaily">
+        insert into t_fin_dy_daily (id, code, stockId, userId,
+          date, income, expendSubTotal,
+          purch, arrears, sales,
+          createTime, updateTime, remark
+          )
+        values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{stockId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT},
+          #{date,jdbcType=DATE}, #{income,jdbcType=DOUBLE}, #{expendSubTotal,jdbcType=DOUBLE},
+          #{purch,jdbcType=DOUBLE}, #{arrears,jdbcType=DOUBLE}, #{sales,jdbcType=DOUBLE},
+          #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}
+          )
+    </insert>
+
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.FinDyDaily">
+        insert into t_fin_dy_daily
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="code != null">
+                code,
+            </if>
+            <if test="stockId != null">
+                stockId,
+            </if>
+            <if test="userId != null">
+                userId,
+            </if>
+            <if test="date != null">
+                date,
+            </if>
+            <if test="income != null">
+                income,
+            </if>
+            <if test="expendSubTotal != null">
+                expendSubTotal,
+            </if>
+            <if test="purch != null">
+                purch,
+            </if>
+            <if test="arrears != null">
+                arrears,
+            </if>
+            <if test="sales != null">
+                sales,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+            <if test="updateTime != null">
+                updateTime,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="code != null">
+                #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="stockId != null">
+                #{stockId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="date != null">
+                #{date,jdbcType=DATE},
+            </if>
+            <if test="income != null">
+                #{income,jdbcType=DOUBLE},
+            </if>
+            <if test="expendSubTotal != null">
+                #{expendSubTotal,jdbcType=DOUBLE},
+            </if>
+            <if test="purch != null">
+                #{purch,jdbcType=DOUBLE},
+            </if>
+            <if test="arrears != null">
+                #{arrears,jdbcType=DOUBLE},
+            </if>
+            <if test="sales != null">
+                #{sales,jdbcType=DOUBLE},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.FinDyDaily">
+        update t_fin_dy_daily
+        <set>
+            <if test="code != null">
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="stockId != null">
+                stockId = #{stockId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                userId = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="date != null">
+                date = #{date,jdbcType=DATE},
+            </if>
+            <if test="income != null">
+                income = #{income,jdbcType=DOUBLE},
+            </if>
+            <if test="expendSubTotal != null">
+                expendSubTotal = #{expendSubTotal,jdbcType=DOUBLE},
+            </if>
+            <if test="purch != null">
+                purch = #{purch,jdbcType=DOUBLE},
+            </if>
+            <if test="arrears != null">
+                arrears = #{arrears,jdbcType=DOUBLE},
+            </if>
+            <if test="sales != null">
+                sales = #{sales,jdbcType=DOUBLE},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                updateTime = #{updateTime,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.FinDyDaily">
+        update t_fin_dy_daily
+        set code = #{code,jdbcType=VARCHAR},
+          stockId = #{stockId,jdbcType=BIGINT},
+          userId = #{userId,jdbcType=BIGINT},
+          date = #{date,jdbcType=DATE},
+          income = #{income,jdbcType=DOUBLE},
+          expendSubTotal = #{expendSubTotal,jdbcType=DOUBLE},
+          purch = #{purch,jdbcType=DOUBLE},
+          arrears = #{arrears,jdbcType=DOUBLE},
+          sales = #{sales,jdbcType=DOUBLE},
+          createTime = #{createTime,jdbcType=BIGINT},
+          updateTime = #{updateTime,jdbcType=BIGINT},
+          remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <resultMap id="dailyListResultMap" type="com.vgit.yunqiang.pojo.FinDyDaily">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="stockId" property="stockId" jdbcType="BIGINT"/>
+        <result column="userId" property="userId" jdbcType="BIGINT"/>
+        <result column="date" property="date" jdbcType="DATE"/>
+        <result column="income" property="income" jdbcType="DOUBLE"/>
+        <result column="expendSubTotal" property="expendSubTotal" jdbcType="DOUBLE"/>
+        <result column="purch" property="purch" jdbcType="DOUBLE"/>
+        <result column="arrears" property="arrears" jdbcType="DOUBLE"/>
+        <result column="sales" property="sales" jdbcType="DOUBLE"/>
+        <result column="createTime" property="createTime" jdbcType="BIGINT"/>
+        <result column="updateTime" property="updateTime" jdbcType="BIGINT"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <collection property="finDailyExpendList" javaType="java.util.List"
+                    ofType="com.vgit.yunqiang.pojo.FinDailyExpend">
+            <id column="deId" property="id" jdbcType="BIGINT"/>
+            <result column="expendItemId" property="expendItemId" jdbcType="BIGINT"/>
+            <result column="stockName" property="stockName" jdbcType="VARCHAR"/>
+            <result column="dailyCode" property="dailyCode" jdbcType="VARCHAR"/>
+            <result column="detail" property="detail" jdbcType="VARCHAR"/>
+            <result column="amount" property="amount" jdbcType="DOUBLE"/>
+            <association property="finExpendItem" javaType="com.vgit.yunqiang.pojo.FinExpendItem">
+                <id column="eiId" property="id" jdbcType="BIGINT"/>
+                <result column="category" property="category" jdbcType="VARCHAR"></result>
+            </association>
+        </collection>
+    </resultMap>
+
+    <select id="queryDailyList" parameterType="java.lang.Long" resultMap="dailyListResultMap">
+        SELECT
+            d.*,
+            de.id as deId,
+            de.expendItemId,
+            de.stockName,
+            de.dailyCode,
+            de.detail,
+            de.amount,
+            ei.id as eiId,
+            ei.category
+        FROM
+            t_fin_dy_daily d
+            JOIN t_fin_daily_expend de ON d.CODE = de.dailyCode
+            JOIN t_fin_expend_item ei ON de.expendItemId = ei.id
+        WHERE
+            d.stockId = #{stockId}
+    </select>
+
+</mapper>

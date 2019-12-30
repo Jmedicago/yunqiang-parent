@@ -36,6 +36,7 @@ public class LoginController {
             Subject subject = SecurityUtils.getSubject();
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 
+            remember = "on"; // 测试
             // 记住我
             if (StringUtils.isNotBlank(remember)) {
                 if (remember.equals("on")) {

@@ -4,7 +4,7 @@
 <link type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
 <link type="text/css" href="/easyui/my/report.css" rel="stylesheet"/>
 <script type="text/javascript" src="/easyui/jquery.min.js"></script>
-<div>
+<div style="padding: 10px">
     <!-- 表报开始 -->
     <table border="1">
         <tr>
@@ -42,7 +42,7 @@
                 <td>
                     <ul>
                         <c:forEach var="item" items="${detail.details}">
-                            <li>${item.expendItem.category}</li>
+                            <li>${item.finExpendItem.category}</li>
                         </c:forEach>
                     </ul>
                 </td>
@@ -69,6 +69,23 @@
     </table>
 </div>
 <script type="text/javascript">
+    $("table tr td ul").each(function (index, value) {
+        var height = $(value).height();
+        var tdStyle = {
+            "height": height,
+            "position": "relative"
+        }
+        $(value).parent().css(tdStyle);
+        var ulStyle = {
+            "position": "absolute",
+            "top": 0,
+            "left": 0,
+            "width": "100%",
+            /*"border-bottom": "1px solid gray"*/
+        }
+        $(value).css(ulStyle);
+    });
+
     /**
      * 合并单元格(如果结束行传0代表合并所有行)
      * @param table1    表格的ID
