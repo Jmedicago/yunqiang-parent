@@ -48,8 +48,8 @@
             <td></td>
             <td></td>
         </tr>
-        <c:forEach var="detail" items="${report.details}">
-            <tr>
+        <c:forEach var="detail" items="${report.details}" varStatus="st">
+            <tr class="${st.count % 2 == 0 ? 'gray' : ''}">
                 <td>${detail.date}</td>
                 <td>
                     <ul>
@@ -108,7 +108,7 @@
             </tr>
         </c:forEach>
         <!-- 测试数据 -->
-        <tr>
+        <%--<tr>
             <td>2018/7/1</td>
             <td>
                 <ul>
@@ -294,7 +294,7 @@
             <td>20,200</td>
             <td>12,500</td>
             <td>689,490</td>
-        </tr>
+        </tr>--%>
     </table>
 </div>
 <script type="text/javascript">

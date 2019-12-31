@@ -281,6 +281,7 @@
             JOIN t_fin_expend_item ei ON de.expendItemId = ei.id
         WHERE
             dz.stockId = #{stockId}
+        GROUP BY de.id
     </select>
 
 </mapper>
