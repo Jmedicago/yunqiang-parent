@@ -32,6 +32,8 @@ public class ReportServiceImpl implements ReportService {
                 case "dz-daily":
                     report = this.finDzDailyService.genDzDailyReport(query);
                     break;
+                case "rp-arrears":
+                    break;
             }
         }
         return report;
