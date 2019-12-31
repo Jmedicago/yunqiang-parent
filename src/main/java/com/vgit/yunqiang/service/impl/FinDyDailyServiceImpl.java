@@ -51,11 +51,11 @@ public class FinDyDailyServiceImpl extends BaseServiceImpl<FinDyDaily> implement
 
         List<FinDyDaily> dailies = this.mapper.queryDailyList(query.getStockId());
         for (FinDyDaily daily : dailies) {
-            double income = daily.getIncome() * 0.01;
-            double expendSubTotal = daily.getExpendSubTotal() * 0.01;
-            double purch = daily.getPurch() * 0.01;
-            double arrears = daily.getArrears() * 0.01;
-            double sales = daily.getSales() * 0.01;
+            double income = daily.getIncome() != null ? daily.getIncome() * 0.01 : 0;
+            double expendSubTotal = daily.getExpendSubTotal() != null ? daily.getExpendSubTotal() * 0.01 : 0;
+            double purch = daily.getPurch() != null ? daily.getPurch() * 0.01 : 0;
+            double arrears = daily.getArrears() != null ? daily.getArrears() * 0.01 : 0;
+            double sales = daily.getSales() != null ? daily.getSales() * 0.01 : 0;
 
             // 汇总
             incomeTotal += income;
@@ -73,14 +73,16 @@ public class FinDyDailyServiceImpl extends BaseServiceImpl<FinDyDaily> implement
             detail.put("sales", sales);
             List<FinDailyExpend> dailyExpends = daily.getFinDailyExpendList();
             for (FinDailyExpend dailyExpend : dailyExpends) {
-                dailyExpend.setAmount(dailyExpend.getAmount() * 0.01);
+                dailyExpend.setAmount(dailyExpend.getAmount() != null ? dailyExpend.getAmount() * 0.01 : 0);
             }
             detail.put("details", dailyExpends);
             details.add(detail);
         }
 
         // 自动更新最后一天当日该店员录入的欠款
-        arrearsTotal = dailies != null ? dailies.get(dailies.size() - 1).getArrears() * 0.01 : 0;
+        if (dailies != null && dailies.size() > 0) {
+            arrearsTotal = dailies.get(dailies.size() - 1).getArrears() != null ? dailies.get(dailies.size() - 1).getArrears() * 0.01 : 0;
+        }
 
         report.put("stockName", getStockName(query.getStockId()));
         report.put("incomeTotal", incomeTotal);

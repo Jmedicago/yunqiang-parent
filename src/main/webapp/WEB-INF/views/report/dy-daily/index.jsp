@@ -18,11 +18,11 @@
             <th>本季度累计销售额</th>
         </tr>
         <tr>
-            <td colspan="2"><fmt:formatNumber value="${report.incomeTotal}" pattern="#,#00.00"/></td>
-            <td colspan="4"><fmt:formatNumber value="${report.expendTotal}" pattern="#,#00.00"/></td>
-            <td><fmt:formatNumber value="${report.purchTotal}" pattern="#,#00.00"/></td>
-            <td><fmt:formatNumber value="${report.arrearsTotal}" pattern="#,#00.00"/></td>
-            <td><fmt:formatNumber value="${report.salesTotal}" pattern="#,#00.00"/></td>
+            <td colspan="2"><fmt:formatNumber value="${report.incomeTotal}" pattern="#,#00"/></td>
+            <td colspan="4"><fmt:formatNumber value="${report.expendTotal}" pattern="#,#00"/></td>
+            <td><fmt:formatNumber value="${report.purchTotal}" pattern="#,#00"/></td>
+            <td><fmt:formatNumber value="${report.arrearsTotal}" pattern="#,#00"/></td>
+            <td><fmt:formatNumber value="${report.salesTotal}" pattern="#,#00"/></td>
         </tr>
         <tr>
             <th>日期</th>
@@ -38,7 +38,7 @@
         <c:forEach var="detail" items="${report.details}" varStatus="st">
             <tr class="${st.count % 2 == 0 ? 'gray' : ''}">
                 <td>${detail.date}</td>
-                <td><fmt:formatNumber value="${detail.income}" pattern="#,#00.00"/></td>
+                <td><fmt:formatNumber value="${detail.income}" pattern="#,#00"/></td>
                 <td>
                     <ul>
                         <c:forEach var="item" items="${detail.details}">
@@ -56,14 +56,14 @@
                 <td>
                     <ul>
                         <c:forEach var="item" items="${detail.details}">
-                            <li><fmt:formatNumber value="${item.amount}" pattern="#,#00.00"/></li>
+                            <li><fmt:formatNumber value="${item.amount}" pattern="#,#00"/></li>
                         </c:forEach>
                     </ul>
                 </td>
-                <td><fmt:formatNumber value="${detail.expendSubTotal}" pattern="#,#00.00"/></td>
-                <td><fmt:formatNumber value="${detail.purch}" pattern="#,#00.00"/></td>
-                <td><fmt:formatNumber value="${detail.arrears}" pattern="#,#00.00"/></td>
-                <td><fmt:formatNumber value="${detail.sales}" pattern="#,#00.00"/></td>
+                <td><fmt:formatNumber value="${detail.expendSubTotal}" pattern="#,#00"/></td>
+                <td><fmt:formatNumber value="${detail.purch}" pattern="#,#00"/></td>
+                <td><fmt:formatNumber value="${detail.arrears}" pattern="#,#00"/></td>
+                <td><fmt:formatNumber value="${detail.sales}" pattern="#,#00"/></td>
             </tr>
         </c:forEach>
     </table>

@@ -55,38 +55,59 @@ public class FinDzDailyServiceImpl extends BaseServiceImpl<FinDzDaily> implement
         for (FinDzDaily dzDaily : finDzDailyList) {
             double incomeSubTotal = 0;
             double expendSubTotal = 0;
+            double deposit = dzDaily.getDeposit() != null ? dzDaily.getDeposit() * 0.01 : 0;
+            double purch = dzDaily.getPurch() != null ? dzDaily.getPurch() * 0.01 : 0;
+            double arrears = dzDaily.getArrears() != null ? dzDaily.getArrears() * 0.01 : 0;
+            double sales = dzDaily.getSales() != null ? dzDaily.getSales() * 0.01 : 0;
 
-            // 明细
+            // 店员收支明细
             Hashtable<String, Object> detail = new Hashtable<String, Object>();
             List<FinDyDaily> dyDailies = dzDaily.getFinDyDailyList();
             for (FinDyDaily dyDaily : dyDailies) {
-                double income = dyDaily.getIncome() * 0.01;
-                double purch = dyDaily.getPurch() * 0.01;
+                // 店员现金入账
+                double income = dyDaily.getIncome() != null ? dyDaily.getIncome() * 0.01 : 0;
+                dyDaily.setIncome(income);
 
+                // 店员支出明细
                 List<FinDailyExpend> dailyExpends = dyDaily.getFinDailyExpendList();
                 for (FinDailyExpend dailyExpend : dailyExpends) {
-                    dailyExpend.setAmount(dailyExpend.getAmount() * 0.01);
+                    dailyExpend.setAmount(dailyExpend.getAmount() != null ? dailyExpend.getAmount() * 0.01 : 0);
                     expendSubTotal += dailyExpend.getAmount();
                 }
-                // 日进总额
+                // 店员日进总额
                 incomeSubTotal += income;
-                dyDaily.setIncome(income);
             }
 
-            //purchTotal += purch;
+            // 区域店长收支明细
+            incomeTotal += incomeSubTotal;
+            expendTotal += expendSubTotal;
+            depositTotal += deposit;
+            purchTotal += purch;
+            salesTotal += sales;
 
             detail.put("date", TimeUtils.dateFormat(dzDaily.getDate(), "yyyy\\MM\\dd"));
             detail.put("incomeSubTotal", incomeSubTotal);
             detail.put("expendSubTotal", expendSubTotal);
-            //detail.put("", ); // 保险柜现金
-            detail.put("purch", dzDaily.getPurch()); // 上货金额
-            detail.put("arrears", dzDaily.getArrears()); // 客商总额
+            detail.put("deposit", deposit); // 保险柜现金
+            detail.put("purch", purch); // 上货金额
+            detail.put("arrears", arrears); // 客商总额
+            detail.put("sales", sales);
             detail.put("dyDailies", dyDailies);
             details.add(detail);
         }
 
+        // 自动更新最后一天当日该店员录入的欠款
+        if (finDzDailyList != null && finDzDailyList.size() > 0) {
+            arrearsTotal = finDzDailyList.get(finDzDailyList.size() - 1).getArrears() != null ? finDzDailyList.get(finDzDailyList.size() - 1).getArrears() * 0.01 : 0;
+        }
+
         report.put("stockName", getStockName(query.getStockId()));
         report.put("incomeTotal", incomeTotal);
+        report.put("expendTotal", expendTotal);
+        report.put("depositTotal", depositTotal);
+        report.put("purchTotal", purchTotal);
+        report.put("arrearsTotal", arrearsTotal);
+        report.put("salesTotal", salesTotal);
         report.put("details", details);
         return report;
     }

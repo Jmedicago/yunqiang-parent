@@ -19,12 +19,12 @@
             <th>本季度累计销售额</th>
         </tr>
         <tr>
-            <td colspan="4"></td>
-            <td colspan="5"></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td colspan="4"><fmt:formatNumber value="${report.incomeTotal}" pattern="#,#00"/></td>
+            <td colspan="5"><fmt:formatNumber value="${report.expendTotal}" pattern="#,#00"/></td>
+            <td><fmt:formatNumber value="${report.depositTotal}" pattern="#,#00"/></td>
+            <td><fmt:formatNumber value="${report.purchTotal}" pattern="#,#00"/></td>
+            <td><fmt:formatNumber value="${report.arrearsTotal}" pattern="#,#00"/></td>
+            <td><fmt:formatNumber value="${report.salesTotal}" pattern="#,#00"/></td>
         </tr>
         <tr>
             <th>日期</th>
@@ -61,11 +61,11 @@
                 <td>
                     <ul>
                         <c:forEach var="dyDetail" items="${detail.dyDailies}">
-                            <li><fmt:formatNumber value="${dyDetail.income}" pattern="#,#00.00"/></li>
+                            <li><fmt:formatNumber value="${dyDetail.income}" pattern="#,#00"/></li>
                         </c:forEach>
                     </ul>
                 </td>
-                <td><fmt:formatNumber value="${detail.incomeSubTotal}" pattern="#,#00.00"/></td>
+                <td><fmt:formatNumber value="${detail.incomeSubTotal}" pattern="#,#00"/></td>
                 <td>
                     <ul>
                         <c:forEach var="dyDetail" items="${detail.dyDailies}">
@@ -97,204 +97,28 @@
                     <ul>
                         <c:forEach var="dyDetail" items="${detail.dyDailies}">
                             <c:forEach var="expend" items="${dyDetail.finDailyExpendList}">
-                                <li><fmt:formatNumber value="${expend.amount}" pattern="#,#00.00"/></li>
+                                <li><fmt:formatNumber value="${expend.amount}" pattern="#,#00"/></li>
                             </c:forEach>
                         </c:forEach>
                     </ul>
                 </td>
                 <td>
-                    <fmt:formatNumber value="${detail.expendSubTotal}" pattern="#,#00.00"/>
+                    <fmt:formatNumber value="${detail.expendSubTotal}" pattern="#,#00"/>
+                </td>
+                <td>
+                    <fmt:formatNumber value="${detail.deposit}" pattern="#,#00"/>
+                </td>
+                <td>
+                    <fmt:formatNumber value="${detail.purch}" pattern="#,#00"/>
+                </td>
+                <td>
+                    <fmt:formatNumber value="${detail.arrears}" pattern="#,#00"/>
+                </td>
+                <td>
+                    <fmt:formatNumber value="${detail.sales}" pattern="#,#00"/>
                 </td>
             </tr>
         </c:forEach>
-        <!-- 测试数据 -->
-        <%--<tr>
-            <td>2018/7/1</td>
-            <td>
-                <ul>
-                    <li>A1</li>
-                    <li>A2</li>
-                    <li>B1</li>
-                    <li>B2</li>
-                </ul>
-            </td>
-            <td>
-                <ul>
-                    <li>120,000</li>
-                    <li>250,000</li>
-                    <li>100,000</li>
-                    <li>150,000</li>
-                </ul>
-            </td>
-            <td>620,000</td>
-            <td>
-                <ul>
-                    <li>A1</li>
-                    <li>A2</li>
-                    <li>B1</li>
-                    <li>B2</li>
-                    <li>Beira店长</li>
-                    <li>Beira店长</li>
-                </ul>
-            </td>
-            <td>
-                <ul>
-                    <li>A</li>
-                    <li>G</li>
-                    <li>G</li>
-                    <li>C</li>
-                    <li>I</li>
-                    <li>C</li>
-                </ul>
-            </td>
-            <td>
-                <ul>
-                    <li>买早餐</li>
-                    <li>付床垫货款</li>
-                    <li>做发票</li>
-                    <li>B1客户拿货存款BCI银行</li>
-                    <li>中国人换钱</li>
-                    <li>现金存入SD银行</li>
-                </ul>
-            </td>
-            <td>
-                <ul>
-                    <li>80</li>
-                    <li>37,710</li>
-                    <li>3,700</li>
-                    <li>28,000</li>
-                    <li>10,000</li>
-                    <li>800,000</li>
-                </ul>
-            </td>
-            <td>879,490</td>
-            <td>770,000</td>
-            <td>20,200</td>
-            <td>12,500</td>
-            <td>689,490</td>
-        </tr>
-        <tr class="gray">
-            <td>2018/7/1</td>
-            <td>
-                <ul>
-                    <li>A1</li>
-                    <li>A2</li>
-                    <li>B1</li>
-                    <li>B2</li>
-                </ul>
-            </td>
-            <td>
-                <ul>
-                    <li>120,000</li>
-                    <li>250,000</li>
-                    <li>100,000</li>
-                    <li>150,000</li>
-                </ul>
-            </td>
-            <td>620,000</td>
-            <td>
-                <ul>
-                    <li>A1</li>
-                    <li>A2</li>
-                    <li>B1</li>
-                    <li>B2</li>
-                </ul>
-            </td>
-            <td>
-                <ul>
-                    <li>A</li>
-                    <li>G</li>
-                    <li>G</li>
-                    <li>C</li>
-                </ul>
-            </td>
-            <td>
-                <ul>
-                    <li>买早餐</li>
-                    <li>付床垫货款</li>
-                    <li>做发票</li>
-                    <li>B1客户拿货存款BCI银行</li>
-                </ul>
-            </td>
-            <td>
-                <ul>
-                    <li>80</li>
-                    <li>37,710</li>
-                    <li>3,700</li>
-                    <li>28,000</li>
-                </ul>
-            </td>
-            <td>879,490</td>
-            <td>770,000</td>
-            <td>20,200</td>
-            <td>12,500</td>
-            <td>689,490</td>
-        </tr>
-        <tr>
-            <td>2018/7/1</td>
-            <td>
-                <ul>
-                    <li>A1</li>
-                    <li>A2</li>
-                    <li>B1</li>
-                    <li>B2</li>
-                </ul>
-            </td>
-            <td>
-                <ul>
-                    <li>120,000</li>
-                    <li>250,000</li>
-                    <li>100,000</li>
-                    <li>150,000</li>
-                </ul>
-            </td>
-            <td>620,000</td>
-            <td>
-                <ul>
-                    <li>A1</li>
-                    <li>A2</li>
-                    <li>B1</li>
-                    <li>B2</li>
-                    <li>Beira店长</li>
-                    <li>Beira店长</li>
-                </ul>
-            </td>
-            <td>
-                <ul>
-                    <li>A</li>
-                    <li>G</li>
-                    <li>G</li>
-                    <li>C</li>
-                    <li>I</li>
-                    <li>C</li>
-                </ul>
-            </td>
-            <td>
-                <ul>
-                    <li>买早餐</li>
-                    <li>付床垫货款</li>
-                    <li>做发票</li>
-                    <li>B1客户拿货存款BCI银行</li>
-                    <li>中国人换钱</li>
-                    <li>现金存入SD银行</li>
-                </ul>
-            </td>
-            <td>
-                <ul>
-                    <li>80</li>
-                    <li>37,710</li>
-                    <li>3,700</li>
-                    <li>28,000</li>
-                    <li>10,000</li>
-                    <li>800,000</li>
-                </ul>
-            </td>
-            <td>879,490</td>
-            <td>770,000</td>
-            <td>20,200</td>
-            <td>12,500</td>
-            <td>689,490</td>
-        </tr>--%>
     </table>
 </div>
 <script type="text/javascript">
