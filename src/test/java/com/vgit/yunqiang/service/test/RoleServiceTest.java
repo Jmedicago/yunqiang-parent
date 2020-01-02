@@ -1,7 +1,11 @@
 package com.vgit.yunqiang.service.test;
 
+import com.vgit.yunqiang.common.query.ReportQuery;
+import com.vgit.yunqiang.pojo.BisStock;
 import com.vgit.yunqiang.pojo.FinDyDaily;
 import com.vgit.yunqiang.pojo.FinDzDaily;
+import com.vgit.yunqiang.pojo.FinYear;
+import com.vgit.yunqiang.service.FinArrearsService;
 import com.vgit.yunqiang.service.FinDyDailyService;
 import com.vgit.yunqiang.service.FinDzDailyService;
 import com.vgit.yunqiang.service.SysRoleService;
@@ -13,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
+import java.util.Hashtable;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -27,6 +32,9 @@ public class RoleServiceTest {
 
     @Autowired
     private FinDzDailyService finDzDailyService;
+
+    @Autowired
+    private FinArrearsService finArrearsService;
 
     @Test
     public void testFindRoles() throws Exception {
@@ -48,6 +56,15 @@ public class RoleServiceTest {
     public void testDzDailyList() {
         List<FinDzDaily> dzDailyList = this.finDzDailyService.queryDailyList(1001L);
         System.out.println(dzDailyList);
+    }
+
+    @Test
+    public void testArrearsList() {
+        //List<BisStock> arrearsList = this.finArrearsService.queryArrearsList("2019");
+        ReportQuery query = new ReportQuery();
+        query.setYear("2019");
+        Hashtable<String, Object> arrearsList = this.finArrearsService.queryArrearsReport(query);
+        System.out.println(arrearsList);
     }
 
 }

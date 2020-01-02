@@ -6,6 +6,8 @@ public class ReportQuery {
 
     private Long stockId;
 
+    private String year;
+
     public String getRn() {
         return rn;
     }
@@ -20,6 +22,14 @@ public class ReportQuery {
 
     public void setStockId(Long stockId) {
         this.stockId = stockId;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
     }
 
 }

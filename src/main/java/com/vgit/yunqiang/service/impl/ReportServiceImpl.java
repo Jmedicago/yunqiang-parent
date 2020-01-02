@@ -1,10 +1,7 @@
 package com.vgit.yunqiang.service.impl;
 
 import com.vgit.yunqiang.common.query.ReportQuery;
-import com.vgit.yunqiang.service.FinDyDailyService;
-import com.vgit.yunqiang.service.FinDzDailyService;
-import com.vgit.yunqiang.service.FinStockDailyService;
-import com.vgit.yunqiang.service.ReportService;
+import com.vgit.yunqiang.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +17,9 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     private FinDzDailyService finDzDailyService;
 
+    @Autowired
+    private FinArrearsService finArrearsService;
+
     @Override
     public Hashtable<String, Object> report(ReportQuery query) {
         Hashtable<String, Object> report = null;
@@ -33,6 +33,7 @@ public class ReportServiceImpl implements ReportService {
                     report = this.finDzDailyService.genDzDailyReport(query);
                     break;
                 case "rp-arrears":
+                    report = this.finArrearsService.queryArrearsReport(query);
                     break;
             }
         }

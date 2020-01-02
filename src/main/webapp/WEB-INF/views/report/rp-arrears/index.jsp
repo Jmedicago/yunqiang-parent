@@ -5,10 +5,13 @@
 <link type="text/css" href="/easyui/my/report.css" rel="stylesheet"/>
 <script type="text/javascript" src="/easyui/jquery.min.js"></script>
 <div style="padding: 10px">
+    <div>
+        ${report.months}
+    </div>
     <!-- 表报开始 -->
     <table border="1">
         <tr>
-            <th colspan="14">月/季度/年 - 各区域连锁店客商欠款汇总</th>
+            <th colspan="14">${report.year}年 - 各区域连锁店客商欠款汇总</th>
         </tr>
         <tr>
             <th id="lineTd">
@@ -29,69 +32,37 @@
             <th>12月份</th>
             <th>Total</th>
         </tr>
+        <c:forEach var="stock" items="${report.stockList}">
+            <tr>
+                <td>${stock.name}</td>
+                <c:set var="months" value="1,2,3,4,5,6,7,8,9,10,11,12"></c:set>
+                <c:forEach var="month" items="${months}">
+                    <td>
+                        <c:forEach var="arrear" items="${stock.arrearsList}">
+                            <c:if test="${arrear.monthId == month}">
+                                <fmt:formatNumber value="${arrear.amount}" pattern="#,#00"/>
+                            </c:if>
+                        </c:forEach>
+                    </td>
+                </c:forEach>
+                <td><fmt:formatNumber value="${stock.total}" pattern="#,#00"/></td>
+            </tr>
+        </c:forEach>
         <tr>
-            <td>BEIRA</td>
-            <td>800,000</td>
-            <td>800,000</td>
-            <td>2,500,000</td>
-            <td>900,000</td>
-            <td>5,900,000</td>
-            <td>6,300,000</td>
-            <td>2,000,000</td>
-            <td>500,000</td>
-            <td>400,000</td>
-            <td>500,000</td>
-            <td>300,000</td>
-            <td>4500,000</td>
-            <td>254000,000</td>
-        </tr>
-        <tr>
-            <td>BEIRA</td>
-            <td>800,000</td>
-            <td>800,000</td>
-            <td>2,500,000</td>
-            <td>900,000</td>
-            <td>5,900,000</td>
-            <td>6,300,000</td>
-            <td>2,000,000</td>
-            <td>500,000</td>
-            <td>400,000</td>
-            <td>500,000</td>
-            <td>300,000</td>
-            <td>4500,000</td>
-            <td>254000,000</td>
-        </tr>
-        <tr style="background: #f0ef36">
             <td>当月各店总欠款</td>
-            <td>800,000</td>
-            <td>800,000</td>
-            <td>2,500,000</td>
-            <td>900,000</td>
-            <td>5,900,000</td>
-            <td>6,300,000</td>
-            <td>2,000,000</td>
-            <td>500,000</td>
-            <td>400,000</td>
-            <td>500,000</td>
-            <td>300,000</td>
-            <td>4500,000</td>
-            <td>254000,000</td>
+            <td><fmt:formatNumber value="${report.janTotal}" pattern="#,#00"/></td>
+            <td><fmt:formatNumber value="${report.febTotal}" pattern="#,#00"/></td>
+            <td><fmt:formatNumber value="${report.marTotal}" pattern="#,#00"/></td>
+            <td><fmt:formatNumber value="${report.aprTotal}" pattern="#,#00"/></td>
+            <td><fmt:formatNumber value="${report.mayTotal}" pattern="#,#00"/></td>
+            <td><fmt:formatNumber value="${report.junTotal}" pattern="#,#00"/></td>
+            <td><fmt:formatNumber value="${report.julTotal}" pattern="#,#00"/></td>
+            <td><fmt:formatNumber value="${report.augTotal}" pattern="#,#00"/></td>
+            <td><fmt:formatNumber value="${report.septTotal}" pattern="#,#00"/></td>
+            <td><fmt:formatNumber value="${report.octTotal}" pattern="#,#00"/></td>
+            <td><fmt:formatNumber value="${report.novTotal}" pattern="#,#00"/></td>
+            <td><fmt:formatNumber value="${report.decTotal}" pattern="#,#00"/></td>
+            <td><fmt:formatNumber value="${report.allMonthTotal}" pattern="#,#00"/></td>
         </tr>
     </table>
-
-    <script type="text/javascript">
-        var data = {
-            "year": 2019,
-            "details": [{
-                "stockName": "Beira",
-                "arrearsList": [{
-                    "month": 1,
-                    "amount": 800000
-                }, {
-                    "month": 2,
-                    "amount": 800000
-                }]
-            }]
-        }
-    </script>
 </div>

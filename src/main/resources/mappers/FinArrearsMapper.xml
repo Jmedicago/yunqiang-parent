@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vgit.yunqiang.mapper.FinArrearsMapper">
+
+    <resultMap id="BaseResultMap" type="com.vgit.yunqiang.pojo.FinArrears">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="yearId" property="yearId" jdbcType="BIGINT"/>
+        <result column="monthId" property="monthId" jdbcType="BIGINT"/>
+        <result column="stockId" property="stockId" jdbcType="BIGINT"/>
+        <result column="amount" property="amount" jdbcType="DOUBLE"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, yearId, monthId, stockId, amount
+    </sql>
+
+    <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from t_fin_arrears
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from t_fin_arrears
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.FinArrears">
+        insert into t_fin_arrears (id, yearId, monthId,
+          stockId, amount)
+        values (#{id,jdbcType=BIGINT}, #{yearId,jdbcType=BIGINT}, #{monthId,jdbcType=BIGINT},
+          #{stockId,jdbcType=BIGINT}, #{amount,jdbcType=DOUBLE})
+    </insert>
+
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.FinArrears">
+        insert into t_fin_arrears
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="yearId != null">
+                yearId,
+            </if>
+            <if test="monthId != null">
+                monthId,
+            </if>
+            <if test="stockId != null">
+                stockId,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="yearId != null">
+                #{yearId,jdbcType=BIGINT},
+            </if>
+            <if test="monthId != null">
+                #{monthId,jdbcType=BIGINT},
+            </if>
+            <if test="stockId != null">
+                #{stockId,jdbcType=BIGINT},
+            </if>
+            <if test="amount != null">
+                #{amount,jdbcType=DOUBLE},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.FinArrears">
+        update t_fin_arrears
+        <set>
+            <if test="yearId != null">
+                yearId = #{yearId,jdbcType=BIGINT},
+            </if>
+            <if test="monthId != null">
+                monthId = #{monthId,jdbcType=BIGINT},
+            </if>
+            <if test="stockId != null">
+                stockId = #{stockId,jdbcType=BIGINT},
+            </if>
+            <if test="amount != null">
+                amount = #{amount,jdbcType=DOUBLE},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.FinArrears">
+        update t_fin_arrears
+        set yearId = #{yearId,jdbcType=BIGINT},
+          monthId = #{monthId,jdbcType=BIGINT},
+          stockId = #{stockId,jdbcType=BIGINT},
+          amount = #{amount,jdbcType=DOUBLE}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!--<resultMap id="arrearsListResultMap" type="com.vgit.yunqiang.pojo.FinYear">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <collection property="monthList" javaType="java.util.List" ofType="com.vgit.yunqiang.pojo.FinMonth">
+            <id column="mId" property="id" jdbcType="BIGINT"/>
+            <result column="mName" property="name" jdbcType="VARCHAR"/>
+            <collection property="arrearsList" javaType="java.util.List" ofType="com.vgit.yunqiang.pojo.FinArrears">
+                <id column="aId" property="id" jdbcType="BIGINT"/>
+                <result column="yearId" property="yearId" jdbcType="BIGINT"/>
+                <result column="monthId" property="monthId" jdbcType="BIGINT"/>
+                <result column="stockId" property="stockId" jdbcType="BIGINT"/>
+                <result column="amount" property="amount" jdbcType="DOUBLE"/>
+                <association property="stock" javaType="com.vgit.yunqiang.pojo.BisStock">
+                    <id column="sId" property="id" jdbcType="BIGINT"/>
+                    <result column="sName" property="name" jdbcType="BIGINT"/>
+                </association>
+            </collection>
+        </collection>
+    </resultMap>-->
+    <!--<select id="queryArrearsList" parameterType="java.lang.String" resultMap="arrearsListResultMap">
+        SELECT
+            y.id,
+            y.name,
+            m.id AS mId,
+            m.name AS mName,
+            s.id AS sId,
+            s.name AS sName,
+            a.id AS aId,
+            a.yearId,
+            a.monthId,
+            a.stockId,
+            a.amount
+        FROM
+            t_fin_arrears a
+            JOIN t_fin_year y ON a.yearId = y.id
+            JOIN t_fin_month m ON a.monthId = m.id
+            JOIN t_bis_stock s ON a.stockId = s.id
+        WHERE
+            s.type = 1
+            AND y.NAME = #{year}
+    </select>-->
+    <resultMap id="arrearsListResultMap" type="com.vgit.yunqiang.pojo.BisStock">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="BIGINT"/>
+        <collection property="arrearsList" javaType="java.util.List" ofType="com.vgit.yunqiang.pojo.FinArrears">
+            <id column="aId" property="id" jdbcType="BIGINT"/>
+            <result column="yearId" property="yearId" jdbcType="BIGINT"/>
+            <result column="monthId" property="monthId" jdbcType="BIGINT"/>
+            <result column="stockId" property="stockId" jdbcType="BIGINT"/>
+            <result column="amount" property="amount" jdbcType="DOUBLE"/>
+        </collection>
+    </resultMap>
+    <select id="queryArrearsList" parameterType="java.lang.String" resultMap="arrearsListResultMap">
+        SELECT
+            s.id,
+            s.name,
+            a.id AS aId,
+            a.yearId,
+            a.monthId,
+            a.stockId,
+            a.amount
+        FROM
+            t_fin_arrears a
+            JOIN t_fin_year y ON a.yearId = y.id
+            JOIN t_fin_month m ON a.monthId = m.id
+            JOIN t_bis_stock s ON a.stockId = s.id
+        WHERE
+            s.type = 1
+            AND y.NAME = #{year}
+    </select>
+
+</mapper>
