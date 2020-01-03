@@ -29,8 +29,8 @@
             <th>12月份</th>
             <th>Total</th>
         </tr>
-        <c:forEach var="stock" items="${report.stockList}">
-            <tr>
+        <c:forEach var="stock" items="${report.stockList}" varStatus="st">
+            <tr class="${st.count % 2 == 0 ? 'gray' : ''}">
                 <td>${stock.name}</td>
                 <c:set var="months" value="1,2,3,4,5,6,7,8,9,10,11,12"></c:set>
                 <c:forEach var="month" items="${months}">

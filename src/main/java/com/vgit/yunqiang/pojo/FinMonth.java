@@ -6,6 +6,8 @@ public class FinMonth {
 
     private Long id;
 
+    private Long quarterlyId;
+
     private String name;
 
     List<FinArrears> arrearsList;
@@ -16,6 +18,14 @@ public class FinMonth {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getQuarterlyId() {
+        return quarterlyId;
+    }
+
+    public void setQuarterlyId(Long quarterlyId) {
+        this.quarterlyId = quarterlyId;
     }
 
     public String getName() {

@@ -20,8 +20,8 @@
                 <th>${month}月</th>
             </c:forEach>
         </tr>
-        <c:forEach var="stockRegion" items="${report.stockRegionList}">
-            <tr>
+        <c:forEach var="stockRegion" items="${report.stockRegionList}" varStatus="st">
+            <tr class="${st.count % 2 == 0 ? 'gray' : ''}">
                 <td>${stockRegion.name}</td>
                 <td>
                     <ul>

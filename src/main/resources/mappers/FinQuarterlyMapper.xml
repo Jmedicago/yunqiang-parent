@@ -1,42 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vgit.yunqiang.mapper.FinMonthMapper">
+<mapper namespace="com.vgit.yunqiang.mapper.FinQuarterlyMapper">
 
-    <resultMap id="BaseResultMap" type="com.vgit.yunqiang.pojo.FinMonth">
+    <resultMap id="BaseResultMap" type="com.vgit.yunqiang.pojo.FinQuarterly">
         <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="quarterlyId" property="quarterlyId" jdbcType="BIGINT"></result>
         <result column="name" property="name" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, quarterlyId, name
+        id, name
     </sql>
 
     <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
         <include refid="Base_Column_List"/>
-        from t_fin_month
+        from t_fin_quarterly
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <delete id="delete" parameterType="java.lang.Long">
-        delete from t_fin_month
+        delete from t_fin_quarterly
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="save" parameterType="com.vgit.yunqiang.pojo.FinMonth">
-        insert into t_fin_month (id, quarterlyId, name)
-        values (#{id,jdbcType=BIGINT}, #{quarterlyId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR})
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.FinQuarterly">
+        insert into t_fin_quarterly (id, name)
+        values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR})
     </insert>
 
-    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.FinMonth">
-        insert into t_fin_month
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.FinQuarterly">
+        insert into t_fin_quarterly
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
-            </if>
-            <if test="quarterlyId != null">
-                quarterlyId,
             </if>
             <if test="name != null">
                 name,
@@ -46,21 +42,15 @@
             <if test="id != null">
                 #{id,jdbcType=BIGINT},
             </if>
-            <if test="quarterlyId != null">
-                #{quarterlyId,jdbcType=BIGINT},
-            </if>
             <if test="name != null">
                 #{name,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
 
-    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.FinMonth">
-        update t_fin_month
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.FinQuarterly">
+        update t_fin_quarterly
         <set>
-            <if test="quarterlyId != null">
-                quarterlyId = #{quarterlyId,jdbcType=BIGINT},
-            </if>
             <if test="name != null">
                 name = #{name,jdbcType=VARCHAR},
             </if>
@@ -68,11 +58,9 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <update id="update" parameterType="com.vgit.yunqiang.pojo.FinMonth">
-        update t_fin_month
-        set
-        quarterlyId = #{quarterlyId,jdbcType=BIGINT},
-        name = #{name,jdbcType=VARCHAR}
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.FinQuarterly">
+        update t_fin_quarterly
+        set name = #{name,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 

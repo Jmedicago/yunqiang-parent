@@ -26,6 +26,9 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     private FinMSalesService finMSalesService;
 
+    @Autowired
+    private FinQExpendsService finQExpendsService;
+
     @Override
     public Hashtable<String, Object> report(ReportQuery query) {
         Hashtable<String, Object> report = null;
@@ -46,6 +49,9 @@ public class ReportServiceImpl implements ReportService {
                     break;
                 case "rp-m-sales": // 每月区域销售汇总
                     report = this.finMSalesService.queryDSalesReport(query);
+                    break;
+                case "rp-q-expends": // 某区域季度支出报表
+                    report = this.finQExpendsService.queryQExpendsReport(query);
                     break;
             }
         }
