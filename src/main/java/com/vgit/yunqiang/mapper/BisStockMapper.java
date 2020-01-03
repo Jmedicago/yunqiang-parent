@@ -5,6 +5,8 @@ import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.pojo.BisStock;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface BisStockMapper extends BaseMapper<BisStock> {
 
     /**
@@ -14,4 +16,11 @@ public interface BisStockMapper extends BaseMapper<BisStock> {
      * @return
      */
     BisStock getStockByName(@Param("name") String name);
+
+    /**
+     * 查询区域店列表
+     *
+     * @return
+     */
+    List<BisStock> getRegionStockList();
 }

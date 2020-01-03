@@ -5,9 +5,6 @@
 <link type="text/css" href="/easyui/my/report.css" rel="stylesheet"/>
 <script type="text/javascript" src="/easyui/jquery.min.js"></script>
 <div style="padding: 10px">
-    <div>
-        ${report.months}
-    </div>
     <!-- 表报开始 -->
     <table border="1">
         <tr>
@@ -48,7 +45,7 @@
                 <td><fmt:formatNumber value="${stock.total}" pattern="#,#00"/></td>
             </tr>
         </c:forEach>
-        <tr>
+        <tr style="background: #f0ef36">
             <td>当月各店总欠款</td>
             <td><fmt:formatNumber value="${report.janTotal}" pattern="#,#00"/></td>
             <td><fmt:formatNumber value="${report.febTotal}" pattern="#,#00"/></td>

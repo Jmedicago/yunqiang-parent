@@ -1,14 +1,9 @@
 package com.vgit.yunqiang.service.test;
 
 import com.vgit.yunqiang.common.query.ReportQuery;
-import com.vgit.yunqiang.pojo.BisStock;
-import com.vgit.yunqiang.pojo.FinDyDaily;
-import com.vgit.yunqiang.pojo.FinDzDaily;
-import com.vgit.yunqiang.pojo.FinYear;
-import com.vgit.yunqiang.service.FinArrearsService;
-import com.vgit.yunqiang.service.FinDyDailyService;
-import com.vgit.yunqiang.service.FinDzDailyService;
-import com.vgit.yunqiang.service.SysRoleService;
+import com.vgit.yunqiang.mapper.FinDayMapper;
+import com.vgit.yunqiang.pojo.*;
+import com.vgit.yunqiang.service.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
@@ -35,6 +30,12 @@ public class RoleServiceTest {
 
     @Autowired
     private FinArrearsService finArrearsService;
+
+    @Autowired
+    private FinDSalesService finDSalesService;
+
+    @Autowired
+    private FinDayMapper finDayMapper;
 
     @Test
     public void testFindRoles() throws Exception {
@@ -65,6 +66,21 @@ public class RoleServiceTest {
         query.setYear("2019");
         Hashtable<String, Object> arrearsList = this.finArrearsService.queryArrearsReport(query);
         System.out.println(arrearsList);
+    }
+
+    @Test
+    public void testAddDays() {
+        for (int i = 1; i <= 31; i ++) {
+            FinDay day = new FinDay();
+            day.setName(i + "日");
+            this.finDayMapper.save(day);
+        }
+    }
+
+    @Test
+    public void testGetSalesList() {
+        List<BisStock> salesList = this.finDSalesService.getDSalesList(1, "2019", "1");
+        System.out.println(salesList);
     }
 
 }

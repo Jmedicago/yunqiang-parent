@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vgit.yunqiang.mapper.FinDSalesMapper">
+
+    <resultMap id="BaseResultMap" type="com.vgit.yunqiang.pojo.FinDSales">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="yearId" property="yearId" jdbcType="BIGINT"/>
+        <result column="monthId" property="monthId" jdbcType="BIGINT"/>
+        <result column="dayId" property="dayId" jdbcType="BIGINT"/>
+        <result column="stockId" property="stockId" jdbcType="BIGINT"/>
+        <result column="amount" property="amount" jdbcType="DOUBLE"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+      id, yearId, monthId, dayId, stockId, amount
+    </sql>
+
+    <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from t_fin_d_sales
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from t_fin_d_sales
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.FinDSales">
+        insert into t_fin_d_sales (id, yearId, monthId,
+          dayId, stockId, amount
+          )
+        values (#{id,jdbcType=BIGINT}, #{yearId,jdbcType=BIGINT}, #{monthId,jdbcType=BIGINT},
+          #{dayId,jdbcType=BIGINT}, #{stockId,jdbcType=BIGINT}, #{amount,jdbcType=DOUBLE}
+          )
+    </insert>
+
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.FinDSales">
+        insert into t_fin_d_sales
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="yearId != null">
+                yearId,
+            </if>
+            <if test="monthId != null">
+                monthId,
+            </if>
+            <if test="dayId != null">
+                dayId,
+            </if>
+            <if test="stockId != null">
+                stockId,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="yearId != null">
+                #{yearId,jdbcType=BIGINT},
+            </if>
+            <if test="monthId != null">
+                #{monthId,jdbcType=BIGINT},
+            </if>
+            <if test="dayId != null">
+                #{dayId,jdbcType=BIGINT},
+            </if>
+            <if test="stockId != null">
+                #{stockId,jdbcType=BIGINT},
+            </if>
+            <if test="amount != null">
+                #{amount,jdbcType=DOUBLE},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.FinDSales">
+        update t_fin_d_sales
+        <set>
+            <if test="yearId != null">
+                yearId = #{yearId,jdbcType=BIGINT},
+            </if>
+            <if test="monthId != null">
+                monthId = #{monthId,jdbcType=BIGINT},
+            </if>
+            <if test="dayId != null">
+                dayId = #{dayId,jdbcType=BIGINT},
+            </if>
+            <if test="stockId != null">
+                stockId = #{stockId,jdbcType=BIGINT},
+            </if>
+            <if test="amount != null">
+                amount = #{amount,jdbcType=DOUBLE},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.FinDSales">
+        update t_fin_d_sales
+        set yearId = #{yearId,jdbcType=BIGINT},
+          monthId = #{monthId,jdbcType=BIGINT},
+          dayId = #{dayId,jdbcType=BIGINT},
+          stockId = #{stockId,jdbcType=BIGINT},
+          amount = #{amount,jdbcType=DOUBLE}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <resultMap id="dSalesListResultMap" type="com.vgit.yunqiang.pojo.BisStock">
+        <id column="id" jdbcType="BIGINT" property="id"></id>
+        <result column="name" jdbcType="VARCHAR" property="name"></result>
+        <result column="type" jdbcType="INTEGER" property="type"></result>
+        <collection property="dSalesList" javaType="java.util.List" ofType="com.vgit.yunqiang.pojo.FinDSales">
+            <id column="dsId" property="id" jdbcType="BIGINT"/>
+            <result column="yearId" property="yearId" jdbcType="BIGINT"/>
+            <result column="monthId" property="monthId" jdbcType="BIGINT"/>
+            <result column="dayId" property="dayId" jdbcType="BIGINT"/>
+            <result column="stockId" property="stockId" jdbcType="BIGINT"/>
+            <result column="amount" property="amount" jdbcType="DOUBLE"/>
+        </collection>
+    </resultMap>
+    <select id="getDSalesList" resultMap="dSalesListResultMap">
+        SELECT
+            s.id,
+            s.name,
+            ds.id AS dsId,
+            ds.dayId,
+            ds.amount
+        FROM
+            t_bis_stock s
+            JOIN t_fin_d_sales ds ON s.id = ds.stockId
+            JOIN t_fin_year y ON ds.yearId = y.id
+            JOIN t_fin_month m ON ds.monthId = m.id
+            JOIN t_fin_day d ON ds.dayId = d.id
+        WHERE
+            s.type = 2 AND s.parentId = #{stockId} AND y.name = #{year} AND m.name = #{month}
+    </select>
+
+</mapper>

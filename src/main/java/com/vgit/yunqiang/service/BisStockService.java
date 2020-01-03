@@ -4,6 +4,8 @@ import com.vgit.yunqiang.common.service.TreeGridService;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.pojo.BisStock;
 
+import java.util.List;
+
 /**
  * 业务 - 库存
  *
@@ -53,4 +55,11 @@ public interface BisStockService extends TreeGridService<BisStock> {
 
 
     String getPath(Long id);
+
+    /**
+     * 查询区域店列表
+     *
+     * @return
+     */
+    List<BisStock> getRegionStockList();
 }

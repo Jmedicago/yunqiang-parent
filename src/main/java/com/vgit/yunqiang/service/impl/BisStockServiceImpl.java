@@ -146,4 +146,9 @@ public class BisStockServiceImpl extends TreeGridServiceImpl<BisStock> implement
         }
     }
 
+    @Override
+    public List<BisStock> getRegionStockList() {
+        return this.mapper.getRegionStockList();
+    }
+
 }

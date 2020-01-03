@@ -176,4 +176,8 @@
         select * from t_bis_stock where name = #{name}
     </select>
 
+    <select id="getRegionStockList" resultType="com.vgit.yunqiang.pojo.BisStock">
+        select * from t_bis_stock s where s.type = 1
+    </select>
+
 </mapper>
