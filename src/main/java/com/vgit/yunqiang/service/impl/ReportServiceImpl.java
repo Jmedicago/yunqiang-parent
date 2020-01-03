@@ -23,6 +23,9 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     private FinDSalesService finDSalesService;
 
+    @Autowired
+    private FinMSalesService finMSalesService;
+
     @Override
     public Hashtable<String, Object> report(ReportQuery query) {
         Hashtable<String, Object> report = null;
@@ -42,7 +45,7 @@ public class ReportServiceImpl implements ReportService {
                     report = this.finDSalesService.queryDSalesReport(query);
                     break;
                 case "rp-m-sales": // 每月区域销售汇总
-                    report = this.finArrearsService.queryArrearsReport(query);
+                    report = this.finMSalesService.queryDSalesReport(query);
                     break;
             }
         }

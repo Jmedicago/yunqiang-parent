@@ -35,6 +35,8 @@ public class BisStock extends BasePojo implements Serializable {
 
     private List<FinDSales> dSalesList;
 
+    private List<FinMSales> mSalesList;
+
     public Long getId() {
         return id;
     }
@@ -123,6 +125,14 @@ public class BisStock extends BasePojo implements Serializable {
         this.dSalesList = salesList;
     }
 
+    public List<FinMSales> getmSalesList() {
+        return mSalesList;
+    }
+
+    public void setmSalesList(List<FinMSales> mSalesList) {
+        this.mSalesList = mSalesList;
+    }
+
     @Override
     public String toString() {
         return "{" +
@@ -130,6 +140,7 @@ public class BisStock extends BasePojo implements Serializable {
                 ", \"name\":\"" + name + "\"" +
                 ", \"arrearsList\":" + arrearsList +
                 ", \"dSalesList\":" + dSalesList +
+                ", \"mSalesList\":" + mSalesList +
                 '}';
     }
 }

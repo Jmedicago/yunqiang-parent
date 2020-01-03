@@ -99,4 +99,32 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
+    <resultMap id="mSalesListResultMap" type="com.vgit.yunqiang.pojo.BisStock">
+        <id column="id" jdbcType="BIGINT" property="id"></id>
+        <result column="name" jdbcType="VARCHAR" property="name"></result>
+        <result column="type" jdbcType="INTEGER" property="type"></result>
+        <collection property="mSalesList" javaType="java.util.List" ofType="com.vgit.yunqiang.pojo.FinMSales">
+            <id column="msId" property="id" jdbcType="BIGINT"/>
+            <result column="yearId" property="yearId" jdbcType="BIGINT"/>
+            <result column="monthId" property="monthId" jdbcType="BIGINT"/>
+            <result column="stockId" property="stockId" jdbcType="BIGINT"/>
+            <result column="amount" property="amount" jdbcType="DOUBLE"/>
+        </collection>
+    </resultMap>
+    <select id="getMSalesList" resultMap="mSalesListResultMap">
+        SELECT
+            s.id,
+            s.name,
+            ms.id AS msId,
+            ms.monthId,
+            ms.amount
+        FROM
+            t_bis_stock s
+            JOIN t_fin_m_sales ms ON s.id = ms.stockId
+            JOIN t_fin_year y ON ms.yearId = y.id
+            JOIN t_fin_month m ON ms.monthId = m.id
+        WHERE
+            s.type = 2 AND s.parentId = #{stockId} AND y.name = #{year}
+    </select>
+
 </mapper>

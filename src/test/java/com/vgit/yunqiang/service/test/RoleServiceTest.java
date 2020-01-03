@@ -35,6 +35,9 @@ public class RoleServiceTest {
     private FinDSalesService finDSalesService;
 
     @Autowired
+    private FinMSalesService finMSalesService;
+
+    @Autowired
     private FinDayMapper finDayMapper;
 
     @Test
@@ -79,7 +82,9 @@ public class RoleServiceTest {
 
     @Test
     public void testGetSalesList() {
-        List<BisStock> salesList = this.finDSalesService.getDSalesList(1, "2019", "1");
+        /*List<BisStock> salesList = this.finDSalesService.getDSalesList(1, "2019", "1");
+        System.out.println(salesList);*/
+        List<BisStock> salesList = this.finMSalesService.getMSalesList(1005L, "2019");
         System.out.println(salesList);
     }
 
