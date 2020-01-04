@@ -10,6 +10,8 @@ public class ReportQuery {
 
     private String month;
 
+    private String quarterly;
+
     public String getRn() {
         return rn;
     }
@@ -40,6 +42,14 @@ public class ReportQuery {
 
     public void setMonth(String month) {
         this.month = month;
+    }
+
+    public String getQuarterly() {
+        return quarterly;
+    }
+
+    public void setQuarterly(String quarterly) {
+        this.quarterly = quarterly;
     }
 
 }

@@ -88,7 +88,7 @@ public class RoleServiceTest {
         /*List<BisStock> salesList = this.finDSalesService.getDSalesList(1, "2019", "1");
         System.out.println(salesList);*/
         /*List<BisStock> salesList = this.finMSalesService.getMSalesList(1005L, "2019");*/
-        List<FinQuarterly> quarterlies = this.finQExpendsService.getQExpendsList("2019", 1001L);
+        List<BisStock> quarterlies = this.finQExpendsService.getExpendsList("2019", "Q1", 1001L);
         System.out.println(quarterlies);
     }
 

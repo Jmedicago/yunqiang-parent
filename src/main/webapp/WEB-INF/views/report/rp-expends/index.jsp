@@ -9,10 +9,10 @@
     <!-- 表报开始 -->
     <table border="1">
         <tr>
-            <th colspan="13">${report.year}年 ${report.stockName}各季度支出统计表</th>
+            <th colspan="13">${report.year}年 ${report.quarterly}各季度支出统计表</th>
         </tr>
         <tr>
-            <th rowspan="2">季度</th>
+            <th rowspan="2">区域名称</th>
             <th rowspan="2" id="lineTd">
                 <span style="float:left;margin-top:20px;padding-left: 2px;padding-bottom: 2px;">店名</span>
                 <span style="float:right;margin-top:0px;padding-right: 2px;padding-top: 2px;">支出</span>
@@ -41,32 +41,30 @@
             <th>I</th>
             <th>J</th>
         </tr>
-        <c:forEach var="quar" items="${report.quarterlyList}" varStatus="st">
+        <c:forEach var="stockRegion" items="${report.stockRegionList}" varStatus="st">
             <tr class="${st.count % 2 == 0 ? 'gray' : ''}">
-                <td>${report.year}-${quar.name}</td>
+                <td>${stockRegion.name}</td>
                 <td>
                     <ul>
-                        <c:forEach var="stock" items="${quar.stockList}">
+                        <c:forEach var="stock" items="${stockRegion.stockList}">
                             <li>${stock.name}</li>
                         </c:forEach>
                     </ul>
                 </td>
-                <td>
-                    <fmt:formatNumber value="${quar.regionStockExpendsTotal}" pattern="#,#00"/>
-                </td>
+                <td><fmt:formatNumber value="${stockRegion.regionExpendsTotal}" pattern="#,#00"/></td>
                 <td>
                     <ul>
-                        <c:forEach var="stock" items="${quar.stockList}">
-                            <li><fmt:formatNumber value="${stock.stockExpendsTotal}" pattern="#,#00"/></li>
+                        <c:forEach var="stock" items="${stockRegion.stockList}">
+                            <li>${stock.stockExpendsTotal}</li>
                         </c:forEach>
                     </ul>
                 </td>
                 <c:forEach var="expendItem" items="${expendItems}">
                     <td>
                         <ul>
-                            <c:forEach var="stock" items="${quar.stockList}">
+                            <c:forEach var="stock" items="${stockRegion.stockList}">
                                 <li>
-                                    <c:forEach var="expend" items="${stock.expendsList}">
+                                    <c:forEach var="expend" items="${stock.details}">
                                         <c:if test="${expend.expendItem.category == expendItem}">
                                             <fmt:formatNumber value="${expend.amount}" pattern="#,#00"/>
                                         </c:if>

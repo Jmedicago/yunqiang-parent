@@ -24,6 +24,29 @@ public class RandomUtils {
         System.out.println("r：" + set + " b：" + set2);
     }
 
+    public static void tRandom() {
+        Set<String> set = new TreeSet<String>();
+
+        while (true) {
+            int sui = (int) (Math.random() * 33) + 1;
+            set.add(sui < 10 ? "0" + sui : "" + sui);
+            if (set.size() == 6) {
+                break;
+            }
+        }
+
+        Set<String> set2 = new TreeSet<String>();
+        while (true) {
+            int sui2 = (int) (Math.random() * 16) + 1;
+            set2.add(sui2 < 10 ? "0" + sui2 : "" + sui2);
+            if (set2.size() == 2) {
+                break;
+            }
+        }
+
+        System.out.println("r：" + set + " b：" + set2);
+    }
+
     public static Set<String> random32() {
         Set<String> set = new TreeSet<String>();
         while (true) {
@@ -50,7 +73,7 @@ public class RandomUtils {
     }
 
     public static void main(String[] args) {
-        int count = 0;
+        /*int count = 0;
         do {
             Set<String> r32 = random32();
 
@@ -63,7 +86,12 @@ public class RandomUtils {
             count++;
         } while (count <= 100);
 
-        System.out.println(total.toString());
+        System.out.println(total.toString());*/
+        int count = 0;
+        do {
+            tRandom();
+            count ++;
+        } while (count <= 5);
     }
 
 }

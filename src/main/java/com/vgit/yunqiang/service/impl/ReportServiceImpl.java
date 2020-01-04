@@ -53,6 +53,9 @@ public class ReportServiceImpl implements ReportService {
                 case "rp-q-expends": // 某区域季度支出报表
                     report = this.finQExpendsService.queryQExpendsReport(query);
                     break;
+                case "rp-expends": // 所有区域支出统计报表
+                    report = this.finQExpendsService.queryExpendsReport(query);
+                    break;
             }
         }
         return report;
