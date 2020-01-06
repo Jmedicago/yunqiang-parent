@@ -3,6 +3,7 @@ package com.vgit.yunqiang.service;
 import com.vgit.yunqiang.common.query.ReportQuery;
 import com.vgit.yunqiang.common.service.BaseService;
 import com.vgit.yunqiang.pojo.BisStock;
+import com.vgit.yunqiang.pojo.FinExpendItem;
 import com.vgit.yunqiang.pojo.FinQExpends;
 import com.vgit.yunqiang.pojo.FinQuarterly;
 
@@ -38,4 +39,5 @@ public interface FinQExpendsService extends BaseService<FinQExpends> {
      * @return
      */
     Hashtable<String, Object> queryExpendsReport(ReportQuery query);
+
 }

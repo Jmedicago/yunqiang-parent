@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vgit.yunqiang.mapper.FinMExpendsMapper">
+
+    <resultMap id="BaseResultMap" type="com.vgit.yunqiang.pojo.FinMExpends">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="yearId" property="yearId" jdbcType="BIGINT"/>
+        <result column="monthId" property="monthId" jdbcType="BIGINT"/>
+        <result column="expendItemId" property="expendItemId" jdbcType="BIGINT"/>
+        <result column="stockId" property="stockId" jdbcType="BIGINT"/>
+        <result column="amount" property="amount" jdbcType="DOUBLE"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, yearId, monthId, stockId, expendItemId, amount
+    </sql>
+
+    <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from t_fin_q_expends
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from t_fin_q_expends
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.FinQExpends">
+        insert into t_fin_q_expends (id, yearId, monthId,
+          stockId, expendItemId, amount
+          )
+        values (#{id,jdbcType=BIGINT}, #{yearId,jdbcType=BIGINT}, #{monthId,jdbcType=BIGINT},
+          #{stockId,jdbcType=BIGINT}, #{expendItemId,jdbcType=BIGINT}, #{amount,jdbcType=DOUBLE}
+          )
+    </insert>
+
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.FinQExpends">
+        insert into t_fin_q_expends
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="yearId != null">
+                yearId,
+            </if>
+            <if test="monthId != null">
+                monthId,
+            </if>
+            <if test="stockId != null">
+                stockId,
+            </if>
+            <if test="expendItemId != null">
+                expendItemId,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="yearId != null">
+                #{yearId,jdbcType=BIGINT},
+            </if>
+            <if test="monthId != null">
+                #{monthId,jdbcType=BIGINT},
+            </if>
+            <if test="stockId != null">
+                #{stockId,jdbcType=BIGINT},
+            </if>
+            <if test="expendItemId != null">
+                #{expendItemId,jdbcType=BIGINT},
+            </if>
+            <if test="amount != null">
+                #{amount,jdbcType=DOUBLE},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.FinQExpends">
+        update t_fin_q_expends
+        <set>
+            <if test="yearId != null">
+                yearId = #{yearId,jdbcType=BIGINT},
+            </if>
+            <if test="monthId != null">
+                monthId = #{quarterlyId,jdbcType=BIGINT},
+            </if>
+            <if test="stockId != null">
+                stockId = #{stockId,jdbcType=BIGINT},
+            </if>
+            <if test="expendItemId != null">
+                expendItemId = #{expendItemId,jdbcType=BIGINT},
+            </if>
+            <if test="amount != null">
+                amount = #{amount,jdbcType=DOUBLE},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.FinQExpends">
+        update t_fin_q_expends
+        set yearId = #{yearId,jdbcType=BIGINT},
+          monthId = #{monthId,jdbcType=BIGINT},
+          stockId = #{stockId,jdbcType=BIGINT},
+          expendItemId = #{expendItemId,jdbcType=BIGINT},
+          amount = #{amount,jdbcType=DOUBLE}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <resultMap id="mExpendsListResultMap" type="com.vgit.yunqiang.pojo.FinExpendItem">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="category" property="category" jdbcType="VARCHAR"/>
+        <result column="article" property="article" jdbcType="VARCHAR"/>
+        <collection property="mExpendsList" javaType="java.util.ArrayList" ofType="com.vgit.yunqiang.pojo.FinMExpends">
+            <id column="eId" property="id" jdbcType="BIGINT"/>
+            <result column="monthId" property="monthId" jdbcType="BIGINT"/>
+            <result column="amount" property="amount" jdbcType="DOUBLE"/>
+        </collection>
+    </resultMap>
+    <select id="getMExpendsList" resultMap="mExpendsListResultMap">
+        SELECT
+            ei.id,
+            ei.category,
+            ei.article,
+            e.id AS eId,
+            e.monthId,
+            e.amount
+        FROM
+            t_fin_expend_item ei
+            JOIN t_fin_m_expends e ON ei.id = expendItemId
+            JOIN t_fin_year y ON e.yearId = y.id
+        WHERE
+            y.NAME = #{year}
+    </select>
+
+</mapper>
