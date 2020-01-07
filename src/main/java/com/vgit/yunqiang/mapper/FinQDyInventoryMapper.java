@@ -15,4 +15,5 @@ public interface FinQDyInventoryMapper extends BaseMapper<FinQDyInventory> {
      * @return
      */
     FinQDyInventory getQDyInventory(@Param("year") String year, @Param("quarterly") String quarterly, @Param("stockId") Long stockId);
+
 }

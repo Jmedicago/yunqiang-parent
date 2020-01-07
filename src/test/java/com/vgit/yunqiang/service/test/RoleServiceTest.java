@@ -43,6 +43,9 @@ public class RoleServiceTest {
     @Autowired
     private FinQExpendsService finQExpendsService;
 
+    @Autowired
+    private FinQDzInventoryService finQDzInventoryService;
+
     @Test
     public void testFindRoles() throws Exception {
         //System.out.println(this.roleService.findRoles(1L, 2L));
@@ -88,8 +91,10 @@ public class RoleServiceTest {
         /*List<BisStock> salesList = this.finDSalesService.getDSalesList(1, "2019", "1");
         System.out.println(salesList);*/
         /*List<BisStock> salesList = this.finMSalesService.getMSalesList(1005L, "2019");*/
-        List<BisStock> quarterlies = this.finQExpendsService.getExpendsList("2019", "Q1", 1001L);
-        System.out.println(quarterlies);
+        /*List<BisStock> quarterlies = this.finQExpendsService.getExpendsList("2019", "Q1", 1001L);
+        System.out.println(quarterlies);*/
+        FinQDzInventory dzInventories = this.finQDzInventoryService.getFinDzInventory("2019", "Q2", 1001L);
+        System.out.println(dzInventories);
     }
 
 }

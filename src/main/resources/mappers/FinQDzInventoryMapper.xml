@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vgit.yunqiang.mapper.FinQDzInventoryMapper">
+
+    <resultMap id="BaseResultMap" type="com.vgit.yunqiang.pojo.FinQDzInventory">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="stockId" property="stockId" jdbcType="BIGINT"/>
+        <result column="yearId" property="yearId" jdbcType="BIGINT"/>
+        <result column="quarterlyId" property="quarterlyId" jdbcType="BIGINT"/>
+        <result column="beforeSafe" property="beforeSafe" jdbcType="DOUBLE"/>
+        <result column="beforeArrears" property="beforeArrears" jdbcType="DOUBLE"/>
+        <result column="beforeChange" property="beforeChange" jdbcType="DOUBLE"/>
+        <result column="beforePurch" property="beforePurch" jdbcType="DOUBLE"/>
+        <result column="expend" property="expend" jdbcType="DOUBLE"/>
+        <result column="dailyCash" property="dailyCash" jdbcType="DOUBLE"/>
+        <result column="safe" property="safe" jdbcType="DOUBLE"/>
+        <result column="arrears" property="arrears" jdbcType="DOUBLE"/>
+        <result column="change" property="change" jdbcType="DOUBLE"/>
+        <result column="purch" property="purch" jdbcType="DOUBLE"/>
+        <result column="income" property="income" jdbcType="DOUBLE"/>
+        <result column="state" property="state" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, stockId, yearId, quarterlyId, beforeSafe, beforeArrears, beforeChange, beforePurch,
+        expend, dailyCash, safe, arrears, change, purch, income, state
+    </sql>
+
+    <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from t_fin_q_dz_inventory
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from t_fin_q_dz_inventory
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.FinQDzInventory">
+        insert into t_fin_q_dz_inventory (id, stockId, yearId,
+          quarterlyId, beforeSafe, beforeArrears,
+          beforeChange, beforePurch, expend,
+          dailyCash, safe, arrears,
+          change, purch, income, state)
+        values (#{id,jdbcType=BIGINT}, #{stockId,jdbcType=BIGINT}, #{yearId,jdbcType=BIGINT},
+          #{quarterlyId,jdbcType=BIGINT}, #{beforeSafe,jdbcType=DOUBLE}, #{beforeArrears,jdbcType=DOUBLE},
+          #{beforeChange,jdbcType=DOUBLE}, #{beforePurch,jdbcType=DOUBLE}, #{expend,jdbcType=DOUBLE},
+          #{dailyCash,jdbcType=DOUBLE}, #{safe,jdbcType=DOUBLE}, #{arrears,jdbcType=DOUBLE},
+          #{change,jdbcType=DOUBLE}, #{purch,jdbcType=DOUBLE}, #{income,jdbcType=DOUBLE}, #{state,jdbcType=INTEGER})
+    </insert>
+
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.FinQDzInventory">
+        insert into t_fin_q_dz_inventory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="stockId != null">
+                stockId,
+            </if>
+            <if test="yearId != null">
+                yearId,
+            </if>
+            <if test="quarterlyId != null">
+                quarterlyId,
+            </if>
+            <if test="beforeSafe != null">
+                beforeSafe,
+            </if>
+            <if test="beforeArrears != null">
+                beforeArrears,
+            </if>
+            <if test="beforeChange != null">
+                beforeChange,
+            </if>
+            <if test="beforePurch != null">
+                beforePurch,
+            </if>
+            <if test="expend != null">
+                expend,
+            </if>
+            <if test="dailyCash != null">
+                dailyCash,
+            </if>
+            <if test="safe != null">
+                safe,
+            </if>
+            <if test="arrears != null">
+                arrears,
+            </if>
+            <if test="change != null">
+                change,
+            </if>
+            <if test="purch != null">
+                purch,
+            </if>
+            <if test="income != null">
+                income,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="stockId != null">
+                #{stockId,jdbcType=BIGINT},
+            </if>
+            <if test="yearId != null">
+                #{yearId,jdbcType=BIGINT},
+            </if>
+            <if test="quarterlyId != null">
+                #{quarterlyId,jdbcType=BIGINT},
+            </if>
+            <if test="beforeSafe != null">
+                #{beforeSafe,jdbcType=DOUBLE},
+            </if>
+            <if test="beforeArrears != null">
+                #{beforeArrears,jdbcType=DOUBLE},
+            </if>
+            <if test="beforeChange != null">
+                #{beforeChange,jdbcType=DOUBLE},
+            </if>
+            <if test="beforePurch != null">
+                #{beforePurch,jdbcType=DOUBLE},
+            </if>
+            <if test="expend != null">
+                #{expend,jdbcType=DOUBLE},
+            </if>
+            <if test="dailyCash != null">
+                #{dailyCash,jdbcType=DOUBLE},
+            </if>
+            <if test="safe != null">
+                #{safe,jdbcType=DOUBLE},
+            </if>
+            <if test="arrears != null">
+                #{arrears,jdbcType=DOUBLE},
+            </if>
+            <if test="change != null">
+                #{change,jdbcType=DOUBLE},
+            </if>
+            <if test="purch != null">
+                #{purch,jdbcType=DOUBLE},
+            </if>
+            <if test="income != null">
+                #{income,jdbcType=DOUBLE},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.FinQDzInventory">
+        update t_fin_q_dz_inventory
+        <set>
+            <if test="stockId != null">
+                stockId = #{stockId,jdbcType=BIGINT},
+            </if>
+            <if test="yearId != null">
+                yearId = #{yearId,jdbcType=BIGINT},
+            </if>
+            <if test="quarterlyId != null">
+                quarterlyId = #{quarterlyId,jdbcType=BIGINT},
+            </if>
+            <if test="beforeSafe != null">
+                beforeSafe = #{beforeSafe,jdbcType=DOUBLE},
+            </if>
+            <if test="beforeArrears != null">
+                beforeArrears = #{beforeArrears,jdbcType=DOUBLE},
+            </if>
+            <if test="beforeChange != null">
+                beforeChange = #{beforeChange,jdbcType=DOUBLE},
+            </if>
+            <if test="beforePurch != null">
+                beforePurch = #{beforePurch,jdbcType=DOUBLE},
+            </if>
+            <if test="expend != null">
+                expend = #{expend,jdbcType=DOUBLE},
+            </if>
+            <if test="dailyCash != null">
+                dailyCash = #{dailyCash,jdbcType=DOUBLE},
+            </if>
+            <if test="safe != null">
+                safe = #{safe,jdbcType=DOUBLE},
+            </if>
+            <if test="arrears != null">
+                arrears = #{arrears,jdbcType=DOUBLE},
+            </if>
+            <if test="change != null">
+                change = #{change,jdbcType=DOUBLE},
+            </if>
+            <if test="purch != null">
+                purch = #{purch,jdbcType=DOUBLE},
+            </if>
+            <if test="income != null">
+                income = #{income,jdbcType=DOUBLE},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.FinQDzInventory">
+        update t_fin_q_dz_inventory
+        set stockId = #{stockId,jdbcType=BIGINT},
+          yearId = #{yearId,jdbcType=BIGINT},
+          quarterlyId = #{quarterlyId,jdbcType=BIGINT},
+          beforeSafe = #{beforeSafe,jdbcType=DOUBLE},
+          beforeArrears = #{beforeArrears,jdbcType=DOUBLE},
+          beforeChange = #{beforeChange,jdbcType=DOUBLE},
+          beforePurch = #{beforePurch,jdbcType=DOUBLE},
+          expend = #{expend,jdbcType=DOUBLE},
+          dailyCash = #{dailyCash,jdbcType=DOUBLE},
+          safe = #{safe,jdbcType=DOUBLE},
+          arrears = #{arrears,jdbcType=DOUBLE},
+          change = #{change,jdbcType=DOUBLE},
+          purch = #{purch,jdbcType=DOUBLE},
+          income = #{income,jdbcType=DOUBLE},
+          state = #{state,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <resultMap id="qDzInventoryResultMap" type="com.vgit.yunqiang.pojo.FinQDzInventory">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="stockId" property="stockId" jdbcType="BIGINT"/>
+        <result column="yearId" property="yearId" jdbcType="BIGINT"/>
+        <result column="quarterlyId" property="quarterlyId" jdbcType="BIGINT"/>
+        <result column="beforeSafe" property="beforeSafe" jdbcType="DOUBLE"/>
+        <result column="beforeArrears" property="beforeArrears" jdbcType="DOUBLE"/>
+        <result column="beforeChange" property="beforeChange" jdbcType="DOUBLE"/>
+        <result column="beforePurch" property="beforePurch" jdbcType="DOUBLE"/>
+        <result column="expend" property="expend" jdbcType="DOUBLE"/>
+        <result column="dailyCash" property="dailyCash" jdbcType="DOUBLE"/>
+        <result column="safe" property="safe" jdbcType="DOUBLE"/>
+        <result column="arrears" property="arrears" jdbcType="DOUBLE"/>
+        <result column="change" property="change" jdbcType="DOUBLE"/>
+        <result column="purch" property="purch" jdbcType="DOUBLE"/>
+        <result column="income" property="income" jdbcType="DOUBLE"/>
+        <result column="state" property="state" jdbcType="INTEGER"/>
+        <collection property="qDyInventoryList" javaType="java.util.List" ofType="com.vgit.yunqiang.pojo.FinQDyInventory">
+            <id column="dyId" property="id" jdbcType="BIGINT"/>
+            <result column="dyStockId" property="stockId" jdbcType="BIGINT"/>
+            <result column="dyYearId" property="yearId" jdbcType="BIGINT"/>
+            <result column="dyQuarterlyId" property="quarterlyId" jdbcType="BIGINT"/>
+            <result column="dyBeforeSafe" property="beforeSafe" jdbcType="DOUBLE"/>
+            <result column="dyBeforeArrears" property="beforeArrears" jdbcType="DOUBLE"/>
+            <result column="dyBeforeChange" property="beforeChange" jdbcType="DOUBLE"/>
+            <result column="dyBeforePurch" property="beforePurch" jdbcType="DOUBLE"/>
+            <result column="dyExpend" property="expend" jdbcType="DOUBLE"/>
+            <result column="dyDailyCash" property="dailyCash" jdbcType="DOUBLE"/>
+            <result column="dySafe" property="safe" jdbcType="DOUBLE"/>
+            <result column="dyArrears" property="arrears" jdbcType="DOUBLE"/>
+            <result column="dyChange" property="change" jdbcType="DOUBLE"/>
+            <result column="dyPurch" property="purch" jdbcType="DOUBLE"/>
+            <result column="dyIncome" property="income" jdbcType="DOUBLE"/>
+        </collection>
+    </resultMap>
+
+    <select id="getQDzInventory" resultMap="qDzInventoryResultMap">
+        SELECT
+            dz.*,
+            dy.id as dyId,
+            dy.stockId as dyStockId,
+            dy.yearId as dyYearId,
+            dy.quarterlyId as dyQuarterlyId,
+            dy.beforeSafe as dyBeforeSafe,
+            dy.beforeArrears as dyBeforeArrears,
+            dy.beforeChange as dyBeforeChange,
+            dy.beforePurch as dyBeforePurch,
+            dy.expend as dyExpend,
+            dy.dailyCash as dyDailyCash,
+            dy.safe as dySafe,
+            dy.arrears as dyArrears,
+            dy.change as dyChange,
+            dy.purch as dyPurch,
+            dy.income as dyIncome
+        FROM
+            t_fin_q_dz_inventory dz
+            JOIN t_fin_q_dy_inventory dy ON dy.stockId IN ( SELECT id FROM t_bis_stock WHERE parentId = #{stockId} )
+            JOIN t_fin_quarterly q ON dz.quarterlyId = q.id AND q.id = dy.quarterlyId
+            JOIN t_fin_year y ON y.id = dz.yearId AND y.id = dy.yearId
+        WHERE
+            y.NAME = #{year}
+            AND q.NAME = #{quarterly}
+            AND dz.stockId = #{stockId}
+    </select>
+
+</mapper>
