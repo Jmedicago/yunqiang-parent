@@ -1,10 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <link type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
 <link type="text/css" href="/easyui/my/report.css" rel="stylesheet"/>
 <script type="text/javascript" src="/easyui/jquery.min.js"></script>
 <div style="padding: 10px">
+    <c:set var="BQ" value="${fn:substring(report.quarterly, 1, 2)}"/>
     <!-- 表报开始 -->
     <table border="1">
         <tr>
@@ -20,19 +22,19 @@
             <td rowspan="8">${report.regionStockName}-${report.stockName}</td>
         </tr>
         <tr>
-            <td style="background: #dbeef3" rowspan="4">Q1（上季度）盘点货值</td>
+            <td style="background: #dbeef3" rowspan="4">Q${BQ - 1 > 0 ? BQ - 1 : 4}（上季度）盘点货值</td>
             <td style="background: #dbeef3">保险柜现金</td>
             <td style="background: #dbeef3"><fmt:formatNumber value="${report.beforeSafe}" pattern="#,#00"/></td>
-            <td style="background: #eaf1dd;">Q2支出总额</td>
+            <td style="background: #eaf1dd;">${report.quarterly}支出总额</td>
             <td style="background: #eaf1dd;"><fmt:formatNumber value="${report.expend}" pattern="#,#00"/></td>
-            <td style="background: #fde9d9" rowspan="5">Q2（本季度）实点货值</td>
+            <td style="background: #fde9d9" rowspan="5">${report.quarterly}（本季度）实点货值</td>
             <td style="background: #fde9d9">保险柜现金</td>
             <td style="background: #fde9d9"><fmt:formatNumber value="${report.safe}" pattern="#,#00"/></td>
         </tr>
         <tr>
             <td style="background: #dbeef3">客商欠款</td>
             <td style="background: #dbeef3"><fmt:formatNumber value="${report.beforeArrears}" pattern="#,#00"/></td>
-            <td style="background: #eaf1dd;">Q2累计交付日现金总额</td>
+            <td style="background: #eaf1dd;">${report.quarterly}累计交付日现金总额</td>
             <td style="background: #eaf1dd;"><fmt:formatNumber value="${report.dailyCash}" pattern="#,#00"/></td>
             <td style="background: #fde9d9">客商欠款</td>
             <td style="background: #fde9d9"><fmt:formatNumber value="${report.arrears}" pattern="#,#00"/></td>
@@ -54,7 +56,7 @@
             <td style="background: #fde9d9"><fmt:formatNumber value="${report.purch}" pattern="#,#00"/></td>
         </tr>
         <tr>
-            <td style="background: #dbeef3" colspan="2">Q2累计进货值</td>
+            <td style="background: #dbeef3" colspan="2">${report.quarterly}累计进货值</td>
             <td style="background: #dbeef3"><fmt:formatNumber value="${report.income}" pattern="#,#00"/></td>
             <td style="background: #eaf1dd;"></td>
             <td style="background: #eaf1dd;"></td>
