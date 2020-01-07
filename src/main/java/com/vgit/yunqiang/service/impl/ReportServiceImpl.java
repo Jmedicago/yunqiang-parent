@@ -74,6 +74,9 @@ public class ReportServiceImpl implements ReportService {
                 case "dz-quarterly": // 店长季报?year=2019&quarterly=Q2&stockId=1001
                     report = this.finQDzInventoryService.queryQDzInventoryReport(query);
                     break;
+                case "rp-y-quarterly": // 各区域连锁店盘点总表?year=2019&quarterly=Q2
+                    report = this.finQDzInventoryService.queryYQInventoryReport(query);
+                    break;
             }
         }
         return report;

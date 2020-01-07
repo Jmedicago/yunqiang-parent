@@ -292,4 +292,34 @@
             AND dz.stockId = #{stockId}
     </select>
 
+    <select id="getQDzInventoryList" resultMap="qDzInventoryResultMap">
+        SELECT
+            dz.*,
+            dy.id as dyId,
+            dy.stockId as dyStockId,
+            dy.yearId as dyYearId,
+            dy.quarterlyId as dyQuarterlyId,
+            dy.beforeSafe as dyBeforeSafe,
+            dy.beforeArrears as dyBeforeArrears,
+            dy.beforeChange as dyBeforeChange,
+            dy.beforePurch as dyBeforePurch,
+            dy.expend as dyExpend,
+            dy.dailyCash as dyDailyCash,
+            dy.safe as dySafe,
+            dy.arrears as dyArrears,
+            dy.change as dyChange,
+            dy.purch as dyPurch,
+            dy.income as dyIncome
+        FROM
+            t_fin_q_dz_inventory dz
+            JOIN t_fin_q_dy_inventory dy ON dy.stockId IN ( SELECT id FROM t_bis_stock s WHERE s.parentId = dz.stockId )
+            JOIN t_fin_year y ON y.id = dz.yearId
+            AND y.id = dy.yearId
+            JOIN t_fin_quarterly q ON q.id = dz.quarterlyId
+            AND q.id = dy.quarterlyId
+        WHERE
+            y.NAME = #{year}
+            AND q.NAME = #{quarterly}
+    </select>
+
 </mapper>

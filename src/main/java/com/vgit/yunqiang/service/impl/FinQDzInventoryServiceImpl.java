@@ -151,6 +151,20 @@ public class FinQDzInventoryServiceImpl extends BaseServiceImpl<FinQDzInventory>
         return report;
     }
 
+    @Override
+    public List<FinQDzInventory> getQDzInventoryList(String year, String quarterly) {
+        return this.mapper.getQDzInventoryList(year, quarterly);
+    }
+
+    @Override
+    public Hashtable<String, Object> queryYQInventoryReport(ReportQuery query) {
+        Hashtable<String, Object> report = new Hashtable<String, Object>();
+
+        report.put("year", query.getYear());
+        report.put("quarterly", query.getQuarterly());
+        return report;
+    }
+
     private String getRegionStockName(Long stockId) {
         BisStock bisStock = this.bisStockService.get(stockId);
         return this.bisStockService.get(bisStock.getParentId()).getName();
