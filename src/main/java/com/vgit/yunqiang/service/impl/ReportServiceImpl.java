@@ -32,6 +32,9 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     private FinMExpendsService finMExpendsService;
 
+    @Autowired
+    private FinQDyInventoryService finQDyInventoryService;
+
     @Override
     public Hashtable<String, Object> report(ReportQuery query) {
         Hashtable<String, Object> report = null;
@@ -59,8 +62,11 @@ public class ReportServiceImpl implements ReportService {
                 case "rp-expends": // 所有区域支出统计报表?year=2019&quarterly=Q2
                     report = this.finQExpendsService.queryExpendsReport(query);
                     break;
-                case "rp-y-expends": // 年度支出明细
+                case "rp-y-expends": // 年度支出明细?year=2019
                     report = this.finMExpendsService.queryYExpendsReport(query);
+                    break;
+                case "dy-quarterly": // 店员季报?year=2019&quarterly=Q2&stockId=1005
+                    report = this.finQDyInventoryService.queryQDyInventoryReport(query);
                     break;
             }
         }
