@@ -8,32 +8,32 @@
     <!-- 表报开始 -->
     <table border="1">
         <tr>
-            <th colspan="9">每日资金进出帐明细 - ${report.stockName}店员日报</th>
+            <th style="background: #fff;" colspan="9">每日资金进出帐明细 - ${report.stockName}店员日报</th>
+        </tr>
+        <tr style="color: #fff;">
+            <th style="background: #000;" colspan="2">进</th>
+            <th style="background: #000;" colspan="4">出</th>
+            <th style="background: #000;">本季度累计上货</th>
+            <th style="background: #000;">客商总额</th>
+            <th style="background: #000;">本季度累计销售额</th>
+        </tr>
+        <tr style="color: #FF0000">
+            <td style="background: #000;" colspan="2"><fmt:formatNumber value="${report.incomeTotal}" pattern="#,#00"/></td>
+            <td style="background: #000;" colspan="4"><fmt:formatNumber value="${report.expendTotal}" pattern="#,#00"/></td>
+            <td style="background: #000;"><fmt:formatNumber value="${report.purchTotal}" pattern="#,#00"/></td>
+            <td style="background: #000;"><fmt:formatNumber value="${report.arrearsTotal}" pattern="#,#00"/></td>
+            <td style="background: #000;"><fmt:formatNumber value="${report.salesTotal}" pattern="#,#00"/></td>
         </tr>
         <tr>
-            <th colspan="2">进</th>
-            <th colspan="4">出</th>
-            <th>本季度累计上货</th>
-            <th>客商总额</th>
-            <th>本季度累计销售额</th>
-        </tr>
-        <tr>
-            <td colspan="2"><fmt:formatNumber value="${report.incomeTotal}" pattern="#,#00"/></td>
-            <td colspan="4"><fmt:formatNumber value="${report.expendTotal}" pattern="#,#00"/></td>
-            <td><fmt:formatNumber value="${report.purchTotal}" pattern="#,#00"/></td>
-            <td><fmt:formatNumber value="${report.arrearsTotal}" pattern="#,#00"/></td>
-            <td><fmt:formatNumber value="${report.salesTotal}" pattern="#,#00"/></td>
-        </tr>
-        <tr>
-            <th>日期</th>
-            <th>交付现金</th>
-            <th>支出类别</th>
-            <th style="width: 300px">支出项目</th>
-            <th>金额</th>
-            <th>当日总支出</th>
-            <th>上货金额</th>
-            <th>最新客商欠款</th>
-            <th>每日销售额</th>
+            <th style="background: #ddd9c3">日期</th>
+            <th style="background: #ddd9c3">交付现金</th>
+            <th style="background: #ddd9c3">支出类别</th>
+            <th style="background: #ddd9c3; width: 300px">支出项目</th>
+            <th style="background: #ddd9c3">金额</th>
+            <th style="background: #ddd9c3">当日总支出</th>
+            <th style="background: #ddd9c3; color: #0082c1;">上货金额</th>
+            <th style="background: #ddd9c3; color: #002060;">最新客商欠款</th>
+            <th style="background: #ddd9c3; color: #c00000;">每日销售额</th>
         </tr>
         <c:forEach var="detail" items="${report.details}" varStatus="st">
             <tr class="${st.count % 2 == 0 ? 'gray' : ''}">
@@ -42,28 +42,28 @@
                 <td>
                     <ul>
                         <c:forEach var="item" items="${detail.details}">
-                            <li>${item.finExpendItem.category}</li>
+                            <li style="${item.finExpendItem.category == 'C' ? 'background:#F0EF36' : ''}">${item.finExpendItem.category}</li>
                         </c:forEach>
                     </ul>
                 </td>
                 <td>
                     <ul>
                         <c:forEach var="item" items="${detail.details}">
-                            <li>${item.detail}</li>
+                            <li style="${item.finExpendItem.category == 'C' ? 'background:#F0EF36' : ''}">${item.detail}</li>
                         </c:forEach>
                     </ul>
                 </td>
                 <td>
                     <ul>
                         <c:forEach var="item" items="${detail.details}">
-                            <li><fmt:formatNumber value="${item.amount}" pattern="#,#00"/></li>
+                            <li style="${item.finExpendItem.category == 'C' ? 'background:#F0EF36' : ''}"><fmt:formatNumber value="${item.amount}" pattern="#,#00"/></li>
                         </c:forEach>
                     </ul>
                 </td>
                 <td><fmt:formatNumber value="${detail.expendSubTotal}" pattern="#,#00"/></td>
-                <td><fmt:formatNumber value="${detail.purch}" pattern="#,#00"/></td>
-                <td><fmt:formatNumber value="${detail.arrears}" pattern="#,#00"/></td>
-                <td><fmt:formatNumber value="${detail.sales}" pattern="#,#00"/></td>
+                <td style="color: #0082c1;"><fmt:formatNumber value="${detail.purch}" pattern="#,#00"/></td>
+                <td style="color: #002060;"><fmt:formatNumber value="${detail.arrears}" pattern="#,#00"/></td>
+                <td style="color: #c00000;"><fmt:formatNumber value="${detail.sales}" pattern="#,#00"/></td>
             </tr>
         </c:forEach>
     </table>
