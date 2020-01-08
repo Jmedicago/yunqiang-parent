@@ -572,7 +572,7 @@ Date.prototype.format = function (format) {
 function formatMoney(number, places, symbol, thousand, decimal) {
     number = number || 0;
     places = !isNaN(places = Math.abs(places)) ? places : 0; // 2
-    symbol = symbol !== undefined ? symbol : "MTn"; //MTn
+    symbol = symbol !== undefined ? symbol : "MT"; //MTn
     thousand = thousand || ",";
     decimal = decimal || ".";
     var negative = number < 0 ? "-" : "",

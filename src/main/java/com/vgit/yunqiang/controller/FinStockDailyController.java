@@ -6,8 +6,10 @@ import com.vgit.yunqiang.common.query.StockDailyQuery;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.controller.consts.ControllerConsts;
 import com.vgit.yunqiang.controller.utils.UserContext;
+import com.vgit.yunqiang.pojo.FinDyDaily;
 import com.vgit.yunqiang.pojo.FinStockDaily;
 import com.vgit.yunqiang.pojo.SysUser;
+import com.vgit.yunqiang.service.FinDyDailyService;
 import com.vgit.yunqiang.service.FinStockDailyService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -32,8 +34,13 @@ public class FinStockDailyController {
     @Autowired
     private FinStockDailyService finStockDailyService;
 
+    @Autowired
+    private FinDyDailyService finDyDailyService;
+
     @RequestMapping(ControllerConsts.URL_INDEX)
-    public String index() {
+    public String index(Model model) {
+        Long stockId = Long.valueOf(UserContext.getUser().getStockIds());
+        model.addAttribute("stockId", stockId);
         return DOMAIN + ControllerConsts.VIEW_INDEX;
     }
 
@@ -56,14 +63,27 @@ public class FinStockDailyController {
         return DOMAIN + ControllerConsts.VIEW_EDIT;
     }
 
+    @RequestMapping(ControllerConsts.URL_STORE)
+    @ResponseBody
+    public Ret store(FinDyDaily dyDaily) throws UnsupportedEncodingException {
+        SysUser existUser = UserContext.getUser();
+        try {
+            dyDaily.setStockId(Long.valueOf(existUser.getStockIds()));
+            dyDaily.setUserId(existUser.getId());
+            dyDaily = this.finDyDailyService.saveOrUpdateDaily(dyDaily);
+        } catch (BisException e) {
+            return Ret.me().setSuccess(false).setInfo(e.getInfo());
+        }
+        return Ret.me().setData(dyDaily);
+    }
+
     /**
      * 创建日报
      *
-     * @param finStockDaily
      * @return
      * @throws UnsupportedEncodingException
      */
-    @RequestMapping(ControllerConsts.URL_STORE)
+    /*@RequestMapping(ControllerConsts.URL_STORE)
     @ResponseBody
     public Ret store(FinStockDaily finStockDaily) throws UnsupportedEncodingException {
         SysUser existUser = UserContext.getUser();
@@ -97,7 +117,7 @@ public class FinStockDailyController {
             LOGGER.error("保存日报异常：{}", e.getInfo());
             return Ret.me().setSuccess(false).setInfo(e.getInfo());
         }
-    }
+    }*/
 
     @RequestMapping(ControllerConsts.URL_DELETE)
     @ResponseBody

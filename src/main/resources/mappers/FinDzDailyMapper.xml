@@ -37,6 +37,9 @@
     </delete>
 
     <insert id="save" parameterType="com.vgit.yunqiang.pojo.FinDzDaily">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
         insert into t_fin_dz_daily (id, code, stockId, userId,
           date, incomeSubTotal, expendSubTotal,
           deposit, purch, arrears,
@@ -50,6 +53,9 @@
     </insert>
 
     <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.FinDzDaily">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
         insert into t_fin_dz_daily
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

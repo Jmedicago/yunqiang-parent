@@ -36,6 +36,9 @@
     </delete>
 
     <insert id="save" parameterType="com.vgit.yunqiang.pojo.FinDyDaily">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
         insert into t_fin_dy_daily (id, code, stockId, userId,
           date, income, expendSubTotal,
           purch, arrears, sales,
@@ -49,6 +52,9 @@
     </insert>
 
     <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.FinDyDaily">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
         insert into t_fin_dy_daily
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -240,6 +246,10 @@
             JOIN t_fin_expend_item ei ON de.expendItemId = ei.id
         WHERE
             d.stockId = #{stockId}
+    </select>
+
+    <select id="getByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from t_fin_dy_daily where code = #{dailyCode}
     </select>
 
 </mapper>

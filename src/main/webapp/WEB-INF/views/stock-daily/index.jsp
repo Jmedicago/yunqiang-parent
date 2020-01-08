@@ -19,26 +19,47 @@
                 <th data-options="field: 'createTime',width: 200, halign: 'center', align: 'center', formatter: MXF.dateTimeFormatter">
                     日期
                 </th>
-                <th data-options="field:'stockId', width: 100, halign: 'center', align: 'center', formatter: stockFormatter">仓库名</th>
-                <th data-options="field:'income', width: 180, halign: 'center', align: 'center', formatter: MXF.priceFormatter">日收入</th>
-                <th data-options="field: 'expendTotal', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">日支出总计</th>
-                <th data-options="field: 'sales', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">销售额</th>
-                <th data-options="field: 'purch', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">进货值</th>
-                <th data-options="field: 'arrears', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">欠款</th>
+                <th data-options="field:'stockId', width: 100, halign: 'center', align: 'center', formatter: stockFormatter">
+                    仓库名
+                </th>
+                <th data-options="field:'income', width: 180, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                    日收入
+                </th>
+                <th data-options="field: 'expendTotal', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                    日支出总计
+                </th>
+                <th data-options="field: 'sales', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                    销售额
+                </th>
+                <th data-options="field: 'purch', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                    进货值
+                </th>
+                <th data-options="field: 'arrears', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                    欠款
+                </th>
             </tr>
             </thead>
         </table>
         <div id="stockDailyTB">
             <div>
-                <a href="#" data-cmd="addStockDaily" remote="false"
+                <%--<a href="#" data-cmd="addStockDaily" remote="false"
                    class="easyui-linkbutton" iconCls="icon-add" plain="true">
                     <spring:message code="common.add"/>
+                </a>--%>
+                <a href="#" data-cmd="add" remote="false" title="填报" width="880px"; height="580px;"
+                   class="easyui-linkbutton" iconCls="icon-add" plain="true">
+                    填报
                 </a>
                 <a href="#" data-cmd="editStockDaily" title="<spring:message code="common.edit"/>" mustsel
                    remote="false"
                    data-options="disabled:true" class="easyui-linkbutton"
                    iconCls="icon-edit" plain="true">
                     <spring:message code="common.edit"/>
+                </a>
+                <a href="#" data-cmd="showStockDaily" class="easyui-linkbutton"
+                   plain="true">
+                    <i class="iconfont">&#xe6cb;</i>
+                    查看
                 </a>
             </div>
             <div class="searchForm">
@@ -127,6 +148,10 @@
                 editWindow.window('destroy');
             }
         });
+    }
+
+    function showStockDaily() {
+        window.open("/report?rn=dy-daily&stockId=${stockId}");
     }
 </script>
 

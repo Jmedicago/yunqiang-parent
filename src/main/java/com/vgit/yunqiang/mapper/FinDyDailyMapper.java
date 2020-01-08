@@ -14,5 +14,12 @@ public interface FinDyDailyMapper extends BaseMapper<FinDyDaily> {
      * @return
      */
     List<FinDyDaily> queryDailyList(Long stockId);
-    
+
+    /**
+     * 查询店员日报信息
+     *
+     * @param dailyCode
+     * @return
+     */
+    FinDyDaily getByCode(String dailyCode);
 }

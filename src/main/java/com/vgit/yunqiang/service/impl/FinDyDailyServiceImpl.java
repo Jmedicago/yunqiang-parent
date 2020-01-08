@@ -1,5 +1,6 @@
 package com.vgit.yunqiang.service.impl;
 
+import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.query.ReportQuery;
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -92,6 +94,40 @@ public class FinDyDailyServiceImpl extends BaseServiceImpl<FinDyDaily> implement
         report.put("salesTotal", salesTotal);
         report.put("details", details);
         return report;
+    }
+
+    @Override
+    public FinDyDaily saveOrUpdateDaily(FinDyDaily dyDaily) throws BisException {
+        double income = dyDaily.getIncome() != null ? dyDaily.getIncome() * 100 : 0;
+        double purch = dyDaily.getPurch() != null ? dyDaily.getPurch() * 100 : 0;
+        double arrears = dyDaily.getArrears() != null ? dyDaily.getArrears() * 100 : 0;
+        double sales =  dyDaily.getSales() != null ? dyDaily.getSales() * 100 : 0;
+
+        if (dyDaily.getId() == null) {
+            dyDaily.setIncome(income);
+            dyDaily.setPurch(purch);
+            dyDaily.setArrears(arrears);
+            dyDaily.setSales(sales);
+            dyDaily.setDate(new Date());
+            dyDaily.setCreateTime(System.currentTimeMillis());
+            this.mapper.savePart(dyDaily);
+            dyDaily.setCode("Y" + dyDaily.getId());
+            this.mapper.updatePart(dyDaily);
+        } else {
+            dyDaily.setIncome(income);
+            dyDaily.setPurch(purch);
+            dyDaily.setArrears(arrears);
+            dyDaily.setSales(sales);
+            dyDaily.setDate(new Date());
+            dyDaily.setCreateTime(System.currentTimeMillis());
+            this.mapper.updatePart(dyDaily);
+        }
+        return dyDaily;
+    }
+
+    @Override
+    public FinDyDaily getByCode(String dailyCode) {
+        return this.mapper.getByCode(dailyCode);
     }
 
     private String getStockName(Long stockId) {

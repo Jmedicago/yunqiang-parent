@@ -111,4 +111,38 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
+    <resultMap id="dailyExpendResultMap" type="com.vgit.yunqiang.pojo.FinDailyExpend">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="expendItemId" property="expendItemId" jdbcType="BIGINT"/>
+        <result column="stockName" property="stockName" jdbcType="VARCHAR"/>
+        <result column="dailyCode" property="dailyCode" jdbcType="VARCHAR"/>
+        <result column="detail" property="detail" jdbcType="VARCHAR"/>
+        <result column="amount" property="amount" jdbcType="DOUBLE"/>
+        <association property="finExpendItem" javaType="com.vgit.yunqiang.pojo.FinExpendItem">
+            <id column="eiId" property="id" jdbcType="BIGINT"/>
+            <result column="category" property="category" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+
+    <sql id="whereSql">
+        <where>
+            <if test="stockName!=null and stockName!=''">and de.stockName = #{stockName}</if>
+            <if test="dailyCode!=null and dailyCode!=''">and de.dailyCode = #{dailyCode}</if>
+        </where>
+    </sql>
+
+    <select id="queryTotal" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery" resultType="int">
+        select count(0) from t_fin_daily_expend de
+        join t_fin_expend_item ei on ei.id = de.expendItemId
+        <include refid="whereSql"/>
+    </select>
+
+    <select id="query" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery"
+            resultMap="dailyExpendResultMap">
+        select de.*, ei.id as eiId, ei.category from t_fin_daily_expend de
+        join t_fin_expend_item ei on ei.id = de.expendItemId
+        <include refid="whereSql"/>
+        limit #{start},#{rows}
+    </select>
+
 </mapper>
