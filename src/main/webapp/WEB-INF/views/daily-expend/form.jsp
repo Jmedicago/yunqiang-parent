@@ -21,12 +21,12 @@
     </div>
     <div class="input-div">
         <label class="label-top">项目</label>
-        <input class="easyui-textbox theme-textbox-radius" name="detail" value="${finStockDailyExpendItem.detail}"
+        <input class="easyui-textbox theme-textbox-radius" name="detail" value="${dailyExpend.detail}"
                data-options="required:true">
     </div>
     <div class="input-div">
         <label class="label-top">金额</label>
-        <input class="easyui-textbox theme-textbox-radius" name="amount" value="${finStockDailyExpendItem.amount * 0.01}">
+        <input class="easyui-textbox theme-textbox-radius" name="amount" value="${dailyExpend.amount * 0.01}">
     </div>
     <div class="input-div" style="text-align: center; margin-top: 35px">
         <a class="easyui-linkbutton button-lg button-default"
@@ -46,6 +46,7 @@
         if (data.success) {
             $('#dailyExpendGrid').datagrid('reload');
             $('#addDailyExpendItemWindow').window('close');
+            $('#stockDailyGrid').datagrid('reload');
         }
     }
 

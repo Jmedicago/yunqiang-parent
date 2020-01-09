@@ -44,21 +44,40 @@ public class FinStockDailyController {
         return DOMAIN + ControllerConsts.VIEW_INDEX;
     }
 
-    @RequestMapping(ControllerConsts.URL_JSON)
+    /*@RequestMapping(ControllerConsts.URL_JSON)
     @ResponseBody
     public List<FinStockDaily> json(StockDailyQuery query) {
         Long stockId = Long.valueOf(UserContext.getUser().getStockIds());
         query.setStockId(stockId);
         query.setType(StockDailyTypeConsts.CHILD_STOCK_DAILY);
         return this.finStockDailyService.query(query);
+    }*/
+
+    @RequestMapping(ControllerConsts.URL_JSON)
+    @ResponseBody
+    public List<FinDyDaily> json(StockDailyQuery query) {
+        Long stockId = Long.valueOf(UserContext.getUser().getStockIds());
+        query.setStockId(stockId);
+        return this.finDyDailyService.query(query);
     }
 
-    @RequestMapping(ControllerConsts.URL_EDIT)
+    /*@RequestMapping(ControllerConsts.URL_EDIT)
     public String edit(Long id, Model model) {
         if (id != null) {
             // 日进出账明细
             FinStockDaily finStockDaily = this.finStockDailyService.get(id);
             model.addAttribute("finStockDaily", finStockDaily);
+        }
+        return DOMAIN + ControllerConsts.VIEW_EDIT;
+    }*/
+
+    @RequestMapping(ControllerConsts.URL_EDIT)
+    public String edit(Long id, Model model) {
+        if (id != null) {
+            // 日进出账明细
+            FinDyDaily dyDaily = this.finDyDailyService.get(id);
+
+            model.addAttribute("dyDaily", dyDaily);
         }
         return DOMAIN + ControllerConsts.VIEW_EDIT;
     }

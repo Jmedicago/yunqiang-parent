@@ -63,7 +63,34 @@ public class FinDailyExpendServiceImpl extends BaseServiceImpl<FinDailyExpend> i
 
     @Override
     public Ret deleteById(Long id) {
-        return null;
+        FinDailyExpend dailyExpend = this.mapper.get(id);
+        // 更新店员日报
+        FinDyDaily dyDaily = this.finDyDailyService.getByCode(dailyExpend.getDailyCode());
+        if (dyDaily != null) {
+            DailyExpendQuery query = new DailyExpendQuery();
+            query.setDailyCode(dyDaily.getCode());
+            double expendTotal = 0;
+
+            List<FinDailyExpend> dailyExpends = this.mapper.query(query);
+            for (FinDailyExpend expend :dailyExpends) {
+                if (expend.getId() != id) {
+                    expendTotal += expend.getAmount();
+                }
+            }
+
+            System.out.println("支出总计：" + expendTotal);
+            System.out.println("交付现金：" + dyDaily.getIncome());
+
+            double sales = dyDaily.getIncome() + expendTotal;
+            System.out.println("销售额：" + sales);
+
+            dyDaily.setExpendSubTotal(expendTotal);
+            dyDaily.setSales(sales);
+            this.finDyDailyService.updatePart(dyDaily);
+        }
+        // 删除
+        this.mapper.delete(id);
+        return Ret.me();
     }
 
 }

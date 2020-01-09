@@ -5,15 +5,15 @@
     <input type="hidden" name="id" value="${dyDaily.id}"/>
     <div class="input-div">
         <label class="label-top">交付现金</label>
-        <input class="easyui-textbox theme-textbox-radius" name="income" value="${dyDaily.income}">
+        <input class="easyui-textbox theme-textbox-radius" name="income" value="${dyDaily.income * 0.01}">
     </div>
     <div class="input-div">
         <label class="label-top">上货金额</label>
-        <input class="easyui-textbox theme-textbox-radius" name="purch" value="${dyDaily.purch}">
+        <input class="easyui-textbox theme-textbox-radius" name="purch" value="${dyDaily.purch * 0.01}">
     </div>
     <div class="input-div">
         <label class="label-top">最新客商欠款</label>
-        <input class="easyui-textbox theme-textbox-radius" name="arrears" value="${dyDaily.arrears}">
+        <input class="easyui-textbox theme-textbox-radius" name="arrears" value="${dyDaily.arrears * 0.01}">
     </div>
     <%--<div class="input-div">
         <label class="label-top">每日销售额</label>

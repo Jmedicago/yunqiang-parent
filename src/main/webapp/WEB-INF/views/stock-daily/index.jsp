@@ -16,26 +16,26 @@
             <thead>
             <tr>
                 <th data-options="field: 'id', checkbox: true"></th>
-                <th data-options="field: 'createTime',width: 200, halign: 'center', align: 'center', formatter: MXF.dateTimeFormatter">
+                <th data-options="field: 'date',width: 120, halign: 'center', align: 'center', formatter: MXF.dateFormatter">
                     日期
                 </th>
                 <th data-options="field:'stockId', width: 100, halign: 'center', align: 'center', formatter: stockFormatter">
                     仓库名
                 </th>
-                <th data-options="field:'income', width: 180, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                <th data-options="field:'income', width: 80, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
                     日收入
                 </th>
-                <th data-options="field: 'expendTotal', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                <th data-options="field: 'expendSubTotal', width: 80, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
                     日支出总计
                 </th>
-                <th data-options="field: 'sales', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
-                    销售额
-                </th>
-                <th data-options="field: 'purch', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                <th data-options="field: 'purch', width: 80, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
                     进货值
                 </th>
-                <th data-options="field: 'arrears', width: 200, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                <th data-options="field: 'arrears', width: 80, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
                     欠款
+                </th>
+                <th data-options="field: 'sales', width: 80, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                    销售额
                 </th>
             </tr>
             </thead>
@@ -46,20 +46,20 @@
                    class="easyui-linkbutton" iconCls="icon-add" plain="true">
                     <spring:message code="common.add"/>
                 </a>--%>
-                <a href="#" data-cmd="add" remote="false" title="填报" width="880px"; height="580px;"
+                <a href="#" data-cmd="add" remote="false" title="填报" width="600px"; height="450px;"
                    class="easyui-linkbutton" iconCls="icon-add" plain="true">
                     填报
                 </a>
-                <a href="#" data-cmd="editStockDaily" title="<spring:message code="common.edit"/>" mustsel
+                <a href="#" data-cmd="editStockDaily" title="编辑" mustsel width="600px"; height="450px;"
                    remote="false"
                    data-options="disabled:true" class="easyui-linkbutton"
                    iconCls="icon-edit" plain="true">
-                    <spring:message code="common.edit"/>
+                    编辑
                 </a>
                 <a href="#" data-cmd="showStockDaily" class="easyui-linkbutton"
                    plain="true">
                     <i class="iconfont">&#xe6cb;</i>
-                    查看
+                    报表
                 </a>
             </div>
             <div class="searchForm">
@@ -82,17 +82,7 @@
     });
 
     function stockFormatter(val, row) {
-        var stockName = "";
-        $.ajax({
-            type: "GET",
-            url: "/stock/info?id=" + val,
-            async: false,
-            success: function (data) {
-                stockName = data.name;
-                row.stockName = data.name;
-            }
-        })
-        return stockName;
+        return row.bisStock.name;
     }
 
     function addStockDaily() {
@@ -126,7 +116,7 @@
         })
     }
 
-    function editStockDaily() {
+    /*function editStockDaily() {
         var row = $('#stockDailyGrid').datagrid('getSelected');
         if (row == null) {
             MXF.error("请选择一个您要编辑的当日资金出账明细！");
@@ -139,6 +129,31 @@
             title: '当日资金出账明细',
             modal: true,
             maximized: true,
+            href: '/stock-daily/edit?id=' + row.id,
+            onLoad: function () {
+                //var $form = editWindow.find('form');
+                //$form.data('window',editWindow);
+            },
+            onClose: function () {
+                editWindow.window('destroy');
+            }
+        });
+    }*/
+
+    function editStockDaily() {
+        var row = $('#stockDailyGrid').datagrid('getSelected');
+        if (row == null) {
+            MXF.error("请选择一个您要编辑的当日资金出账明细！");
+            return;
+        }
+        // 打开编辑页面
+        var editWindow = $('<div id="editStockDailyWindow"></div>');
+        editWindow.appendTo('body');
+        $(editWindow).window({
+            title: '编辑',
+            modal: true,
+            width: 600,
+            height: 450,
             href: '/stock-daily/edit?id=' + row.id,
             onLoad: function () {
                 //var $form = editWindow.find('form');

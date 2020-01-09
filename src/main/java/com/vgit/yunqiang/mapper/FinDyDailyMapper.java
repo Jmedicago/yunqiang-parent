@@ -2,7 +2,9 @@ package com.vgit.yunqiang.mapper;
 
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.pojo.FinDyDaily;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface FinDyDailyMapper extends BaseMapper<FinDyDaily> {
@@ -22,4 +24,12 @@ public interface FinDyDailyMapper extends BaseMapper<FinDyDaily> {
      * @return
      */
     FinDyDaily getByCode(String dailyCode);
+
+    /**
+     * 检查今日是否填报
+     *
+     * @param stockId
+     * @return
+     */
+    int exits(@Param("stockId") Long stockId);
 }

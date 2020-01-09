@@ -104,6 +104,10 @@ public class FinDyDailyServiceImpl extends BaseServiceImpl<FinDyDaily> implement
         double sales =  dyDaily.getSales() != null ? dyDaily.getSales() * 100 : 0;
 
         if (dyDaily.getId() == null) {
+            if (exits(dyDaily)) {
+                throw new BisException().setInfo("今日已填报，不能添加！");
+            }
+
             dyDaily.setIncome(income);
             dyDaily.setPurch(purch);
             dyDaily.setArrears(arrears);
@@ -118,11 +122,21 @@ public class FinDyDailyServiceImpl extends BaseServiceImpl<FinDyDaily> implement
             dyDaily.setPurch(purch);
             dyDaily.setArrears(arrears);
             dyDaily.setSales(sales);
-            dyDaily.setDate(new Date());
+            //dyDaily.setDate(new Date());
             dyDaily.setCreateTime(System.currentTimeMillis());
             this.mapper.updatePart(dyDaily);
         }
+        dyDaily = this.mapper.get(dyDaily.getId());
         return dyDaily;
+    }
+
+    private boolean exits(FinDyDaily dyDaily) {
+        int count = this.mapper.exits(dyDaily.getStockId());
+        if (count > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

@@ -32,16 +32,16 @@
                class="easyui-linkbutton" iconCls="icon-add" plain="true">
                 新增
             </a>
-            <a href="#" data-cmd="editStockDaily" title="<spring:message code="common.edit"/>" mustsel
+            <a href="javascript:editDailyExpendItem()" title="<spring:message code="common.edit"/>" mustsel
                remote="false"
                data-options="disabled:true" class="easyui-linkbutton"
                iconCls="icon-edit" plain="true">
                 编辑
             </a>
-            <a href="#" data-cmd="showStockDaily" class="easyui-linkbutton"
+            <%--<a href="javascript:delDailyExpendItem()" class="easyui-linkbutton"
                iconCls="icon-no" plain="true">
                 删除
-            </a>
+            </a>--%>
         </div>
     </div>
 </div>
@@ -64,6 +64,50 @@
             onClose: function () {
                 editWindow.window('destroy');
             }
+        });
+    }
+    
+    function editDailyExpendItem() {
+        var row = $('#dailyExpendGrid').datagrid('getSelected');
+        if (row == null) {
+            MXF.error("请选择一个您要编辑的支出项！");
+            return;
+        }
+        // 打开编辑页面
+        var editWindow = $('<div id="addDailyExpendItemWindow"></div>');
+        editWindow.appendTo('body');
+        $(editWindow).window({
+            title: '编辑支出项',
+            modal: true,
+            /*maximized: true,*/
+            width: 600,
+            height: 450,
+            href: '/daily-expend/edit?dailyCode=${dailyCode}&id=' + row.id,
+            onLoad: function () {
+                //var $form = editWindow.find('form');
+                //$form.data('window',editWindow);
+            },
+            onClose: function () {
+                editWindow.window('destroy');
+            }
+        });
+    }
+    
+    function delDailyExpendItem() {
+        var row = $('#dailyExpendGrid').datagrid('getSelected');
+        if (row == null) {
+            MXF.error("请选择一个您要删除的支出项！");
+            return;
+        }
+        MXF.confirm('确认删除?', function () {
+            MXF.ajaxing(true);
+            $.post('/daily-expend/delete', {id: row.id}, function (data) {
+                MXF.ajaxing(false);
+                MXF.ajaxFormDone(data);
+                if (data.success) {
+                    $('#dailyExpendGrid').datagrid('reload');
+                }
+            });
         });
     }
 </script>

@@ -140,7 +140,7 @@ var commonCmd = {
     },
     edit: function (grid, clickTarget, params) {
         var row = grid.datagrid('getSelected');
-        var _error = params.error || 'Please select at least one data ?';
+        var _error = params.error || '请至少选择一条要删除的数据！';
         if (row == null) {
             MXF.error(_error);
             return;
@@ -213,8 +213,8 @@ var commonCmd = {
     },
     del: function (grid, clickTarget, params) {
         var rows = grid.datagrid('getSelections');
-        var _msg = params.msg || 'Confirm delete';
-        var _error = params.error || 'Please select at least one data';
+        var _msg = params.msg || '确认删除';
+        var _error = params.error || '请至少选择一条要删除的数据！';
         var ids = '';
         for (var i = 0; i < rows.length; i++) {
             ids += ',' + rows[i].id;
@@ -606,6 +606,14 @@ MXF.dateTimeFormatter = function (val, row) {
     if (val) {
         var now = new Date(val);
         return now.format("yyyy-MM-dd hh:mm:ss");
+    }
+    return '';
+};
+
+MXF.dateFormatter = function (val, row) {
+    if (val) {
+        var now = new Date(val);
+        return now.format("yyyy-MM-dd");
     }
     return '';
 };
