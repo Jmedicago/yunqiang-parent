@@ -290,4 +290,45 @@
         GROUP BY de.id
     </select>
 
+    <resultMap id="dzDailyListResultMap" type="com.vgit.yunqiang.pojo.FinDzDaily">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="stockId" property="stockId" jdbcType="BIGINT"/>
+        <result column="userId" property="userId" jdbcType="BIGINT"/>
+        <result column="date" property="date" jdbcType="DATE"/>
+        <result column="incomeSubTotal" property="incomeSubTotal" jdbcType="DOUBLE"/>
+        <result column="expendSubTotal" property="expendSubTotal" jdbcType="DOUBLE"/>
+        <result column="deposit" property="deposit" jdbcType="DOUBLE"/>
+        <result column="purch" property="purch" jdbcType="DOUBLE"/>
+        <result column="arrears" property="arrears" jdbcType="DOUBLE"/>
+        <result column="sales" property="sales" jdbcType="DOUBLE"/>
+        <result column="createTime" property="createTime" jdbcType="BIGINT"/>
+        <result column="updateTime" property="updateTime" jdbcType="BIGINT"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <association property="bisStock" javaType="com.vgit.yunqiang.pojo.BisStock">
+            <id column="id" property="id" jdbcType="BIGINT"/>
+            <result column="name" property="name" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+
+    <sql id="whereSql">
+        <where>
+            <if test="stockId!=null and stockId!=''">and dz.stockId = #{stockId}</if>
+        </where>
+    </sql>
+
+    <select id="queryTotal" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery" resultType="int">
+        select count(0) from t_fin_dz_daily dz
+        join t_bis_stock s on s.id = dz.stockId
+        <include refid="whereSql"/>
+    </select>
+
+    <select id="query" parameterType="com.vgit.yunqiang.common.query.base.BaseQuery"
+            resultMap="dzDailyListResultMap">
+        select * from t_fin_dz_daily dz
+        join t_bis_stock s on s.id = dz.stockId
+        <include refid="whereSql"/>
+        limit #{start},#{rows}
+    </select>
+
 </mapper>

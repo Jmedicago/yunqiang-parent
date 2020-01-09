@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <div class="tab-wrap">
     <div class="tableGroup">
-        <table id="regionStockDailyGrid" class="easyui-datagrid" title="<spring:message code="mu.region.stock.daily"/>" data-options="
+        <table id="stockDailyGrid" class="easyui-datagrid" title="每日资金进出账明细" data-options="
                     rownumbers: true,
                     fit: true,
                     method:'post',
@@ -11,42 +11,63 @@
 				    pageSize: 10,
 				    striped: true,
 				    singleSelect: false,
-				    toolbar: '#regionStockDailyTB',
+				    toolbar: '#stockDailyTB',
 				    url: '/region-stock-daily/json'">
             <thead>
             <tr>
                 <th data-options="field: 'id', checkbox: true"></th>
-                <th data-options="field: 'createTime',width: 200, halign: 'center', align: 'center', formatter: MXF.dateTimeFormatter">
-                    <spring:message code="region.stock.daily.datatime"/>
+                <th data-options="field: 'date',width: 120, halign: 'center', align: 'center', formatter: MXF.dateFormatter">
+                    日期
                 </th>
                 <th data-options="field:'stockId', width: 100, halign: 'center', align: 'center', formatter: stockFormatter">
-                    <spring:message code="region.stock.daily.store"/>
+                    仓库名
                 </th>
-                <th data-options="field:'safe', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
-                    <spring:message code="region.stock.daily.safe"/>
+                <th data-options="field:'incomeSubTotal', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                    日总额
                 </th>
-                <th data-options="field:'deposit', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
-                    <spring:message code="region.stock.daily.bank"/>
+                <th data-options="field: 'expendSubTotal', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                    日支出总计
+                </th>
+                <th data-options="field: 'deposit', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                    保险柜现金
+                </th>
+                <th data-options="field: 'purch', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                    上货金额
+                </th>
+                <th data-options="field: 'arrears', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                    最新客商欠款
+                </th>
+                <th data-options="field: 'sales', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                    日销售额
                 </th>
             </tr>
             </thead>
         </table>
-        <div id="regionStockDailyTB">
+        <div id="stockDailyTB">
             <div>
-                <a href="#" data-cmd="addRegionStockDaily" remote="false"
+                <%--<a href="#" data-cmd="addStockDaily" remote="false"
                    class="easyui-linkbutton" iconCls="icon-add" plain="true">
                     <spring:message code="common.add"/>
+                </a>--%>
+                <a href="#" data-cmd="add" remote="false" title="填报" width="600px" ; height="450px;"
+                   class="easyui-linkbutton" iconCls="icon-add" plain="true">
+                    填报
                 </a>
-                <a href="#" data-cmd="editRegionStockDaily" title="<spring:message code="common.edit"/>" mustsel
+                <a href="#" data-cmd="editDzStockDaily" title="编辑" mustsel width="600px" ; height="450px;"
                    remote="false"
                    data-options="disabled:true" class="easyui-linkbutton"
                    iconCls="icon-edit" plain="true">
-                    <spring:message code="common.edit"/>
+                    编辑
+                </a>
+                <a href="#" data-cmd="showStockDaily" class="easyui-linkbutton"
+                   plain="true">
+                    <i class="iconfont">&#xe6cb;</i>
+                    报表
                 </a>
             </div>
             <div class="searchForm">
                 <form>
-                    <spring:message code="region.stock.daily.datatime"/>:
+                    日期:
                     <input class="easyui-textbox theme-textbox-radius" name="dataTime" style="width:100px;">
                     <a href="javascript:;" data-cmd="search" class="easyui-linkbutton button-default"><spring:message
                             code="common.search"/></a>
@@ -64,66 +85,23 @@
     });
 
     function stockFormatter(val, row) {
-        var stockName = "";
-        $.ajax({
-            type: "GET",
-            url: "/stock/info?id=" + val,
-            async: false,
-            success: function (data) {
-                stockName = data.name;
-                row.stockName = data.name;
-            }
-        })
-        return stockName;
+        return row.bisStock.name;
     }
 
-    function addRegionStockDaily() {
-        MXF.confirm('<spring:message code="message.daily.make.detail"/>？', function (res) {
-            MXF.ajaxing(true);
-            // 创建区域当日资金出账明细
-            $.post('/region-stock-daily/store', function (res) {
-                if (res.success) { // 新建成功
-                    MXF.ajaxing(false);
-                    $('#regionStockDailyGrid').datagrid('reload');
-                    // 打开编辑页面
-                    var editWindow = $('<div id="addRegionStockDailyWindow"></div>');
-                    editWindow.appendTo('body');
-                    $(editWindow).window({
-                        title: '<spring:message code="region.stock.daily.title"/>',
-                        modal: true,
-                        maximized: true,
-                        href: '/region-stock-daily/edit?id=' + res.data.id,
-                        onLoad: function () {
-                            /*var formData = {
-                                id: res.data.id,
-                            }
-                            $('#stockDailyForm').form(formData);*/
-                        },
-                        onClose: function () {
-                            editWindow.window('destroy');
-                        }
-                    });
-                } else {
-                    MXF.ajaxing(false);
-                    MXF.alert(res.info, false);
-                }
-            });
-        })
-    }
-
-    function editRegionStockDaily() {
-        var row = $('#regionStockDailyGrid').datagrid('getSelected');
+    function editDzStockDaily() {
+        var row = $('#stockDailyGrid').datagrid('getSelected');
         if (row == null) {
-            MXF.error("<spring:message code="message.select"/>！");
+            MXF.error("请选择一个您要编辑的当日资金出账明细！");
             return;
         }
         // 打开编辑页面
-        var editWindow = $('<div id="editRegionStockDailyWindow"></div>');
+        var editWindow = $('<div id="editDzStockDailyWindow"></div>');
         editWindow.appendTo('body');
         $(editWindow).window({
-            title: '<spring:message code="region.stock.daily.title"/>',
+            title: '编辑',
             modal: true,
-            maximized: true,
+            width: 600,
+            height: 450,
             href: '/region-stock-daily/edit?id=' + row.id,
             onLoad: function () {
                 //var $form = editWindow.find('form');
@@ -134,4 +112,10 @@
             }
         });
     }
+
+    function showStockDaily() {
+        window.open("/report?rn=dz-daily&stockId=${stockId}");
+    }
 </script>
+
+

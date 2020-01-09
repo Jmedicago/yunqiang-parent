@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -110,6 +111,23 @@ public class FinDzDailyServiceImpl extends BaseServiceImpl<FinDzDaily> implement
         report.put("salesTotal", salesTotal);
         report.put("details", details);
         return report;
+    }
+
+    @Override
+    public FinDzDaily saveOrUpdateDaily(FinDzDaily dzDaily) {
+        if (dzDaily.getId() == null) {
+
+            dzDaily.setDate(new Date());
+            dzDaily.setCreateTime(System.currentTimeMillis());
+            this.mapper.savePart(dzDaily);
+            dzDaily.setCode("Z" + dzDaily.getId());
+            this.mapper.updatePart(dzDaily);
+        } else {
+            this.mapper.updatePart(dzDaily);
+        }
+
+        dzDaily = this.mapper.get(dzDaily.getId());
+        return dzDaily;
     }
 
     private String getStockName(Long stockId) {

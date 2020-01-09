@@ -25,4 +25,11 @@ public interface FinDzDailyService extends BaseService<FinDzDaily> {
      */
     Hashtable<String, Object> genDzDailyReport(ReportQuery query);
 
+    /**
+     * 店长填报
+     *
+     * @param dzDaily
+     * @return
+     */
+    FinDzDaily saveOrUpdateDaily(FinDzDaily dzDaily);
 }

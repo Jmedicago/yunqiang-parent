@@ -7,8 +7,11 @@ import com.vgit.yunqiang.common.utils.Page;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.controller.consts.ControllerConsts;
 import com.vgit.yunqiang.controller.utils.UserContext;
+import com.vgit.yunqiang.pojo.FinDyDaily;
+import com.vgit.yunqiang.pojo.FinDzDaily;
 import com.vgit.yunqiang.pojo.FinStockDaily;
 import com.vgit.yunqiang.pojo.SysUser;
+import com.vgit.yunqiang.service.FinDzDailyService;
 import com.vgit.yunqiang.service.FinStockDailyService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,21 +34,39 @@ public class FinRegionStockDailyController {
     @Autowired
     private FinStockDailyService finStockDailyService;
 
-    @RequestMapping(ControllerConsts.URL_INDEX)
+    @Autowired
+    private FinDzDailyService finDzDailyService;
+
+   /* @RequestMapping(ControllerConsts.URL_INDEX)
     public String index() {
+        return DOMAIN + ControllerConsts.VIEW_INDEX;
+    }*/
+
+    @RequestMapping(ControllerConsts.URL_INDEX)
+    public String index(Model model) {
+        Long stockId = Long.valueOf(UserContext.getUser().getStockIds());
+        model.addAttribute("stockId", stockId);
         return DOMAIN + ControllerConsts.VIEW_INDEX;
     }
 
-    @RequestMapping(ControllerConsts.URL_JSON)
+    /*@RequestMapping(ControllerConsts.URL_JSON)
     @ResponseBody
     public List<FinStockDaily> json(StockDailyQuery query) {
         Long stockId = Long.valueOf(UserContext.getUser().getStockIds());
         query.setStockId(stockId);
         query.setType(StockDailyTypeConsts.REGION_STOCK_DAILY);
         return this.finStockDailyService.query(query);
+    }*/
+
+    @RequestMapping(ControllerConsts.URL_JSON)
+    @ResponseBody
+    public List<FinDzDaily> json(StockDailyQuery query) {
+        Long stockId = Long.valueOf(UserContext.getUser().getStockIds());
+        query.setStockId(stockId);
+        return this.finDzDailyService.query(query);
     }
 
-    @RequestMapping(ControllerConsts.URL_EDIT)
+    /*@RequestMapping(ControllerConsts.URL_EDIT)
     public String edit(Long id, Model model) {
         if (id != null) {
             // 日进出账明细
@@ -53,15 +74,25 @@ public class FinRegionStockDailyController {
             model.addAttribute("finRegionStockDaily", finRegionStockDaily);
         }
         return DOMAIN + ControllerConsts.VIEW_EDIT;
+    }*/
+
+    @RequestMapping(ControllerConsts.URL_EDIT)
+    public String edit(Long id, Model model) {
+        if (id != null) {
+            // 日进出账明细
+            FinDzDaily dzDaily = this.finDzDailyService.get(id);
+            model.addAttribute("dzDaily", dzDaily);
+        }
+        return DOMAIN + ControllerConsts.VIEW_EDIT;
     }
 
     /**
      * 创建区域日报
      *
-     * @param regionStockDaily
+     *
      * @return
      * @throws UnsupportedEncodingException
-     */
+     *//*
     @RequestMapping(ControllerConsts.URL_STORE)
     @ResponseBody
     public Ret store(FinStockDaily regionStockDaily) throws UnsupportedEncodingException {
@@ -89,6 +120,20 @@ public class FinRegionStockDailyController {
         } catch (BisException e) {
             return Ret.me().setSuccess(false).setInfo(e.getInfo());
         }
+    }*/
+
+    @RequestMapping(ControllerConsts.URL_STORE)
+    @ResponseBody
+    public Ret store(FinDzDaily dzDaily) throws UnsupportedEncodingException {
+        SysUser existUser = UserContext.getUser();
+        try {
+            dzDaily.setStockId(Long.valueOf(existUser.getStockIds()));
+            dzDaily.setUserId(existUser.getId());
+            dzDaily = this.finDzDailyService.saveOrUpdateDaily(dzDaily);
+        } catch (BisException e) {
+            return Ret.me().setSuccess(false).setInfo(e.getInfo());
+        }
+        return Ret.me().setData(dzDaily);
     }
 
     @RequestMapping(ControllerConsts.URL_DELETE)

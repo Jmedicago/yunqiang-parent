@@ -30,6 +30,8 @@ public class FinDzDaily extends BasePojo {
 
     private Double sales;
 
+    private BisStock bisStock;
+
     private List<FinDyDaily> finDyDailyList = new ArrayList<FinDyDaily>();
 
     public Long getId() {
@@ -118,6 +120,14 @@ public class FinDzDaily extends BasePojo {
 
     public void setSales(Double sales) {
         this.sales = sales;
+    }
+
+    public BisStock getBisStock() {
+        return bisStock;
+    }
+
+    public void setBisStock(BisStock bisStock) {
+        this.bisStock = bisStock;
     }
 
     public List<FinDyDaily> getFinDyDailyList() {

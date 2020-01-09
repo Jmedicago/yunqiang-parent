@@ -74,7 +74,7 @@
             return;
         }
         // 打开编辑页面
-        var editWindow = $('<div id="addDailyExpendItemWindow"></div>');
+        var editWindow = $('<div id="editDailyExpendItemWindow"></div>');
         editWindow.appendTo('body');
         $(editWindow).window({
             title: '编辑支出项',
