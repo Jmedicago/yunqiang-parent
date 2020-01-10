@@ -4,6 +4,7 @@ import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.service.BaseService;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.pojo.BisOrder;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Map;
 
@@ -88,4 +89,12 @@ public interface BisOrderService extends BaseService<BisOrder> {
     void addToOrder(Integer o, Long orderId, Long[] splitToLong);
 
     void updateState(Long orderId, Integer state);
+
+    /**
+     * 获取当日下单金额
+     *
+     * @param stockId
+     * @return
+     */
+    double getCurDailyTackOrder(Long stockId);
 }

@@ -41,4 +41,22 @@ public interface FinQDzInventoryService extends BaseService<FinQDzInventory> {
      * @return
      */
     Hashtable<String, Object> queryYQInventoryReport(ReportQuery query);
+
+    /**
+     * 查询最后一个季度的盘点情况
+     *
+     * @param stockId
+     * @return
+     */
+    FinQDzInventory selectLastQInventory(Long stockId);
+
+    /**
+     * 查询上一个季度的盘点情况
+     *
+     * @param year
+     * @param quarterly
+     * @param stockId
+     * @return
+     */
+    FinQDzInventory getBeforeQInventory(String year, String quarterly, Long stockId);
 }

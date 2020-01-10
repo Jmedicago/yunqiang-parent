@@ -11,10 +11,7 @@ import com.vgit.yunqiang.common.exception.BisException;
 import com.vgit.yunqiang.common.query.QuartzJobInfo;
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
-import com.vgit.yunqiang.common.utils.GlobalSetting;
-import com.vgit.yunqiang.common.utils.IDUtils;
-import com.vgit.yunqiang.common.utils.Page;
-import com.vgit.yunqiang.common.utils.Ret;
+import com.vgit.yunqiang.common.utils.*;
 import com.vgit.yunqiang.mapper.BisOrderMapper;
 import com.vgit.yunqiang.pojo.*;
 import com.vgit.yunqiang.service.*;
@@ -23,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -473,6 +471,18 @@ public class BisOrderServiceImpl extends BaseServiceImpl<BisOrder> implements Bi
     @Override
     public void updateState(Long orderId, Integer state) {
         this.mapper.updateState(orderId, state);
+    }
+
+    @Override
+    public double getCurDailyTackOrder(Long stockId) {
+        Double total = 0d;
+        Timestamp startTime = TimeUtils.getDayStartTime(new Date());
+        Timestamp endTime = TimeUtils.getDayEndTime(new Date());
+        total = this.mapper.getCurDailyTackOrder(startTime.getTime(), endTime.getTime(), stockId);
+        if (total == null) {
+            return 0;
+        }
+        return total;
     }
 
     /**

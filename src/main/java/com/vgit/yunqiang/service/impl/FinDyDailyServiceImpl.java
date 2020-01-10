@@ -144,6 +144,11 @@ public class FinDyDailyServiceImpl extends BaseServiceImpl<FinDyDaily> implement
         return this.mapper.getByCode(dailyCode);
     }
 
+    @Override
+    public List<FinDyDaily> getDyDailyList(Long stockId, String date) {
+        return this.mapper.getDyDailyList(stockId, date);
+    }
+
     private String getStockName(Long stockId) {
         return this.bisStockService.get(stockId).getName();
     }

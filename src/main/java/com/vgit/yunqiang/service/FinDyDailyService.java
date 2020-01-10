@@ -41,4 +41,12 @@ public interface FinDyDailyService extends BaseService<FinDyDaily> {
      * @return
      */
     FinDyDaily getByCode(String dailyCode);
+
+    /**
+     * 查询所有店员列表
+     *
+     * @param stockId
+     * @return
+     */
+    List<FinDyDaily> getDyDailyList(Long stockId, String date);
 }

@@ -42,8 +42,8 @@
             <th style="background: #ddd9c3; color: #c00000;">每日销售额</th>
         </tr>
         <tr style="background: rgb(182, 211, 232)">
-            <td colspan="9">Q2（上季度）盘点帐目入帐到Q3（本季度）作为进帐 →《 保险柜现金（包含家里固定存放的现金 》</td>
-            <td>150000</td>
+            <td colspan="9">Q${report.quarterly - 1 > 0 ? report.quarterly - 1 : 4}（上季度）盘点帐目入帐到Q${report.quarterly}（本季度）作为进帐 →《 保险柜现金（包含家里固定存放的现金 》</td>
+            <td><fmt:formatNumber value="${report.beforeQuarterlyDeposit}" pattern="#,#00"/></td>
             <td></td>
             <td></td>
             <td></td>
@@ -69,8 +69,8 @@
                 <td>
                     <ul>
                         <c:forEach var="dyDetail" items="${detail.dyDailies}">
-                            <c:forEach var="expend" items="${dyDetail.finDailyExpendList}">
-                                <li style="background: ${expend.finExpendItem.category == 'C' or expend.finExpendItem.category == 'I' ? '#F0EF36' : 0}">${expend.stockName}</li>
+                            <c:forEach var="expend" items="${dyDetail.finDailyExpendList}"> <!-- or expend.finExpendItem.category == 'I' -->
+                                <li style="background: ${expend.finExpendItem.category == 'C' ? '#F0EF36' : expend.finExpendItem.category == 'C1' ? 'red' : 0 }">${expend.stockName}</li>
                             </c:forEach>
                         </c:forEach>
                     </ul>
@@ -79,7 +79,7 @@
                     <ul>
                         <c:forEach var="dyDetail" items="${detail.dyDailies}">
                             <c:forEach var="expend" items="${dyDetail.finDailyExpendList}">
-                                <li style="background: ${expend.finExpendItem.category == 'C' or expend.finExpendItem.category == 'I' ? '#F0EF36' : 0}">${expend.finExpendItem.category}</li>
+                                <li style="background: ${expend.finExpendItem.category == 'C' ? '#F0EF36' : expend.finExpendItem.category == 'C1' ? 'red' : 0}">${expend.finExpendItem.category}</li>
                             </c:forEach>
                         </c:forEach>
                     </ul>
@@ -88,7 +88,7 @@
                     <ul>
                         <c:forEach var="dyDetail" items="${detail.dyDailies}">
                             <c:forEach var="expend" items="${dyDetail.finDailyExpendList}">
-                                <li style="background: ${expend.finExpendItem.category == 'C' or expend.finExpendItem.category == 'I' ? '#F0EF36' : 0}">${expend.detail}</li>
+                                <li style="background: ${expend.finExpendItem.category == 'C' ? '#F0EF36' : expend.finExpendItem.category == 'C1' ? 'red' : 0}">${expend.detail}</li>
                             </c:forEach>
                         </c:forEach>
                     </ul>
@@ -97,7 +97,7 @@
                     <ul>
                         <c:forEach var="dyDetail" items="${detail.dyDailies}">
                             <c:forEach var="expend" items="${dyDetail.finDailyExpendList}">
-                                <li style="background: ${expend.finExpendItem.category == 'C' or expend.finExpendItem.category == 'I' ? '#F0EF36' : 0}"><fmt:formatNumber value="${expend.amount}" pattern="#,#00"/></li>
+                                <li style="background: ${expend.finExpendItem.category == 'C' ? '#F0EF36' : expend.finExpendItem.category == 'C1' ? 'red' : 0}"><fmt:formatNumber value="${expend.amount}" pattern="#,#00"/></li>
                             </c:forEach>
                         </c:forEach>
                     </ul>

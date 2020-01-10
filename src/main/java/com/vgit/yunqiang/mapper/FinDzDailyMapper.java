@@ -15,4 +15,11 @@ public interface FinDzDailyMapper extends BaseMapper<FinDzDaily> {
      */
     List<FinDzDaily> queryDailyList(Long stockId);
 
+    /**
+     * 是否存在
+     *
+     * @param stockId
+     * @return
+     */
+    int exits(Long stockId);
 }

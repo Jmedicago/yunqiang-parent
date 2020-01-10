@@ -22,24 +22,24 @@
                 <th data-options="field:'stockId', width: 100, halign: 'center', align: 'center', formatter: stockFormatter">
                     仓库名
                 </th>
-                <th data-options="field:'incomeSubTotal', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                <%--<th data-options="field:'incomeSubTotal', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
                     日总额
-                </th>
-                <th data-options="field: 'expendSubTotal', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                </th>--%>
+                <%--<th data-options="field: 'expendSubTotal', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
                     日支出总计
-                </th>
-                <th data-options="field: 'deposit', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                </th>--%>
+                <%--<th data-options="field: 'deposit', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
                     保险柜现金
-                </th>
+                </th>--%>
                 <th data-options="field: 'purch', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
                     上货金额
                 </th>
-                <th data-options="field: 'arrears', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                <%--<th data-options="field: 'arrears', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
                     最新客商欠款
-                </th>
-                <th data-options="field: 'sales', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
+                </th>--%>
+                <%--<th data-options="field: 'sales', width: 100, halign: 'center', align: 'center', formatter: MXF.priceFormatter">
                     日销售额
-                </th>
+                </th>--%>
             </tr>
             </thead>
         </table>

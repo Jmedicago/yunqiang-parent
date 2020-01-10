@@ -26,4 +26,22 @@ public interface FinQDzInventoryMapper extends BaseMapper<FinQDzInventory> {
      * @return
      */
     List<FinQDzInventory> getQDzInventoryList(@Param("year") String year, @Param("quarterly") String quarterly);
+
+    /**
+     * 查询最后一个季度的盘点情况
+     *
+     *
+     * @return
+     */
+    FinQDzInventory selectLastQInventory(@Param("stockId") Long stockId);
+
+    /**
+     * 上季度盘点情况
+     *
+     * @param year
+     * @param quarterly
+     * @param stockId
+     * @return
+     */
+    FinQDzInventory getBeforeQInventory(@Param("year") String year, @Param("quarterly") String quarterly, @Param("stockId") Long stockId);
 }

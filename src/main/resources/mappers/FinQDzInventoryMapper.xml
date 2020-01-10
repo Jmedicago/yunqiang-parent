@@ -322,4 +322,20 @@
             AND q.NAME = #{quarterly}
     </select>
 
+    <select id="selectLastQInventory" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select * FROM t_fin_q_dz_inventory dz WHERE dz.id =  (SELECT MAX(id) FROM t_fin_q_dz_inventory WHERE stockId = #{stockId})
+    </select>
+
+    <select id="getBeforeQInventory" resultMap="BaseResultMap">
+        SELECT
+            dz.*
+        FROM
+            t_fin_q_dz_inventory dz
+            JOIN t_fin_year y ON y.id = dz.yearId
+        WHERE
+            y.NAME = #{year}
+            AND dz.quarterlyId = #{quarterly}
+            AND stockId = #{stockId}
+    </select>
+
 </mapper>

@@ -277,6 +277,16 @@ public class FinQDzInventoryServiceImpl extends BaseServiceImpl<FinQDzInventory>
         return report;
     }
 
+    @Override
+    public FinQDzInventory selectLastQInventory(Long stockId) {
+        return this.mapper.selectLastQInventory(stockId);
+    }
+
+    @Override
+    public FinQDzInventory getBeforeQInventory(String year, String quarterly, Long stockId) {
+        return this.mapper.getBeforeQInventory(year, quarterly, stockId);
+    }
+
     private String getRegionStockName(Long stockId) {
         BisStock bisStock = this.bisStockService.get(stockId);
         return this.bisStockService.get(bisStock.getParentId()).getName();

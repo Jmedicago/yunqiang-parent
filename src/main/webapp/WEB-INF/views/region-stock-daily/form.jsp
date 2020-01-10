@@ -3,23 +3,23 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <form id="dzStockDailyForm" method="post" style="width: 600px; margin: 30px auto;" action="/region-stock-daily/store">
     <input type="hidden" name="id" value="${dzDaily.id}"/>
-    <div class="input-div">
+    <%--<div class="input-div">
         <label class="label-top">交付现金</label>
         <input class="easyui-textbox theme-textbox-radius" name="income" value="${dzDaily.incomeSubTotal * 0.01}">
-    </div>
-    <div class="input-div">
+    </div>--%>
+    <%--<div class="input-div">
         <label class="label-top">上货金额</label>
         <input class="easyui-textbox theme-textbox-radius" name="purch" value="${dzDaily.purch * 0.01}">
-    </div>
-    <div class="input-div">
+    </div>--%>
+    <%--<div class="input-div">
         <label class="label-top">最新客商欠款</label>
         <input class="easyui-textbox theme-textbox-radius" name="arrears" value="${dzDaily.arrears * 0.01}">
-    </div>
+    </div>--%>
     <div class="input-div" style="text-align: center; margin-top: 35px">
-        <a class="easyui-linkbutton button-lg button-default" onclick="MXF.ajaxForm(this)"><spring:message
-                code="common.submit"/></a>
+        <%--<a class="easyui-linkbutton button-lg button-default" onclick="MXF.ajaxForm(this)"><spring:message
+                code="common.submit"/></a>--%>
         <a class="easyui-linkbutton button-lg button-red" onclick="addDailyExpend()">添加支出</a>
-        <a class="easyui-linkbutton button-lg" onclick="MXF.clearForm(this)"><spring:message code="common.reset"/></a>
+        <%--<a class="easyui-linkbutton button-lg" onclick="MXF.clearForm(this)"><spring:message code="common.reset"/></a>--%>
     </div>
     <hr style="border:0;margin-bottom:20px;"/>
 </form>

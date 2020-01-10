@@ -296,4 +296,23 @@
         SELECT count(0) FROM t_fin_dy_daily dy where dy.stockId = #{stockId} and dy.date = DATE_FORMAT(now(), '%Y-%m-%d')
     </select>
 
+    <select id="getDyDailyList" resultMap="dailyListResultMap">
+        select
+            dy.*,
+            de.id as deId,
+            de.expendItemId,
+            de.stockName,
+            de.dailyCode,
+            de.detail,
+            de.amount,
+            ei.id as eiId,
+            ei.category
+        from
+            t_fin_dy_daily dy
+            JOIN t_fin_daily_expend de ON dy.code = de.dailyCode
+            JOIN t_fin_expend_item ei ON de.expendItemId = ei.id
+        where
+            dy.stockId in (select id FROM t_bis_stock where parentId = #{stockId}) AND dy.date = #{date}
+    </select>
+
 </mapper>

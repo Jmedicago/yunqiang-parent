@@ -23,4 +23,14 @@ public interface BisOrderMapper extends BaseMapper<BisOrder> {
     int hasNotComment(@Param("orderId") Long id);
 
     void updateState(@Param("id") Long id, @Param("status") Integer status);
+
+    /**
+     * 获取当日下单金额
+     *
+     * @param startTime
+     * @param endTime
+     * @param stockId
+     * @return
+     */
+    Double getCurDailyTackOrder(@Param("startTime") Long startTime, @Param("endTime") Long endTime, @Param("stockId") Long stockId);
 }

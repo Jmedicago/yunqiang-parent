@@ -1,6 +1,7 @@
 package com.vgit.yunqiang.common.utils;
 
 import com.alibaba.fastjson.JSON;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -1156,7 +1157,9 @@ public class TimeUtils {
         System.out.println(sean + ", " + year);*/
         /*System.out.println(getEveryQuarterStartAndEndTime()[0]);*/
 
-        Long[] result = getQuarterStartAndEndTime(4, 2018);
-        System.out.print(result[0] + " , " + result[1]);
+        /*Long[] result = getQuarterStartAndEndTime(4, 2018);
+        System.out.print(result[0] + " , " + result[1]);*/
+        System.out.println(getNowYear());
+        System.out.println(getNowSeason());
     }
 }
