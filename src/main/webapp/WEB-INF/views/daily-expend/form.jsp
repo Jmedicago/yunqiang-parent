@@ -16,7 +16,7 @@
                         var text = row.category + '&nbsp;' + row.article;
                         return text;
                     },
-			        url: '/expend-item/json'" style="width:420px;">
+			        url: '/expend-item/list'" style="width:420px;">
         </select>
     </div>
     <div class="input-div">

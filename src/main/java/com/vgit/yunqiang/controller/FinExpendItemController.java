@@ -1,6 +1,7 @@
 package com.vgit.yunqiang.controller;
 
 import com.vgit.yunqiang.common.query.ExtendItemQuery;
+import com.vgit.yunqiang.common.utils.Page;
 import com.vgit.yunqiang.common.utils.Ret;
 import com.vgit.yunqiang.controller.consts.ControllerConsts;
 import com.vgit.yunqiang.pojo.FinExpendItem;
@@ -32,7 +33,15 @@ public class FinExpendItemController {
 
     @RequestMapping(ControllerConsts.URL_JSON)
     @ResponseBody
-    public List<FinExpendItem> json(ExtendItemQuery query) {
+    public Page<FinExpendItem> json(ExtendItemQuery query) {
+        return this.finExpendItemService.queryPage(query);
+    }
+
+    @RequestMapping(ControllerConsts.URL_LIST)
+    @ResponseBody
+    public List<FinExpendItem> getAll() {
+        ExtendItemQuery query = new ExtendItemQuery();
+        query.setRows(1000);
         return this.finExpendItemService.query(query);
     }
 
