@@ -4,6 +4,7 @@
 <link type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
 <link type="text/css" href="/easyui/my/report.css" rel="stylesheet"/>
 <script type="text/javascript" src="/easyui/jquery.min.js"></script>
+<title>每日资金进出帐明细</title>
 <div style="padding: 10px">
     <!-- 表报开始 -->
     <table border="1">
