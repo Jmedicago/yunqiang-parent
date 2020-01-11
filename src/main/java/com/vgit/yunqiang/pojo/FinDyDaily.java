@@ -16,6 +16,8 @@ public class FinDyDaily extends BasePojo {
 
     private Long userId;
 
+    private String dateFormatter;
+
     private Date date;
 
     private Double income;
@@ -118,6 +120,14 @@ public class FinDyDaily extends BasePojo {
 
     public void setFinDailyExpendList(List<FinDailyExpend> finDailyExpendList) {
         this.finDailyExpendList = finDailyExpendList;
+    }
+
+    public String getDateFormatter() {
+        return dateFormatter;
+    }
+
+    public void setDateFormatter(String dateFormatter) {
+        this.dateFormatter = dateFormatter;
     }
 
     public BisStock getBisStock() {

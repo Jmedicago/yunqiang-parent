@@ -4,6 +4,7 @@
 <link type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
 <link type="text/css" href="/easyui/my/report.css" rel="stylesheet"/>
 <script type="text/javascript" src="/easyui/jquery.min.js"></script>
+<title>每日区域销售额汇总</title>
 <div style="padding: 10px; width: 4500px;">
     <c:set var="days"
            value="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31"></c:set>

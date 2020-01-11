@@ -31,7 +31,7 @@ public interface FinDyDailyMapper extends BaseMapper<FinDyDaily> {
      * @param stockId
      * @return
      */
-    int exits(@Param("stockId") Long stockId);
+    int exits(@Param("stockId") Long stockId, @Param("date")String date);
 
     /**
      * 查询所有店员填报列表

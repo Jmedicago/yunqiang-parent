@@ -64,4 +64,8 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
+    <select id="getAll" resultMap="BaseResultMap">
+        select * from t_fin_year
+    </select>
+
 </mapper>

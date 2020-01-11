@@ -9,6 +9,7 @@ import com.vgit.yunqiang.mapper.FinDyDailyMapper;
 import com.vgit.yunqiang.pojo.FinDailyExpend;
 import com.vgit.yunqiang.pojo.FinDyDaily;
 import com.vgit.yunqiang.service.BisStockService;
+import com.vgit.yunqiang.service.FinDailyExpendService;
 import com.vgit.yunqiang.service.FinDyDailyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,9 @@ public class FinDyDailyServiceImpl extends BaseServiceImpl<FinDyDaily> implement
 
     @Autowired
     private BisStockService bisStockService;
+
+    @Autowired
+    private FinDailyExpendService finDailyExpendService;
 
     @Override
     protected BaseMapper<FinDyDaily> getMapper() {
@@ -96,7 +100,7 @@ public class FinDyDailyServiceImpl extends BaseServiceImpl<FinDyDaily> implement
         return report;
     }
 
-    @Override
+    /*@Override
     public FinDyDaily saveOrUpdateDaily(FinDyDaily dyDaily) throws BisException {
         double income = dyDaily.getIncome() != null ? dyDaily.getIncome() * 100 : 0;
         double purch = dyDaily.getPurch() != null ? dyDaily.getPurch() * 100 : 0;
@@ -128,10 +132,65 @@ public class FinDyDailyServiceImpl extends BaseServiceImpl<FinDyDaily> implement
         }
         dyDaily = this.mapper.get(dyDaily.getId());
         return dyDaily;
+    }*/
+
+    @Override
+    public FinDyDaily saveOrUpdateDaily(FinDyDaily dyDaily) throws BisException {
+        double income = dyDaily.getIncome() != null ? dyDaily.getIncome() * 100 : 0;
+        double purch = dyDaily.getPurch() != null ? dyDaily.getPurch() * 100 : 0;
+        double arrears = dyDaily.getArrears() != null ? dyDaily.getArrears() * 100 : 0;
+        double sales = 0;
+        double expendSubTotal = 0;
+
+        if (dyDaily.getId() == null) {
+            if (exits(dyDaily)) {
+                throw new BisException().setInfo("今日已填报，不能添加！");
+            }
+
+            dyDaily.setIncome(income);
+            dyDaily.setPurch(purch);
+            dyDaily.setArrears(arrears);
+            this.mapper.savePart(dyDaily);
+            dyDaily.setCode("Y" + dyDaily.getId());
+
+            List<FinDailyExpend> dailyExpends = this.clearNullItem(dyDaily.getFinDailyExpendList());
+            for (FinDailyExpend dailyExpend : dailyExpends) {
+                if (dailyExpend != null) {
+                    double amount = 0;
+
+                    amount = dailyExpend.getAmount() != null ? dailyExpend.getAmount() * 100 : 0;
+
+                    dailyExpend.setDailyCode(dyDaily.getCode());
+                    dailyExpend.setStockName(this.getStockName(dyDaily.getStockId()));
+                    dailyExpend.setAmount(amount);
+                    this.finDailyExpendService.savePart(dailyExpend);
+
+                    expendSubTotal += dailyExpend.getAmount();
+                }
+            }
+
+            sales = expendSubTotal + income;
+
+
+            dyDaily.setExpendSubTotal(expendSubTotal);
+            dyDaily.setSales(sales);
+            this.mapper.updatePart(dyDaily);
+        }
+        return dyDaily;
+    }
+
+    private List<FinDailyExpend> clearNullItem(List<FinDailyExpend> finDailyExpendList) {
+        List<FinDailyExpend> dailyExpends = new ArrayList<FinDailyExpend>();
+        for (FinDailyExpend dailyExpend : finDailyExpendList) {
+            if (dailyExpend.getExpendItemId() != null) {
+                dailyExpends.add(dailyExpend);
+            }
+        }
+        return dailyExpends;
     }
 
     private boolean exits(FinDyDaily dyDaily) {
-        int count = this.mapper.exits(dyDaily.getStockId());
+        int count = this.mapper.exits(dyDaily.getStockId(), dyDaily.getDateFormatter());
         if (count > 0) {
             return true;
         } else {

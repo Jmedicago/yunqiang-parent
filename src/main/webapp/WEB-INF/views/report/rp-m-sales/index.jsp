@@ -4,12 +4,13 @@
 <link type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
 <link type="text/css" href="/easyui/my/report.css" rel="stylesheet"/>
 <script type="text/javascript" src="/easyui/jquery.min.js"></script>
+<title>每月区域销售额汇总</title>
 <div style="padding: 10px">
     <c:set var="months" value="1,2,3,4,5,6,7,8,9,10,11,12"></c:set>
     <!-- 表报开始 -->
     <table border="1">
         <tr>
-            <th colspan="16">${report.year}年 - 每月区域销售额汇总</th>
+            <th style="background: #fff;" colspan="16">${report.year}年 - 每月区域销售额汇总</th>
         </tr>
         <tr>
             <th>区域名称</th>
