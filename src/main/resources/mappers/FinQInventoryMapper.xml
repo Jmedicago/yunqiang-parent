@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vgit.yunqiang.mapper.FinQInventoryMapper">
+
+    <resultMap id="BaseResultMap" type="com.vgit.yunqiang.pojo.FinQInventory">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="yearId" property="yearId" jdbcType="BIGINT"/>
+        <result column="quarterlyId" property="quarterlyId" jdbcType="BIGINT"/>
+        <result column="startDate" property="startDate" jdbcType="DATE"/>
+        <result column="endDate" property="endDate" jdbcType="DATE"/>
+        <result column="inventory" property="inventory" jdbcType="DOUBLE"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, yearId, quarterlyId, startDate, endDate, inventory
+    </sql>
+
+    <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from t_fin_q_inventory
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from t_fin_q_inventory
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.FinQInventory">
+        insert into t_fin_q_inventory (id, yearId, quarterlyId,
+          startDate, endDate, inventory
+          )
+        values (#{id,jdbcType=BIGINT}, #{yearId,jdbcType=BIGINT}, #{quarterlyId,jdbcType=BIGINT},
+          #{startDate,jdbcType=DATE}, #{endDate,jdbcType=DATE}, #{inventory,jdbcType=DOUBLE}
+          )
+    </insert>
+
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.FinQInventory">
+        insert into t_fin_q_inventory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="yearId != null">
+                yearId,
+            </if>
+            <if test="quarterlyId != null">
+                quarterlyId,
+            </if>
+            <if test="startDate != null">
+                startDate,
+            </if>
+            <if test="endDate != null">
+                endDate,
+            </if>
+            <if test="inventory != null">
+                inventory,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="yearId != null">
+                #{yearId,jdbcType=BIGINT},
+            </if>
+            <if test="quarterlyId != null">
+                #{quarterlyId,jdbcType=BIGINT},
+            </if>
+            <if test="startDate != null">
+                #{startDate,jdbcType=DATE},
+            </if>
+            <if test="endDate != null">
+                #{endDate,jdbcType=DATE},
+            </if>
+            <if test="inventory != null">
+                #{inventory,jdbcType=DOUBLE},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.FinQInventory">
+        update t_fin_q_inventory
+        <set>
+            <if test="yearId != null">
+                yearId = #{yearId,jdbcType=BIGINT},
+            </if>
+            <if test="quarterlyId != null">
+                quarterlyId = #{quarterlyId,jdbcType=BIGINT},
+            </if>
+            <if test="startDate != null">
+                startDate = #{startDate,jdbcType=DATE},
+            </if>
+            <if test="endDate != null">
+                endDate = #{endDate,jdbcType=DATE},
+            </if>
+            <if test="inventory != null">
+                inventory = #{inventory,jdbcType=DOUBLE},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.FinQInventory">
+        update t_fin_q_inventory
+        set yearId = #{yearId,jdbcType=BIGINT},
+          quarterlyId = #{quarterlyId,jdbcType=BIGINT},
+          startDate = #{startDate,jdbcType=DATE},
+          endDate = #{endDate,jdbcType=DATE},
+          inventory = #{inventory,jdbcType=DOUBLE}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+</mapper>

@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vgit.yunqiang.mapper.TFinDyQInvProductMapper">
+
+    <resultMap id="BaseResultMap" type="com.vgit.yunqiang.pojo.FinDyQInvProduct">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="yearId" property="yearId" jdbcType="BIGINT"/>
+        <result column="quarerlyId" property="quarerlyId" jdbcType="BIGINT"/>
+        <result column="stockId" property="stockId" jdbcType="BIGINT"/>
+        <result column="skuId" property="skuId" jdbcType="BIGINT"/>
+        <result column="productId" property="productId" jdbcType="BIGINT"/>
+        <result column="productType" property="productType" jdbcType="VARCHAR"/>
+        <result column="skuMainPic" property="skuMainPic" jdbcType="VARCHAR"/>
+        <result column="productName" property="productName" jdbcType="VARCHAR"/>
+        <result column="skuCode" property="skuCode" jdbcType="VARCHAR"/>
+        <result column="skuProperties" property="skuProperties" jdbcType="VARCHAR"/>
+        <result column="pack" property="pack" jdbcType="INTEGER"/>
+        <result column="costPrice" property="costPrice" jdbcType="DOUBLE"/>
+        <result column="marketPrice" property="marketPrice" jdbcType="DOUBLE"/>
+        <result column="purchCount" property="purchCount" jdbcType="INTEGER"/>
+        <result column="realCount" property="realCount" jdbcType="INTEGER"/>
+        <result column="inventoryAmount" property="inventoryAmount" jdbcType="DOUBLE"/>
+        <result column="state" property="state" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, yearId, quarerlyId, stockId, skuId, productId, productType, skuMainPic, productName,
+        skuCode, skuProperties, pack, costPrice, marketPrice, purchCount, realCount, inventoryAmount,
+        state
+    </sql>
+
+    <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from t_fin_dy_q_inv_product
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from t_fin_dy_q_inv_product
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="save" parameterType="com.vgit.yunqiang.pojo.FinDyQInvProduct">
+        insert into t_fin_dy_q_inv_product (id, yearId, quarerlyId,
+          stockId, skuId, productId,
+          productType, skuMainPic, productName,
+          skuCode, skuProperties, pack,
+          costPrice, marketPrice, purchCount,
+          realCount, inventoryAmount, state
+          )
+        values (#{id,jdbcType=BIGINT}, #{yearId,jdbcType=BIGINT}, #{quarerlyId,jdbcType=BIGINT},
+          #{stockId,jdbcType=BIGINT}, #{skuId,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT},
+          #{productType,jdbcType=VARCHAR}, #{skuMainPic,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR},
+          #{skuCode,jdbcType=VARCHAR}, #{skuProperties,jdbcType=VARCHAR}, #{pack,jdbcType=INTEGER},
+          #{costPrice,jdbcType=DOUBLE}, #{marketPrice,jdbcType=DOUBLE}, #{purchCount,jdbcType=INTEGER},
+          #{realCount,jdbcType=INTEGER}, #{inventoryAmount,jdbcType=DOUBLE}, #{state,jdbcType=INTEGER}
+          )
+    </insert>
+
+    <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.FinDyQInvProduct">
+        insert into t_fin_dy_q_inv_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="yearId != null">
+                yearId,
+            </if>
+            <if test="quarerlyId != null">
+                quarerlyId,
+            </if>
+            <if test="stockId != null">
+                stockId,
+            </if>
+            <if test="skuId != null">
+                skuId,
+            </if>
+            <if test="productId != null">
+                productId,
+            </if>
+            <if test="productType != null">
+                productType,
+            </if>
+            <if test="skuMainPic != null">
+                skuMainPic,
+            </if>
+            <if test="productName != null">
+                productName,
+            </if>
+            <if test="skuCode != null">
+                skuCode,
+            </if>
+            <if test="skuProperties != null">
+                skuProperties,
+            </if>
+            <if test="pack != null">
+                pack,
+            </if>
+            <if test="costPrice != null">
+                costPrice,
+            </if>
+            <if test="marketPrice != null">
+                marketPrice,
+            </if>
+            <if test="purchCount != null">
+                purchCount,
+            </if>
+            <if test="realCount != null">
+                realCount,
+            </if>
+            <if test="inventoryAmount != null">
+                inventoryAmount,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="yearId != null">
+                #{yearId,jdbcType=BIGINT},
+            </if>
+            <if test="quarerlyId != null">
+                #{quarerlyId,jdbcType=BIGINT},
+            </if>
+            <if test="stockId != null">
+                #{stockId,jdbcType=BIGINT},
+            </if>
+            <if test="skuId != null">
+                #{skuId,jdbcType=BIGINT},
+            </if>
+            <if test="productId != null">
+                #{productId,jdbcType=BIGINT},
+            </if>
+            <if test="productType != null">
+                #{productType,jdbcType=VARCHAR},
+            </if>
+            <if test="skuMainPic != null">
+                #{skuMainPic,jdbcType=VARCHAR},
+            </if>
+            <if test="productName != null">
+                #{productName,jdbcType=VARCHAR},
+            </if>
+            <if test="skuCode != null">
+                #{skuCode,jdbcType=VARCHAR},
+            </if>
+            <if test="skuProperties != null">
+                #{skuProperties,jdbcType=VARCHAR},
+            </if>
+            <if test="pack != null">
+                #{pack,jdbcType=INTEGER},
+            </if>
+            <if test="costPrice != null">
+                #{costPrice,jdbcType=DOUBLE},
+            </if>
+            <if test="marketPrice != null">
+                #{marketPrice,jdbcType=DOUBLE},
+            </if>
+            <if test="purchCount != null">
+                #{purchCount,jdbcType=INTEGER},
+            </if>
+            <if test="realCount != null">
+                #{realCount,jdbcType=INTEGER},
+            </if>
+            <if test="inventoryAmount != null">
+                #{inventoryAmount,jdbcType=DOUBLE},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updatePart" parameterType="com.vgit.yunqiang.pojo.FinDyQInvProduct">
+        update t_fin_dy_q_inv_product
+        <set>
+            <if test="yearId != null">
+                yearId = #{yearId,jdbcType=BIGINT},
+            </if>
+            <if test="quarerlyId != null">
+                quarerlyId = #{quarerlyId,jdbcType=BIGINT},
+            </if>
+            <if test="stockId != null">
+                stockId = #{stockId,jdbcType=BIGINT},
+            </if>
+            <if test="skuId != null">
+                skuId = #{skuId,jdbcType=BIGINT},
+            </if>
+            <if test="productId != null">
+                productId = #{productId,jdbcType=BIGINT},
+            </if>
+            <if test="productType != null">
+                productType = #{productType,jdbcType=VARCHAR},
+            </if>
+            <if test="skuMainPic != null">
+                skuMainPic = #{skuMainPic,jdbcType=VARCHAR},
+            </if>
+            <if test="productName != null">
+                productName = #{productName,jdbcType=VARCHAR},
+            </if>
+            <if test="skuCode != null">
+                skuCode = #{skuCode,jdbcType=VARCHAR},
+            </if>
+            <if test="skuProperties != null">
+                skuProperties = #{skuProperties,jdbcType=VARCHAR},
+            </if>
+            <if test="pack != null">
+                pack = #{pack,jdbcType=INTEGER},
+            </if>
+            <if test="costPrice != null">
+                costPrice = #{costPrice,jdbcType=DOUBLE},
+            </if>
+            <if test="marketPrice != null">
+                marketPrice = #{marketPrice,jdbcType=DOUBLE},
+            </if>
+            <if test="purchCount != null">
+                purchCount = #{purchCount,jdbcType=INTEGER},
+            </if>
+            <if test="realCount != null">
+                realCount = #{realCount,jdbcType=INTEGER},
+            </if>
+            <if test="inventoryAmount != null">
+                inventoryAmount = #{inventoryAmount,jdbcType=DOUBLE},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="update" parameterType="com.vgit.yunqiang.pojo.FinDyQInvProduct">
+        update t_fin_dy_q_inv_product
+        set yearId = #{yearId,jdbcType=BIGINT},
+          quarerlyId = #{quarerlyId,jdbcType=BIGINT},
+          stockId = #{stockId,jdbcType=BIGINT},
+          skuId = #{skuId,jdbcType=BIGINT},
+          productId = #{productId,jdbcType=BIGINT},
+          productType = #{productType,jdbcType=VARCHAR},
+          skuMainPic = #{skuMainPic,jdbcType=VARCHAR},
+          productName = #{productName,jdbcType=VARCHAR},
+          skuCode = #{skuCode,jdbcType=VARCHAR},
+          skuProperties = #{skuProperties,jdbcType=VARCHAR},
+          pack = #{pack,jdbcType=INTEGER},
+          costPrice = #{costPrice,jdbcType=DOUBLE},
+          marketPrice = #{marketPrice,jdbcType=DOUBLE},
+          purchCount = #{purchCount,jdbcType=INTEGER},
+          realCount = #{realCount,jdbcType=INTEGER},
+          inventoryAmount = #{inventoryAmount,jdbcType=DOUBLE},
+          state = #{state,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
