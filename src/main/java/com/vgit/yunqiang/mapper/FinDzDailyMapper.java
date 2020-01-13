@@ -2,6 +2,7 @@ package com.vgit.yunqiang.mapper;
 
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.pojo.FinDzDaily;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -21,5 +22,5 @@ public interface FinDzDailyMapper extends BaseMapper<FinDzDaily> {
      * @param stockId
      * @return
      */
-    int exits(Long stockId);
+    int exits(@Param("stockId") Long stockId, @Param("date") String date);
 }

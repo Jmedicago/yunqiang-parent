@@ -37,6 +37,9 @@ public class FinDzDailyServiceImpl extends BaseServiceImpl<FinDzDaily> implement
     @Autowired
     private BisOrderService bisOrderService;
 
+    @Autowired
+    private FinDailyExpendService finDailyExpendService;
+
     @Override
     protected BaseMapper<FinDzDaily> getMapper() {
         return this.mapper;
@@ -86,6 +89,7 @@ public class FinDzDailyServiceImpl extends BaseServiceImpl<FinDzDaily> implement
         for (FinDzDaily dzDaily : finDzDailyList) {
             double incomeSubTotal = 0;
             double expendSubTotal = 0;
+            double arrearsSubTotal = 0;
             double deposit = dzDaily.getDeposit() != null ? dzDaily.getDeposit() * 0.01 : 0;
             double purch = dzDaily.getPurch() != null ? dzDaily.getPurch() * 0.01 : 0;
             //double arrears = dzDaily.getArrears() != null ? dzDaily.getArrears() * 0.01 : 0;
@@ -99,7 +103,7 @@ public class FinDzDailyServiceImpl extends BaseServiceImpl<FinDzDaily> implement
                 double income = dyDaily.getIncome() != null ? dyDaily.getIncome() * 0.01 : 0;
                 double arrears = dyDaily.getArrears() != null ? dyDaily.getArrears() * 0.01 : 0;
 
-                arrearsTotal += arrears;
+                arrearsSubTotal += arrears;
 
                 dyDaily.setIncome(income);
 
@@ -121,18 +125,22 @@ public class FinDzDailyServiceImpl extends BaseServiceImpl<FinDzDaily> implement
             incomeTotal += incomeSubTotal;
             expendTotal += expendSubTotal;
 
-            deposit = incomeSubTotal + 0; // 0 表示上季度存款
-            depositTotal += deposit;
+            deposit = incomeTotal + beforeQuarterlyDeposit; // 0 表示上季度存款
+            System.out.println("incomeTotal:" + incomeTotal);
+            System.out.println("incomeSubTotal:" + incomeSubTotal);
+            System.out.println("deposit" + deposit);
+
+            //depositTotal += deposit;
             purchTotal += purch;
 
-            salesTotal = incomeTotal + expendSubTotal - saveBank;
+            salesTotal = incomeSubTotal + expendSubTotal - saveBank;
 
             detail.put("date", TimeUtils.dateFormat(dzDaily.getDate(), "yyyy\\MM\\dd"));
             detail.put("incomeSubTotal", incomeSubTotal);
             detail.put("expendSubTotal", expendSubTotal);
             detail.put("deposit", deposit); // 保险柜现金
             detail.put("purch", purch); // 上货金额
-            detail.put("arrears", arrearsTotal); // 客商总额
+            detail.put("arrears", arrearsSubTotal); // 客商总额
             detail.put("sales", salesTotal);
             detail.put("dyDailies", dyDailies);
             details.add(detail);
@@ -143,6 +151,11 @@ public class FinDzDailyServiceImpl extends BaseServiceImpl<FinDzDaily> implement
         // 自动更新最后一天当日该店员录入的欠款
         if (finDzDailyList != null && finDzDailyList.size() > 0) {
             arrearsTotal = details.get(details.size() - 1).get("arrears") != null ?  (double)details.get(details.size() - 1).get("arrears") : 0;
+        }
+
+        // 自动更新最后一天的保险柜现金
+        if (finDzDailyList != null && finDzDailyList.size() > 0) {
+            depositTotal = details.get(details.size() - 1).get("deposit") != null ? (double)details.get(details.size() - 1).get("deposit") : 0;
         }
 
         report.put("stockName", getStockName(query.getStockId()));
@@ -210,7 +223,7 @@ public class FinDzDailyServiceImpl extends BaseServiceImpl<FinDzDaily> implement
         return dzDaily;
     }*/
 
-    @Override
+    /*@Override
     public FinDzDaily saveOrUpdateDaily(FinDzDaily dzDaily) {
         if (dzDaily.getId() == null) {
             if (exits(dzDaily)) {
@@ -230,9 +243,51 @@ public class FinDzDailyServiceImpl extends BaseServiceImpl<FinDzDaily> implement
 
         dzDaily = this.mapper.get(dzDaily.getId());
         return dzDaily;
+    }*/
+
+    @Override
+    public FinDzDaily saveOrUpdateDaily(FinDzDaily dzDaily) {
+        if (dzDaily.getId() == null) {
+            if (exits(dzDaily)) {
+                throw new BisException().setInfo("今日已填报，不能添加！");
+            }
+
+            double purch = this.bisOrderService.getCurDailyTackOrder(dzDaily.getStockId());
+            dzDaily.setPurch(purch); // 上货现金
+            dzDaily.setCreateTime(System.currentTimeMillis());
+            this.mapper.savePart(dzDaily);
+            dzDaily.setCode("Z" + dzDaily.getId());
+
+            List<FinDailyExpend> dailyExpends = this.clearNullItem(dzDaily.getFinDailyExpendList());
+            for (FinDailyExpend dailyExpend : dailyExpends) {
+                if (dailyExpend != null) {
+                    double amount = 0;
+
+                    amount = dailyExpend.getAmount() != null ? dailyExpend.getAmount() * 100 : 0;
+
+                    dailyExpend.setDailyCode(dzDaily.getCode());
+                    dailyExpend.setStockName(this.getStockName(dzDaily.getStockId()));
+                    dailyExpend.setAmount(amount);
+                    this.finDailyExpendService.savePart(dailyExpend);
+                }
+            }
+            this.mapper.updatePart(dzDaily);
+        }
+        return dzDaily;
     }
+
+    private List<FinDailyExpend> clearNullItem(List<FinDailyExpend> finDailyExpendList) {
+        List<FinDailyExpend> dailyExpends = new ArrayList<FinDailyExpend>();
+        for (FinDailyExpend dailyExpend : finDailyExpendList) {
+            if (dailyExpend.getExpendItemId() != null) {
+                dailyExpends.add(dailyExpend);
+            }
+        }
+        return dailyExpends;
+    }
+
     private boolean exits(FinDzDaily dzDaily) {
-        int count = this.mapper.exits(dzDaily.getStockId());
+        int count = this.mapper.exits(dzDaily.getStockId(), dzDaily.getDateFormatter());
         if (count > 0) {
             return true;
         } else {
