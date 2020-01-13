@@ -146,6 +146,12 @@ public class FinDzDailyServiceImpl extends BaseServiceImpl<FinDzDaily> implement
             details.add(detail);
 
             // TODO.持久化
+            dzDaily.setIncomeSubTotal(incomeSubTotal * 100);
+            dzDaily.setExpendSubTotal(expendSubTotal * 100);
+            dzDaily.setDeposit(deposit);
+            dzDaily.setArrears(arrearsSubTotal);
+            dzDaily.setSales(salesTotal);
+            this.mapper.updatePart(dzDaily);
         }
 
         // 自动更新最后一天当日该店员录入的欠款
