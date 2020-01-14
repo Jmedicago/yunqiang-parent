@@ -44,4 +44,15 @@ public interface FinQDzInventoryMapper extends BaseMapper<FinQDzInventory> {
      * @return
      */
     FinQDzInventory getBeforeQInventory(@Param("year") String year, @Param("quarterly") String quarterly, @Param("stockId") Long stockId);
+
+    /**
+     * 店长总存银行
+     *
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    Double getSaveBankBetween(@Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    Double getSaveBankBy(@Param("year") String year, @Param("quarterly") String quarterly);
 }

@@ -3,15 +3,19 @@ package com.vgit.yunqiang.service.impl;
 import com.vgit.yunqiang.common.query.ReportQuery;
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
+import com.vgit.yunqiang.common.utils.TimeUtils;
 import com.vgit.yunqiang.mapper.FinQDzInventoryMapper;
 import com.vgit.yunqiang.pojo.BisStock;
 import com.vgit.yunqiang.pojo.FinQDyInventory;
 import com.vgit.yunqiang.pojo.FinQDzInventory;
+import com.vgit.yunqiang.pojo.FinQInventory;
 import com.vgit.yunqiang.service.BisStockService;
 import com.vgit.yunqiang.service.FinQDzInventoryService;
+import com.vgit.yunqiang.service.FinQInventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -24,6 +28,9 @@ public class FinQDzInventoryServiceImpl extends BaseServiceImpl<FinQDzInventory>
 
     @Autowired
     private BisStockService bisStockService;
+
+    @Autowired
+    private FinQInventoryService finQInventoryService;
 
     @Override
     protected BaseMapper<FinQDzInventory> getMapper() {
@@ -82,7 +89,7 @@ public class FinQDzInventoryServiceImpl extends BaseServiceImpl<FinQDzInventory>
                 beforePurchTotal += beforePurch;
                 incomeTotal += income;
 
-                expendTotal += expend;
+                expendTotal += outTotal;
 
                 arrearsTotal += arrears;
                 changeTotal += change;
@@ -117,10 +124,8 @@ public class FinQDzInventoryServiceImpl extends BaseServiceImpl<FinQDzInventory>
             double saveTotal = 0;
 
             inTotal = beforeSafe + beforeArrearsTotal + beforeChangeTotal + beforePurchTotal + incomeTotal;
-            outTotal = expendTotal + dailyCash;
+            //outTotal = expendTotal + dailyCash;
             saveTotal = safe + arrearsTotal + changeTotal + purchTotal;
-
-            total = outTotal + saveTotal - inTotal;
 
             dzInventory.put("beforeSafe", beforeSafe);
             dzInventory.put("beforeArrearsTotal", beforeArrearsTotal);
@@ -130,8 +135,12 @@ public class FinQDzInventoryServiceImpl extends BaseServiceImpl<FinQDzInventory>
             dzInventory.put("inTotal", inTotal);
 
             dzInventory.put("expendTotal", expendTotal);
+            dailyCash = this.mapper.getSaveBankBetween(query.getYear(), query.getQuarterly());
             dzInventory.put("dailyCash", dailyCash);
+            outTotal = dailyCash + expendTotal;
             dzInventory.put("outTotal", outTotal);
+
+            total = outTotal + saveTotal - inTotal;
 
             dzInventory.put("safe", safe);
             dzInventory.put("arrearsTotal", arrearsTotal);
@@ -287,6 +296,27 @@ public class FinQDzInventoryServiceImpl extends BaseServiceImpl<FinQDzInventory>
         return this.mapper.getBeforeQInventory(year, quarterly, stockId);
     }
 
+    @Override
+    public FinQDzInventory saveOrUpdateQuarterly(FinQDzInventory qDzInventory) {
+        if (qDzInventory != null) {
+            try {
+                FinQInventory qInventory = new FinQInventory();
+                qInventory.setYearId(qDzInventory.getYearId());
+                qInventory.setQuarterlyId(qDzInventory.getQuarterlyId());
+                qInventory.setStartDate(TimeUtils.StringToDate(qDzInventory.getStartDate(), "yyyy-MM-dd"));
+                qInventory.setEndDate(TimeUtils.StringToDate(qDzInventory.getEndDate(), "yyyy-MM-dd"));
+                this.finQInventoryService.saveQInventory(qInventory);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            qDzInventory.setBeforeSafe(qDzInventory.getBeforeSafe() != null ? qDzInventory.getBeforeSafe() * 100 : 0);
+            qDzInventory.setSafe(qDzInventory.getSafe() != null ? qDzInventory.getSafe() * 100 : 0);
+            this.mapper.savePart(qDzInventory);
+        }
+        return qDzInventory;
+    }
+
     private String getRegionStockName(Long stockId) {
         BisStock bisStock = this.bisStockService.get(stockId);
         return this.bisStockService.get(bisStock.getParentId()).getName();
@@ -294,6 +324,14 @@ public class FinQDzInventoryServiceImpl extends BaseServiceImpl<FinQDzInventory>
 
     private String getStockName(Long stockId) {
         return this.bisStockService.get(stockId).getName();
+    }
+
+    private double getDzSaveBank(String year, String quarterly) {
+        Double amount = this.mapper.getSaveBankBy(year, quarterly);
+        if (amount != null) {
+            return amount;
+        }
+        return 0;
     }
 
 }

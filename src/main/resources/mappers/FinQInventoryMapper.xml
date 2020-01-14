@@ -112,4 +112,8 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
+    <select id="exits" resultType="java.lang.Integer">
+        select count(0) from t_fin_q_inventory where yearId = #{yearId} and quarterlyId = #{quarterlyId}
+    </select>
+
 </mapper>

@@ -136,7 +136,7 @@ public class FinQDyInventoryServiceImpl extends BaseServiceImpl<FinQDyInventory>
                 qInventory.setQuarterlyId(qDyInventory.getQuarterlyId());
                 qInventory.setStartDate(TimeUtils.StringToDate(qDyInventory.getStartDate(), "yyyy-MM-dd"));
                 qInventory.setEndDate(TimeUtils.StringToDate(qDyInventory.getEndDate(), "yyyy-MM-dd"));
-                this.finQInventoryService.savePart(qInventory);
+                this.finQInventoryService.saveQInventory(qInventory);
             } catch (ParseException e) {
                 e.printStackTrace();
             }

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FinQInventoryImpl extends BaseServiceImpl<FinQInventory> implements FinQInventoryService {
+public class FinQInventoryServiceImpl extends BaseServiceImpl<FinQInventory> implements FinQInventoryService {
 
     @Autowired
     private FinQInventoryMapper mapper;
@@ -19,4 +19,20 @@ public class FinQInventoryImpl extends BaseServiceImpl<FinQInventory> implements
         return this.mapper;
     }
 
+    @Override
+    public void saveQInventory(FinQInventory finQInventory) {
+        if (saveBefore(finQInventory.getYearId(), finQInventory.getQuarterlyId())) {
+            //
+        } else {
+            this.mapper.savePart(finQInventory);
+        }
+    }
+
+    private boolean saveBefore(Long year, Long quarterlyId) {
+        int count = this.mapper.exits(year, quarterlyId);
+        if (count > 0) {
+            return true;
+        }
+        return false;
+    }
 }

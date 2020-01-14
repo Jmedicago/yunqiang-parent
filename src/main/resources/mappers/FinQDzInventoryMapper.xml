@@ -19,11 +19,13 @@
         <result column="purch" property="purch" jdbcType="DOUBLE"/>
         <result column="income" property="income" jdbcType="DOUBLE"/>
         <result column="state" property="state" jdbcType="INTEGER"/>
+        <result column="startDate" property="startDate" jdbcType="DATE" />
+        <result column="endDate" property="endDate" jdbcType="DATE" />
     </resultMap>
 
     <sql id="Base_Column_List">
         id, stockId, yearId, quarterlyId, beforeSafe, beforeArrears, beforeChange, beforePurch,
-        expend, dailyCash, safe, arrears, change, purch, income, state
+        expend, dailyCash, safe, arrears, `change`, purch, income, state, startDate, endDate
     </sql>
 
     <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long">
@@ -43,12 +45,13 @@
           quarterlyId, beforeSafe, beforeArrears,
           beforeChange, beforePurch, expend,
           dailyCash, safe, arrears,
-          change, purch, income, state)
+          `change`, purch, income, state, startDate, endDate)
         values (#{id,jdbcType=BIGINT}, #{stockId,jdbcType=BIGINT}, #{yearId,jdbcType=BIGINT},
           #{quarterlyId,jdbcType=BIGINT}, #{beforeSafe,jdbcType=DOUBLE}, #{beforeArrears,jdbcType=DOUBLE},
           #{beforeChange,jdbcType=DOUBLE}, #{beforePurch,jdbcType=DOUBLE}, #{expend,jdbcType=DOUBLE},
           #{dailyCash,jdbcType=DOUBLE}, #{safe,jdbcType=DOUBLE}, #{arrears,jdbcType=DOUBLE},
-          #{change,jdbcType=DOUBLE}, #{purch,jdbcType=DOUBLE}, #{income,jdbcType=DOUBLE}, #{state,jdbcType=INTEGER})
+          #{change,jdbcType=DOUBLE}, #{purch,jdbcType=DOUBLE}, #{income,jdbcType=DOUBLE}, #{state,jdbcType=INTEGER}
+          , #{startDate,jdbcType=DATE}, #{endDate,jdbcType=DATE})
     </insert>
 
     <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.FinQDzInventory">
@@ -91,7 +94,7 @@
                 arrears,
             </if>
             <if test="change != null">
-                change,
+                `change`,
             </if>
             <if test="purch != null">
                 purch,
@@ -101,6 +104,12 @@
             </if>
             <if test="state != null">
                 state,
+            </if>
+            <if test="startDate != null" >
+                startDate,
+            </if>
+            <if test="endDate != null" >
+                endDate,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -152,6 +161,12 @@
             <if test="state != null">
                 #{state,jdbcType=INTEGER},
             </if>
+            <if test="startDate != null" >
+                #{startDate,jdbcType=DATE},
+            </if>
+            <if test="endDate != null" >
+                #{endDate,jdbcType=DATE},
+            </if>
         </trim>
     </insert>
 
@@ -192,7 +207,7 @@
                 arrears = #{arrears,jdbcType=DOUBLE},
             </if>
             <if test="change != null">
-                change = #{change,jdbcType=DOUBLE},
+                `change` = #{change,jdbcType=DOUBLE},
             </if>
             <if test="purch != null">
                 purch = #{purch,jdbcType=DOUBLE},
@@ -202,6 +217,12 @@
             </if>
             <if test="state != null">
                 state = #{state,jdbcType=INTEGER},
+            </if>
+            <if test="startDate != null" >
+                startDate = #{startDate,jdbcType=DATE},
+            </if>
+            <if test="endDate != null" >
+                endDate = #{endDate,jdbcType=DATE},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
@@ -220,10 +241,12 @@
           dailyCash = #{dailyCash,jdbcType=DOUBLE},
           safe = #{safe,jdbcType=DOUBLE},
           arrears = #{arrears,jdbcType=DOUBLE},
-          change = #{change,jdbcType=DOUBLE},
+          `change` = #{change,jdbcType=DOUBLE},
           purch = #{purch,jdbcType=DOUBLE},
           income = #{income,jdbcType=DOUBLE},
-          state = #{state,jdbcType=INTEGER}
+          state = #{state,jdbcType=INTEGER},
+          startDate = #{startDate,jdbcType=DATE},
+          endDate = #{endDate,jdbcType=DATE}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
@@ -244,7 +267,8 @@
         <result column="purch" property="purch" jdbcType="DOUBLE"/>
         <result column="income" property="income" jdbcType="DOUBLE"/>
         <result column="state" property="state" jdbcType="INTEGER"/>
-        <collection property="qDyInventoryList" javaType="java.util.List" ofType="com.vgit.yunqiang.pojo.FinQDyInventory">
+        <collection property="qDyInventoryList" javaType="java.util.List"
+                    ofType="com.vgit.yunqiang.pojo.FinQDyInventory">
             <id column="dyId" property="id" jdbcType="BIGINT"/>
             <result column="dyStockId" property="stockId" jdbcType="BIGINT"/>
             <result column="dyYearId" property="yearId" jdbcType="BIGINT"/>
@@ -336,6 +360,22 @@
             y.NAME = #{year}
             AND dz.quarterlyId = #{quarterly}
             AND stockId = #{stockId}
+    </select>
+
+    <select id="getSaveBankBetween" resultType="double">
+        <![CDATA[
+        SELECT SUM(de.amount) FROM `t_fin_dz_daily` dz
+        join t_fin_daily_expend de ON dz.`code` = de.dailyCode AND de.expendItemId = (SELECT id FROM t_fin_expend_item where category = 'C1')
+        WHERE dz.date >= #{startDate} AND dz.date <= #{endDate}
+        ]]>
+    </select>
+
+    <select id="getSaveBankBy" resultType="double">
+        <![CDATA[
+        SELECT SUM(de.amount) FROM `t_fin_dz_daily` dz
+        join t_fin_daily_expend de ON dz.`code` = de.dailyCode AND de.expendItemId = (SELECT id FROM t_fin_expend_item where category = 'C1')
+        WHERE dz.date >= (select startDate FROM t_fin_q_inventory i join t_fin_year y ON i.yearId = y.id join t_fin_quarterly q  on q.id = i.quarterlyId where q.name = #{quarterly} AND y.name = #{year} ) AND dz.date <= (select endDate FROM t_fin_q_inventory i join t_fin_year y ON i.yearId = y.id join t_fin_quarterly q  on q.id = i.quarterlyId where q.name = #{quarterly} AND y.name = #{year} )
+         ]]>
     </select>
 
 </mapper>

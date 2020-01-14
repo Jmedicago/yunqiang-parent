@@ -59,4 +59,12 @@ public interface FinQDzInventoryService extends BaseService<FinQDzInventory> {
      * @return
      */
     FinQDzInventory getBeforeQInventory(String year, String quarterly, Long stockId);
+
+    /**
+     * 编辑店长季报
+     *
+     * @param qDzInventory
+     * @return
+     */
+    FinQDzInventory saveOrUpdateQuarterly(FinQDzInventory qDzInventory);
 }

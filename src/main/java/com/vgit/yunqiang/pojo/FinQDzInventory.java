@@ -1,5 +1,6 @@
 package com.vgit.yunqiang.pojo;
 
+import java.util.Date;
 import java.util.List;
 
 public class FinQDzInventory {
@@ -35,6 +36,10 @@ public class FinQDzInventory {
     private Double income;
 
     private Integer state;
+
+    private String startDate;
+
+    private String endDate;
 
     private List<FinQDyInventory> qDyInventoryList;
 
@@ -172,6 +177,22 @@ public class FinQDzInventory {
 
     public void setqDyInventoryList(List<FinQDyInventory> qDyInventoryList) {
         this.qDyInventoryList = qDyInventoryList;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
     @Override
