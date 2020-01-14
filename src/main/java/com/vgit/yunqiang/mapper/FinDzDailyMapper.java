@@ -14,7 +14,7 @@ public interface FinDzDailyMapper extends BaseMapper<FinDzDaily> {
      * @param stockId
      * @return
      */
-    List<FinDzDaily> queryDailyList(Long stockId);
+    List<FinDzDaily> queryDailyList(@Param("stockId") Long stockId, @Param("year") String year, @Param("quarterly") String quarterly);
 
     /**
      * 是否存在

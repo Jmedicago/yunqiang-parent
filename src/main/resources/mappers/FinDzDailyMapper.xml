@@ -256,8 +256,8 @@
             </collection>
         </collection>
     </resultMap>
-    <select id="queryDailyList" parameterType="java.lang.Long" resultMap="dailyListResultMap">
-        SELECT
+    <!--
+     SELECT
             dz.*,
             dy.id as dyId,
             dy.stockId as dyStockId,
@@ -288,6 +288,66 @@
         WHERE
             dz.stockId = #{stockId}
         GROUP BY de.id
+    -->
+    <select id="queryDailyList" resultMap="dailyListResultMap">
+        <![CDATA[
+            SELECT
+                dz.*,
+                dy.id AS dyId,
+                dy.stockId AS dyStockId,
+                dy.CODE AS dyCode,
+                dy.userId AS dyUserId,
+                dy.date AS dyDate,
+                dy.income AS dyIncome,
+                dy.expendSubTotal AS dyExpendSubTotal,
+                dy.purch AS dyPurch,
+                dy.arrears AS dyArrears,
+                dy.sales AS dySales,
+                s.id AS sId,
+                s.NAME,
+                de.id AS deId,
+                de.expendItemId,
+                de.stockName,
+                de.dailyCode,
+                de.detail,
+                de.amount,
+                ei.id AS eiId,
+                ei.category
+            FROM
+                t_fin_dz_daily dz
+                JOIN t_fin_dy_daily dy ON dy.stockId IN ( SELECT s.id FROM t_bis_stock s WHERE s.parentId = dz.stockId )
+                AND dy.date = dz.date
+                JOIN t_bis_stock s ON s.id = dy.stockId
+                JOIN t_fin_daily_expend de ON dy.CODE = de.dailyCode
+                OR dz.CODE = de.dailyCode
+                JOIN t_fin_expend_item ei ON de.expendItemId = ei.id
+            WHERE
+                dz.stockId = #{stockId}
+                AND dz.date >= (
+                SELECT
+                    startDate
+                FROM
+                    t_fin_q_inventory i
+                    JOIN t_fin_year y ON i.yearId = y.id
+                    JOIN t_fin_quarterly q ON q.id = i.quarterlyId
+                WHERE
+                    q.NAME = #{quarterly}
+                    AND y.NAME = #{year}
+                )
+                AND dz.date <= (
+                SELECT
+                    endDate
+                FROM
+                    t_fin_q_inventory i
+                    JOIN t_fin_year y ON i.yearId = y.id
+                    JOIN t_fin_quarterly q ON q.id = i.quarterlyId
+                WHERE
+                    q.NAME = #{quarterly}
+                    AND y.NAME = #{year}
+                )
+            GROUP BY
+                de.id
+        ]]>
     </select>
 
     <select id="exits" resultType="int"> <!--DATE_FORMAT(now(), '%Y-%m-%d')-->

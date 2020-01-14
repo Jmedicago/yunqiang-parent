@@ -15,7 +15,7 @@ public interface FinDzDailyService extends BaseService<FinDzDaily> {
      * @param stockId
      * @return
      */
-    List<FinDzDaily> queryDailyList(Long stockId);
+    List<FinDzDaily> queryDailyList(Long stockId, String year, String quarterly);
 
     /**
      * 查询店长每日资金进出账表报

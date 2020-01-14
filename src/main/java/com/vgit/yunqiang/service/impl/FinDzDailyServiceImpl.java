@@ -46,8 +46,8 @@ public class FinDzDailyServiceImpl extends BaseServiceImpl<FinDzDaily> implement
     }
 
     @Override
-    public List<FinDzDaily> queryDailyList(Long stockId) {
-        return this.mapper.queryDailyList(stockId);
+    public List<FinDzDaily> queryDailyList(Long stockId, String year, String quarterly) {
+        return this.mapper.queryDailyList(stockId, year, quarterly);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class FinDzDailyServiceImpl extends BaseServiceImpl<FinDzDaily> implement
             return report;
         }
 
-        List<FinDzDaily> finDzDailyList = this.queryDailyList(query.getStockId());
+        List<FinDzDaily> finDzDailyList = this.queryDailyList(query.getStockId(), query.getYear(), query.getQuarterly());
         for (FinDzDaily dzDaily : finDzDailyList) {
             double incomeSubTotal = 0;
             double expendSubTotal = 0;

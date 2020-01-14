@@ -46,12 +46,16 @@
 <script>
 
     function onLoadDzDailyFrame() {
-        MXF.ajaxing(true);
-        var that = $('#dzDailyFrame');
-        that.attr("src", "/report?rn=dz-daily&stockId=${stockId}");
-        that.load(function () {
-            MXF.ajaxing(false);
-        });
+        var year = $('#year').val();
+        var quarterly = $('#quarterly').val();
+        if (year && quarterly) {
+            MXF.ajaxing(true);
+            var that = $('#dzDailyFrame');
+            that.attr("src", "/report?rn=dz-daily&stockId=${stockId}&year=" + year + "&quarterly=" + quarterly);
+            that.load(function () {
+                MXF.ajaxing(false);
+            });
+        }
     }
     onLoadDzDailyFrame();
 
