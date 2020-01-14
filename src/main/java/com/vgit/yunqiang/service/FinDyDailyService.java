@@ -16,7 +16,7 @@ public interface FinDyDailyService extends BaseService<FinDyDaily> {
      * @param stockId
      * @return
      */
-    List<FinDyDaily> queryDailyList(Long stockId);
+    List<FinDyDaily> queryDailyList(Long stockId, String year, String quarterly);
 
     /**
      * 查询店员每日资金进出账表报

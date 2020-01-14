@@ -40,15 +40,15 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
         insert into t_fin_dy_daily (id, code, stockId, userId,
-          date, income, expendSubTotal,
-          purch, arrears, sales,
-          createTime, updateTime, remark
-          )
+        date, income, expendSubTotal,
+        purch, arrears, sales,
+        createTime, updateTime, remark
+        )
         values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{stockId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT},
-          #{date,jdbcType=DATE}, #{income,jdbcType=DOUBLE}, #{expendSubTotal,jdbcType=DOUBLE},
-          #{purch,jdbcType=DOUBLE}, #{arrears,jdbcType=DOUBLE}, #{sales,jdbcType=DOUBLE},
-          #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}
-          )
+        #{date,jdbcType=DATE}, #{income,jdbcType=DOUBLE}, #{expendSubTotal,jdbcType=DOUBLE},
+        #{purch,jdbcType=DOUBLE}, #{arrears,jdbcType=DOUBLE}, #{sales,jdbcType=DOUBLE},
+        #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}
+        )
     </insert>
 
     <insert id="savePart" parameterType="com.vgit.yunqiang.pojo.FinDyDaily">
@@ -229,8 +229,8 @@
         </collection>
     </resultMap>
 
-    <select id="queryDailyList" parameterType="java.lang.Long" resultMap="dailyListResultMap">
-        SELECT
+    <!--
+       SELECT
             d.*,
             de.id as deId,
             de.expendItemId,
@@ -246,6 +246,49 @@
             JOIN t_fin_expend_item ei ON de.expendItemId = ei.id
         WHERE
             d.stockId = #{stockId}
+    -->
+    <select id="queryDailyList" resultMap="dailyListResultMap">
+        <![CDATA[
+            SELECT
+                d.*,
+                de.id AS deId,
+                de.expendItemId,
+                de.stockName,
+                de.dailyCode,
+                de.detail,
+                de.amount,
+                ei.id AS eiId,
+                ei.category
+            FROM
+                t_fin_dy_daily d
+                JOIN t_fin_daily_expend de ON d.CODE = de.dailyCode
+                JOIN t_fin_expend_item ei ON de.expendItemId = ei.id
+            WHERE
+                d.stockId = #{stockId}
+                AND d.date >= (
+                SELECT
+                    startDate
+                FROM
+                    t_fin_q_inventory i
+                    JOIN t_fin_year y ON i.yearId = y.id
+                    JOIN t_fin_quarterly q ON q.id = i.quarterlyId
+                WHERE
+                    q.NAME = #{quarterly}
+                    AND y.NAME = #{year}
+                )
+                AND d.date <= (
+                SELECT
+                    endDate
+                FROM
+                    t_fin_q_inventory i
+                    JOIN t_fin_year y ON i.yearId = y.id
+                    JOIN t_fin_quarterly q ON q.id = i.quarterlyId
+                WHERE
+                    q.NAME = #{quarterly}
+                AND y.NAME = #{year}
+                )
+
+        ]]>
     </select>
 
     <select id="getByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -318,7 +361,9 @@
 
     <select id="getDyDailyListAndDate" resultMap="BaseResultMap">
         <![CDATA[
+
           SELECT * FROM t_fin_dy_daily d where d.date >= #{startDate} and d.date <= #{endDate} and d.stockId = #{stockId}
+
         ]]>
     </select>
 

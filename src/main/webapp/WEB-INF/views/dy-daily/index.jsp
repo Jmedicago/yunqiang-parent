@@ -11,6 +11,13 @@
 
     .edit-bar {
         padding-left: 10px;
+        height: 40px;
+        line-height: 40px;
+        border-bottom: 1px solid rgb(238, 238, 238);
+    }
+
+    .search-bar {
+        padding-left: 15px;
         height: 50px;
         line-height: 50px;
         border-bottom: 1px solid rgb(238, 238, 238);
@@ -23,6 +30,14 @@
     <div class="edit-bar">
         <a href="javascript:addDyStockDaily()" class="easyui-linkbutton" iconCls="icon-add" plain="true">填报</a>
     </div>
+    <div class="search-bar">
+        年份：<input id="year" class="easyui-combobox" name="year"
+                  data-options="valueField:'name',textField:'name',url:'/year/list'"/>
+        季度：<input id="quarterly" class="easyui-combobox" name="quarterly"
+                  data-options="valueField:'name',textField:'name',url:'/quarterly/list'"/>
+        <a href="javascript:onLoadDyDailyFrame();" class="easyui-linkbutton button-default">
+            <spring:message code="common.search"/></a>
+    </div>
     <div id="module-content">
         <iframe id="dyDailyFrame" frameborder="0" height="1000" width="100%" scrolling="no"></iframe>
     </div>
@@ -31,12 +46,16 @@
 <script>
 
     function onLoadDyDailyFrame() {
-        MXF.ajaxing(true);
-        var that = $('#dyDailyFrame');
-        that.attr("src", "/report?rn=dy-daily&stockId=${stockId}");
-        that.load(function () {
-            MXF.ajaxing(false);
-        });
+        var year = $('#year').val();
+        var quarterly = $('#quarterly').val();
+        if (year && quarterly) {
+            MXF.ajaxing(true);
+            var that = $('#dyDailyFrame');
+            that.attr("src", "/report?rn=dy-daily&stockId=${stockId}&year=" + year + "&quarterly=" + quarterly);
+            that.load(function () {
+                MXF.ajaxing(false);
+            });
+        }
     }
     onLoadDyDailyFrame();
 
