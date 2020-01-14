@@ -740,6 +740,19 @@ public class TimeUtils {
         return date;
     }
 
+    /**
+     * 将"2015-08-31 21:08:06"型字符串转化为Date
+     *
+     * @param str
+     * @return
+     * @throws ParseException
+     */
+    public static Date StringToDate(String str, String pattern) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+        Date date = (Date) formatter.parse(str);
+        return date;
+    }
+
 
     /**
      * 将CST时间类型字符串进行格式化输出

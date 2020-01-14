@@ -26,4 +26,11 @@ public interface FinQDyInventoryService extends BaseService<FinQDyInventory> {
      */
     Hashtable<String, Object> queryQDyInventoryReport(ReportQuery query);
 
+    /**
+     * 编辑季度盘点
+     *
+     * @param qDyInventory
+     * @return
+     */
+    FinQDyInventory saveOrUpdateQuarterly(FinQDyInventory qDyInventory);
 }

@@ -20,17 +20,17 @@ public class FinDzDaily extends BasePojo {
 
     private String dateFormatter;
 
-    private Double incomeSubTotal;
+    private Double incomeSubTotal; // 日总额
 
-    private Double expendSubTotal;
+    private Double expendSubTotal; // 当日总支出
 
-    private Double deposit;
+    private Double deposit; // 保险柜现金
 
-    private Double purch;
+    private Double purch; // 上货金额
 
-    private Double arrears;
+    private Double arrears; // 最新商客欠款
 
-    private Double sales;
+    private Double sales; // 每日销售额
 
     private BisStock bisStock;
 

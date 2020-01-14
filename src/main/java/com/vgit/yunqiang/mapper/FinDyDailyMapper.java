@@ -40,4 +40,14 @@ public interface FinDyDailyMapper extends BaseMapper<FinDyDaily> {
      * @return
      */
     List<FinDyDaily> getDyDailyList(@Param("stockId") Long stockId, @Param("date") String date);
+
+    /**
+     * 查询店员日报区间
+     *
+     * @param startDate
+     * @param endDate
+     * @param stockId
+     * @return
+     */
+    List<FinDyDaily> getDyDailyListAndDate(@Param("startDate") String startDate, @Param("endDate") String endDate, @Param("stockId") Long stockId);
 }

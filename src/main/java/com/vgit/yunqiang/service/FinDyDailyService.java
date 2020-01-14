@@ -49,4 +49,14 @@ public interface FinDyDailyService extends BaseService<FinDyDaily> {
      * @return
      */
     List<FinDyDaily> getDyDailyList(Long stockId, String date);
+
+    /**
+     * 根据时间区间查询店员日报列表
+     *
+     * @param startDate
+     * @param endDate
+     * @param stockId
+     * @return
+     */
+    List<FinDyDaily> getDyDailyList(String startDate, String endDate, Long stockId);
 }

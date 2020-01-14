@@ -316,4 +316,10 @@
             dy.stockId in (select id FROM t_bis_stock where parentId = #{stockId}) AND dy.date = #{date}
     </select>
 
+    <select id="getDyDailyListAndDate" resultMap="BaseResultMap">
+        <![CDATA[
+          SELECT * FROM t_fin_dy_daily d where d.date >= #{startDate} and d.date <= #{endDate} and d.stockId = #{stockId}
+        ]]>
+    </select>
+
 </mapper>

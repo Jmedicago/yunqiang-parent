@@ -20,15 +20,15 @@ public class FinDyDaily extends BasePojo {
 
     private Date date;
 
-    private Double income;
+    private Double income; // 交付现金
 
-    private Double expendSubTotal;
+    private Double expendSubTotal; // 当日总支出
 
-    private Double purch;
+    private Double purch; // 上货金额
 
-    private Double arrears;
+    private Double arrears; // 最新客商欠款
 
-    private Double sales;
+    private Double sales; // 每日销售额
 
     private BisStock bisStock;
 

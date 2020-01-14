@@ -3,16 +3,25 @@ package com.vgit.yunqiang.service.impl;
 import com.vgit.yunqiang.common.query.ReportQuery;
 import com.vgit.yunqiang.common.service.BaseMapper;
 import com.vgit.yunqiang.common.service.impl.BaseServiceImpl;
+import com.vgit.yunqiang.common.utils.TimeUtils;
 import com.vgit.yunqiang.mapper.FinQDyInventoryMapper;
+import com.vgit.yunqiang.mapper.FinQInventoryMapper;
 import com.vgit.yunqiang.pojo.BisStock;
+import com.vgit.yunqiang.pojo.FinDyDaily;
 import com.vgit.yunqiang.pojo.FinQDyInventory;
+import com.vgit.yunqiang.pojo.FinQInventory;
 import com.vgit.yunqiang.service.BisStockService;
+import com.vgit.yunqiang.service.FinDyDailyService;
 import com.vgit.yunqiang.service.FinQDyInventoryService;
+import com.vgit.yunqiang.service.FinQInventoryService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.Hashtable;
+import java.util.List;
 
 @Service
 public class FinQDyInventoryServiceImpl extends BaseServiceImpl<FinQDyInventory> implements FinQDyInventoryService {
@@ -22,6 +31,12 @@ public class FinQDyInventoryServiceImpl extends BaseServiceImpl<FinQDyInventory>
 
     @Autowired
     private BisStockService bisStockService;
+
+    @Autowired
+    private FinQInventoryService finQInventoryService;
+
+    @Autowired
+    private FinDyDailyService finDyDailyService;
 
     @Override
     protected BaseMapper<FinQDyInventory> getMapper() {
@@ -66,6 +81,7 @@ public class FinQDyInventoryServiceImpl extends BaseServiceImpl<FinQDyInventory>
             beforeArrears = qDyInventory.getBeforeArrears() != null ? qDyInventory.getBeforeArrears() * 0.01 : 0;
             beforeChange = qDyInventory.getBeforeChange() != null ? qDyInventory.getBeforeChange() * 0.01 : 0;
             beforePurch = qDyInventory.getBeforePurch() != null ? qDyInventory.getBeforePurch() * 0.01 : 0;
+
             income = qDyInventory.getIncome() != null ? qDyInventory.getIncome() * 0.01 : 0;
             inTotal = beforeArrears + beforeChange + beforePurch + income;
 
@@ -108,6 +124,55 @@ public class FinQDyInventoryServiceImpl extends BaseServiceImpl<FinQDyInventory>
         report.put("regionStockName", getRegionStockName(query.getStockId()));
         report.put("stockName", getStockName(query.getStockId()));
         return report;
+    }
+
+    @Override
+    public FinQDyInventory saveOrUpdateQuarterly(FinQDyInventory qDyInventory) {
+        if (qDyInventory != null) {
+
+            try {
+                FinQInventory qInventory = new FinQInventory();
+                qInventory.setYearId(qDyInventory.getYearId());
+                qInventory.setQuarterlyId(qDyInventory.getQuarterlyId());
+                qInventory.setStartDate(TimeUtils.StringToDate(qDyInventory.getStartDate(), "yyyy-MM-dd"));
+                qInventory.setEndDate(TimeUtils.StringToDate(qDyInventory.getEndDate(), "yyyy-MM-dd"));
+                this.finQInventoryService.savePart(qInventory);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            // 查询上一季度盘点情况
+            FinQDyInventory finQInventory = this.mapper.getBeforeQDyInventory(qDyInventory.getStockId());
+            if (finQInventory != null) {
+                // 上季度盘点信息
+                qDyInventory.setBeforeArrears(finQInventory.getArrears());
+                qDyInventory.setBeforeChange(finQInventory.getChange());
+                qDyInventory.setBeforePurch(finQInventory.getBeforePurch());
+                qDyInventory.setBeforeSafe(finQInventory.getBeforeSafe());
+
+                List<FinDyDaily> dyDailies = this.finDyDailyService.getDyDailyList(qDyInventory.getStartDate(), qDyInventory.getEndDate(), qDyInventory.getStockId());
+                if (dyDailies != null) {
+                    double incomeTotal = 0;
+                    double expendTotal = 0;
+                    double arrears = 0;
+
+                    for (FinDyDaily dyDaily : dyDailies) {
+                        incomeTotal += dyDaily.getIncome() != null ? dyDaily.getIncome() : 0;
+                        expendTotal += dyDaily.getExpendSubTotal() != null ? dyDaily.getExpendSubTotal() : 0;
+                    }
+                    qDyInventory.setExpend(expendTotal);
+                    qDyInventory.setDailyCash(incomeTotal);
+
+                    arrears = dyDailies.get(dyDailies.size() - 1) != null ? (double) dyDailies.get(dyDailies.size() - 1).getArrears() : 0;
+                    qDyInventory.setArrears(arrears);
+                }
+            }
+
+            qDyInventory.setChange(qDyInventory.getChange() != null ? qDyInventory.getChange() * 100 : 0);
+            qDyInventory.setPurch(qDyInventory.getPurch() != null ? qDyInventory.getPurch() * 100 : 0);
+            this.mapper.savePart(qDyInventory);
+        }
+        return qDyInventory;
     }
 
     private String getRegionStockName(Long stockId) {

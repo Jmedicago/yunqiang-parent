@@ -8,31 +8,51 @@ public class FinQDyInventory {
 
     private Long yearId;
 
+    private String startDate;
+
+    private String endDate;
+
     private Long quarterlyId;
 
-    private Double beforeSafe;
+    private Double beforeSafe; // 上季度保险柜现金
 
-    private Double beforeArrears;
+    private Double beforeArrears; // 上季度商客欠款
 
-    private Double beforeChange;
+    private Double beforeChange; // 上季度柜台零钱
 
-    private Double beforePurch;
+    private Double beforePurch; // 库存商品总货值
 
-    private Double expend;
+    private Double expend; // 支出总额
 
-    private Double dailyCash;
+    private Double dailyCash; // 累计交付日现金总额
 
-    private Double safe;
+    private Double safe; // 保险柜现金
 
-    private Double arrears;
+    private Double arrears; // 商客欠款
 
-    private Double change;
+    private Double change; // 柜台零钱
 
-    private Double purch;
+    private Double purch; // 商品总货值
 
-    private Double income;
+    private Double income; // 累计进货值
 
     private Integer state;
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
 
     public Long getId() {
         return id;
