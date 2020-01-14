@@ -149,23 +149,28 @@ public class FinQDyInventoryServiceImpl extends BaseServiceImpl<FinQDyInventory>
                 qDyInventory.setBeforeChange(finQInventory.getChange());
                 qDyInventory.setBeforePurch(finQInventory.getBeforePurch());
                 qDyInventory.setBeforeSafe(finQInventory.getBeforeSafe());
+            }
 
-                List<FinDyDaily> dyDailies = this.finDyDailyService.getDyDailyList(qDyInventory.getStartDate(), qDyInventory.getEndDate(), qDyInventory.getStockId());
-                if (dyDailies != null) {
-                    double incomeTotal = 0;
-                    double expendTotal = 0;
-                    double arrears = 0;
+            // 本季度盘点情况
+            List<FinDyDaily> dyDailies = this.finDyDailyService.getDyDailyList(qDyInventory.getStartDate(), qDyInventory.getEndDate(), qDyInventory.getStockId());
+            if (dyDailies != null) {
+                double incomeTotal = 0;
+                double expendTotal = 0;
+                double purchTotal =0;
+                double arrears = 0;
 
-                    for (FinDyDaily dyDaily : dyDailies) {
-                        incomeTotal += dyDaily.getIncome() != null ? dyDaily.getIncome() : 0;
-                        expendTotal += dyDaily.getExpendSubTotal() != null ? dyDaily.getExpendSubTotal() : 0;
-                    }
-                    qDyInventory.setExpend(expendTotal);
-                    qDyInventory.setDailyCash(incomeTotal);
-
-                    arrears = dyDailies.get(dyDailies.size() - 1) != null ? (double) dyDailies.get(dyDailies.size() - 1).getArrears() : 0;
-                    qDyInventory.setArrears(arrears);
+                for (FinDyDaily dyDaily : dyDailies) {
+                    incomeTotal += dyDaily.getIncome() != null ? dyDaily.getIncome() : 0;
+                    expendTotal += dyDaily.getExpendSubTotal() != null ? dyDaily.getExpendSubTotal() : 0;
+                    purchTotal += dyDaily.getPurch() != null ? dyDaily.getPurch() : 0;
                 }
+                qDyInventory.setExpend(expendTotal);
+                qDyInventory.setDailyCash(incomeTotal);
+                /*qDyInventory.setPurch(purchTotal);*/
+                qDyInventory.setIncome(purchTotal);
+
+                arrears = dyDailies.get(dyDailies.size() - 1) != null ? (double) dyDailies.get(dyDailies.size() - 1).getArrears() : 0;
+                qDyInventory.setArrears(arrears);
             }
 
             qDyInventory.setChange(qDyInventory.getChange() != null ? qDyInventory.getChange() * 100 : 0);

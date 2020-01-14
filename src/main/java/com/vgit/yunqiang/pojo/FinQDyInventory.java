@@ -20,7 +20,7 @@ public class FinQDyInventory {
 
     private Double beforeChange; // 上季度柜台零钱
 
-    private Double beforePurch; // 库存商品总货值
+    private Double beforePurch; // 上季度库存商品总货值
 
     private Double expend; // 支出总额
 
